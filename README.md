@@ -151,3 +151,7 @@ We created a ansible playbook to automate the configuration of checkbox.io and s
 - While automating the authentication, environment variables needed to be set throughout the time mongodb runs. While doing manually, we can generally provide sourcing these variables in script or we can it in shell script.
 
       - In ansible script, we used the enviornment directive to set up the variables all time during the services run.
+      
+## Screencast
+Click [here](https://youtu.be/u5i8qSl9Am0) to view combined screencast for Milestone 1.
+Click these [iTrust](https://youtu.be/S9dWQm8qBzI) & [checkbox.io](https://youtu.be/iuzK0MPjv7c) if you prefer to  view them separately.

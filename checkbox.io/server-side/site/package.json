@@ -1,0 +1,19 @@
+{
+  "name": "design-node",
+  "description": "Survey Design Server",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "archiver": "~0.4.6",
+    "cors": "^2.7.1",
+    "express": "3.x",
+    "marked": "0.3.6",
+    "json5": "0.5.1",
+    "jade": "1.11.0",
+    "underscore": "1.8.3",
+    "mongodb": "2.2.22",
+    "emailjs": "1.0.8",
+    "validator": "6.2.1",
+    "async": "2.1.4"
+  }
+}

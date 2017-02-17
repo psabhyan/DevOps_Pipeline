@@ -1,0 +1,68 @@
+---
+- hosts: nodes
+  tasks:
+
+  - name: Install java 8 preresequesits
+    apt: name=python-software-properties
+
+  - name: Add Java 8 repository
+    apt_repository: repo='ppa:webupd8team/java'
+
+  - name: Agree to oracle license
+    debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+  - name: Install Java 8
+    apt: name=oracle-java8-installer force=yes
+
+  - name: Update APT package cache
+    become: yes
+    action: apt update_cache=yes
+
+  - name: install maven
+    become: yes
+    apt: pkg=maven state=present
+  
+  - name: Update APT package cache
+    become: yes
+    action: apt update_cache=yes
+
+  - name: install mysql
+    become: yes
+    apt: pkg=mysql-server state=latest
+
+  - name: install git
+    become: yes
+    apt: pkg=git state=latest
+
+  - name: Get updated files from git repository 
+      git: 
+        repo: "https://github.com/smsejwan/iTrust-v23.git"
+        dest: /home/vagrant/project
+
+  - name: Tomcat
+    command: bash -lc "cd /usr/local && wget http://mirror.symnds.com/software/Apache/tomcat/tomcat-9/v9.0.0.M17/bin/apache-tomcat-9.0.0.M17.tar.gz && tar xzf apache-tomcat-9.0.0.M17.tar.gz && mv apache-tomcat-9.0.0.M17 tomcat9"
+
+  - name: add a new string before the match
+    lineinfile: dest=/etc/mysql/my.cnf 
+                regexp='#general_log'
+                insertbefore='#general_log'
+                line='lower-case-table-names=1'
+                state=present
+  
+  - name: Restart mysql
+    command: bash -lc "sudo service mysql restart"
+
+  - name: Run iTrust
+    command: bash -lc "cd /home/vagrant/project && mvn clean package"
+
+  - name: Move war file
+    command: bash -lc "mv /home/vagrant/project/target/iTrust-23.0.0.war /usr/local/tomcat9/webapps/ "
+
+
+  - name: tomcat restart
+    become: yes
+    command: bash -lc "sudo chmod 777 /usr/local/tomcat9/ && /usr/local/tomcat9/bin/startup.sh"
+
+
+
+

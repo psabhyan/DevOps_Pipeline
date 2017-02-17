@@ -4,12 +4,9 @@ This project contains software modules which can be used to create DevOps pipeli
 
 Team:
 
-   Name               Unity ID  
-
-a)| Pinakin Abhyankar | psabhyan  |
-
-b)| Shalini Sejwani   | smsejwan  |
-
-c)| Nitin Ramchandani | nramcha   |
-
-d)| Ronak Ghadiya     | rghadiy   |
+| Name              | Unity Id |
+|-------------------|----------|
+| Pinakin Abhyankar | Psabhyan |
+| Shalini Sejwani   | Smsejwan |
+| Nitin Ramchandani | Nramcha  |
+| Ronak Ghadiya     | rghadiy  |

@@ -1,0 +1,6 @@
+---
+- name: Create Job from job.xml
+  action: shell java -jar jenkins-cli.jar -s http://localhost:8080/ create-job checkbox < job-config.xml 
+
+- name: Build the repo
+  action: shell java -jar /home/vagrant/jenkins-cli.jar -s http://localhost:8080/ build checkbox

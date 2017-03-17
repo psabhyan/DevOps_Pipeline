@@ -1,0 +1,10 @@
+---
+
+# Copy Jenkins configuration file and job file
+
+- include: jenkins-config.yml
+
+
+# Create and build job
+
+- include: jenkins-job.yml 

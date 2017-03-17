@@ -1,0 +1,56 @@
+---
+#- include: java8.yml
+- name: Install Packages and plugin 
+ 
+  hosts: nodes
+  environment: 
+    MONGO_USER: "{{ lookup('env','mongo_user') }}"
+    MONGO_PSWD: "{{ lookup('env','mongo_pswd') }}"
+    EMAIL_USER: "{{ lookup('env','email_user') }}"
+    EMAIL_PSWD: "{{ lookup('env','email_pswd') }}"
+
+  vars: 
+    packages:
+      - openjdk-8-jdk
+      - nginx
+      - git-core
+      - jenkins
+      - maven
+      - nodejs
+      - build-essential
+      - git
+      - python-pip
+
+  tasks:
+
+
+    - name: Configure apt key for jenkins repository
+      action: apt_key url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key state=present 
+
+    - name: Add jenkins APT repository
+      action: apt_repository repo='deb http://pkg.jenkins-ci.org/debian binary/' state=present
+    
+    - name: Add JDK apt repo
+      action: apt_repository repo='ppa:openjdk-r/ppa' update_cache=true state=present
+    - name: Install Repository keys
+      apt_key: state=present keyserver=keyserver.ubuntu.com id=EA312927
+ 
+    - name: Install MongoDB repository
+      apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu {{ ansible_distribution_release }}/mongodb-org/3.2 multiverse' state=present
+
+    - name: Install MongoDB
+      apt: name=mongodb-org state=present force=yes
+ 
+    - name: Add ppa for node
+      apt_repository: repo='ppa:chris-lea/node.js'
+
+    - name: update apt-cache if needed
+      apt: update_cache=yes
+
+    - name: Install {{ item }}
+      apt: pkg={{ item }} state=present
+      become: yes
+      with_items: "{{packages}}"
+
+- include: checkbox.yml
+- include: jenkins.yml

@@ -1,0 +1,30 @@
+---
+
+- name: Stopping Jenkins
+  shell: sudo su - root -c 'service jenkins stop'
+  args:
+    executable: /bin/bash
+
+- name: Configure JVM Arguments to disable security
+  sudo: true
+  lineinfile: dest=/etc/default/jenkins
+              regexp=''
+              insertafter='EOF'
+              line='JAVA_ARGS="-Djenkins.install.runSetupWizard=false"'
+
+- name: Restarting Jenkins
+  shell: sudo su - root -c 'service jenkins restart'
+  args:
+     executable: /bin/bash 
+
+- name: Wait for jenkins to restart
+  wait_for: host=localhost port=8080 delay=30
+
+- name: Copy job configuration file
+  template: src=job-config.xml.j2  dest=/home/vagrant/job-config.xml
+                 owner=jenkins group=jenkins mode=0644
+
+- name: Install Jenkins CLI on Host
+  action: shell wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+  args: 
+    creates: /home/vagrant/jenkins-cli.jar

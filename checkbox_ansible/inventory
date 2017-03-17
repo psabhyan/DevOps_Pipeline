@@ -1,0 +1,2 @@
+[nodes]
+192.168.33.210 ansible_ssh_user=vagrant ansible_ssh_private_key_file=./keys/checkbox.key

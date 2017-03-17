@@ -1,0 +1,45 @@
+---
+
+# Configure nginx and mongod
+
+- name: Clone the repo.
+  git:
+    repo: https://github.com/coder-neo/checkbox.io.git
+    dest: /home/vagrant/checkbox.io
+  become_user: vagrant
+
+- name: Update nginx.conf
+  copy: remote_src=True src=/home/vagrant/checkbox.io/local-conf/nginx.conf dest=/etc/nginx/nginx.conf
+  sudo: yes
+
+- name: Update default conf file
+  copy: remote_src=True src=/home/vagrant/checkbox.io/local-conf/default dest=/etc/nginx/sites-available/default
+  sudo: yes
+
+- name: Restart nginx
+  service : name=nginx state=reloaded
+
+- name: Install the latest pymongo package
+  pip: name=pymongo state=latest use_mirrors=no
+
+- name: Add MongoDB user 
+  mongodb_user:
+    database: admin
+    name: mongoAdmin
+    password: password
+    roles: userAdminAnyDatabase,readWriteAnyDatabase,dbAdminAnyDatabase
+    state: present 
+
+- name: Enable secure authentication for mongodb
+  blockinfile:
+    dest: "/etc/mongod.conf"
+    content: 
+       "security:\n  authorization: enabled" 
+ 
+- name: Restart mongod
+  service: name=mongod state=restarted         
+
+- name: Install nodejs dependencies
+  npm:
+    path: /home/vagrant/checkbox.io/server-side/site/
+

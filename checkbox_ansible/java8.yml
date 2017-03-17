@@ -1,0 +1,4 @@
+- name: Install Java8 
+  hosts: nodes
+  roles:
+    - java8

@@ -1,0 +1,4 @@
+- name: Install Jenkin plugins
+  hosts: nodes
+  roles:
+    - jenkins

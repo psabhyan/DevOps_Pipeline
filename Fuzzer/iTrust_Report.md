@@ -5,7 +5,7 @@ Major tasks in this milestone were related to Build, Testing of iTrust.
 We have used Nodejs in order to develop utilities required for this
 task. The codebase for these utilities can be found at : \[Fuzzer and
 Useless Testcase
-Detector\](https://github.ncsu.edu/smsejwan/Devops\_Project/tree/Milestone\_2\_BuildTestAnalysis)
+Detector\](https://github.ncsu.edu/smsejwan/Devops_Project/tree/Milestone_2_BuildTestAnalysis/Fuzzer)
 
 1.  **Setup Build Server for iTrust using Jenkins:**
 

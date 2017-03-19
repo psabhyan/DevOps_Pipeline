@@ -15,5 +15,7 @@ And Fail the build if any of these results occur.
 We first extended the ansible playbook to add support for nginx and ansible, and then the script creats a jenkings job and builds it. The ansible playbook also adds 'post build script' and 'post build task' plugins to jenkins to run the analysis script.  
 Then we implemented a node.js script to analyze the checkbox.io project for the above mentioned conditions. 
 
+
+#### Link to Analysis Script: https://github.ncsu.edu/smsejwan/Devops_Project/blob/Milestone_2_BuildTestAnalysis/checkbox.io/server-side/site/test.js
 #### Link to screencast: https://youtu.be/gkkTJyGzD_E 
 #### Link to repo Analysis Script: https://github.com/coder-neo/checkbox.io/

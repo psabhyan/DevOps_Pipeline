@@ -1,0 +1,120 @@
+--- 
+- hosts: nodes
+  tasks:
+
+  - name: Configure apt key for jenkins repository
+    action: apt_key url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key state=present 
+
+  - name: Add jenkins APT repository
+    action: apt_repository repo='deb http://pkg.jenkins-ci.org/debian binary/' state=present
+
+  - name: Install java 8 preresequesits
+    apt: name=python-software-properties
+
+  - name: Add Java 8 repository
+    apt_repository: repo='ppa:webupd8team/java'
+
+  - name: Agree to oracle license
+    debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+  - name: Install Java 8
+    apt: name=oracle-java8-installer force=yes
+
+  - name: Add ppa for node
+    apt_repository: repo='ppa:chris-lea/node.js'
+
+  - name: Install node
+    apt: pkg=nodejs state=present 
+
+  - name: Update APT package cache
+    become: yes
+    action: apt update_cache=yes
+
+  - name: install maven
+    become: yes
+    apt: pkg=maven state=present
+
+  - name: Update APT package cache
+    become: yes
+    action: apt update_cache=yes
+
+  - name: install mysql
+    become: yes
+    apt: pkg=mysql-server state=latest
+
+  - name: install git
+    become: yes
+    apt: pkg=git state=latest
+
+  - name: Get updated files from git repository
+    git:
+      repo: "https://github.com/smsejwan/iTrust.git"
+      dest: /home/vagrant/project
+
+#  - name: Tomcat
+#    command: bash -lc "cd /usr/local && wget http://mirror.symnds.com/software/Apache/tomcat/tomcat-9/v9.0.0.M18/bin/apache-tomcat-9.0.0.M18.tar.gz && tar xzf apache-tomcat-9.0.0.M18.tar.gz && mv apache-tomcat-9.0.0.M18 tomcat9"
+
+  - name: add a new string before the match
+    lineinfile: dest=/etc/mysql/my.cnf
+                regexp='#general_log'
+                line='lower-case-table-names=1'
+                state=present
+
+  - name: Restart mysql
+    command: bash -lc "sudo service mysql restart"
+
+  - name: Run iTrust
+    command: bash -lc "cd /home/vagrant/project && sudo mvn clean package"
+
+#  - name: Move war file
+#    command: bash -lc "mv /home/vagrant/project/target/iTrust-23.0.0.war /usr/local/tomcat9/webapps/iTrust.war"
+
+#  - name: tomcat restart
+#    become: yes
+#    command: bash -lc "sudo chmod 777 /usr/local/tomcat9/ && sudo chmod 777 /usr/local/tomcat9/bin && sudo /usr/local/tomcat9/bin/startup.sh"
+
+  - name: update nodejs version
+    command: bash -lc "sudo npm cache clean -f && sudo npm install -g n && sudo n stable && sudo ln -sf /usr/local/n/versions/node/7.6.0/bin/node /usr/bin/node"
+
+  - name: install jenkins
+    apt: pkg="jenkins" state=present
+
+  - name: Stopping Jenkins
+    shell: sudo su - root -c 'service jenkins stop'
+    args:
+     executable: /bin/bash
+
+  - name: Configure JVM Arguments to disable security
+    sudo: true
+    lineinfile: dest=/etc/default/jenkins
+                regexp=''
+                insertafter='EOF'
+                line='JAVA_ARGS="-Djenkins.install.runSetupWizard=false"'
+
+  - name: Restarting Jenkins
+    shell: sudo su - root -c 'service jenkins restart'
+    args:
+     executable: /bin/bash 
+
+  - name: Wait for jenkins to restart
+    wait_for: host=localhost port=8080 delay=30
+
+  - copy:
+     src: /home/vagrant/jconfig.xml
+     dest: /home/vagrant/job-config.xml
+     owner: jenkins
+     group: jenkins
+     mode: 0644
+
+  - name: Install Jenkins CLI on Host
+    action: shell wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+    args: 
+      creates: /home/vagrant/jenkins-cli.jar
+
+  - name: Create Job from job.xml
+    action: shell java -jar jenkins-cli.jar -s http://localhost:8080/ create-job iTrust < job-config.xml
+
+  - name: Get updated files from git repository 
+    git: 
+      repo: "https://github.com/coder-neo/Fuzzer.git"
+      dest: /home/vagrant/Fuzzer

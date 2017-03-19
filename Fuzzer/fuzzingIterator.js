@@ -9,7 +9,7 @@ function main() {
     var directory = "/home/vagrant/iTrust/src/main/";
     var filelist = listFilesRecursively(directory);
     
-    for (var i = 0; i < 60; i++){
+    for (var i = 0; i < 100; i++){
    
         try{
 

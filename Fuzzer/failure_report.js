@@ -55,13 +55,13 @@ function gatherFailedTestCases(dir,ignoreFailed) {
                     
                     if(ignoreFailed){
 			
-		          fs.appendFileSync('/home/vagrant/Fuzzer2/Fuzzer/allTestCases.txt', t.classname+"<->"+t.testname+"\n", 'utf8');
+		          fs.appendFileSync('/home/vagrant/allTestCases.txt', t.classname+"<->"+t.testname+"\n", 'utf8');
 
 		     }else if (result.testsuite.testcase[testCase].hasOwnProperty("failure")) {
                     
 		           t.failed = true;
-                           //console.log("FailedTestCases "+t.testname);
-                           fs.appendFileSync('/home/vagrant/Fuzzer2/Fuzzer/failures.txt', t.classname+"<->"+t.testname+"\n", 'utf8');
+                           console.log("FailedTestCases =>>>>>>"+t.classname+"<->"+t.testname);
+                           fs.appendFileSync('/home/vagrant/failures.txt', t.classname+"<->"+t.testname+"\n", 'utf8');
 
                     }
 

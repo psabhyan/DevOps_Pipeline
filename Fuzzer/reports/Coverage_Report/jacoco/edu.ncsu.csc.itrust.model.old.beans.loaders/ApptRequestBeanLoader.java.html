@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptRequestBeanLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans.loaders</a> &gt; <span class="el_source">ApptRequestBeanLoader.java</span></div><h1>ApptRequestBeanLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans.loaders;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.beans.ApptRequestBean;
+
+/**
+ * 
+ *
+ */
+<span class="fc" id="L16">public class ApptRequestBeanLoader implements BeanLoader&lt;ApptRequestBean&gt; {</span>
+
+<span class="fc" id="L18">	private ApptBeanLoader loader = new ApptBeanLoader();</span>
+
+	/**
+	 * 
+	 */
+	@Override
+	public List&lt;ApptRequestBean&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L25">		List&lt;ApptRequestBean&gt; list = new ArrayList&lt;ApptRequestBean&gt;();</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L27">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L29">		return list;</span>
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public ApptRequestBean loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L37">		ApptRequestBean bean = new ApptRequestBean();</span>
+<span class="fc" id="L38">		ApptBean appt = loader.loadSingle(rs);</span>
+<span class="fc" id="L39">		bean.setRequestedAppt(appt);</span>
+<span class="fc" id="L40">		bean.setPending(rs.getBoolean(&quot;pending&quot;));</span>
+<span class="fc" id="L41">		bean.setAccepted(rs.getBoolean(&quot;accepted&quot;));</span>
+<span class="fc" id="L42">		return bean;</span>
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public PreparedStatement loadParameters(PreparedStatement ps, ApptRequestBean bean) throws SQLException {
+<span class="fc" id="L50">		PreparedStatement ps2 = loader.loadParameters(ps, bean.getRequestedAppt());</span>
+<span class="fc" id="L51">		ps2.setBoolean(6, bean.isPending());</span>
+<span class="fc" id="L52">		ps2.setBoolean(7, bean.isAccepted());</span>
+<span class="fc" id="L53">		return ps2;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

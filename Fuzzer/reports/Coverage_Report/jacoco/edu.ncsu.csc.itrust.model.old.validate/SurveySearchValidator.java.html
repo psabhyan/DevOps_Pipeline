@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SurveySearchValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.validate</a> &gt; <span class="el_source">SurveySearchValidator.java</span></div><h1>SurveySearchValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.validate;
+
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.SurveyResultBean;
+
+/**
+ * Validator for zip code that is entered when a user searches for HCP survey results.
+ */
+<span class="nc" id="L10">public class SurveySearchValidator extends BeanValidator&lt;SurveyResultBean&gt;{</span>
+
+	/**
+	 * Performs the act of validating the bean in question, which varies depending on the
+	 * type of validator.  If the validation does not succeed, a {@link FormValidationException} is thrown.
+	 * 
+	 * @param p A bean of the type to be validated.
+	 */
+	@Override
+	public void validate(SurveyResultBean bean) throws FormValidationException {
+<span class="nc" id="L20">		ErrorList errorList = new ErrorList();</span>
+<span class="nc" id="L21">		errorList.addIfNotNull(checkFormat(&quot;Zip Code&quot;, bean.getHCPzip(), ValidationFormat.ZIPCODE, false));</span>
+		
+<span class="nc bnc" id="L23" title="All 2 branches missed.">		if (errorList.hasErrors())</span>
+<span class="nc" id="L24">			throw new FormValidationException(errorList);</span>
+<span class="nc" id="L25">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

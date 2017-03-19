@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ICDCodeForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.icdcode</a> &gt; <span class="el_source">ICDCodeForm.java</span></div><h1>ICDCodeForm.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.icdcode;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;icd_code_form&quot;)
+@ViewScoped
+public class ICDCodeForm {
+
+    private ICDCodeController controller;
+    private ICDCode icdCode;
+    private String code;
+    private String description;
+    private boolean isChronic;
+
+    private String search;
+    private boolean displayCodes;
+
+    public ICDCodeForm() {
+<span class="fc" id="L26">        this(null);</span>
+<span class="fc" id="L27">    }</span>
+
+<span class="fc" id="L29">    public ICDCodeForm(ICDCodeController icdCodeController) {</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        controller = (icdCodeController == null) ? new ICDCodeController() : icdCodeController;</span>
+<span class="fc" id="L31">        search = &quot;&quot;;</span>
+<span class="fc" id="L32">        setDisplayCodes(false);</span>
+<span class="fc" id="L33">    }</span>
+
+    public void add() {
+<span class="fc" id="L36">        setIcdCode(new ICDCode(code, description, isChronic));</span>
+<span class="fc" id="L37">        controller.add(icdCode);</span>
+<span class="fc" id="L38">        controller.logTransaction(TransactionType.DIAGNOSIS_CODE_ADD, code);</span>
+<span class="fc" id="L39">        code = &quot;&quot;;</span>
+<span class="fc" id="L40">        description = &quot;&quot;;</span>
+<span class="fc" id="L41">        isChronic = false;</span>
+<span class="fc" id="L42">    }</span>
+
+    public void update() {
+<span class="fc" id="L45">        setIcdCode(new ICDCode(code, description, isChronic));</span>
+<span class="fc" id="L46">        controller.edit(icdCode);</span>
+<span class="fc" id="L47">        controller.logTransaction(TransactionType.DIAGNOSIS_CODE_EDIT, code);</span>
+<span class="fc" id="L48">        code = &quot;&quot;;</span>
+<span class="fc" id="L49">        description = &quot;&quot;;</span>
+<span class="fc" id="L50">        isChronic = false;</span>
+<span class="fc" id="L51">    }</span>
+
+    public void delete() {
+<span class="fc" id="L54">        setIcdCode(new ICDCode(code, description, isChronic));</span>
+<span class="fc" id="L55">        controller.remove(code);</span>
+<span class="fc" id="L56">        code = &quot;&quot;;</span>
+<span class="fc" id="L57">        description = &quot;&quot;;</span>
+<span class="fc" id="L58">        isChronic = false;</span>
+<span class="fc" id="L59">    }</span>
+
+    public void fillInput(String code, String description, boolean isChronic) {
+<span class="fc" id="L62">        this.code = code;</span>
+<span class="fc" id="L63">        this.description = description;</span>
+<span class="fc" id="L64">        this.isChronic = isChronic;</span>
+<span class="fc" id="L65">    }</span>
+
+    public List&lt;ICDCode&gt; getCodesWithFilter() {
+<span class="fc" id="L68">    	List&lt;ICDCode&gt; codes = Collections.emptyList();</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">    	if (!&quot;&quot;.equals(search)) { // Only search if there's a search query</span>
+<span class="fc" id="L70">			codes = controller.getCodesWithFilter(search);</span>
+		}
+<span class="fc" id="L72">    	return codes;</span>
+    }
+
+    public String getSearch() {
+<span class="fc" id="L76">        return search;</span>
+    }
+
+    public void setSearch(String search) {
+<span class="fc" id="L80">        this.search = search;</span>
+<span class="fc" id="L81">    }</span>
+
+    public boolean getDisplayCodes() {
+<span class="fc" id="L84">        return displayCodes;</span>
+    }
+
+    /**
+	 * Sets whether or not search results matching the given search string
+	 * should be rendered. If displayCodes is true, this logs the view action
+	 * for all codes matching the search filter.
+	 * 
+	 * @param displayCodes
+	 */
+    public void setDisplayCodes(boolean displayCodes) {
+<span class="fc" id="L95">        this.displayCodes = displayCodes;</span>
+        
+        // Log if displaying search results
+<span class="fc bfc" id="L98" title="All 2 branches covered."> 		if (this.displayCodes) {</span>
+<span class="fc" id="L99"> 			logViewDiagnosisCodes();</span>
+ 		}
+<span class="fc" id="L101">    }</span>
+    
+    /**
+	 * Logs a view action for each diagnosis code matching the current search query.
+	 * Only logs if search query is non-empty.
+	 */
+    private void logViewDiagnosisCodes() {
+<span class="pc bpc" id="L108" title="1 of 2 branches missed."> 		if (!&quot;&quot;.equals(search)) {</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">	 		for (ICDCode code : controller.getCodesWithFilter(search)) {</span>
+<span class="nc" id="L110">	 			controller.logTransaction(TransactionType.DIAGNOSIS_CODE_VIEW, code.getCode());</span>
+<span class="nc" id="L111">	 		}</span>
+ 		}
+<span class="fc" id="L113">    }</span>
+
+    public String getCode() {
+<span class="fc" id="L116">        return code;</span>
+    }
+
+    public void setCode(String code) {
+<span class="fc" id="L120">        this.code = code;</span>
+<span class="fc" id="L121">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L124">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L128">        this.description = description;</span>
+<span class="fc" id="L129">    }</span>
+
+    public ICDCode getIcdCode() {
+<span class="fc" id="L132">        return icdCode;</span>
+    }
+
+    public void setIcdCode(ICDCode icdCode) {
+<span class="fc" id="L136">        this.icdCode = icdCode;</span>
+<span class="fc" id="L137">    }</span>
+
+    public boolean getIsChronic() {
+<span class="fc" id="L140">        return isChronic;</span>
+    }
+
+    public void setIsChronic(boolean isChronic) {
+<span class="fc" id="L144">        this.isChronic = isChronic;</span>
+<span class="fc" id="L145">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

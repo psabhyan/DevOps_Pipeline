@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NDCCodeForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.ndcode</a> &gt; <span class="el_source">NDCCodeForm.java</span></div><h1>NDCCodeForm.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.ndcode;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+
+@ManagedBean(name = &quot;ndc_code_form&quot;)
+@ViewScoped
+public class NDCCodeForm {
+	
+    private NDCCodeController controller;
+    private NDCCode ndcCode;
+
+    private String code;
+    private String description;
+
+    private String search;
+    private boolean displayCodes;
+
+    public NDCCodeForm() {
+<span class="fc" id="L27">        this(null);</span>
+<span class="fc" id="L28">    }</span>
+
+<span class="fc" id="L30">    public NDCCodeForm(NDCCodeController cptCodeController) {</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        controller = (cptCodeController == null) ? new NDCCodeController() : cptCodeController;</span>
+<span class="fc" id="L32">        search = &quot;&quot;;</span>
+<span class="fc" id="L33">        setDisplayCodes(false);</span>
+<span class="fc" id="L34">    }</span>
+
+    public void add() {
+<span class="fc" id="L37">        setNDCCode(new NDCCode(code, description));</span>
+<span class="fc" id="L38">        controller.add(ndcCode);</span>
+<span class="fc" id="L39">        controller.logTransaction(TransactionType.DRUG_CODE_ADD, code);</span>
+<span class="fc" id="L40">        code = &quot;&quot;;</span>
+<span class="fc" id="L41">        description = &quot;&quot;;</span>
+<span class="fc" id="L42">    }</span>
+
+    public void update() {
+<span class="fc" id="L45">        setNDCCode(new NDCCode(code, description));</span>
+<span class="fc" id="L46">        controller.edit(ndcCode);</span>
+<span class="fc" id="L47">		controller.logTransaction(TransactionType.DRUG_CODE_EDIT, code);</span>
+<span class="fc" id="L48">        code = &quot;&quot;;</span>
+<span class="fc" id="L49">        description = &quot;&quot;;</span>
+<span class="fc" id="L50">    }</span>
+
+    public void delete() {
+<span class="fc" id="L53">        setNDCCode(new NDCCode(code, description));</span>
+<span class="fc" id="L54">        controller.remove(code);</span>
+<span class="fc" id="L55">        code = &quot;&quot;;</span>
+<span class="fc" id="L56">        description = &quot;&quot;;</span>
+<span class="fc" id="L57">    }</span>
+
+    public List&lt;NDCCode&gt; getCodesWithFilter() {
+<span class="fc" id="L60">    	List&lt;NDCCode&gt; codes = Collections.emptyList();</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">    	if(!&quot;&quot;.equals(search)) { // Only search if there's a search query</span>
+<span class="fc" id="L62">    		codes = controller.getCodesWithFilter(search);</span>
+    	}
+<span class="fc" id="L64">    	return codes;</span>
+    }
+
+    public void fillInput(String code, String description) {
+<span class="fc" id="L68">        this.code = code;</span>
+<span class="fc" id="L69">        this.description = description;</span>
+<span class="fc" id="L70">    }</span>
+
+    public String getSearch() {
+<span class="fc" id="L73">        return search;</span>
+    }
+
+    public void setSearch(String search) {
+<span class="fc" id="L77">        this.search = search;</span>
+<span class="fc" id="L78">    }</span>
+
+    public NDCCode getNDCCode() {
+<span class="fc" id="L81">        return ndcCode;</span>
+    }
+
+    public void setNDCCode(NDCCode ndcCode) {
+<span class="fc" id="L85">        this.ndcCode = ndcCode;</span>
+<span class="fc" id="L86">    }</span>
+
+    public boolean getDisplayCodes() {
+<span class="fc" id="L89">        return displayCodes;</span>
+    }
+    
+    /**
+	 * Sets whether or not search results matching the given search string
+	 * should be rendered. If displayCodes is true, this logs the view action
+	 * for all codes matching the search filter.
+	 * 
+	 * @param displayCodes
+	 */
+    public void setDisplayCodes(boolean displayCodes) {
+<span class="fc" id="L100">        this.displayCodes = displayCodes;</span>
+        
+        // Log if displaying search results
+<span class="fc bfc" id="L103" title="All 2 branches covered."> 		if (this.displayCodes) {</span>
+<span class="fc" id="L104"> 			logViewDrugCodes();</span>
+ 		}
+<span class="fc" id="L106">    }</span>
+    
+    /**
+	 * Logs a view action for each drug code matching the current search query.
+	 * Only logs if search query is non-empty.
+	 */
+    private void logViewDrugCodes() {
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">    	if(!&quot;&quot;.equals(search)) {</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">	 		for (NDCCode code : controller.getCodesWithFilter(search)) {</span>
+<span class="nc" id="L115">	 			controller.logTransaction(TransactionType.DRUG_CODE_VIEW, code.getCode());</span>
+<span class="nc" id="L116">	 		}</span>
+    	}
+<span class="fc" id="L118">    }</span>
+
+    public String getCode() {
+<span class="fc" id="L121">        return code;</span>
+    }
+
+    public void setCode(String code) {
+<span class="fc" id="L125">        this.code = code;</span>
+<span class="fc" id="L126">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L129">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L133">        this.description = description;</span>
+<span class="fc" id="L134">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

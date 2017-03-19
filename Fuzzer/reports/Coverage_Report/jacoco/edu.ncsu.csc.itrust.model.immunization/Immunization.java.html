@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Immunization.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.immunization</a> &gt; <span class="el_source">Immunization.java</span></div><h1>Immunization.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.immunization;
+
+import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
+
+/**
+ * Model of HCP's immunization of a patient during office visit.
+ */
+public class Immunization {
+
+	/** Primary identifier of immunization. */
+	private long id;
+	
+	/** ID references the office visit that the immunization belongs. */
+	private long visitId;
+	
+	/** cpt code representing description of the immunization. */
+	private CPTCode cptCode;
+
+<span class="fc" id="L19">	public Immunization(){</span>
+<span class="fc" id="L20">	    cptCode = new CPTCode();</span>
+<span class="fc" id="L21">	}</span>
+	/**
+	 * Constructor for creating an instance of immunization.
+	 * 
+	 * @param id
+	 * 			id of immunization
+	 * @param visitId
+	 * 			office visit id of immunization
+	 * @param cptCode
+	 * 			cpt code for immunization
+	 */
+	public Immunization(long id, long visitId, CPTCode cptCode) {
+<span class="fc" id="L33">		super();</span>
+<span class="fc" id="L34">		this.id = id;</span>
+<span class="fc" id="L35">		this.visitId = visitId;</span>
+<span class="fc" id="L36">		this.cptCode = cptCode;</span>
+<span class="fc" id="L37">	}</span>
+
+	/**
+	 * @return id of the instance
+	 */
+	public long getId() {
+<span class="fc" id="L43">		return id;</span>
+	}
+
+	/**
+	 * Sets the id of the instance.
+	 * @param id
+	 * 			new id of instance
+	 */
+	public void setId(long id) {
+<span class="fc" id="L52">		this.id = id;</span>
+<span class="fc" id="L53">	}</span>
+
+	/**
+	 * @return office visit id of the instance
+	 */
+	public long getVisitId() {
+<span class="fc" id="L59">		return visitId;</span>
+	}
+
+	/**
+	 * Sets the office visit id of the instance.
+	 * @param visitId
+	 * 			new office visit id of the instance
+	 */
+	public void setVisitId(long visitId) {
+<span class="fc" id="L68">		this.visitId = visitId;</span>
+<span class="fc" id="L69">	}</span>
+
+	/**
+	 * @return cpt code of the instance
+	 */
+	public CPTCode getCptCode() {
+<span class="fc" id="L75">		return cptCode;</span>
+	}
+
+	/**
+	 * Sets the cpt code of the instance.
+	 * @param icdCode
+	 * 			new cpt code of the instance
+	 */
+	public void setCptCode(CPTCode cptCode) {
+<span class="fc" id="L84">		this.cptCode = cptCode;</span>
+<span class="fc" id="L85">	}</span>
+	
+	/**
+	 * @return cpt code string of the instance
+	 */
+	public String getCode() {
+<span class="fc" id="L91">		return getCptCode().getCode();</span>
+	}
+	
+	/**
+	 * @return cpt code description of the instance
+	 */
+	public String getName() {
+<span class="fc" id="L98">		return getCptCode().getName();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

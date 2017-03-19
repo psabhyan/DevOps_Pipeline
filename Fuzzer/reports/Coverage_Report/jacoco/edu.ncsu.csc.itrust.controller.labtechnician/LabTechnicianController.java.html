@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LabTechnicianController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.labtechnician</a> &gt; <span class="el_source">LabTechnicianController.java</span></div><h1>LabTechnicianController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.labtechnician;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedure;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureData;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureMySQL;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+
+@ManagedBean(name = &quot;lab_technician_controller&quot;)
+@SessionScoped
+public class LabTechnicianController {
+	private LabProcedureData ldata;
+	private PersonnelDAO pdao;
+
+	/**
+	 * Default constructor.
+	 * 
+	 * @throws DBException
+	 *             when error in database
+	 */
+<span class="nc" id="L34">	public LabTechnicianController() throws DBException {</span>
+<span class="nc" id="L35">		ldata = new LabProcedureMySQL();</span>
+<span class="nc" id="L36">		pdao = DAOFactory.getProductionInstance().getPersonnelDAO();</span>
+<span class="nc" id="L37">	}</span>
+
+	/**
+	 * Constructor for testing purposes.
+	 * 
+	 * @param ds
+	 *            data source
+	 * @param personnelDAO
+	 *            personnel DAO created from testing instance DAO factory
+	 */
+<span class="fc" id="L47">	public LabTechnicianController(DataSource ds, PersonnelDAO personnelDAO) {</span>
+<span class="fc" id="L48">		ldata = new LabProcedureMySQL(ds);</span>
+<span class="fc" id="L49">		pdao = personnelDAO;</span>
+<span class="fc" id="L50">	}</span>
+
+	public List&lt;PersonnelBean&gt; getLabTechnicianList() throws DBException {
+<span class="fc" id="L53">		return pdao.getLabTechs();</span>
+	}
+
+	public List&lt;Pair&lt;String, Long&gt;&gt; getLabTechnicianStatusMID() throws DBException {
+<span class="fc" id="L57">		return getLabTechnicianList().stream().map((lt) -&gt; {</span>
+			try {
+<span class="fc" id="L59">				List&lt;LabProcedure&gt; labProcedures = ldata.getLabProceduresForLabTechnician(lt.getMID());</span>
+<span class="fc" id="L60">				Map&lt;Integer, Long&gt; priorityQueueCounter = labProcedures.stream()</span>
+<span class="fc" id="L61">						.filter((proc)-&gt;{</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">							return proc.getStatus() == LabProcedure.LabProcedureStatus.PENDING</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">									|| proc.getStatus() == LabProcedure.LabProcedureStatus.IN_TRANSIT</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">									|| proc.getStatus() == LabProcedure.LabProcedureStatus.TESTING;</span>
+						})
+<span class="fc" id="L66">						.collect(Collectors.groupingBy(LabProcedure::getPriority, Collectors.counting()));</span>
+<span class="fc" id="L67">				String display = String.format(&quot;%s, %s (Specialty: %s | Queue Status - High: %d, Medium: %d, Low: %d)&quot;,</span>
+<span class="fc" id="L68">						lt.getLastName(), lt.getFirstName(), lt.getSpecialty(),</span>
+<span class="fc" id="L69">						priorityQueueCounter.getOrDefault(LabProcedure.PRIORITY_HIGH, 0L),</span>
+<span class="fc" id="L70">						priorityQueueCounter.getOrDefault(LabProcedure.PRIORITY_MEDIUM, 0L),</span>
+<span class="fc" id="L71">						priorityQueueCounter.getOrDefault(LabProcedure.PRIORITY_LOW, 0L));</span>
+<span class="fc" id="L72">				return new ImmutablePair&lt;&gt;(display, lt.getMID());</span>
+<span class="nc" id="L73">			} catch (DBException e) {</span>
+<span class="nc" id="L74">				return null;</span>
+			}
+<span class="fc" id="L76">		}).filter((pair) -&gt; {</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">			return pair != null;</span>
+<span class="fc" id="L78">		}).collect(Collectors.toList());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Prescription.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.prescription</a> &gt; <span class="el_source">Prescription.java</span></div><h1>Prescription.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.prescription;
+
+import java.time.LocalDate;
+
+import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
+
+public class Prescription {
+
+	private long patientMID;
+	private MedicationBean drugCode;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private long officeVisitId;
+	private long hcpMID;
+	private long id;
+	private String instructions;
+	private long dosage;
+
+<span class="fc" id="L19">	public Prescription() {</span>
+<span class="fc" id="L20">		drugCode = new MedicationBean();</span>
+<span class="fc" id="L21">	}</span>
+
+	public long getPatientMID() {
+<span class="fc" id="L24">		return patientMID;</span>
+	}
+
+	public void setPatientMID(long patientMID) {
+<span class="fc" id="L28">		this.patientMID = patientMID;</span>
+<span class="fc" id="L29">	}</span>
+
+	public long getHcpMID() {
+<span class="fc" id="L32">		return hcpMID;</span>
+	}
+
+	public void setHcpMID(long hcpMID) {
+<span class="fc" id="L36">		this.hcpMID = hcpMID;</span>
+<span class="fc" id="L37">	}</span>
+
+	public MedicationBean getDrugCode() {
+<span class="fc" id="L40">		return drugCode;</span>
+	}
+
+	public void setDrugCode(MedicationBean drugCode) {
+<span class="fc" id="L44">		this.drugCode = drugCode;</span>
+<span class="fc" id="L45">	}</span>
+
+	public LocalDate getStartDate() {
+<span class="fc" id="L48">		return startDate;</span>
+	}
+
+	public void setStartDate(LocalDate startDate) {
+<span class="fc" id="L52">		this.startDate = startDate;</span>
+<span class="fc" id="L53">	}</span>
+
+	public LocalDate getEndDate() {
+<span class="fc" id="L56">		return endDate;</span>
+	}
+
+	public void setEndDate(LocalDate endDate) {
+<span class="fc" id="L60">		this.endDate = endDate;</span>
+<span class="fc" id="L61">	}</span>
+
+	public long getOfficeVisitId() {
+<span class="fc" id="L64">		return officeVisitId;</span>
+	}
+
+	public void setOfficeVisitId(long officeVisitId) {
+<span class="fc" id="L68">		this.officeVisitId = officeVisitId;</span>
+<span class="fc" id="L69">	}</span>
+
+	public long getId() {
+<span class="fc" id="L72">		return id;</span>
+	}
+
+	public void setId(long id) {
+<span class="fc" id="L76">		this.id = id;</span>
+<span class="fc" id="L77">	}</span>
+
+	public String getCode() {
+<span class="fc" id="L80">		return getDrugCode().getNDCode();</span>
+	}
+
+	public String getName() {
+<span class="fc" id="L84">		return getDrugCode().getDescription();</span>
+	}
+
+	public String getInstructions() {
+<span class="fc" id="L88">		return instructions;</span>
+	}
+
+	public void setInstructions(String instructions) {
+<span class="fc" id="L92">		this.instructions = instructions;</span>
+<span class="fc" id="L93">	}</span>
+
+	public long getDosage() {
+<span class="fc" id="L96">		return dosage;</span>
+	}
+
+	public void setDosage(long dosage) {
+<span class="fc" id="L100">		this.dosage = dosage;</span>
+<span class="fc" id="L101">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

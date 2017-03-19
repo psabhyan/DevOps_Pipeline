@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZipCodeLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans.loaders</a> &gt; <span class="el_source">ZipCodeLoader.java</span></div><h1>ZipCodeLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans.loaders;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.ZipCodeBean;
+import edu.ncsu.csc.itrust.model.old.enums.State;
+
+/**
+ * A loader for ZipCodeBeans.
+ * 
+ * Loads in information to/from beans using ResultSets and PreparedStatements. Use the superclass to enforce consistency. 
+ * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
+ */
+<span class="fc" id="L18">public class ZipCodeLoader implements BeanLoader&lt;ZipCodeBean&gt; </span>
+{
+	/**
+	 * Loads a list of ZipCodeBeans
+	 */
+	@Override
+	public List&lt;ZipCodeBean&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L25">		List&lt;ZipCodeBean&gt; list = new ArrayList&lt;ZipCodeBean&gt;();</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">		while (rs.next())</span>
+<span class="nc" id="L27">			list.add(loadSingle(rs));</span>
+<span class="fc" id="L28">		return list;</span>
+	}
+
+	/**
+	 * Loads a single result set into a zip code bean.
+	 */
+	@Override
+	public ZipCodeBean loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L36">		ZipCodeBean bean = new ZipCodeBean();</span>
+<span class="fc" id="L37">		bean.setCity(rs.getString(&quot;city&quot;));</span>
+<span class="fc" id="L38">		bean.setFullState(rs.getString(&quot;full_state&quot;));</span>
+<span class="fc" id="L39">		bean.setLatitude(rs.getString(&quot;latitude&quot;));</span>
+<span class="fc" id="L40">		bean.setLongitude(rs.getString(&quot;longitude&quot;));</span>
+<span class="fc" id="L41">		bean.setState(State.parse(rs.getString(&quot;state&quot;)));</span>
+<span class="fc" id="L42">		bean.setZip(rs.getString(&quot;zip&quot;));</span>
+<span class="fc" id="L43">		return bean;</span>
+	}
+	
+
+	@Override
+	/**
+	 * 
+	 */
+	public PreparedStatement loadParameters(PreparedStatement ps, ZipCodeBean bean) throws SQLException {
+		
+<span class="nc" id="L53">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

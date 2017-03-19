@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductionConnectionDriver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao</a> &gt; <span class="el_source">ProductionConnectionDriver.java</span></div><h1>ProductionConnectionDriver.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+/**
+ * Produces the JDBC connection from Tomcat's JDBC connection pool (defined in context.xml). Produces and
+ * exception when running the unit tests because they're not being run through Tomcat.
+ * 
+ *  
+ * 
+ */
+public class ProductionConnectionDriver implements IConnectionDriver {
+	private InitialContext initialContext;
+
+	// In production situations
+<span class="fc" id="L21">	public ProductionConnectionDriver() {</span>
+<span class="fc" id="L22">	}</span>
+
+	// For our special unit test - do not use unless you know what you are doing
+<span class="fc" id="L25">	public ProductionConnectionDriver(InitialContext context) {</span>
+<span class="fc" id="L26">		initialContext = context;</span>
+<span class="fc" id="L27">	}</span>
+
+	@Override
+	public Connection getConnection() throws SQLException {
+		try {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">			if (initialContext == null)</span>
+<span class="fc" id="L33">				initialContext = new InitialContext();</span>
+<span class="fc" id="L34">			return ((DataSource) (((Context) initialContext.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;))</span>
+<span class="fc" id="L35">					.getConnection();</span>
+<span class="fc" id="L36">		} catch (NamingException e) {</span>
+<span class="fc" id="L37">			throw new SQLException((&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

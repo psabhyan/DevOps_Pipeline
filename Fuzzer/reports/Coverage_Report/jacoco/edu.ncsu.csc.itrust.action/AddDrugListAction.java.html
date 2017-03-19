@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddDrugListAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">AddDrugListAction.java</span></div><h1>AddDrugListAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.NDCodesDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+public class AddDrugListAction {
+	 private DrugStrategy strategy;
+	 private DAOFactory factory;
+	 private EventLoggingAction loggingAction;
+	 private long loggedInMID;
+	 
+<span class="fc" id="L21">	 public AddDrugListAction (DrugStrategy uploadStrategy, DAOFactory factory, EventLoggingAction loggingAction, long loggedInMID) {</span>
+<span class="fc" id="L22">		 this.strategy = uploadStrategy;</span>
+<span class="fc" id="L23">		 this.factory = factory;</span>
+<span class="fc" id="L24">		 this.loggingAction = loggingAction;</span>
+<span class="fc" id="L25">		 this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L26">	 }</span>
+	 
+	/**
+	 * Loads the given file input stream into the drug database.
+	 * @param fileContent
+	 * @throws IOException
+	 */
+	public void loadFile(InputStream fileContent) throws IOException, DBException {
+<span class="fc" id="L34">		strategy.loadFile(fileContent, factory, loggingAction, loggedInMID);</span>
+<span class="fc" id="L35">	}</span>
+	
+	public interface DrugStrategy {
+		void loadFile(InputStream fileContent, DAOFactory factory, EventLoggingAction loggingAction, long loggedInMID) throws IOException, DBException;
+	}
+	
+
+<span class="fc" id="L42">	public static class SkipDuplicateDrugStrategy implements DrugStrategy {</span>
+		@Override
+		public void loadFile(InputStream fileContent, DAOFactory factory, EventLoggingAction loggingAction, long loggedInMID) throws IOException, DBException {
+<span class="fc" id="L45">			NDCodesDAO ndcodesDAO = factory.getNDCodesDAO();</span>
+<span class="fc" id="L46">	        Scanner fileScanner = new Scanner(fileContent, &quot;UTF-8&quot;);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">			while(fileScanner.hasNextLine()) {</span>
+				String ndCodeWithDash;
+<span class="fc" id="L49">				MedicationBean bean = new MedicationBean();</span>
+<span class="fc" id="L50">				StringTokenizer tok = new StringTokenizer(fileScanner.nextLine(), &quot;\t&quot;);</span>
+<span class="fc" id="L51">				ndCodeWithDash = tok.nextToken();</span>
+<span class="fc" id="L52">				String parts[] = ndCodeWithDash.split(&quot;-&quot;);</span>
+				
+				//Skip drug type field
+<span class="fc" id="L55">				tok.nextToken();</span>
+				
+<span class="fc" id="L57">				bean.setNDCode(parts[0].concat(parts[1]));</span>
+<span class="fc" id="L58">				bean.setDescription(tok.nextToken());</span>
+				try {
+<span class="fc" id="L60">					ndcodesDAO.addNDCode(bean);</span>
+<span class="fc" id="L61">					loggingAction.logEvent(TransactionType.DRUG_CODE_ADD, loggedInMID, 0,</span>
+<span class="fc" id="L62">							&quot;&quot; + bean.getNDCode() + bean.getDescription());</span>
+<span class="nc" id="L63">				} catch (ITrustException e) {</span>
+					//We just want to skip duplicate-entries. Let it pass.
+<span class="nc" id="L65">					e.printStackTrace();</span>
+<span class="fc" id="L66">				}</span>
+<span class="fc" id="L67">			}</span>
+<span class="fc" id="L68">			fileScanner.close();</span>
+<span class="fc" id="L69">		}</span>
+	}
+	
+	
+<span class="fc" id="L73">	public static class OverwriteDuplicateDrugStrategy implements DrugStrategy {</span>
+		@Override
+		public void loadFile(InputStream fileContent, DAOFactory factory, EventLoggingAction loggingAction, long loggedInMID) throws IOException, DBException {
+<span class="fc" id="L76">			NDCodesDAO ndcodesDAO = factory.getNDCodesDAO();</span>
+<span class="fc" id="L77">	        Scanner fileScanner = new Scanner(fileContent, &quot;UTF-8&quot;);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">			while(fileScanner.hasNextLine()) {</span>
+				String ndCodeWithDash;
+<span class="fc" id="L80">				MedicationBean bean = new MedicationBean();</span>
+<span class="fc" id="L81">				StringTokenizer tok = new StringTokenizer(fileScanner.nextLine(), &quot;\t&quot;);</span>
+<span class="fc" id="L82">				ndCodeWithDash = tok.nextToken();</span>
+<span class="fc" id="L83">				String parts[] = ndCodeWithDash.split(&quot;-&quot;);</span>
+				
+				//Skip drug type field
+<span class="fc" id="L86">				tok.nextToken();</span>
+				
+<span class="fc" id="L88">				bean.setNDCode(parts[0].concat(parts[1]));</span>
+<span class="fc" id="L89">				bean.setDescription(tok.nextToken());</span>
+				try {
+<span class="fc" id="L91">					ndcodesDAO.addNDCode(bean);</span>
+<span class="fc" id="L92">					loggingAction.logEvent(TransactionType.DRUG_CODE_ADD, loggedInMID, 0,</span>
+<span class="fc" id="L93">							&quot;&quot; + bean.getNDCode() + &quot; - &quot; + bean.getDescription());</span>
+<span class="fc" id="L94">				} catch (ITrustException e) {</span>
+					//Overwrite duplicate entries
+<span class="fc" id="L96">					ndcodesDAO.updateCode(bean);</span>
+<span class="fc" id="L97">					loggingAction.logEvent(TransactionType.DRUG_CODE_EDIT, loggedInMID, 0,</span>
+<span class="fc" id="L98">							&quot;&quot; + bean.getNDCode() + &quot; - &quot; + bean.getDescription());</span>
+<span class="fc" id="L99">				}</span>
+<span class="fc" id="L100">			}</span>
+<span class="fc" id="L101">			fileScanner.close();</span>
+<span class="fc" id="L102">		}</span>
+	}
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

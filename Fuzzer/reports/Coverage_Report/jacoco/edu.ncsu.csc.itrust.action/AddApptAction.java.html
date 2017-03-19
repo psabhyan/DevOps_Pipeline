@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddApptAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">AddApptAction.java</span></div><h1>AddApptAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.old.validate.ApptBeanValidator;
+
+public class AddApptAction extends ApptAction {
+<span class="fc" id="L15">	private ApptBeanValidator validator = new ApptBeanValidator();</span>
+	private long loggedInMID;
+	
+	public AddApptAction(DAOFactory factory, long loggedInMID) {
+<span class="fc" id="L19">		super(factory, loggedInMID);</span>
+<span class="fc" id="L20">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L21">	}</span>
+	
+	public String addAppt(ApptBean appt, boolean ignoreConflicts) throws FormValidationException, SQLException, DBException {
+<span class="fc" id="L24">		validator.validate(appt);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		if(appt.getDate().before(new Timestamp(System.currentTimeMillis()))) {</span>
+<span class="fc" id="L26">			return &quot;The scheduled date of this Appointment (&quot;+appt.getDate()+&quot;) has already passed.&quot;;</span>
+		}
+		
+<span class="fc bfc" id="L29" title="All 2 branches covered.">		if(!ignoreConflicts){</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">			if(getConflictsForAppt(appt.getHcp(), appt).size()&gt;0){</span>
+<span class="fc" id="L31">				return &quot;Warning! This appointment conflicts with other appointments&quot;;</span>
+			}
+		}
+		
+		try {
+<span class="fc" id="L36">			apptDAO.scheduleAppt(appt);</span>
+<span class="fc" id="L37">			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_ADD, loggedInMID, appt.getPatient(), &quot;&quot;);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">			if(ignoreConflicts){</span>
+<span class="fc" id="L39">				TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, appt.getPatient(), &quot;&quot;);</span>
+			}
+<span class="fc" id="L41">			return &quot;Success: &quot; + appt.getApptType() + &quot; for &quot; + appt.getDate() + &quot; added&quot;;</span>
+		}
+<span class="nc" id="L43">		catch (SQLException e) {</span>
+			
+<span class="nc" id="L45">			return e.getMessage();</span>
+		} 
+	}	
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

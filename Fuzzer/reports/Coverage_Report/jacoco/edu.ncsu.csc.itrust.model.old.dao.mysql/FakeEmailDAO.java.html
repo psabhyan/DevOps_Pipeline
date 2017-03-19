@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FakeEmailDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">FakeEmailDAO.java</span></div><h1>FakeEmailDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.Email;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.EmailBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class FakeEmailDAO {
+
+	private DAOFactory factory;
+<span class="fc" id="L28">	private EmailBeanLoader emailBeanLoader = new EmailBeanLoader();</span>
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L37">	public FakeEmailDAO(DAOFactory factory) {</span>
+<span class="fc" id="L38">		this.factory = factory;</span>
+<span class="fc" id="L39">	}</span>
+
+	/**
+	 * Return all emails that have been &quot;sent&quot; (inserted into the database)
+	 * 
+	 * @return A java.util.List of Email objects representing fake e-mails.
+	 * @throws DBException
+	 */
+	public List&lt;Email&gt; getAllEmails() throws DBException {
+<span class="pc" id="L48">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L49">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM fakeemail ORDER BY AddedDate DESC&quot;);</span>
+<span class="fc" id="L50">				ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc" id="L51">			List&lt;Email&gt; loadlist = emailBeanLoader.loadList(rs);</span>
+<span class="fc" id="L52">			return loadlist;</span>
+<span class="pc bpc" id="L53" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L54">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return all emails that a person has sent
+	 * 
+	 * @param email
+	 *            The &quot;From&quot; email address as a string.
+	 * @return A java.util.List of fake emails.
+	 * @throws DBException
+	 */
+	public List&lt;Email&gt; getEmailsByPerson(String email) throws DBException {
+<span class="pc" id="L67">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L68">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L69">						.prepareStatement(&quot;SELECT * FROM fakeemail WHERE ToAddr LIKE ? ORDER BY AddedDate DESC&quot;);) {</span>
+<span class="fc" id="L70">			stmt.setString(1, &quot;%&quot; + email + &quot;%&quot;);</span>
+<span class="fc" id="L71">			ResultSet rs = stmt.executeQuery();</span>
+<span class="fc" id="L72">			List&lt;Email&gt; loadlist = emailBeanLoader.loadList(rs);</span>
+<span class="fc" id="L73">			return loadlist;</span>
+<span class="pc bpc" id="L74" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L75">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * &quot;Send&quot; an email, which just inserts it into the database.
+	 * 
+	 * @param email
+	 *            The Email object to insert.
+	 * @throws DBException
+	 */
+	public void sendEmailRecord(Email email) throws DBException {
+<span class="pc" id="L87">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L88">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;INSERT INTO fakeemail (ToAddr, FromAddr, Subject, Body) &quot; + &quot;VALUES (?,?,?,?)&quot;)) {
+<span class="fc" id="L90">			emailBeanLoader.loadParameters(stmt, email);</span>
+<span class="fc" id="L91">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L92" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L93">			throw new DBException(e);</span>
+<span class="fc" id="L94">		}</span>
+<span class="fc" id="L95">	}</span>
+
+	/**
+	 * Returns a list of emails that have the given string as a substring of the
+	 * body
+	 * 
+	 * @param string
+	 *            The string to search within the body.
+	 * @return A java.util.List of fake emails.
+	 * @throws DBException
+	 */
+	public List&lt;Email&gt; getEmailWithBody(String bodySubstring) throws DBException {
+<span class="pc" id="L107">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L108">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM fakeemail WHERE Instr(Body,?)&gt;0 ORDER BY AddedDate DESC&quot;)) {</span>
+<span class="fc" id="L109">			stmt.setString(1, bodySubstring);</span>
+<span class="fc" id="L110">			ResultSet rs = stmt.executeQuery();</span>
+<span class="fc" id="L111">			List&lt;Email&gt; loadlist = emailBeanLoader.loadList(rs);</span>
+<span class="fc" id="L112">			rs.close();</span>
+<span class="fc" id="L113">			return loadlist;</span>
+<span class="pc bpc" id="L114" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L115">			throw new DBException(e);</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

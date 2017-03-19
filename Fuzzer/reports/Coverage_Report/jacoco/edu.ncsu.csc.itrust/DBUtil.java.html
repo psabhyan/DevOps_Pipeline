@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DBUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust</a> &gt; <span class="el_source">DBUtil.java</span></div><h1>DBUtil.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Provides a few database utilities
+ * 
+ *  
+ * 
+ */
+<span class="nc" id="L17">public class DBUtil {</span>
+	/**
+	 * Used to check if we can actually obtain a connection.
+	 * 
+	 * @return
+	 */
+	public static boolean canObtainProductionInstance() {
+		try {
+<span class="nc" id="L25">			DAOFactory.getProductionInstance().getConnection().close();</span>
+<span class="nc" id="L26">			return true;</span>
+<span class="fc" id="L27">		} catch (SQLException e) {</span>
+<span class="fc" id="L28">			System.out.println(e);</span>
+<span class="fc" id="L29">			return false;</span>
+		}
+	}
+
+	/**
+	 * Close the prepared statement and the connection in a proper way
+	 * 
+	 * @param conn
+	 * @param ps
+	 */
+	public static void closeConnection(Connection conn, PreparedStatement ps) {
+		try {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">			if (ps != null){</span>
+<span class="fc" id="L42">				ps.close();</span>
+			}
+<span class="nc" id="L44">		} catch (SQLException e) {</span>
+<span class="nc" id="L45">			System.err.println(&quot;Error closing connections&quot;);</span>
+			
+		}
+		finally{
+<span class="nc" id="L49">			try{</span>
+<span class="pc bpc" id="L50" title="4 of 6 branches missed.">				if (conn != null){</span>
+<span class="pc" id="L51">					conn.close();</span>
+				} 
+			}
+<span class="pc" id="L54">			catch (SQLException e) {</span>
+<span class="pc" id="L55">					System.err.println(&quot;Error closing connections&quot;);</span>
+					
+<span class="pc" id="L57">				}</span>
+<span class="pc" id="L58">			}</span>
+			
+		
+<span class="fc" id="L61">	}</span>
+
+	/**
+	 * Returns the last ID that was generated for an auto-increment column. Please note that this does NOT
+	 * cause transaction problems! last_insert_id() returns the last generated ID on a per-connection basis.
+	 * See the MySQL documentation at the following location to confirm this:
+	 * {@link http://dev.mysql.com/doc/refman/5.0/en/getting-unique-id.html}
+	 * 
+	 * Don't believe me? see {@link AutoIncrementTest}
+	 * 
+	 * @param conn
+	 * @return last generated id
+	 * @throws SQLException
+	 * @throws DBException 
+	 */
+	public static long getLastInsert(Connection conn) throws SQLException, DBException {
+<span class="fc" id="L77">			ResultSet rs = conn.createStatement().executeQuery(&quot;SELECT LAST_INSERT_ID()&quot;);</span>
+<span class="fc" id="L78">			rs.next();</span>
+<span class="fc" id="L79">			long result = rs.getLong(1);</span>
+<span class="fc" id="L80">			rs.close();</span>
+<span class="fc" id="L81">			return result;</span>
+			
+		
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

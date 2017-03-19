@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FindExpertServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.server</a> &gt; <span class="el_source">FindExpertServlet.java</span></div><h1>FindExpertServlet.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import edu.ncsu.csc.itrust.action.SearchUsersAction;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Servlet implementation class FindExpertServlet
+ */
+public class FindExpertServlet extends HttpServlet {
+	private SearchUsersAction sua;
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public FindExpertServlet() {
+<span class="nc" id="L27">        super();</span>
+        //We never use the mid, so we don't need it.
+<span class="nc" id="L29">        sua = new SearchUsersAction(DAOFactory.getProductionInstance(), -1);</span>
+<span class="nc" id="L30">    }</span>
+    
+    protected FindExpertServlet(DAOFactory factory){
+<span class="fc" id="L33">        super();</span>
+<span class="fc" id="L34">    	sua = new SearchUsersAction(factory, -1);</span>
+<span class="fc" id="L35">    }</span>
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<span class="fc" id="L42">		response.setContentType(&quot;text/plain&quot;);</span>
+<span class="fc" id="L43">		String q = request.getParameter(&quot;query&quot;);</span>
+<span class="fc" id="L44">		PrintWriter pw = response.getWriter();</span>
+<span class="fc" id="L45">		List&lt;PersonnelBean&gt; exp = sua.fuzzySearchForExperts(q);</span>
+<span class="fc" id="L46">		StringBuffer resp = new StringBuffer(&quot;&lt;table class=\&quot;fTable\&quot; width=\&quot;80%\&quot;&gt;&lt;tr&gt;&quot;</span>
+				+ &quot;&lt;th width=\&quot;30%\&quot;&gt;Name&lt;/th&gt;&quot;
+				+ &quot;&lt;th width=\&quot;30%\&quot;&gt;Specialty&lt;/th&gt;&quot;
+				+ &quot;&lt;th width=\&quot;25%\&quot;&gt;Reviews&lt;/th&gt;&lt;/tr&gt;&quot;);
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		for(int i = 0; i &lt; exp.size(); i++){</span>
+<span class="fc" id="L51">			resp.append(&quot;&lt;tr&gt;&lt;td&gt;&quot;);</span>
+<span class="fc" id="L52">			resp.append(exp.get(i).getFirstName() + &quot; &quot; + exp.get(i).getLastName());</span>
+<span class="fc" id="L53">			resp.append(&quot;&lt;/td&gt;&lt;td&gt;&quot;);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">			resp.append(exp.get(i).getSpecialty() == null ? &quot;N/A&quot; : exp.get(i).getSpecialty());</span>
+<span class="fc" id="L55">			resp.append(&quot;&lt;/td&gt;&lt;td&gt;&quot;);</span>
+<span class="fc" id="L56">			resp.append(&quot;&lt;a href='reviewsPage.jsp?expertID=&quot; + exp.get(i).getMID() + &quot;'&gt;View Reviews&lt;/a&gt;&quot;);</span>
+<span class="fc" id="L57">			resp.append(&quot;&lt;/td&gt;&lt;/tr&gt;&quot;);</span>
+		}
+<span class="fc" id="L59">		resp.append(&quot;&lt;/table&gt;&quot;);</span>
+<span class="fc" id="L60">		pw.write(resp.toString());</span>
+<span class="fc" id="L61">		pw.close();</span>
+<span class="fc" id="L62">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

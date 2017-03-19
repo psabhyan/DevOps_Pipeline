@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteMonitoringDataBeanLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans.loaders</a> &gt; <span class="el_source">RemoteMonitoringDataBeanLoader.java</span></div><h1>RemoteMonitoringDataBeanLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans.loaders;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.RemoteMonitoringDataBean;
+
+/**
+ * A loader for RemoteMonitoringDataBeans.
+ * 
+ * Loads in information to/from beans using ResultSets and PreparedStatements. Use the superclass to enforce consistency. 
+ * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
+ */
+<span class="fc" id="L17">public class RemoteMonitoringDataBeanLoader implements BeanLoader&lt;RemoteMonitoringDataBean&gt; {</span>
+
+	@Override
+	public List&lt;RemoteMonitoringDataBean&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L21">		List&lt;RemoteMonitoringDataBean&gt; list = new ArrayList&lt;RemoteMonitoringDataBean&gt;();</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L23">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L25">		return list;</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(PreparedStatement ps, RemoteMonitoringDataBean bean) throws SQLException {
+<span class="nc" id="L30">		throw new IllegalStateException(&quot;unimplemented!&quot;);</span>
+	}
+
+	@Override
+	public RemoteMonitoringDataBean loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L35">		RemoteMonitoringDataBean d = new RemoteMonitoringDataBean();</span>
+<span class="fc" id="L36">		d.setLoggedInMID(rs.getLong(&quot;PatientID&quot;));</span>
+<span class="fc" id="L37">		d.setSystolicBloodPressure(rs.getInt(&quot;systolicBloodPressure&quot;));</span>
+<span class="fc" id="L38">		d.setDiastolicBloodPressure(rs.getInt(&quot;diastolicBloodPressure&quot;));</span>
+<span class="fc" id="L39">		d.setGlucoseLevel(rs.getInt(&quot;glucoseLevel&quot;));</span>
+<span class="fc" id="L40">		d.setHeight(rs.getFloat(&quot;height&quot;));</span>
+<span class="fc" id="L41">		d.setWeight(rs.getFloat(&quot;weight&quot;));</span>
+<span class="fc" id="L42">		d.setPedometerReading(rs.getInt(&quot;pedometerReading&quot;));</span>
+<span class="fc" id="L43">		d.setTime(rs.getTimestamp(&quot;timeLogged&quot;));</span>
+<span class="fc" id="L44">		d.setReporterRole(rs.getString(&quot;ReporterRole&quot;));</span>
+<span class="fc" id="L45">		d.setReporterMID(rs.getLong(&quot;ReporterID&quot;));</span>
+<span class="fc" id="L46">		return d;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

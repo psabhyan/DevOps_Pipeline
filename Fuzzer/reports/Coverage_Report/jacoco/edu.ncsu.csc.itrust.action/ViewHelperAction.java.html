@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewHelperAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewHelperAction.java</span></div><h1>ViewHelperAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+/**
+ * Edits the designated personnel Used by admin/editPersonnel.jsp, staff/editMyDemographics.jsp,
+ * editPersonnel.jsp
+ */
+<span class="nc" id="L7">public class ViewHelperAction {</span>
+	
+	/**
+	 * calculateColor
+	 * @param primaryColor primaryColor
+	 * @param secondaryColor secondaryColor
+	 * @param ratio ratio
+	 * @return string
+	 */
+	public static String calculateColor(String primaryColor, String secondaryColor, double ratio) {
+<span class="fc" id="L17">		double primeRed = Integer.parseInt(primaryColor.substring(0, 2), 16);</span>
+<span class="fc" id="L18">		double primeGreen = Integer.parseInt(primaryColor.substring(2, 4), 16);</span>
+<span class="fc" id="L19">		double primeBlue = Integer.parseInt(primaryColor.substring(4, 6), 16);</span>
+		
+<span class="fc" id="L21">		double secondRed = Integer.parseInt(secondaryColor.substring(0, 2), 16);</span>
+<span class="fc" id="L22">		double secondGreen = Integer.parseInt(secondaryColor.substring(2, 4), 16);</span>
+<span class="fc" id="L23">		double secondBlue = Integer.parseInt(secondaryColor.substring(4, 6), 16);</span>
+		
+<span class="fc" id="L25">		int newRed = (int) (secondRed*ratio + primeRed*(1-ratio));</span>
+<span class="fc" id="L26">		int newGreen = (int) (secondGreen*ratio + primeGreen*(1-ratio));</span>
+<span class="fc" id="L27">		int newBlue = (int) (secondBlue*ratio + primeBlue*(1-ratio));</span>
+		
+<span class="fc" id="L29">		return String.format(&quot;%06X&quot;, (newRed &lt;&lt; 16) + (newGreen &lt;&lt; 8) + newBlue);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

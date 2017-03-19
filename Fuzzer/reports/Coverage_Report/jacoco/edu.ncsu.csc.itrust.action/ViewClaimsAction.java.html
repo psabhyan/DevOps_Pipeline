@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewClaimsAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewClaimsAction.java</span></div><h1>ViewClaimsAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.BillingBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.BillingDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+
+/**
+ * ViewClaimsAction handles interaction between user input and the billing DAO. 
+ */
+public class ViewClaimsAction {
+	
+	/**billingAccess provides access to the Billing table*/
+	private BillingDAO billingAccess;
+	/**patientRetriever provides access to the patients table*/
+	private PatientDAO patientRetriever;
+	
+	/**
+	 * ViewClaimsAction simply initializes the DAOs.
+	 * @param fact The dao factory that will create the DAOs
+	 */
+<span class="fc" id="L27">	public ViewClaimsAction(DAOFactory fact){</span>
+<span class="fc" id="L28">		billingAccess = fact.getBillingDAO();</span>
+<span class="fc" id="L29">		patientRetriever = fact.getPatientDAO();</span>
+<span class="fc" id="L30">	}</span>
+	
+	/**
+	 * getClaims returns a list of all the insurance claims.
+	 * @return A list of all the insurance claims.
+	 */
+	public List&lt;BillingBean&gt; getClaims(){
+<span class="fc" id="L37">		List&lt;BillingBean&gt; result = null;</span>
+		try {
+<span class="fc" id="L39">			result = billingAccess.getInsuranceBills();</span>
+<span class="fc" id="L40">		} catch (DBException e) {</span>
+<span class="fc" id="L41">			e.printStackTrace();</span>
+<span class="fc" id="L42">		}</span>
+<span class="fc" id="L43">		return result;</span>
+	}
+	
+	/**
+	 * getSubmitter returns the person who submitted the claim.
+	 * @param b The bill we are curious about.
+	 * @return The name of the submitter.
+	 */
+	public String getSubmitter(BillingBean b){
+<span class="fc" id="L52">		String result = null;</span>
+		try {
+<span class="fc" id="L54">			result = patientRetriever.getName(b.getPatient());</span>
+<span class="fc" id="L55">		} catch (ITrustException e) {</span>
+<span class="fc" id="L56">			e.printStackTrace();</span>
+<span class="fc" id="L57">		}</span>
+<span class="fc" id="L58">		return result;</span>
+	}
+	
+	/**
+	 * getDate returns the date the bill was submitted.
+	 * @param b The bill we are talking 
+	 * @return
+	 */
+	public String getDate(BillingBean b){
+<span class="fc" id="L67">		return new SimpleDateFormat(&quot;MM/dd/YYYY&quot;).format(b.getSubTime());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

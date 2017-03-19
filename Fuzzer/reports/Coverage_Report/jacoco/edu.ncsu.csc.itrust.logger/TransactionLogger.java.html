@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionLogger.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.logger</a> &gt; <span class="el_source">TransactionLogger.java</span></div><h1>TransactionLogger.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.logger;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.TransactionDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Singleton provider of the transaction logging mechanism.
+ * 
+ * @author mwreesjo
+ *
+ */
+public class TransactionLogger {
+
+	/** The singleton instance of this class. */
+<span class="fc" id="L17">	private static TransactionLogger singleton = null;</span>
+
+	/** The DAO which exposes logging functionality to the singleton */
+	TransactionDAO dao;
+
+<span class="fc" id="L22">	private TransactionLogger() {</span>
+<span class="fc" id="L23">		dao = DAOFactory.getProductionInstance().getTransactionDAO();</span>
+<span class="fc" id="L24">	}</span>
+
+	/**
+	 * @return Singleton instance of this transaction logging mechanism.
+	 */
+	public static synchronized TransactionLogger getInstance() {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		if (singleton == null)</span>
+<span class="fc" id="L31">			singleton = new TransactionLogger();</span>
+<span class="fc" id="L32">		return singleton;</span>
+	}
+
+	/**
+	 * Logs a transaction. @see {@link TransactionDAO#logTransaction}
+	 */
+	public void logTransaction(TransactionType type, Long loggedInMID, Long secondaryMID, String addedInfo) {
+		try {
+<span class="nc" id="L40">			dao.logTransaction(type, loggedInMID, secondaryMID, addedInfo);</span>
+<span class="fc" id="L41">		} catch (DBException e) {</span>
+<span class="fc" id="L42">			e.printStackTrace();</span>
+<span class="nc" id="L43">		}</span>
+<span class="fc" id="L44">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

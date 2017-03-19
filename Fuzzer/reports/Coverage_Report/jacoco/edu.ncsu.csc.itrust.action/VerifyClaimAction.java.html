@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VerifyClaimAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">VerifyClaimAction.java</span></div><h1>VerifyClaimAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.BillingBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.BillingDAO;
+
+/**
+ * VerifyClaimAction handles the interaction between a user and the
+ * DAOs. 
+ */
+public class VerifyClaimAction {
+	/**The DAO to access the billing table*/
+	private BillingDAO billAccess;
+	/**The bill that we are verifying*/
+	private BillingBean bill;
+	
+	/**
+	 * VerifyClaimAction simply initializes the instance variables.
+	 * @param factory The DAO factory
+	 * @param bID The ID of the bill.
+	 */
+<span class="fc" id="L23">	public VerifyClaimAction(DAOFactory factory, long bID){</span>
+<span class="fc" id="L24">		billAccess = factory.getBillingDAO();</span>
+		try {
+<span class="fc" id="L26">			bill = billAccess.getBillId(bID);</span>
+<span class="fc" id="L27">		} catch (DBException e) {</span>
+<span class="fc" id="L28">			e.printStackTrace();</span>
+<span class="fc" id="L29">		}</span>
+<span class="fc" id="L30">	}</span>
+	
+	/**
+	 * getBill returns the bill we are handling.
+	 * @return The billing bean.
+	 */
+	public BillingBean getBill(){
+<span class="fc" id="L37">		return this.bill;</span>
+	}
+	
+	/**
+	 * denyClaim handles the user choosing to deny the claim.
+	 */
+	public void denyClaim(){
+<span class="fc" id="L44">		bill.setStatus(&quot;Denied&quot;);</span>
+		try {
+<span class="fc" id="L46">			this.billAccess.editBill(bill);</span>
+<span class="nc" id="L47">		} catch (DBException e) {</span>
+<span class="nc" id="L48">			e.printStackTrace();</span>
+<span class="fc" id="L49">		}</span>
+<span class="fc" id="L50">	}</span>
+	
+	/**
+	 * approveClaim handles the user choosing to approve the claim.
+	 */
+	public void approveClaim(){
+<span class="fc" id="L56">		bill.setStatus(&quot;Approved&quot;);</span>
+		try {
+<span class="fc" id="L58">			this.billAccess.editBill(bill);</span>
+<span class="nc" id="L59">		} catch (DBException e) {</span>
+<span class="nc" id="L60">			e.printStackTrace();</span>
+<span class="fc" id="L61">		}</span>
+<span class="fc" id="L62">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

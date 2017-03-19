@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageBeanLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans.loaders</a> &gt; <span class="el_source">MessageBeanLoader.java</span></div><h1>MessageBeanLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans.loaders;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.MessageBean;
+
+/**
+ * A loader for MessageBeans.
+ * 
+ * Loads in information to/from beans using ResultSets and PreparedStatements. Use the superclass to enforce consistency. 
+ * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
+ */
+<span class="fc" id="L17">public class MessageBeanLoader implements BeanLoader&lt;MessageBean&gt; {</span>
+
+	@Override
+	public List&lt;MessageBean&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L21">		List&lt;MessageBean&gt; list = new ArrayList&lt;MessageBean&gt;();</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		while (rs.next())</span>
+<span class="fc" id="L23">			list.add(loadSingle(rs));</span>
+<span class="fc" id="L24">		return list;</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(PreparedStatement ps, MessageBean message) throws SQLException {
+<span class="fc" id="L29">		ps.setLong(1, message.getFrom());</span>
+<span class="fc" id="L30">		ps.setLong(2, message.getTo());</span>
+<span class="fc" id="L31">		ps.setString(3, message.getBody());</span>
+<span class="fc" id="L32">		ps.setString(4, message.getSubject());</span>
+<span class="fc" id="L33">		ps.setInt(5, message.getRead());</span>
+<span class="fc" id="L34">		ps.setLong(6, message.getParentMessageId());</span>
+<span class="fc" id="L35">		ps.setLong(7, message.getOriginalMessageId());</span>
+		
+<span class="fc" id="L37">		return ps;</span>
+	}
+
+	@Override
+	public MessageBean loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L42">		MessageBean message = new MessageBean();</span>
+<span class="fc" id="L43">		message.setMessageId(rs.getLong(&quot;message_id&quot;));</span>
+<span class="fc" id="L44">		message.setFrom(rs.getLong(&quot;from_id&quot;));</span>
+<span class="fc" id="L45">		message.setTo(rs.getLong(&quot;to_id&quot;));</span>
+<span class="fc" id="L46">		message.setSubject(rs.getString(&quot;subject&quot;));</span>
+<span class="fc" id="L47">		message.setBody(rs.getString(&quot;message&quot;));</span>
+<span class="fc" id="L48">		message.setSentDate(rs.getTimestamp(&quot;sent_date&quot;));</span>
+<span class="fc" id="L49">		message.setRead(rs.getInt(&quot;been_read&quot;));</span>
+<span class="fc" id="L50">		message.setParentMessageId(rs.getLong(&quot;parent_msg_id&quot;));</span>
+<span class="fc" id="L51">		message.setOriginalMessageId(rs.getLong(&quot;original_msg_id&quot;));</span>
+<span class="fc" id="L52">		return message;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmergencyRecordMySQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.emergencyRecord</a> &gt; <span class="el_source">EmergencyRecordMySQL.java</span></div><h1>EmergencyRecordMySQL.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.emergencyRecord;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
+import edu.ncsu.csc.itrust.model.diagnosis.DiagnosisData;
+import edu.ncsu.csc.itrust.model.diagnosis.DiagnosisMySQL;
+import edu.ncsu.csc.itrust.model.immunization.ImmunizationMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
+
+public class EmergencyRecordMySQL {
+    private DataSource ds;
+    private PrescriptionMySQL prescriptionLoader;
+    private DiagnosisData diagnosisData;
+    private AllergyDAO allergyData;
+    private ImmunizationMySQL immunizationData;
+    
+    /**
+     * Standard constructor for use in deployment
+     * @throws DBException
+     */
+<span class="fc" id="L34">    public EmergencyRecordMySQL() throws DBException {</span>
+        try {
+<span class="fc" id="L36">            this.ds = getDataSource();</span>
+<span class="fc" id="L37">        } catch (NamingException e) {</span>
+<span class="fc" id="L38">            throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+<span class="fc" id="L39">        }</span>
+<span class="fc" id="L40">        diagnosisData = new DiagnosisMySQL(ds);</span>
+<span class="fc" id="L41">        allergyData = DAOFactory.getProductionInstance().getAllergyDAO();</span>
+<span class="fc" id="L42">        prescriptionLoader = new PrescriptionMySQL(ds);</span>
+<span class="fc" id="L43">        immunizationData = new ImmunizationMySQL(ds);</span>
+<span class="fc" id="L44">    }</span>
+    
+    protected DataSource getDataSource() throws NamingException {
+<span class="fc" id="L47">    	Context ctx = new InitialContext();</span>
+<span class="nc" id="L48">    	return ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+    }
+    
+    /**
+     * Constructor for testing purposes
+     * @param ds The DataSource to use
+     * @param allergyData the AllergyDAO to use
+     */
+<span class="fc" id="L56">    public EmergencyRecordMySQL(DataSource ds, AllergyDAO allergyData) {</span>
+<span class="fc" id="L57">        this.ds = ds;</span>
+<span class="fc" id="L58">        diagnosisData = new DiagnosisMySQL(ds);</span>
+<span class="fc" id="L59">        this.allergyData = allergyData;</span>
+<span class="fc" id="L60">        prescriptionLoader = new PrescriptionMySQL(ds);</span>
+<span class="fc" id="L61">        immunizationData = new ImmunizationMySQL(ds);</span>
+<span class="fc" id="L62">    }</span>
+    
+    /**
+     * Gets the EmergencyRecord for the patient with the given MID
+     * @param patientMID The MID of the patient whose record you want
+     * @return The retrieved EmergencyRecord
+     * @throws DBException
+     */
+    public EmergencyRecord getEmergencyRecordForPatient(long patientMID) throws DBException{
+<span class="fc" id="L71">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L72">                PreparedStatement pstring = createPreparedStatement(conn, patientMID);</span>
+<span class="fc" id="L73">                ResultSet results = pstring.executeQuery()){</span>
+<span class="fc" id="L74">            return loadRecord(results);</span>
+<span class="pc bpc" id="L75" title="12 of 24 branches missed.">        } catch (SQLException e){</span>
+<span class="fc" id="L76">            throw new DBException(e);</span>
+        }
+    }
+    
+    /**
+     * A utility method that uses a ResultSet to load an EmergencyRecord.
+     * @param rs The ResultSet to load from
+     * @param patientMID The MID of the patient that we're loading results for
+     * @return The loaded EmergencyRecord
+     * @throws SQLException
+     * @throws DBException 
+     */
+    public EmergencyRecord loadRecord(ResultSet rs) throws SQLException, DBException {
+<span class="fc" id="L89">        EmergencyRecord newRecord = new EmergencyRecord();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (!rs.next()){</span>
+<span class="fc" id="L91">            return null;</span>
+        }
+<span class="fc" id="L93">        long mid = rs.getLong(&quot;MID&quot;);</span>
+<span class="fc" id="L94">        newRecord.setName(rs.getString(&quot;firstName&quot;) + &quot; &quot; + rs.getString(&quot;lastName&quot;));</span>
+<span class="fc" id="L95">        LocalDate now = LocalDate.now();</span>
+<span class="fc" id="L96">        LocalDate birthdate = rs.getDate(&quot;DateOfBirth&quot;).toLocalDate();</span>
+<span class="fc" id="L97">        int age = (int) ChronoUnit.YEARS.between(birthdate, now);</span>
+<span class="fc" id="L98">        newRecord.setAge(age);</span>
+<span class="fc" id="L99">        newRecord.setGender(rs.getString(&quot;Gender&quot;));</span>
+<span class="fc" id="L100">        newRecord.setContactName(rs.getString(&quot;eName&quot;));</span>
+<span class="fc" id="L101">        newRecord.setContactPhone(rs.getString(&quot;ePhone&quot;));</span>
+<span class="fc" id="L102">        newRecord.setBloodType(rs.getString(&quot;BloodType&quot;));</span>
+
+<span class="fc" id="L104">        LocalDate endDate = LocalDate.now().minusDays(91);</span>
+<span class="fc" id="L105">        newRecord.setPrescriptions(</span>
+<span class="fc" id="L106">                prescriptionLoader.getPrescriptionsForPatientEndingAfter(</span>
+                        mid, endDate));
+
+<span class="fc" id="L109">        newRecord.setAllergies(allergyData.getAllergies(mid));</span>
+<span class="fc" id="L110">        newRecord.setDiagnoses(diagnosisData.getAllEmergencyDiagnosis(mid));</span>
+<span class="fc" id="L111">        newRecord.setImmunizations(immunizationData.getAllImmunizations(mid));</span>
+<span class="fc" id="L112">        return newRecord;</span>
+    }
+    
+    /**
+     * A convenience method for preparing the needed SQL query
+     * 
+     * @param conn The Connection the PreparedStatement should be made on
+     * @param mid The mid of the patient whose record we want
+     * @return The PreparedStatement for the query
+     * @throws SQLException
+     */
+    private PreparedStatement createPreparedStatement(Connection conn, long mid) throws SQLException{
+<span class="fc" id="L124">        PreparedStatement statement = conn.prepareStatement(&quot;SELECT * FROM patients WHERE MID=?&quot;);</span>
+<span class="fc" id="L125">        statement.setLong(1, mid);</span>
+<span class="fc" id="L126">        return statement;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

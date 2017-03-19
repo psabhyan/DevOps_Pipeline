@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicalProcedureController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.medicalProcedure</a> &gt; <span class="el_source">MedicalProcedureController.java</span></div><h1>MedicalProcedureController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.medicalProcedure;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedure;
+import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedureMySQL;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;medical_procedure_controller&quot;)
+@SessionScoped
+public class MedicalProcedureController extends iTrustController {
+    private static final String INVALID_MEDICAL_PROCEDURE = &quot;Invalid Medical Procedure&quot;;
+    MedicalProcedureMySQL sql;
+    
+    public MedicalProcedureController() throws DBException{
+<span class="nc" id="L25">        super();</span>
+<span class="nc" id="L26">        sql = new MedicalProcedureMySQL();</span>
+<span class="nc" id="L27">    }</span>
+    
+    public MedicalProcedureController(DataSource ds){
+<span class="fc" id="L30">        super();</span>
+<span class="fc" id="L31">        sql = new MedicalProcedureMySQL(ds);</span>
+<span class="fc" id="L32">    }</span>
+    
+    public void add(MedicalProcedure mp){
+        try {
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">            if (sql.add(mp)) {</span>
+<span class="fc" id="L37">                printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Medical Procedure successfully created&quot;,</span>
+                        &quot;Medical Procedure successfully created&quot;, null);
+<span class="fc" id="L39">                Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">                logTransaction(TransactionType.PROCEDURE_ADD, ovid == null ? null : ovid.toString());</span>
+<span class="fc" id="L41">            } else {</span>
+<span class="nc" id="L42">                throw new Exception();</span>
+            }
+<span class="nc" id="L44">        } catch (SQLException e) {</span>
+<span class="nc" id="L45">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, e.getMessage(), null);</span>
+<span class="fc" id="L46">        } catch (Exception e) {</span>
+<span class="fc" id="L47">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, INVALID_MEDICAL_PROCEDURE, null);</span>
+<span class="pc" id="L48">        }</span>
+<span class="fc" id="L49">    }</span>
+    
+    public void edit(MedicalProcedure mp){
+        try {
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">            if (sql.update(mp)) {</span>
+<span class="fc" id="L54">                printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Medical Procedure successfully updated&quot;,</span>
+                        &quot;Medical Procedure successfully updated&quot;, null);
+<span class="fc" id="L56">                Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                logTransaction(TransactionType.PROCEDURE_EDIT, ovid == null ? null : ovid.toString());</span>
+<span class="fc" id="L58">            } else {</span>
+<span class="nc" id="L59">                throw new Exception();</span>
+            }
+<span class="nc" id="L61">        } catch (SQLException e) {</span>
+<span class="nc" id="L62">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, e.getMessage(), null);</span>
+<span class="fc" id="L63">        } catch (Exception e) {</span>
+<span class="fc" id="L64">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, INVALID_MEDICAL_PROCEDURE, null);</span>
+<span class="pc" id="L65">        }</span>
+<span class="fc" id="L66">    }</span>
+    
+    public void remove(long mpID) {
+        try {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if (sql.remove(mpID)) {</span>
+<span class="fc" id="L71">                printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Medical Procedure successfully deleted&quot;,</span>
+                        &quot;Medical Procedure successfully deleted&quot;, null);
+<span class="fc" id="L73">                Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                logTransaction(TransactionType.PROCEDURE_REMOVE, ovid == null ? null : ovid.toString());</span>
+<span class="fc" id="L75">            } else {</span>
+<span class="nc" id="L76">                throw new Exception();</span>
+            }
+<span class="fc" id="L78">        } catch (SQLException e) {</span>
+<span class="fc" id="L79">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, e.getMessage(), null);</span>
+<span class="fc" id="L80">        } catch (Exception e) {</span>
+<span class="fc" id="L81">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, INVALID_MEDICAL_PROCEDURE, null);</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">    }</span>
+    
+    public List&lt;MedicalProcedure&gt; getMedicalProceduresByOfficeVisit(String officeVisitID){
+<span class="fc" id="L86">        List&lt;MedicalProcedure&gt; medicalProcedures = Collections.emptyList();</span>
+<span class="fc" id="L87">        long ovID = -1;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if ( officeVisitID != null ) {</span>
+<span class="fc" id="L89">            ovID = Long.parseLong(officeVisitID);</span>
+            try {
+<span class="fc" id="L91">                medicalProcedures = sql.getMedicalProceduresForOfficeVisit(ovID);</span>
+<span class="fc" id="L92">            } catch (Exception e) {</span>
+<span class="fc" id="L93">                printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Medical Procedures&quot;, &quot;Unable to Retrieve Medical Procedures&quot;, null);</span>
+<span class="fc" id="L94">            }</span>
+        }
+<span class="fc" id="L96">        return medicalProcedures;</span>
+    }
+    
+    public String getCodeName(String codeString){
+<span class="fc" id="L100">        String codeName = &quot;&quot;;</span>
+        
+        try {
+<span class="fc" id="L103">            codeName = sql.getCodeName(codeString);</span>
+<span class="fc" id="L104">        }  catch (SQLException e) {</span>
+<span class="fc" id="L105">            printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Invalid Medical Procedure&quot;, e.getMessage(), null);</span>
+<span class="fc" id="L106">        }</span>
+        
+<span class="fc" id="L108">        return codeName;</span>
+    }
+
+    public void setSQL(MedicalProcedureMySQL newsql) {
+<span class="fc" id="L112">        sql = newsql;</span>
+<span class="fc" id="L113">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

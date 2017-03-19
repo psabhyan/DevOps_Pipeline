@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BloodType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.enums</a> &gt; <span class="el_source">BloodType.java</span></div><h1>BloodType.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.enums;
+
+/**
+ * All possible blood types
+ * 
+ *  
+ * 
+ */
+<span class="pc" id="L9">public enum BloodType {</span>
+<span class="fc" id="L10">	APos(&quot;A+&quot;), ANeg(&quot;A-&quot;), BPos(&quot;B+&quot;), BNeg(&quot;B-&quot;), ABPos(&quot;AB+&quot;), ABNeg(&quot;AB-&quot;), OPos(&quot;O+&quot;), ONeg(&quot;O-&quot;), NS(</span>
+			&quot;N/S&quot;);
+	private String name;
+
+<span class="fc" id="L14">	private BloodType(String name) {</span>
+<span class="fc" id="L15">		this.name = name;</span>
+<span class="fc" id="L16">	}</span>
+
+	public String getName() {
+<span class="fc" id="L19">		return name;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc" id="L24">		return getName();</span>
+	}
+
+	public static BloodType parse(String bloodTypeStr) {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		for (BloodType type : BloodType.values()) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">			if (type.getName().equals(bloodTypeStr)) {</span>
+<span class="fc" id="L30">				return type;</span>
+			}
+		}
+<span class="fc" id="L33">		return NS;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

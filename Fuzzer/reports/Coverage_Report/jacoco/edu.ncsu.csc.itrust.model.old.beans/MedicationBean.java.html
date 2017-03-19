@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicationBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">MedicationBean.java</span></div><h1>MedicationBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+/**
+ * A medication is the same thing as an ND code - it's like &quot;Aspirin&quot;. A medication is not associated with an
+ * office visit; that's a &quot;prescription&quot;. See {@link PrescriptionBean}
+ * 
+ * 
+ */
+public class MedicationBean {
+<span class="fc" id="L10">	private String NDCode = &quot;&quot;;</span>
+<span class="fc" id="L11">	private String description = &quot;&quot;;</span>
+
+<span class="fc" id="L13">	public MedicationBean() {</span>
+<span class="fc" id="L14">	}</span>
+
+<span class="fc" id="L16">	public MedicationBean(String code) {</span>
+<span class="fc" id="L17">		NDCode = code;</span>
+<span class="fc" id="L18">	}</span>
+
+<span class="fc" id="L20">	public MedicationBean(String code, String description) {</span>
+<span class="fc" id="L21">		NDCode = code;</span>
+<span class="fc" id="L22">		this.description = description;</span>
+<span class="fc" id="L23">	}</span>
+
+	/**
+	 * Gets the ND Code for this procedure
+	 * 
+	 * @return The ND Code for this procedure
+	 */
+	public String getNDCode() {
+<span class="fc" id="L31">		return NDCode;</span>
+	}
+
+	public void setNDCode(String code) {
+<span class="fc" id="L35">		NDCode = code;</span>
+<span class="fc" id="L36">	}</span>
+
+	/**
+	 * Gets the ND Description for this procedure
+	 * 
+	 * @return The ND Description for this procedure
+	 */
+	public String getDescription() {
+<span class="fc" id="L44">		return description;</span>
+	}
+
+	public void setDescription(String description) {
+<span class="fc" id="L48">		this.description = description;</span>
+<span class="fc" id="L49">	}</span>
+
+	public String getNDCodeFormatted() {
+<span class="fc" id="L52">		String code = getNDCode();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">		if (code.length() &gt; 5)</span>
+<span class="fc" id="L54">			return code.substring(0, 5) + &quot;-&quot; + code.substring(5);</span>
+		else
+<span class="fc" id="L56">			return code;</span>
+	}
+	
+	@Override
+	public int hashCode() {
+<span class="nc" id="L61">		return 42; // any arbitrary constant will do</span>
+	}
+
+	@Override
+	public boolean equals(Object other) {
+<span class="pc bpc" id="L66" title="2 of 4 branches missed.">		return (other != null) &amp;&amp; this.getClass().equals(other.getClass())</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">				&amp;&amp; this.equals((MedicationBean) other);</span>
+	}
+
+
+	private boolean equals(MedicationBean other) {
+<span class="pc bpc" id="L72" title="2 of 4 branches missed.">		return description.equals(other.description) &amp;&amp; NDCode.equals(other.NDCode);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

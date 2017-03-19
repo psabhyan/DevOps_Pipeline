@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReviewsDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">ReviewsDAO.java</span></div><h1>ReviewsDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.ReviewsBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.ReviewsBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Provide a way to handle database queries for the reviews table, store HCP
+ * review information.
+ */
+public class ReviewsDAO {
+	private DAOFactory factory;
+	private ReviewsBeanLoader loader;
+
+	/**
+	 * The basic constructor for the ReviewsDAO object.
+	 * 
+	 * @param factory
+	 *            DAOFactory entry param
+	 */
+<span class="fc" id="L28">	public ReviewsDAO(DAOFactory factory) {</span>
+<span class="fc" id="L29">		this.factory = factory;</span>
+<span class="fc" id="L30">		loader = new ReviewsBeanLoader();</span>
+<span class="fc" id="L31">	}</span>
+
+	/**
+	 * Based on the information from the ReviewsBean, add a review for an HCP
+	 * (given by HCP in the bean) into the reviews table.
+	 * 
+	 * @param bean
+	 *            containing the rating
+	 * @return true if the review was added successfully and false otherwise
+	 * @throws DBException
+	 */
+	public boolean addReview(ReviewsBean bean) throws DBException {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if (bean == null) {</span>
+<span class="fc" id="L44">			return false;</span>
+		}
+<span class="fc" id="L46">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L47">				PreparedStatement ps = loader.loadParameters(</span>
+<span class="fc" id="L48">						conn.prepareStatement(</span>
+								&quot;INSERT INTO reviews(mid, pid, reviewdate, descriptivereview, rating, title)  VALUES (?,?,(CURRENT_TIMESTAMP),?,?,?)&quot;),
+						bean)) {
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">			boolean added = ps.executeUpdate() &gt; 0;</span>
+<span class="fc" id="L52">			return added;</span>
+<span class="pc bpc" id="L53" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L54">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get a list of all reviews for a given HCP with id matching input param
+	 * pid.
+	 * 
+	 * @param pid
+	 *            ID of the HCP whose reviews to return
+	 * @return list of all reviews, null if there aren't any
+	 * @throws DBException
+	 */
+	public List&lt;ReviewsBean&gt; getAllReviews(long pid) throws DBException {
+<span class="pc" id="L68">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L69">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM reviews WHERE pid=?&quot;)) {</span>
+<span class="fc" id="L70">			ps.setLong(1, pid);</span>
+<span class="fc" id="L71">			ResultSet rs = ps.executeQuery();</span>
+
+<span class="fc" id="L73">			return loader.loadList(rs);</span>
+<span class="pc bpc" id="L74" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L75">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get a list of all reviews for a given HCP with id matching input param
+	 * pid.
+	 * 
+	 * @param pid
+	 *            ID of the HCP whose reviews to return
+	 * @return list of all reviews, null if there aren't any
+	 * @throws DBException
+	 */
+	public List&lt;ReviewsBean&gt; getAllReviews() throws DBException {
+<span class="pc" id="L89">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L90">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM reviews&quot;);</span>
+<span class="fc" id="L91">				ResultSet rs = ps.executeQuery()) {</span>
+<span class="fc" id="L92">			List&lt;ReviewsBean&gt; records = loader.loadList(rs);</span>
+<span class="fc" id="L93">			return records;</span>
+<span class="pc bpc" id="L94" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L95">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get a list of all reviews for a given HCP with id matching input param
+	 * pid.
+	 * 
+	 * @param pid
+	 *            ID of the HCP whose reviews to return
+	 * @return list of all reviews, null if there aren't any
+	 * @throws DBException
+	 */
+	public List&lt;ReviewsBean&gt; getReviews(long pid) throws DBException {
+<span class="pc" id="L109">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L110">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM reviews WHERE pid=?&quot;)) {</span>
+
+<span class="fc" id="L112">			ps.setLong(1, pid);</span>
+<span class="fc" id="L113">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L114">			List&lt;ReviewsBean&gt; records = loader.loadList(rs);</span>
+<span class="fc" id="L115">			return records;</span>
+<span class="pc bpc" id="L116" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L117">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get average rating for the given HCP overall, all categories and all
+	 * reviews.
+	 * 
+	 * @param pid
+	 *            HCP with ratings wanted
+	 * @return the average rating of all the overall ratings
+	 * @throws DBException
+	 */
+	public double getTotalAverageRating(long pid) throws DBException {
+<span class="pc" id="L131">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L132">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT AVG(rating) FROM reviews WHERE pid=?&quot;)) {</span>
+<span class="fc" id="L133">			ps.setLong(1, pid);</span>
+<span class="fc" id="L134">			ResultSet rs = ps.executeQuery();</span>
+
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			double averageRating = rs.next() ? rs.getDouble(&quot;AVG(rating)&quot;) : 0;</span>
+<span class="fc" id="L137">			rs.close();</span>
+<span class="fc" id="L138">			return averageRating;</span>
+<span class="pc bpc" id="L139" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L140">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * This checks the appointment table in the DB to see if the there is an
+	 * appointment entry for the input mid(patient_id) and pid(doctor_id)
+	 * params. It returns true if the patient has seen the given doctor, false
+	 * otherwise.
+	 * 
+	 * @param mid
+	 *            Patient ID
+	 * @param pid
+	 *            HCP ID
+	 * @return true if the patient has had an appointment with the HCP, false
+	 *         otherwise
+	 * @throws DBException
+	 */
+	public boolean isRateable(long mid, long pid) throws DBException {
+<span class="pc" id="L159">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L160">				PreparedStatement ps = conn</span>
+<span class="fc" id="L161">						.prepareStatement(&quot;SELECT * FROM appointment WHERE patient_id =? AND doctor_id=?&quot;)) {</span>
+<span class="fc" id="L162">			ps.setLong(1, mid);</span>
+<span class="fc" id="L163">			ps.setLong(2, pid);</span>
+<span class="fc" id="L164">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L165">			boolean isRatable = rs.next();</span>
+<span class="fc" id="L166">			return isRatable;</span>
+<span class="pc bpc" id="L167" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L168">			throw new DBException(e);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BillingBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">BillingBean.java</span></div><h1>BillingBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+/**
+ * Stores information about a bill
+ */
+<span class="fc" id="L9">public class BillingBean {</span>
+	public static final String SUBMITTED = &quot;Submitted&quot;;
+	public static final String UNSUBMITTED = &quot;Unsubmitted&quot;;
+	public static final String PENDING = &quot;Pending&quot;;
+	public static final String APPROVED = &quot;Approved&quot;;
+	public static final String DENIED = &quot;Denied&quot;;
+	public static final int MAX_SUBMISSIONS = 2;
+	
+	private int billID;
+	private int apptID;
+	private long patient;
+	private long hcp;
+	private int amt;
+	private String status;
+<span class="fc" id="L23">	private String ccHolderName = null;</span>
+<span class="fc" id="L24">	private String billingAddress = null;</span>
+<span class="fc" id="L25">	private String ccType = null;</span>
+<span class="fc" id="L26">	private String ccNumber = null;</span>
+<span class="fc" id="L27">	private String cvv = null;</span>
+<span class="fc" id="L28">	private String insHolderName = null;</span>
+<span class="fc" id="L29">	private String insID = null;</span>
+<span class="fc" id="L30">	private String insProviderName = null;</span>
+<span class="fc" id="L31">	private String insAddress1 = null;</span>
+<span class="fc" id="L32">	private String insAddress2 = null;</span>
+<span class="fc" id="L33">	private String insCity = null;</span>
+<span class="fc" id="L34">	private String insState = null;</span>
+<span class="fc" id="L35">	private String insZip = null;</span>
+<span class="fc" id="L36">	private String insPhone = null;</span>
+<span class="fc" id="L37">	private int submissions = 0;</span>
+<span class="fc" id="L38">	private boolean isInsurance = false;</span>
+<span class="fc" id="L39">	private Date billTime = null;</span>
+<span class="fc" id="L40">	private Timestamp subTime = null;</span>
+	
+	/**
+	 * @return the isInsurance
+	 */
+	public boolean isInsurance() {
+<span class="fc" id="L46">		return isInsurance;</span>
+	}
+	/**
+	 * @param isInsurance the isInsurance to set
+	 */
+	public void setInsurance(boolean isInsurance) {
+<span class="fc" id="L52">		this.isInsurance = isInsurance;</span>
+<span class="fc" id="L53">	}</span>
+
+	/**
+	 * @return the ccHolderName
+	 */
+	public String getCcHolderName() {
+<span class="fc" id="L59">		return ccHolderName;</span>
+	}
+	/**
+	 * @param ccHolderName the ccHolderName to set
+	 */
+	public void setCcHolderName(String ccHolderName) {
+<span class="fc" id="L65">		this.ccHolderName = ccHolderName;</span>
+<span class="fc" id="L66">	}</span>
+	/**
+	 * @return the billingAddress
+	 */
+	public String getBillingAddress() {
+<span class="fc" id="L71">		return billingAddress;</span>
+	}
+	/**
+	 * @param billingAddress the billingAddress to set
+	 */
+	public void setBillingAddress(String billingAddress) {
+<span class="fc" id="L77">		this.billingAddress = billingAddress;</span>
+<span class="fc" id="L78">	}</span>
+	/**
+	 * @return the ccType
+	 */
+	public String getCcType() {
+<span class="fc" id="L83">		return ccType;</span>
+	}
+	/**
+	 * @param ccType the ccType to set
+	 */
+	public void setCcType(String ccType) {
+<span class="fc" id="L89">		this.ccType = ccType;</span>
+<span class="fc" id="L90">	}</span>
+	/**
+	 * @return the ccNumber
+	 */
+	public String getCcNumber() {
+<span class="fc" id="L95">		return ccNumber;</span>
+	}
+	/**
+	 * @param ccNumber the ccNumber to set
+	 */
+	public void setCcNumber(String ccNumber) {
+<span class="fc" id="L101">		this.ccNumber = ccNumber;</span>
+<span class="fc" id="L102">	}</span>
+	/**
+	 * @return the cvv
+	 */
+	public String getCvv() {
+<span class="fc" id="L107">		return cvv;</span>
+	}
+	/**
+	 * @param cvv the cvv to set
+	 */
+	public void setCvv(String cvv) {
+<span class="fc" id="L113">		this.cvv = cvv;</span>
+<span class="fc" id="L114">	}</span>
+	/**
+	 * @return the insHolderName
+	 */
+	public String getInsHolderName() {
+<span class="fc" id="L119">		return insHolderName;</span>
+	}
+	/**
+	 * @param insHolderName the insHolderName to set
+	 */
+	public void setInsHolderName(String insHolderName) {
+<span class="fc" id="L125">		this.insHolderName = insHolderName;</span>
+<span class="fc" id="L126">	}</span>
+	/**
+	 * @return the insID
+	 */
+	public String getInsID() {
+<span class="fc" id="L131">		return insID;</span>
+	}
+	/**
+	 * @param insID the insID to set
+	 */
+	public void setInsID(String insID) {
+<span class="fc" id="L137">		this.insID = insID;</span>
+<span class="fc" id="L138">	}</span>
+	/**
+	 * @return the insProviderName
+	 */
+	public String getInsProviderName() {
+<span class="fc" id="L143">		return insProviderName;</span>
+	}
+	/**
+	 * @param insProviderName the insProviderName to set
+	 */
+	public void setInsProviderName(String insProviderName) {
+<span class="fc" id="L149">		this.insProviderName = insProviderName;</span>
+<span class="fc" id="L150">	}</span>
+	/**
+	 * @return the insAddress1
+	 */
+	public String getInsAddress1() {
+<span class="fc" id="L155">		return insAddress1;</span>
+	}
+	/**
+	 * @param insAddress1 the insAddress1 to set
+	 */
+	public void setInsAddress1(String insAddress1) {
+<span class="fc" id="L161">		this.insAddress1 = insAddress1;</span>
+<span class="fc" id="L162">	}</span>
+	/**
+	 * @return the insAddress2
+	 */
+	public String getInsAddress2() {
+<span class="fc" id="L167">		return insAddress2;</span>
+	}
+	/**
+	 * @param insAddress2 the insAddress2 to set
+	 */
+	public void setInsAddress2(String insAddress2) {
+<span class="fc" id="L173">		this.insAddress2 = insAddress2;</span>
+<span class="fc" id="L174">	}</span>
+	/**
+	 * @return the insCity
+	 */
+	public String getInsCity() {
+<span class="fc" id="L179">		return insCity;</span>
+	}
+	/**
+	 * @param insCity the insCity to set
+	 */
+	public void setInsCity(String insCity) {
+<span class="fc" id="L185">		this.insCity = insCity;</span>
+<span class="fc" id="L186">	}</span>
+	/**
+	 * @return the insState
+	 */
+	public String getInsState() {
+<span class="fc" id="L191">		return insState;</span>
+	}
+	/**
+	 * @param insState the insState to set
+	 */
+	public void setInsState(String insState) {
+<span class="fc" id="L197">		this.insState = insState;</span>
+<span class="fc" id="L198">	}</span>
+	/**
+	 * @return the insZip
+	 */
+	public String getInsZip() {
+<span class="fc" id="L203">		return insZip;</span>
+	}
+	/**
+	 * @param insZip the insZip to set
+	 */
+	public void setInsZip(String insZip) {
+<span class="fc" id="L209">		this.insZip = insZip;</span>
+<span class="fc" id="L210">	}</span>
+	/**
+	 * @return the insPhone
+	 */
+	public String getInsPhone() {
+<span class="fc" id="L215">		return insPhone;</span>
+	}
+	/**
+	 * @param insPhone the insPhone to set
+	 */
+	public void setInsPhone(String insPhone) {
+<span class="fc" id="L221">		this.insPhone = insPhone;</span>
+<span class="fc" id="L222">	}</span>
+
+	/**
+	 * @return the billID
+	 */
+	public int getBillID() {
+<span class="fc" id="L228">		return billID;</span>
+	}
+	/**
+	 * @param billID the billID to set
+	 */
+	public void setBillID(int billID) {
+<span class="fc" id="L234">		this.billID = billID;</span>
+<span class="fc" id="L235">	}</span>
+	
+	/**
+	 * @return the apptID
+	 */
+	public int getApptID() {
+<span class="fc" id="L241">		return apptID;</span>
+	}
+	/**
+	 * @param apptID the apptID to set
+	 */
+	public void setApptID(int apptID) {
+<span class="fc" id="L247">		this.apptID = apptID;</span>
+<span class="fc" id="L248">	}</span>
+	/**
+	 * @return the patient
+	 */
+	public long getPatient() {
+<span class="fc" id="L253">		return patient;</span>
+	}
+	/**
+	 * @param patient the patient to set
+	 */
+	public void setPatient(long patient) {
+<span class="fc" id="L259">		this.patient = patient;</span>
+<span class="fc" id="L260">	}</span>
+	/**
+	 * @return the hcp
+	 */
+	public long getHcp() {
+<span class="fc" id="L265">		return hcp;</span>
+	}
+	/**
+	 * @param hcp the hcp to set
+	 */
+	public void setHcp(long hcp) {
+<span class="fc" id="L271">		this.hcp = hcp;</span>
+<span class="fc" id="L272">	}</span>
+	/**
+	 * @return the amt
+	 */
+	public int getAmt() {
+<span class="fc" id="L277">		return amt;</span>
+	}
+	/**
+	 * @param amt the amt to set
+	 */
+	public void setAmt(int amt) {
+<span class="fc" id="L283">		this.amt = amt;</span>
+<span class="fc" id="L284">	}</span>
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+<span class="fc" id="L289">		return status;</span>
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+<span class="fc" id="L295">		this.status = status;</span>
+<span class="fc" id="L296">	}</span>
+	/**
+	 * @return the submissions
+	 */
+	public int getSubmissions() {
+<span class="fc" id="L301">		return submissions;</span>
+	}
+	/**
+	 * @param submissions the submissions to set
+	 */
+	public void setSubmissions(int submissions) {
+<span class="fc" id="L307">		this.submissions = submissions;</span>
+<span class="fc" id="L308">	}</span>
+	/**
+	 * @return the billTime
+	 */
+	public Date getBillTime() {
+<span class="fc" id="L313">		return new Date(billTime.getTime());</span>
+	}
+	/**
+	 * @param billTime the billTime to set
+	 */
+	public void setBillTime(Date billTime) {
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		if(billTime != null)</span>
+<span class="fc" id="L320">			this.billTime = new Date(billTime.getTime());</span>
+		else
+<span class="nc" id="L322">			this.billTime = null;</span>
+<span class="fc" id="L323">	}</span>
+	/**
+	 * @return the subTime
+	 */
+	public Timestamp getSubTime() {
+<span class="fc bfc" id="L328" title="All 2 branches covered.">		return subTime != null ? new Timestamp(subTime.getTime()) : null;</span>
+	}
+	/**
+	 * @return the subDate
+	 */
+	public Date getSubDate(){
+<span class="nc bnc" id="L334" title="All 2 branches missed.">		return subTime != null ? new Date(subTime.getTime()) : null;</span>
+	}
+	/**
+	 * @param subTime the subTime to set
+	 */
+	public void setSubTime(Timestamp subTime) {
+<span class="fc bfc" id="L340" title="All 2 branches covered.">		if(subTime != null)</span>
+<span class="fc" id="L341">			this.subTime = new Timestamp(subTime.getTime());</span>
+		else
+<span class="fc" id="L343">			this.subTime = null;</span>
+<span class="fc" id="L344">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

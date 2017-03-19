@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CPTCodeForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.cptcode</a> &gt; <span class="el_source">CPTCodeForm.java</span></div><h1>CPTCodeForm.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.cptcode;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;cpt_code_form&quot;)
+@ViewScoped
+public class CPTCodeForm {
+
+	private CPTCodeController controller;
+    private CPTCode cptCode;
+    private String code;
+    private String description;
+
+    private String search;
+    private boolean displayCodes;
+
+    public CPTCodeForm() {
+<span class="fc" id="L24">        this(null);</span>
+<span class="fc" id="L25">    }</span>
+
+<span class="fc" id="L27">    public CPTCodeForm(CPTCodeController cptCodeController) {</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        controller = (cptCodeController == null) ? new CPTCodeController() : cptCodeController;</span>
+<span class="fc" id="L29">        search = &quot;&quot;;</span>
+<span class="fc" id="L30">        setDisplayCodes(false);</span>
+<span class="fc" id="L31">    }</span>
+
+    public void add() {
+<span class="fc" id="L34">        setCptCode(new CPTCode(code, description));</span>
+<span class="fc" id="L35">        controller.add(cptCode);</span>
+<span class="fc" id="L36">		controller.logTransaction(TransactionType.MEDICAL_PROCEDURE_CODE_ADD, code);</span>
+<span class="fc" id="L37">		controller.logTransaction(TransactionType.IMMUNIZATION_CODE_ADD, code);</span>
+<span class="fc" id="L38">        code = &quot;&quot;;</span>
+<span class="fc" id="L39">        description = &quot;&quot;;</span>
+<span class="fc" id="L40">    }</span>
+
+    public void update() {
+<span class="fc" id="L43">        setCptCode(new CPTCode(code, description));</span>
+<span class="fc" id="L44">        controller.edit(cptCode);</span>
+<span class="fc" id="L45">		controller.logTransaction(TransactionType.MEDICAL_PROCEDURE_CODE_EDIT, code);</span>
+<span class="fc" id="L46">		controller.logTransaction(TransactionType.IMMUNIZATION_CODE_EDIT, code);</span>
+<span class="fc" id="L47">        code = &quot;&quot;;</span>
+<span class="fc" id="L48">        description = &quot;&quot;;</span>
+<span class="fc" id="L49">    }</span>
+
+    public void delete() {
+<span class="fc" id="L52">        setCptCode(new CPTCode(code, description));</span>
+<span class="fc" id="L53">        controller.remove(code);</span>
+<span class="fc" id="L54">        code = &quot;&quot;;</span>
+<span class="fc" id="L55">        description = &quot;&quot;;</span>
+<span class="fc" id="L56">    }</span>
+
+    public List&lt;CPTCode&gt; getCodesWithFilter() {
+<span class="fc" id="L59">        return controller.getCodesWithFilter(search);</span>
+    }
+
+    public void fillInput(String code, String description) {
+<span class="fc" id="L63">        this.code = code;</span>
+<span class="fc" id="L64">        this.description = description;</span>
+<span class="fc" id="L65">    }</span>
+
+    public String getSearch() {
+<span class="fc" id="L68">        return search;</span>
+    }
+
+    public void setSearch(String search) {
+<span class="fc" id="L72">        this.search = search;</span>
+<span class="fc" id="L73">    }</span>
+
+    public CPTCode getCptCode() {
+<span class="fc" id="L76">        return cptCode;</span>
+    }
+
+    public void setCptCode(CPTCode cptCode) {
+<span class="fc" id="L80">        this.cptCode = cptCode;</span>
+<span class="fc" id="L81">    }</span>
+
+    public boolean getDisplayCodes() {
+<span class="fc" id="L84">        return displayCodes;</span>
+    }
+
+    /**
+	 * Sets whether or not search results matching the given search string
+	 * should be rendered. If displayCodes is true, this logs the view action
+	 * for all codes matching the search filter.
+	 * 
+	 * @param displayCodes
+	 */
+    public void setDisplayCodes(boolean displayCodes) {
+<span class="fc" id="L95">        this.displayCodes = displayCodes;</span>
+        
+        // Log if displaying search results
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if(this.displayCodes) {</span>
+<span class="fc" id="L99">        	logViewCPTCodes();</span>
+        }
+<span class="fc" id="L101">    }</span>
+    
+    /**
+	 * Logs a view action for each CPT code matching the current search query.
+	 * Only logs if search query is non-empty.
+	 */
+    private void logViewCPTCodes() {
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">    	if(!&quot;&quot;.equals(search)) {</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">    		for(CPTCode code : controller.getCodesWithFilter(search)) {</span>
+<span class="nc" id="L110">    			controller.logTransaction(TransactionType.MEDICAL_PROCEDURE_CODE_VIEW, code.getCode());</span>
+<span class="nc" id="L111">    			controller.logTransaction(TransactionType.IMMUNIZATION_CODE_VIEW, code.getCode());</span>
+<span class="nc" id="L112">    		}</span>
+    	}
+<span class="fc" id="L114">    }</span>
+
+    public String getCode() {
+<span class="fc" id="L117">        return code;</span>
+    }
+
+    public void setCode(String code) {
+<span class="fc" id="L121">        this.code = code;</span>
+<span class="fc" id="L122">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L125">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L129">        this.description = description;</span>
+<span class="fc" id="L130">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

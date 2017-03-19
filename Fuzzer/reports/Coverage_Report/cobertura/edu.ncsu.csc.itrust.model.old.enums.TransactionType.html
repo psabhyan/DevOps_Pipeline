@@ -1,0 +1,927 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Coverage Report</title>
+<link title="Style" type="text/css" rel="stylesheet" href="css/main.css"/>
+<script type="text/javascript" src="js/popup.js"></script>
+</head>
+<body>
+<h5>Coverage Report - edu.ncsu.csc.itrust.model.old.enums.TransactionType</h5>
+<div class="separator">&nbsp;</div>
+<table class="report">
+<thead><tr>  <td class="heading">Classes in this File</td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Line Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Branch Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Complexity</a></td></tr></thead>
+  <tr><td><a href="edu.ncsu.csc.itrust.model.old.enums.TransactionType.html">TransactionType</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">259/259</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">4/4</span></div></div></td></tr></table></td><td class="value"><span class="hidden">1.6666666666666667;</span>1.667</td></tr>
+
+</table>
+<div class="separator">&nbsp;</div>
+<table cellspacing="0" cellpadding="0" class="src">
+<tr>  <td class="numLine">&nbsp;1</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">package</span> edu.ncsu.csc.itrust.model.old.enums;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;2</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;3</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;4</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;5</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * All of the possible transaction types, in no particular order, used in producing the operational profile.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;6</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * TransactionCode -- identification code</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;7</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * Description -- basic description of the event</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;8</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * ActionPhrase -- a patient-centered English sentence describing the action (used in activity feeds)</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;9</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * PatientViewable -- boolean for if the action will be displayed in the patient activity feed</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;10</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;11</td>  <td class="nbHitsCovered">&nbsp;340</td>  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> enum TransactionType {</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;12</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LOGIN_FAILURE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;13</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LOGIN_FAILURE(1, <span class="string">"Failed login"</span>, <span class="string">"tried to authenticate unsuccessfully"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;14</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HOME_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;15</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HOME_VIEW(10, <span class="string">"User views homepage"</span>, <span class="string">"has viewed the iTrust user homepage"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;16</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UNCAUGHT_EXCEPTION*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;17</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UNCAUGHT_EXCEPTION(20, <span class="string">"Exception occured and was not caught"</span>, <span class="string">"caused an unhandled exception"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;18</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**GLOBAL_PREFERENCES_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;19</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        GLOBAL_PREFERENCES_VIEW(30, <span class="string">"View global preferences"</span>, <span class="string">"viewed global preferences for iTrust"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;20</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**GLOBAL_PREFERENCES_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;21</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        GLOBAL_PREFERENCES_EDIT(31, <span class="string">"Edit global preferences"</span>, <span class="string">"edited global preferences for iTrust"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;22</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**USER_PREFERENCES_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;23</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        USER_PREFERENCES_VIEW(32, <span class="string">"View preferences"</span>, <span class="string">"viewed user preferences"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;24</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**USER_PREFERENCES_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;25</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        USER_PREFERENCES_EDIT(33, <span class="string">"Edit peferences"</span>, <span class="string">"edited user preferences"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;27</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_CREATE(100, <span class="string">"Create a patient"</span>, <span class="string">"created your account"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_DISABLE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;29</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_DISABLE(101, <span class="string">"Disable a patient"</span>, <span class="string">"disabled your account"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_DEACTIVATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;31</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_DEACTIVATE(102, <span class="string">"Deactivate a patient"</span>, <span class="string">"deactivated your account"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_ACTIVATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;33</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_ACTIVATE(103, <span class="string">"Activate a patient"</span>, <span class="string">"activated your account"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;35</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_CREATE(200, <span class="string">"Create a LHCP"</span>, <span class="string">"created an LHCP"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;37</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_EDIT(201, <span class="string">"Edit LHCP information"</span>, <span class="string">"edited LHCP information"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_DISABLE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;39</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_DISABLE(202, <span class="string">"Disable a LHCP"</span>, <span class="string">"disbaled an LHCP"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**ER_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;41</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ER_CREATE(210, <span class="string">"Create an ER"</span>, <span class="string">"created an ER"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**ER_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;43</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ER_EDIT(211, <span class="string">"Edit ER information"</span>, <span class="string">"edited ER information"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;44</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**ER_DISABLE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;45</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ER_DISABLE(212, <span class="string">"Disable an ER"</span>, <span class="string">"disabled an ER"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PHA_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;47</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PHA_CREATE(220, <span class="string">"Create a PHA"</span>, <span class="string">"created a PHA"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PHA_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;49</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PHA_EDIT(221, <span class="string">"Edit PHA information"</span>, <span class="string">"edited PHA information"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PHA_DISABLE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;51</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PHA_DISABLE(222, <span class="string">"Disable a PHA"</span>, <span class="string">"disabled a PHA"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_ASSIGN_HOSPITAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;53</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_ASSIGN_HOSPITAL(230, <span class="string">"Assign LHCP to a hospital"</span>, <span class="string">"assigned an LHCP to a hospital"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_REMOVE_HOSPITAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;55</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_REMOVE_HOSPITAL(231, <span class="string">"Unassign LHCP from a hospital"</span>, <span class="string">"unassigned an LHCP from a hospital"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;56</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LT_ASSIGN_HOSPITAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;57</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LT_ASSIGN_HOSPITAL(232, <span class="string">"Assign LT to a hospital"</span>, <span class="string">"assigned an LT to a hospital"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LT_REMOVE_HOSPITAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LT_REMOVE_HOSPITAL(233, <span class="string">"Unassign LT from a hospital"</span>, <span class="string">"unassigned an LT from a hospital"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_CREATE(240, <span class="string">"Create a UAP"</span>, <span class="string">"created a UAP"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_EDIT(241, <span class="string">"Edit a UAP"</span>, <span class="string">"edited a UAP"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;64</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_DISABLE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_DISABLE(242, <span class="string">"Disable a UAP"</span>, <span class="string">"disabled a UAP"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;66</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PERSONNEL_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;67</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PERSONNEL_VIEW(250, <span class="string">"View a personnel's information"</span>, <span class="string">"viewed a personnel member's information"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;68</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LT_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;69</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LT_CREATE(260, <span class="string">"Create a LT"</span>, <span class="string">"created an LT"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LT_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;71</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LT_EDIT(261, <span class="string">"Edit LT information"</span>, <span class="string">"edited LT information"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;72</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LT_DISABLE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;73</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LT_DISABLE(262, <span class="string">"Disable a LT"</span>, <span class="string">"disabled an LT"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;74</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LOGIN_SUCCESS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;75</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LOGIN_SUCCESS(300, <span class="string">"Login Succeded"</span>, <span class="string">"successfully authenticated"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;76</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LOGOUT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LOGOUT(301, <span class="string">"Logged out"</span>, <span class="string">"logged out of iTrust"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LOGOUT_INACTIVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LOGOUT_INACTIVE(302, <span class="string">"Logged out from inactivity"</span>, <span class="string">"logged out due to inactivity"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PASSWORD_RESET*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PASSWORD_RESET(310, <span class="string">"Password changed"</span>, <span class="string">"changed your iTrust password"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DEMOGRAPHICS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DEMOGRAPHICS_VIEW(400, <span class="string">"View patient demographics"</span>, <span class="string">"viewed your demographics"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DEMOGRAPHICS_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;85</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">//Set to false as per the requirements page for UC43 as it is not supposed to be shown for LHCP or DLHCP</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;86</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DEMOGRAPHICS_EDIT(410, <span class="string">"Edit patient demographics"</span>, <span class="string">"edited your demographics"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_PHOTO_UPLOAD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;88</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_PHOTO_UPLOAD(411, <span class="string">"Upload patient photo"</span>, <span class="string">"uploaded a photo of you to your record"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_PHOTO_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;90</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_PHOTO_REMOVE(412, <span class="string">"Remove patient photo"</span>, <span class="string">"removed your photograph from your record"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DEPEND_DEMOGRAPHICS_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;92</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DEPEND_DEMOGRAPHICS_EDIT(421, <span class="string">"Edit dependent demographics"</span>, <span class="string">"edited dependent's demographics"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_VIEW(600, <span class="string">"View LHCP information"</span>, <span class="string">"viewed LHCP information"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_DECLARE_DLHCP*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;96</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_DECLARE_DLHCP(601, <span class="string">"Declare LHCP as DLHCP"</span>, <span class="string">"declared a LHCP"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;97</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LHCP_UNDECLARE_DLHCP*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LHCP_UNDECLARE_DLHCP(602, <span class="string">"Undeclare LHCP as DLHCP"</span>, <span class="string">"undeclared an LHCP"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**ACCESS_LOG_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ACCESS_LOG_VIEW(800, <span class="string">"View access log"</span>, <span class="string">"viewed your access log"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;101</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**MEDICAL_RECORD_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        MEDICAL_RECORD_VIEW(900, <span class="string">"View medical records"</span>, <span class="string">"viewed your medical records"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_HEALTH_INFORMATION_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_HEALTH_INFORMATION_VIEW(1000, <span class="string">"View personal health information"</span>, <span class="string">"viewed your basic health information"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;105</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_HEALTH_INFORMATION_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_HEALTH_INFORMATION_EDIT(1001, <span class="string">"Enter/edit personal health information"</span>, <span class="string">"edited your basic health information"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**BASIC_HEALTH_CHARTS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        BASIC_HEALTH_CHARTS_VIEW(1002, <span class="string">"View Basic Health Charts"</span>, <span class="string">"viewed you basic health information charts"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**OFFICE_VISIT_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        OFFICE_VISIT_CREATE(1100, <span class="string">"Create Office Visits"</span>, <span class="string">"created an office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**OFFICE_VISIT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;112</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        OFFICE_VISIT_VIEW(1101, <span class="string">"View Office Visits"</span>, <span class="string">"viewed your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**OFFICE_VISIT_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;114</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        OFFICE_VISIT_EDIT(1102, <span class="string">"Edit Office Visits"</span>, <span class="string">"edited your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PRESCRIPTION_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;116</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PRESCRIPTION_ADD(1110, <span class="string">"Add Prescription"</span>, <span class="string">"Added a prescription to your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PRESCRIPTION_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;118</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PRESCRIPTION_EDIT(1111, <span class="string">"Edit Prescription"</span>, <span class="string">"Edited a prescription in your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PRESCRIPTION_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PRESCRIPTION_REMOVE(1112, <span class="string">"Remove Prescription"</span>, <span class="string">"Removed a prescription from your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LAB_PROCEDURE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;122</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LAB_PROCEDURE_ADD(1120, <span class="string">"Add Lab Procedure"</span>, <span class="string">"Added a lab procedure to your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;123</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LAB_PROCEDURE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;124</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LAB_PROCEDURE_EDIT(1121, <span class="string">"Edit Lab Procedure"</span>, <span class="string">"Edited a lab procedure in your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**LAB_PROCEDURE_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LAB_PROCEDURE_REMOVE(1122, <span class="string">"Remove Lab Procedure"</span>, <span class="string">"Removed a lab procedure from your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DIAGNOSIS_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;128</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DIAGNOSIS_ADD(1130, <span class="string">"Add Diagnosis"</span>, <span class="string">"Added a diagnosis to your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DIAGNOSIS_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;130</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DIAGNOSIS_REMOVE(1132, <span class="string">"Remove Diagnosis"</span>, <span class="string">"Removed a diagnosis from your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DIAGNOSIS_URL_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DIAGNOSIS_URL_EDIT(1133, <span class="string">"Edit Diagnosis URL"</span>, <span class="string">"Diagnosis URL was edited"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;133</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PROCEDURE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;134</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PROCEDURE_ADD(1140, <span class="string">"Add Procedure"</span>, <span class="string">"Added a procedure to your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;135</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PROCEDURE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;136</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PROCEDURE_EDIT(1141, <span class="string">"Edit Procedure"</span>, <span class="string">"Edited a procedure in your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;137</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PROCEDURE_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;138</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PROCEDURE_REMOVE(1142, <span class="string">"Remove Procedure"</span>, <span class="string">"Removed a procedure from your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**IMMUNIZATION_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;140</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        IMMUNIZATION_ADD(1150, <span class="string">"Add Immunization"</span>, <span class="string">"Added an immunization to your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;141</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**IMMUNIZATION_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        IMMUNIZATION_REMOVE(1152, <span class="string">"Remove Immunization"</span>, <span class="string">"Removed an immunization from your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**OFFICE_VISIT_BILLED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;144</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        OFFICE_VISIT_BILLED(1160, <span class="string">"Office Visit Billed"</span>, <span class="string">"Billed an office visit"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;145</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**OPERATIONAL_PROFILE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    OPERATIONAL_PROFILE_VIEW(1200, <span class="string">"View Operational Profile"</span>, <span class="string">"viewed the operational profile"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;147</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**HEALTH_REPRESENTATIVE_DECLARE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    HEALTH_REPRESENTATIVE_DECLARE(1300, <span class="string">"Declare personal health representative"</span>, <span class="string">"declared a personal health representative"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;149</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**HEALTH_REPRESENTATIVE_UNDECLARE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    HEALTH_REPRESENTATIVE_UNDECLARE(1301, <span class="string">"Undeclare personal health representative"</span>, <span class="string">"undeclared a personal health representative"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;151</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**MEDICAL_PROCEDURE_CODE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    MEDICAL_PROCEDURE_CODE_ADD(1500, <span class="string">"Add Medical procedure code"</span>, <span class="string">"added a medical procedure code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;153</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**MEDICAL_PROCEDURE_CODE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    MEDICAL_PROCEDURE_CODE_VIEW(1501, <span class="string">"View Medical procedure code"</span>, <span class="string">"viewed a medical procedure code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**MEDICAL_PROCEDURE_CODE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    MEDICAL_PROCEDURE_CODE_EDIT(1502, <span class="string">"Edit Medical procedure code"</span>, <span class="string">"edited a medical procedure code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;157</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**IMMUNIZATION_CODE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;158</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    IMMUNIZATION_CODE_ADD(1510, <span class="string">"Add Immunization code"</span>, <span class="string">"added an immunization code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;159</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**IMMUNIZATION_CODE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;160</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    IMMUNIZATION_CODE_VIEW(1511, <span class="string">"View Immunization code"</span>, <span class="string">"viewed an immunization code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**IMMUNIZATION_CODE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;162</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    IMMUNIZATION_CODE_EDIT(1512, <span class="string">"Edit Immunization code"</span>, <span class="string">"edited an immunization code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;163</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DIAGNOSIS_CODE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;164</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DIAGNOSIS_CODE_ADD(1520, <span class="string">"Add Diagnosis code"</span>, <span class="string">"added a diagnosis code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DIAGNOSIS_CODE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DIAGNOSIS_CODE_VIEW(1521, <span class="string">"View Diagnosis code"</span>, <span class="string">"viewed a diagnosis code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DIAGNOSIS_CODE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DIAGNOSIS_CODE_EDIT(1522, <span class="string">"Edit Diagnosis code"</span>, <span class="string">"edited a diagnosis code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_CODE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;170</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_CODE_ADD(1530, <span class="string">"Add Drug code"</span>, <span class="string">"added a drug code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;171</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_CODE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;172</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_CODE_VIEW(1531, <span class="string">"View Drug code"</span>, <span class="string">"viewed a drug code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_CODE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_CODE_EDIT(1532, <span class="string">"Edit Drug code"</span>, <span class="string">"edited a drug code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_CODE_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;176</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_CODE_REMOVE(1533, <span class="string">"Remove Drug code"</span>, <span class="string">"removed a drug code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;177</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LOINC_CODE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;178</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LOINC_CODE_ADD(1540, <span class="string">"Add Physical Services code"</span>, <span class="string">"added a physical service code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LOINC_CODE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;180</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LOINC_CODE_VIEW(1541, <span class="string">"View Physical Services code"</span>, <span class="string">"viewed a physical service code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LOINC_CODE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;182</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LOINC_CODE_EDIT(1542, <span class="string">"Edit Physical Services code"</span>, <span class="string">"edited a physical service code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LOINC_CODE_FILE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LOINC_CODE_FILE_ADD(1549, <span class="string">"Upload Physical Services file"</span>, <span class="string">"uploaded a LOINC file"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**RISK_FACTOR_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;186</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    RISK_FACTOR_VIEW(1600, <span class="string">"View risk factors"</span>, <span class="string">"viewed your risk factors"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_REMINDERS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;188</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_REMINDERS_VIEW(1700, <span class="string">"Proactively determine necessary patient care"</span>, <span class="string">"proactively determined your necessary patient care"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**HOSPITAL_LISTING_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;190</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    HOSPITAL_LISTING_ADD(1800, <span class="string">"Add a hospital listing"</span>, <span class="string">"added a hospital listing"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**HOSPITAL_LISTING_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    HOSPITAL_LISTING_VIEW(1801, <span class="string">"View a hospital listing"</span>, <span class="string">"viewed a hospital listing"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;193</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**HOSPITAL_LISTING_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;194</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    HOSPITAL_LISTING_EDIT(1802, <span class="string">"Edit a hospital listing"</span>, <span class="string">"edited a hospital listing"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;195</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PRESCRIPTION_REPORT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PRESCRIPTION_REPORT_VIEW(1900, <span class="string">"View prescription report"</span>, <span class="string">"viewed your prescription report"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;197</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DEATH_TRENDS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DEATH_TRENDS_VIEW(2000, <span class="string">"View Cause of Death Trends"</span>, <span class="string">"viewed cause of death trends"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**EMERGENCY_REPORT_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;200</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    EMERGENCY_REPORT_CREATE(2100, <span class="string">"Create emergency report"</span>, <span class="string">"created an emergency report for you"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;201</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**EMERGENCY_REPORT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;202</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    EMERGENCY_REPORT_VIEW(2101, <span class="string">"View emergency report"</span>, <span class="string">"viewed your emergency report"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_TYPE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;204</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_TYPE_ADD(2200, <span class="string">"Add appointment type listing"</span>, <span class="string">"added an appointment type"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;205</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_TYPE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;206</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_TYPE_VIEW(2201, <span class="string">"View appointment type listing"</span>, <span class="string">"viewed an appointment type"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;207</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_TYPE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;208</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_TYPE_EDIT(2202, <span class="string">"Edit appointment type listing"</span>, <span class="string">"edited an appointment type"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;209</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;210</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_ADD(2210, <span class="string">"Schedule Appointments"</span>, <span class="string">"scheduled an appointment with you"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;212</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_VIEW(2211, <span class="string">"View Scheduled Appointment"</span>, <span class="string">"viewed your scheduled appointment"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;214</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_EDIT(2212, <span class="string">"Edit Scheduled Appointment"</span>, <span class="string">"edited your scheduled appointment"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;215</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;216</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_REMOVE(2213, <span class="string">"Delete Scheduled Appointment"</span>, <span class="string">"canceled your scheduled appointment"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_ALL_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;218</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_ALL_VIEW(2220, <span class="string">"View All Scheduled Appointments"</span>, <span class="string">"viewed all scheduled appointments"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;219</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_CONFLICT_OVERRIDE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;220</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_CONFLICT_OVERRIDE(2230, <span class="string">"Schedule conflict override"</span>, <span class="string">"overrided a schedule conflict"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;221</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_REQUEST_SUBMITTED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;222</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_REQUEST_SUBMITTED(2240, <span class="string">"Appointment request submitted"</span>, <span class="string">"requested an appointment"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;223</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_REQUEST_APPROVED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;224</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_REQUEST_APPROVED(2250, <span class="string">"Appointment request approved"</span>, <span class="string">"approved an appointment request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;225</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_REQUEST_REJECTED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;226</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_REQUEST_REJECTED(2251, <span class="string">"Appointment request rejected"</span>, <span class="string">"rejected an appointment request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**APPOINTMENT_REQUEST_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;228</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    APPOINTMENT_REQUEST_VIEW(2260, <span class="string">"View All Appointment Requests"</span>, <span class="string">"viewed all appointment requests"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;229</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**COMPREHENSIVE_REPORT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;230</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    COMPREHENSIVE_REPORT_VIEW(2300, <span class="string">"Comprehensive Report"</span>, <span class="string">"viewed your comprehensive report"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**COMPREHENSIVE_REPORT_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;232</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    COMPREHENSIVE_REPORT_ADD(2301, <span class="string">"Request Comprehensive Report"</span>, <span class="string">"requested a comprehensive report for you"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;233</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**SATISFACTION_SURVEY_TAKE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;234</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    SATISFACTION_SURVEY_TAKE(2400, <span class="string">"Take Satisfaction Survey"</span>, <span class="string">"completed a satisfaction survey"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**SATISFACTION_SURVEY_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;236</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    SATISFACTION_SURVEY_VIEW(2500, <span class="string">"View physician satisfaction results"</span>, <span class="string">"viewed physician satisfaction survey results"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;237</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_UNASSIGNED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;238</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_UNASSIGNED(2600, <span class="string">"Unassigned lab results log value"</span>, <span class="string">""</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;240</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_CREATE(2601, <span class="string">"Create laboratory procedure"</span>, <span class="string">"created your lab procedure"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;242</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_VIEW(2602, <span class="string">"View laboratory procedure results"</span>, <span class="string">"viewed your lab procedure results"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;243</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_REASSIGN*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;244</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_REASSIGN(2603, <span class="string">"Reassign laboratory test to a new lab technician"</span>, <span class="string">"assigned your laboratory test to a new lab tech"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;246</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_REMOVE(2604, <span class="string">"Remove a laboratory procedure"</span>, <span class="string">"removed your lab procedure"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;247</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_ADD_COMMENTARY*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;248</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_ADD_COMMENTARY(2605, <span class="string">"Add commentary to a laboratory procedure"</span>, <span class="string">"marked a lab procedure as completed"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;249</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_VIEW_QUEUE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;250</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_VIEW_QUEUE(2606, <span class="string">"View laboratory procedure queue"</span>, <span class="string">"viewed your lab procedure queue"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;251</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_RECORD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;252</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_RECORD(2607, <span class="string">"Record laboratory test results"</span>, <span class="string">"recorded your lab procedure results"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;253</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**LAB_RESULTS_RECEIVED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;254</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    LAB_RESULTS_RECEIVED(2608, <span class="string">"Laboratory procedure received by lab technician"</span>, <span class="string">"the lab tech received your lab procedure"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;255</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**EMAIL_SEND*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;256</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    EMAIL_SEND(2700, <span class="string">"Send an email"</span>, <span class="string">"sent an email"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;257</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**EMAIL_HISTORY_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;258</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    EMAIL_HISTORY_VIEW(2710, <span class="string">"View email history"</span>, <span class="string">"viewed email history"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;259</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_LIST_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;260</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_LIST_VIEW(2800, <span class="string">"View patient list"</span>, <span class="string">"viewed his/her patient list"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;261</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**EXPERIENCED_LHCP_FIND*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;262</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    EXPERIENCED_LHCP_FIND(2900, <span class="string">"Find LHCPs with experience with a diagnosis"</span>, <span class="string">"found LHCPs with experience with a diagnosis"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;263</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**MESSAGE_SEND*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;264</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    MESSAGE_SEND(3000, <span class="string">"Send messages"</span>, <span class="string">"sent a message"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;265</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**MESSAGE_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;266</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    MESSAGE_VIEW(3001, <span class="string">"View messages"</span>, <span class="string">"viewed a message"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;267</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**INBOX_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;268</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    INBOX_VIEW(3010, <span class="string">"View inbox"</span>, <span class="string">"viewed message inbox"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;269</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**OUTBOX_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;270</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    OUTBOX_VIEW(3011, <span class="string">"View outbox"</span>, <span class="string">"viewed message outbox"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;271</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_FIND_LHCP_FOR_RENEWAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;272</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_FIND_LHCP_FOR_RENEWAL(3100, <span class="string">"Find LHCPs for prescription renewal"</span>, <span class="string">"found LHCPs for prescription renewal"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;273</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**EXPIRED_PRESCRIPTION_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;274</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    EXPIRED_PRESCRIPTION_VIEW(3110, <span class="string">"View expired prescriptions"</span>, <span class="string">"viewed your expired prescriptions"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PRECONFIRM_PRESCRIPTION_RENEWAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;276</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PRECONFIRM_PRESCRIPTION_RENEWAL(3200, <span class="string">"Proactively confirm prescription-renewal needs"</span>, <span class="string">"proactively confirmed your prescription renewal needs"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;277</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DIAGNOSES_LIST_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;278</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DIAGNOSES_LIST_VIEW(3210, <span class="string">"View list of diagnoses"</span>, <span class="string">"viewed a list of diagnosis"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;279</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**CONSULTATION_REFERRAL_CREATE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;280</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    CONSULTATION_REFERRAL_CREATE(3300, <span class="string">"Refer a patient for consultations"</span>, <span class="string">"referred you to another HCP"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**CONSULTATION_REFERRAL_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;282</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    CONSULTATION_REFERRAL_VIEW(3310, <span class="string">"View referral for consultation"</span>, <span class="string">"viewed your consultation referral"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;283</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**CONSULTATION_REFERRAL_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;284</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    CONSULTATION_REFERRAL_EDIT(3311, <span class="string">"Modify referral for consultation"</span>, <span class="string">"modified your consultation referral"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**CONSULTATION_REFERRAL_CANCEL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;286</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    CONSULTATION_REFERRAL_CANCEL(3312, <span class="string">"Cancel referral for consultation"</span>, <span class="string">"canceled your consultation referral"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;287</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_LIST_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_LIST_ADD(3400, <span class="string">"Patient added to monitoring list"</span>, <span class="string">"added you to the telemedicine monitoring list"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;289</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_LIST_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;290</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_LIST_EDIT(3401, <span class="string">"Patient telemedicine permissions changed"</span>, <span class="string">"changed the data you report for telemedicine monitoring"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;291</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_LIST_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_LIST_REMOVE(3402, <span class="string">"Patient removed from monitoring list"</span>, <span class="string">"removed you from the telemedicine monitoring list"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;293</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**TELEMEDICINE_DATA_REPORT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;294</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    TELEMEDICINE_DATA_REPORT(3410, <span class="string">"Remote monitoring levels are reported"</span>, <span class="string">"reported your telemedicine data"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;295</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**TELEMEDICINE_DATA_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;296</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    TELEMEDICINE_DATA_VIEW(3420, <span class="string">"Remote monitoring levels are viewed"</span>, <span class="string">"viewed your telemedicine data reports"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;297</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ADVERSE_EVENT_REPORT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;298</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ADVERSE_EVENT_REPORT(3500, <span class="string">"Adverse event reporting"</span>, <span class="string">"reported an adverse event"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;299</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ADVERSE_EVENT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ADVERSE_EVENT_VIEW(3600, <span class="string">"Adverse event monitoring"</span>, <span class="string">"reviewed an adverse event report"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;301</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ADVERSE_EVENT_REMOVE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;302</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ADVERSE_EVENT_REMOVE(3601, <span class="string">"Remove adverse event"</span>, <span class="string">"removed an adverse event report"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;303</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ADVERSE_EVENT_REQUEST_MORE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ADVERSE_EVENT_REQUEST_MORE(3602, <span class="string">"Request More Adverse Event Details"</span>, <span class="string">"requested more adverse event details"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;305</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ADVERSE_EVENT_CHART_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;306</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ADVERSE_EVENT_CHART_VIEW(3603, <span class="string">"View Adverse Event Chart"</span>, <span class="string">"viewed adverse event chart"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;307</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**OVERRIDE_INTERACTION_WARNING*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;308</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    OVERRIDE_INTERACTION_WARNING(3700, <span class="string">"Override interaction warning"</span>, <span class="string">"Overrode an interaction warning"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;309</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**OVERRIDE_CODE_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;310</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    OVERRIDE_CODE_ADD(3710, <span class="string">"Add overriding reason listing"</span>, <span class="string">"added a medication override reason"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;311</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**OVERRIDE_CODE_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    OVERRIDE_CODE_EDIT(3711, <span class="string">"Edit overriding reason listing"</span>, <span class="string">"edited a medication override reason"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;313</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_INTERACTION_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;314</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_INTERACTION_ADD(3800, <span class="string">"Add Drug Interactions Code"</span>, <span class="string">"added a drug interaction code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;315</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_INTERACTION_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;316</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_INTERACTION_EDIT(3801, <span class="string">"Edit Drug Interactions Code"</span>, <span class="string">"edited a drug interaction code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;317</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DRUG_INTERACTION_DELETE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;318</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    DRUG_INTERACTION_DELETE(3802, <span class="string">"Delete Drug Interactions Code"</span>, <span class="string">"deleted a drug interaction code"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;319</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**CALENDAR_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;320</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    CALENDAR_VIEW(4000, <span class="string">"View calendar"</span>, <span class="string">"viewed your calendar"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;321</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**UPCOMING_APPOINTMENTS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;322</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    UPCOMING_APPOINTMENTS_VIEW(4010, <span class="string">"View Upcoming Appointments"</span>, <span class="string">"viewed upcoming appointments"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;323</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**NOTIFICATIONS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;324</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    NOTIFICATIONS_VIEW(4200, <span class="string">"View Notifications"</span>, <span class="string">"viewed your notification center"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;325</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ACTIVITY_FEED_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;326</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ACTIVITY_FEED_VIEW(4300, <span class="string">"View activity feed"</span>, <span class="string">"viewed your activity feed"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;327</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_INSTRUCTIONS_ADD*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;328</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_INSTRUCTIONS_ADD(4400, <span class="string">"Add Patient Specific Instructions for Office Visit"</span>, <span class="string">"added a patient-specific instruction"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;329</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_INSTRUCTIONS_EDIT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;330</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_INSTRUCTIONS_EDIT(4401, <span class="string">"Edit Patient Specific Instructions for Office Visit"</span>, <span class="string">"edited a patient-specific instruction"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;331</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_INSTRUCTIONS_DELETE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_INSTRUCTIONS_DELETE(4402, <span class="string">"        Delete Patient Specific Instructions for Office Visit"</span>, <span class="string">"deleted a patient-specific instruction"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;333</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_INSTRUCTIONS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;334</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_INSTRUCTIONS_VIEW(4403, <span class="string">"        View Patient Specific Instructions"</span>, <span class="string">"viewed your patient-specific instructions"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**DIAGNOSIS_TRENDS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;336</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DIAGNOSIS_TRENDS_VIEW(4500, <span class="string">"View diagnosis statistics"</span>, <span class="string">"viewed your diagnosis count"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;337</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**DIAGNOSIS_EPIDEMICS_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;338</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DIAGNOSIS_EPIDEMICS_VIEW(4600, <span class="string">"View Epidemic Detection"</span>, <span class="string">"viewed epidemic detection"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;339</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**GROUP_REPORT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;340</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        GROUP_REPORT_VIEW(4601, <span class="string">"View Group Report"</span>, <span class="string">"viewed group report"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;341</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**FIND_EXPERT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;342</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        FIND_EXPERT(4700, <span class="string">"Find an Expert"</span>, <span class="string">"searched for experts"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;343</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**FIND_EXPERT_ZIP_ERROR*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;344</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        FIND_EXPERT_ZIP_ERROR(4701, <span class="string">"Find an Expert - Zip Code Error"</span>, <span class="string">"entered an incorrect ZIP code for Find an Expert"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;345</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_ASSIGNED_TO_ROOM*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;346</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_ASSIGNED_TO_ROOM(4800, <span class="string">"Patient Assigned"</span>, <span class="string">"Patient assigned to room"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;347</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_REMOVED_FROM_ROOM*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;348</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_REMOVED_FROM_ROOM(4801, <span class="string">"Patient Removed"</span>, <span class="string">"Patient removed from room"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;349</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**ROOMS_FULL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;350</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ROOMS_FULL(4802, <span class="string">"Rooms Full"</span>, <span class="string">"Patients cannot be assigned to any room meeting that criteria"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;351</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**CREATE_BASIC_HEALTH_METRICS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;352</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CREATE_BASIC_HEALTH_METRICS(5100, <span class="string">"Create Basic Health Metrics"</span>, <span class="string">"created a basic health metrics record for you"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;353</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_BASIC_HEALTH_METRICS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;354</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_BASIC_HEALTH_METRICS(5101, <span class="string">"View Basic Health Metrics"</span>, <span class="string">"viewed your basic health metrics"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;355</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**EDIT_BASIC_HEALTH_METRICS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;356</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EDIT_BASIC_HEALTH_METRICS(5102, <span class="string">"Edit Basic Health Metrics"</span>, <span class="string">"editted your basic health metrics"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;357</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**REMOVE_BASIC_HEALTH_METRICS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;358</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        REMOVE_BASIC_HEALTH_METRICS(5103, <span class="string">"Remove Basic Health Metrics"</span>, <span class="string">"removed a basic health metrics record from your office visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;359</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEW_BASIC_HEALTH_METRICS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;360</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_BASIC_HEALTH_METRICS(5200, <span class="string">"Patient View of Basic Health Metrics"</span>, <span class="string">"viewed your health records history"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;361</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP_VIEW_BASIC_HEALTH_METRICSc*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;362</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_VIEW_BASIC_HEALTH_METRICS(5201, <span class="string">"HCP View of Basic Health Metrics"</span>, <span class="string">"viewed your health records history"</span>, <span class="keyword">true</span>),        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;363</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP_VIEW_PERCENTILES_CHART*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;364</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_VIEW_PERCENTILES_CHART(5301, <span class="string">"HCP View of Basic Health Metric Percentiles"</span>, <span class="string">"viewed your percentile data."</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;365</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PATIENT_VIEW_PERCENTILES_CHART*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;366</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    PATIENT_VIEW_PERCENTILES_CHART(5300, <span class="string">"Pateint View of Basic Health Metric Percentiles"</span>, <span class="string">"viewed your percentile data."</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;367</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**ADMIN_UPLOAD_CDCMETRICS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;368</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    ADMIN_UPLOAD_CDCMETRICS(5302, <span class="string">"Admin upload of CDC Metrics"</span>, <span class="string">"Uploaded CDC Metrics Successfully"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;369</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**PASSWORD_CHANGE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;370</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PASSWORD_CHANGE(5700, <span class="string">"User Successful Password Change"</span>, <span class="string">" changed password"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;371</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PASSWORD_CHANGE_FAILED*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;372</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PASSWORD_CHANGE_FAILED(5701, <span class="string">"User Failed Password Change"</span>, <span class="string">" failed to change password"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;373</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**IMMUNIZATION_REPORT_PATIENT_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;374</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        IMMUNIZATION_REPORT_PATIENT_VIEW(5500, <span class="string">"Patient View of Immunization Report"</span>, <span class="string">" viewed their immunization report"</span>, <span class="keyword">true</span>), </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;375</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**IMMUNIZATION_REPORT_HCP_VIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;376</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        IMMUNIZATION_REPORT_HCP_VIEW(5501, <span class="string">"HCP View of Immunization Report"</span>, <span class="string">" viewed patient's immunization report"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_RELEASE_HEALTH_RECORDS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;378</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_RELEASE_HEALTH_RECORDS(5600, <span class="string">"Patient Release of Health Records"</span>, <span class="string">"requested the release of your health records"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;379</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEW_RELEASE_REQUEST*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;380</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_RELEASE_REQUEST(5601, <span class="string">"Patient View of Health Records Release"</span>, <span class="string">"viewed a records release request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;381</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP_RELEASE_APPROVAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;382</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_RELEASE_APPROVAL(5602, <span class="string">"HCP Approval of Health Records Release"</span>, <span class="string">"approved your health records release request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;383</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP_RELEASE_DENIAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;384</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_RELEASE_DENIAL(5603, <span class="string">"HCP Denial of Health Records Release"</span>, <span class="string">"denied your health records release request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_RELEASE_APPROVAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_RELEASE_APPROVAL(5604, <span class="string">"UAP Approval of Health Records Release"</span>, <span class="string">"approved your health records release request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;387</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_RELEASE_DENIAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;388</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_RELEASE_DENIAL(5605, <span class="string">"UAP Denial of Health Records Release"</span>, <span class="string">"denied your health records release request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;389</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP_CREATED_DEPENDENT_PATIENT*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_CREATED_DEPENDENT_PATIENT(5800, <span class="string">"HCP Create Dependent Patient"</span>, <span class="string">"created your account as a dependent user"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;391</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP_CHANGE_PATIENT_DEPENDENCY*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;392</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_CHANGE_PATIENT_DEPENDENCY(5801, <span class="string">"HCP Change Patient Dependency Status"</span>, <span class="string">"changed your dependency status"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;393</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEW_DEPENDENT_REQUESTS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;394</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_DEPENDENT_REQUESTS(5900, <span class="string">"Patient View of Dependent's Release Requests"</span>, <span class="string">"viewed a dependent's records release request"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;395</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_REQUEST_DEPEDENT_RECORDS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;396</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_REQUEST_DEPEDENT_RECORDS(5901, <span class="string">"Patient Requests Dependent's Records Release"</span>, <span class="string">"requested a dependent's records release"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;397</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEWS_BILLS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;398</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_BILLS_VIEW_ALL(6000, <span class="string">"Patient has viewed their list of bills"</span>, <span class="string">"viewed list of bills"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;399</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEWS_BILL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;400</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEWS_BILL(6001, <span class="string">"Patient has view a single bill"</span>, <span class="string">"viewed single bill"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;401</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_PAYS_BILL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;402</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_PAYS_BILL(6002, <span class="string">"Patient has paid a bill"</span>, <span class="string">"paid a bill"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;403</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_SUBMITS_INSURANCE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;404</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_SUBMITS_INSURANCE(6003, <span class="string">"Patient has sumbitted an insurance claim"</span>, <span class="string">"submitted insurance claim"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;405</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_INITIAL_APPROVAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;406</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_INITIAL_APPROVAL(6004, <span class="string">"UAP approves the patient's first insurance claim"</span>, <span class="string">"approved initial claim"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;407</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_INITIAL_DENIAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_INITIAL_DENIAL(6005, <span class="string">"UAP denies the patient's first insurance claim"</span>, <span class="string">"denied initial claim"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;409</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_SECOND_APPORVAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;410</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_SECOND_APPROVAL(6006, <span class="string">"UAP approves the patient's second insurance claim"</span>, <span class="string">"approved second claim"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;411</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**UAP_SECOND_DENIAL*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;412</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        UAP_SECOND_DENIAL(6007, <span class="string">"UAP denies the patient's second insurance claim"</span>, <span class="string">"denied second claim"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;413</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_RESUBITS_INSURANCE*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;414</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_RESUBMITS_INSURANCE(6008, <span class="string">"Patient submits a second insurance claim"</span>, <span class="string">"submitted second insurnace claim"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;415</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_EXPERT_SEARCH*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;416</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_EXPERT_SEARCH_NAME(6100, <span class="string">"Pateint viewed the search expert by name page."</span>, <span class="string">"searched for an expert by name"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;417</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_REVIEWS*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;418</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_REVIEWS(6101, <span class="string">"Patient viewed reviews for an HCP."</span>, <span class="string">"viewed reviews"</span>, <span class="keyword">false</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;419</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**SUBMIT_REVIEW*/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;420</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        SUBMIT_REVIEW(6102, <span class="string">"Patient submitted a review for an HCP."</span>, <span class="string">"submitted review"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;421</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**CREATE_INITIAL_OBSTETRICS_RECORD**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;422</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CREATE_INITIAL_OBSTETRICS_RECORD(6300, <span class="string">"Create Initial Obstetric Record"</span>, <span class="string">"Create Initial Obstetric Record"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;423</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_INITIAL_OBSTETRICS_RECORD**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;424</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_INITIAL_OBSTETRICS_RECORD(6301, <span class="string">"View Initial Obstetric Record"</span>, <span class="string">"View Initial Obstetric Record"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;425</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**CREATE_INITIAL_OBSTETRICS_RECORD**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;426</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CREATE_OBSTETRICS_OV(6400, <span class="string">"Create Obstetric Office Visit"</span>, <span class="string">"Create Obstetric Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;427</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_INITIAL_OBSTETRICS_RECORD**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;428</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_OBSTETRICS_OV(6401, <span class="string">"View Obstetric Office Visit"</span>, <span class="string">"View Obstetric Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;429</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_INITIAL_OBSTETRICS_RECORD**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EDIT_OBSTETRICS_OV(6402, <span class="string">"Edit Obstetric Office Visit"</span>, <span class="string">"Edit Obstetric Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;431</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**ADD_ALLERGY**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;432</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ADD_ALLERGY(6700, <span class="string">"Add Allergy"</span>, <span class="string">"Add Allergy"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;433</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;434</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Added to the Food Diary **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;435</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        FOOD_DIARY_ADD(6800, <span class="string">"Add Food Entry"</span>, <span class="string">"added an entry to your Food Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;436</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient viewed food diary**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;437</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_FOOD_DIARY(6801, <span class="string">"Patient Viewed Food Diary"</span>, <span class="string">"viewed your Food Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;438</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Nutritionist viewed food diary **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;439</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        NUTRITIONIST_VIEW_FOOD_DIARY(6900, <span class="string">"Nutritionist viewed Food Diary"</span>, <span class="string">"viewed your Food Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;440</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient edited an entry from their food diary */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;441</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_EDIT_FOOD_ENTRY(7000, <span class="string">"Patient edited Food Diary entry"</span>, <span class="string">"edited an entry in your Food Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;442</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient deleted an entry from their food diary */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;443</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DELETE_FOOD_ENTRY(7001, <span class="string">"Patient deleted Food Diary entry"</span>, <span class="string">"deleted an entry from your Food Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;444</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;445</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient changed their designated Nutritionist */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;446</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EDIT_DESIGNATED_NUTRITIONIST(7300, <span class="string">"Patient edited designated Nutritionist"</span>, <span class="string">"edited your designated Nutritionist"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;447</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;448</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Added to the Sleep Diary **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;449</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        SLEEP_DIARY_ADD(7700, <span class="string">"Add Sleep Entry"</span>, <span class="string">"added an entry to your Sleep Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;450</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient viewed Sleep diary**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;451</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_SLEEP_DIARY(7801, <span class="string">"Patient Viewed Sleep Diary"</span>, <span class="string">"viewed your Sleep Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;452</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**HCP viewed Sleep diary **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;453</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_VIEW_SLEEP_DIARY(7802, <span class="string">"HCP viewed Sleep Diary"</span>, <span class="string">"viewed your Sleep Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;454</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient edited an entry from their Sleep diary */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;455</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_EDIT_SLEEP_ENTRY(7901, <span class="string">"Patient edited Sleep Diary entry"</span>, <span class="string">"edited an entry in your Sleep Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;456</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient deleted an entry from their Sleep diary */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DELETE_SLEEP_ENTRY(7902, <span class="string">"Patient deleted Sleep Diary entry"</span>, <span class="string">"deleted an entry from your Sleep Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;458</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;459</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Added to the Exercise Diary **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;460</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EXERCISE_DIARY_ADD(8000, <span class="string">"Add Exercise Entry"</span>, <span class="string">"added an entry to your Exercise Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;461</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient viewed Exercise diary**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;462</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_EXERCISE_DIARY(8101, <span class="string">"Patient Viewed Exercise Diary"</span>, <span class="string">"viewed your Exercise Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;463</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Trainer viewed Exercise diary **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;464</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        TRAINER_VIEW_EXERCISE_DIARY(8102, <span class="string">"Trainer viewed Exercise Diary"</span>, <span class="string">"viewed your Exercise Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;465</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient edited an entry from their Exercise diary */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;466</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_EDIT_EXERCISE_ENTRY(8201, <span class="string">"Patient edited Exercise Diary entry"</span>, <span class="string">"edited an entry in your Exercise Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;467</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/** Patient deleted an entry from their Exercise diary */</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;468</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DELETE_EXERCISE_ENTRY(8202, <span class="string">"Patient deleted Exercise Diary entry"</span>, <span class="string">"deleted an entry from your Exercise Diary"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;469</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;470</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Added to Labels **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;471</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LABEL_ADD(7400, <span class="string">"Add Label"</span>, <span class="string">"added a new Label"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;472</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient edited a Label**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;473</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EDIT_LABEL(7401, <span class="string">"Patient edited a Label"</span>, <span class="string">"edited a Label"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;474</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient deleted a Label **/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;475</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DELETE_LABEL(7402, <span class="string">"Patient deleted a Label"</span>, <span class="string">"deleted a Label"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;476</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient edited a Label**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;477</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HCP_VIEW_MACRONUTRIENTS(7200, <span class="string">"HCP viewed macronutrients"</span>, <span class="string">"viewed macronutrients"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;478</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient edited a Label**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;479</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_MACRONUTRIENTS_GRAPH(7100, <span class="string">"Patient generated graph"</span>, <span class="string">"generated a graph"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;480</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**Patient edited a Label**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;481</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CALCULATE_MACRONUTRIENTS(7101, <span class="string">"Patient calculated macronutrients"</span>, <span class="string">"calculated macronutrients"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;482</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;483</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**CREATE_OPHTHALMOLOGY_OV**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;484</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CREATE_OPHTHALMOLOGY_OV(8300, <span class="string">"Create Ophthalmology Office Visit"</span>, <span class="string">"Ophthalmology Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;485</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_OPHTHALMOLOGY_OV**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;486</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_OPHTHALMOLOGY_OV(8301, <span class="string">"View Ophthalmology Office Visit"</span>, <span class="string">"View Ophthalmology Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;487</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**EDIT_OPHTHALMOLOGY_OV**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;488</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EDIT_OPHTHALMOLOGY_OV(8302, <span class="string">"Edit Ophthalmology Office Visit"</span>, <span class="string">"Edit Ophthalmology Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;489</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEW_OPHTHALMOLOGY_OV**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;490</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_OPHTHALMOLOGY_OV(8400, <span class="string">"View Patient Ophthalmology Office Visit"</span>, <span class="string">"View Patient Ophthalmology Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;491</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEW_DEPENDENT_OPHTHALMOLOGY_OV**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;492</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_VIEW_DEPENDENT_OPHTHALMOLOGY_OV(8401, <span class="string">"View Dependent Ophthalmology Office Visit"</span>, <span class="string">"View Dependent Ophthalmology Office Visit"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;493</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;494</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**CREATE_OPHTHALMOLOGY_SURGERY**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;495</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CREATE_OPHTHALMOLOGY_SURGERY(8600, <span class="string">"Create Ophthalmology Surgery"</span>, <span class="string">"Ophthalmology Surgery"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;496</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**VIEW_OPHTHALMOLOGY_SURGERY**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;497</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        VIEW_OPHTHALMOLOGY_SURGERY(8601, <span class="string">"View Ophthalmology Surgery"</span>, <span class="string">"View Ophthalmology Surgery"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;498</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**EDIT_OPHTHALMOLOGY_SURGERY**/</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;499</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EDIT_OPHTHALMOLOGY_SURGERY(8602, <span class="string">"Edit Ophthalmology Surgery"</span>, <span class="string">"Edit Ophthalmology Surgery"</span>, <span class="keyword">true</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;500</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**PATIENT_VIEW_OPHTHALMOLOGY_SURGERY**/</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;501</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        ;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;502</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;503</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * This string is used in the SQL statement associated with pulling events for</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;504</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * display in a patient's Access Log</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;505</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;506</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> <span class="keyword">static</span> String patientViewableStr;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;507</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;508</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">static</span> {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;509</td>  <td class="nbHitsCovered">&nbsp;241</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">for</span>(TransactionType t : TransactionType.values())</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;510</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;511</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;                        <span class="keyword">if</span>(t.isPatientViewable())</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;512</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;513</td>  <td class="nbHitsCovered">&nbsp;144</td>  <td class="src"><pre class="src">&nbsp;                                patientViewableStr += <span class="string">","</span> + t.code;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;514</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;515</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;516</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;517</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;518</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * This string is used in the SQL statement associated with excluding events as specified in UC43</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;519</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;520</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;521</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;522</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String dlhcpHiddenStr = <span class="string">"400, 900, 1000, 1001, 1100, 1101, 1102, 1110, 1111, 1112, 1120, 1121, 1122, 1130, 1131, 1132, 1140, 1141, 1142, 1150, 1152, 1600, 1700, 1900, 2101, 2300, 2601, 2602, 3200,5201"</span>;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;523</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;524</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> TransactionType(<span class="keyword">int</span> code, String description, String actionPhrase, <span class="keyword">boolean</span> patientViewable) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;525</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">this</span>.code = code;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;526</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">this</span>.description = description;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;527</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">this</span>.actionPhrase = actionPhrase;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;528</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">this</span>.patientView = patientViewable;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;529</td>  <td class="nbHitsCovered">&nbsp;240</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;530</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;531</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> <span class="keyword">int</span> code;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;532</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> String description;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;533</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> String actionPhrase;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;534</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> <span class="keyword">boolean</span> patientView;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;535</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;536</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;537</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * getCode</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;538</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return code</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;539</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;540</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> <span class="keyword">int</span> getCode() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;541</td>  <td class="nbHitsCovered">&nbsp;4578</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> code;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;542</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;543</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;544</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;545</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * getDescription</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;546</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return description</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;547</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;548</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> String getDescription() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;549</td>  <td class="nbHitsCovered">&nbsp;720</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> description;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;550</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;551</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;552</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;553</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * getActionPhrase</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;554</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return actionPhrase</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;555</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;556</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> String getActionPhrase() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;557</td>  <td class="nbHitsCovered">&nbsp;12</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> actionPhrase;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;558</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;559</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;560</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;561</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * isPatientViewable</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;562</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return patientView</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;563</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;564</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> <span class="keyword">boolean</span> isPatientViewable(){</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;565</td>  <td class="nbHitsCovered">&nbsp;246</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> patientView;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;566</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;567</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;568</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;569</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * parse</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;570</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param code code</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;571</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return type</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;572</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;573</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> <span class="keyword">static</span> TransactionType parse(<span class="keyword">int</span> code) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;574</td>  <td class="nbHitsCovered"><a title="Line 574: Conditional coverage 100% (2/2).">&nbsp;35601</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 574: Conditional coverage 100% (2/2).">                <span class="keyword">for</span> (TransactionType type : TransactionType.values()) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;575</td>  <td class="nbHitsCovered"><a title="Line 575: Conditional coverage 100% (2/2).">&nbsp;35600</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 575: Conditional coverage 100% (2/2).">                        <span class="keyword">if</span> (type.code == code)</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;576</td>  <td class="nbHitsCovered">&nbsp;321</td>  <td class="src"><pre class="src">&nbsp;                                <span class="keyword">return</span> type;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;577</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;578</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"No transaction type exists for code "</span> + code);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;579</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;580</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;581</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
+</table>
+
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 3/12/17 7:17 PM.</div>
+</body>
+</html>

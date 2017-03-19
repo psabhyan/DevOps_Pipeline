@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmunizationMySQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.immunization</a> &gt; <span class="el_source">ImmunizationMySQL.java</span></div><h1>ImmunizationMySQL.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.immunization;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+
+public class ImmunizationMySQL implements ImmunizationData {
+
+	private ImmunizationSQLLoader loader;
+	private ImmunizationValidator validator;
+	private DataSource ds;
+
+	/**
+	 * Constructor of ImmunizationsMySQL instance.
+	 * 
+	 * @throws DBException when data source cannot be created from the given context names
+	 */
+<span class="nc" id="L28">	public ImmunizationMySQL() throws DBException {</span>
+<span class="nc" id="L29">		loader = new ImmunizationSQLLoader();</span>
+		try {
+<span class="nc" id="L31">			Context ctx = new InitialContext();</span>
+<span class="nc" id="L32">			this.ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="nc" id="L33">		} catch (NamingException e) {</span>
+<span class="nc" id="L34">			throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+<span class="nc" id="L35">		}</span>
+<span class="nc" id="L36">		validator = new ImmunizationValidator(this.ds);</span>
+<span class="nc" id="L37">	}</span>
+	
+	/**
+	 * Constructor for testing.
+	 * 
+	 * @param ds testing data source
+	 */
+<span class="fc" id="L44">	public ImmunizationMySQL(DataSource ds) {</span>
+<span class="fc" id="L45">		loader = new ImmunizationSQLLoader();</span>
+<span class="fc" id="L46">		this.ds = ds;</span>
+<span class="fc" id="L47">		validator = new ImmunizationValidator(this.ds);</span>
+<span class="fc" id="L48">	}</span>
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;Immunization&gt; getAll() throws DBException {
+<span class="pc" id="L55">		try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L56">				PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM immunization, cptCode WHERE code=cptcode&quot;);</span>
+<span class="fc" id="L57">				ResultSet results = pstring.executeQuery()) {</span>
+<span class="fc" id="L58">			List&lt;Immunization&gt; list = loader.loadList(results);</span>
+<span class="fc" id="L59">			return list;</span>
+<span class="pc bpc" id="L60" title="16 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L61">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Immunization getByID(long id) throws DBException {
+<span class="pc" id="L70">		try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L71">			PreparedStatement statement = conn.prepareStatement(&quot;SELECT * FROM immunization, cptCode WHERE id=&quot;+id+&quot; AND code=cptcode&quot;);</span>
+<span class="fc" id="L72">			ResultSet resultSet = statement.executeQuery()) {</span>
+<span class="fc" id="L73">			List&lt;Immunization&gt; immunizationList = loader.loadList(resultSet);</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">			if (immunizationList.size() &gt; 0) {</span>
+<span class="fc" id="L75">				return immunizationList.get(0);</span>
+			} else {
+<span class="fc" id="L77">				return null;</span>
+			}
+<span class="pc bpc" id="L79" title="22 of 36 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L80">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean add(Immunization addObj) throws DBException {
+		try {
+<span class="fc" id="L90">			validator.validate(addObj);</span>
+<span class="fc" id="L91">		} catch (FormValidationException e1) {</span>
+<span class="fc" id="L92">			throw new DBException(new SQLException(e1));</span>
+<span class="fc" id="L93">		}</span>
+<span class="pc" id="L94">		try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L95">			PreparedStatement statement = loader.loadParameters(conn, null, addObj, true);) {</span>
+<span class="fc" id="L96">			int results = statement.executeUpdate();</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">			return results == 1;</span>
+<span class="pc bpc" id="L98" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L99">			throw new DBException(e);</span>
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean update(Immunization updateObj) throws DBException {
+		try {
+<span class="fc" id="L109">			validator.validate(updateObj);</span>
+<span class="fc" id="L110">		} catch (FormValidationException e1) {</span>
+<span class="fc" id="L111">			throw new DBException(new SQLException(e1.getMessage()));</span>
+<span class="fc" id="L112">		}</span>
+
+<span class="pc" id="L114">		try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L115">			PreparedStatement statement = loader.loadParameters(conn, null, updateObj, false);) {</span>
+<span class="fc" id="L116">			int results = statement.executeUpdate();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">			return results == 1;</span>
+<span class="pc bpc" id="L118" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L119">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;Immunization&gt; getAllImmunizations(long mid) throws DBException {
+<span class="pc" id="L128">		try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L129">			PreparedStatement statement = createImmunizationPreparedStatement(conn, mid);</span>
+<span class="fc" id="L130">			ResultSet resultSet = statement.executeQuery()) {</span>
+<span class="fc" id="L131">			List&lt;Immunization&gt; list = loader.loadList(resultSet);</span>
+<span class="fc" id="L132">			return list;</span>
+<span class="pc bpc" id="L133" title="16 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L134">			throw new DBException(e);</span>
+		}
+	}
+	
+	public PreparedStatement createImmunizationPreparedStatement(Connection conn, long mid) throws SQLException {
+<span class="fc" id="L139">		StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L140">		sb.append(&quot;SELECT &quot;);</span>
+<span class="fc" id="L141">		sb.append(&quot;i.id, &quot;);</span>
+<span class="fc" id="L142">		sb.append(&quot;i.visitId, &quot;);</span>
+<span class="fc" id="L143">		sb.append(&quot;i.cptCode, &quot;);</span>
+<span class="fc" id="L144">		sb.append(&quot;c.name &quot;);</span>
+<span class="fc" id="L145">		sb.append(&quot;FROM &quot;);</span>
+<span class="fc" id="L146">		sb.append(&quot;immunization i, &quot;);</span>
+<span class="fc" id="L147">		sb.append(&quot;cptcode c, &quot;);</span>
+<span class="fc" id="L148">		sb.append(&quot;officevisit ov &quot;);</span>
+<span class="fc" id="L149">		sb.append(&quot;WHERE i.visitId = ov.visitID &quot;);</span>
+<span class="fc" id="L150">		sb.append(&quot;AND ov.patientMID = ? &quot;);</span>
+<span class="fc" id="L151">		sb.append(&quot;AND i.cptCode = c.code &quot;);</span>
+		
+<span class="fc" id="L153">		PreparedStatement ps = conn.prepareStatement(sb.toString());</span>
+<span class="fc" id="L154">		ps.setLong(1, mid);</span>
+<span class="fc" id="L155">		return ps;</span>
+	}
+	
+	public boolean remove(long id) throws SQLException {
+<span class="pc" id="L159">	    try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L160">                PreparedStatement pstring = createRemovePreparedStatement(conn, id);){</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L162" title="12 of 16 branches missed.">        }</span>
+	}
+
+    private PreparedStatement createRemovePreparedStatement(Connection conn, long id) throws SQLException {
+<span class="fc" id="L166">        PreparedStatement pstring = conn.prepareStatement(&quot;DELETE FROM immunization WHERE id=?&quot;);</span>
+<span class="fc" id="L167">        pstring.setLong(1, id);</span>
+<span class="fc" id="L168">        return pstring;</span>
+    }
+
+    public List&lt;Immunization&gt; getImmunizationsForOfficeVisit(long officeVisitId) throws SQLException {
+<span class="pc" id="L172">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L173">                PreparedStatement pstring = createOVPreparedStatement(conn, officeVisitId);</span>
+<span class="fc" id="L174">                ResultSet results = pstring.executeQuery()){</span>
+<span class="fc" id="L175">            return loader.loadList(results);</span>
+<span class="pc bpc" id="L176" title="18 of 24 branches missed.">        }</span>
+    }
+
+    private PreparedStatement createOVPreparedStatement(Connection conn, long officeVisitId) throws SQLException {
+<span class="fc" id="L180">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM immunization, cptcode WHERE cptCode=code AND visitId=?&quot;);</span>
+
+<span class="fc" id="L182">        pstring.setLong(1, officeVisitId);</span>
+<span class="fc" id="L183">        return pstring;</span>
+    }
+
+    public List&lt;Immunization&gt; getImmunizationsByMID(long mid) throws SQLException {
+<span class="nc" id="L187">        try (Connection conn = ds.getConnection();</span>
+<span class="nc" id="L188">                PreparedStatement pstring = createGetByMIDStatement(conn, mid);</span>
+<span class="nc" id="L189">                ResultSet results = pstring.executeQuery()) {</span>
+<span class="nc" id="L190">            return loader.loadList(results);</span>
+<span class="nc bnc" id="L191" title="All 24 branches missed.">        }</span>
+    }
+
+    private PreparedStatement createGetByMIDStatement(Connection conn, long mid) throws SQLException {
+<span class="nc" id="L195">        PreparedStatement pstring = conn.prepareStatement(</span>
+                &quot;SELECT * FROM immunization, cptcode, officevisit &quot; + 
+                &quot;WHERE immunization.cptCode=cptcode.code &quot; +
+                &quot;AND immunization.visitId=officevisit.visitID &quot; +
+                &quot;AND officevisit.patientMID=?&quot;);
+
+<span class="nc" id="L201">        pstring.setLong(1, mid);</span>
+<span class="nc" id="L202">        return pstring;</span>
+    }
+
+    public String getCodeName(String code) throws SQLException {
+<span class="pc" id="L206">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L207">                PreparedStatement pstring = createGetCodeNamePreparedStatement(conn, code);</span>
+<span class="fc" id="L208">                ResultSet rs = pstring.executeQuery()){</span>
+            
+<span class="fc bfc" id="L210" title="All 2 branches covered.">            if (!rs.next()) </span>
+<span class="fc" id="L211">                return &quot;&quot;;</span>
+
+<span class="fc" id="L213">            return rs.getString(&quot;name&quot;);</span>
+<span class="pc bpc" id="L214" title="24 of 36 branches missed.">        }</span>
+    }
+
+    private PreparedStatement createGetCodeNamePreparedStatement(Connection conn, String code) throws SQLException {
+<span class="fc" id="L218">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT name FROM cptCode WHERE Code=?&quot;);</span>
+<span class="fc" id="L219">        pstring.setString(1, code);</span>
+<span class="fc" id="L220">        return pstring;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

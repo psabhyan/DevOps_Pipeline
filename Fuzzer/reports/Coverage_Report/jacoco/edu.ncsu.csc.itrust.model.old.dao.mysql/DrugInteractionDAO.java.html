@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DrugInteractionDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">DrugInteractionDAO.java</span></div><h1>DrugInteractionDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.DrugInteractionBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.DrugInteractionBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Used for managing drug interactions.
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ * 
+ * @see http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm
+ */
+public class DrugInteractionDAO {
+	private DAOFactory factory;
+	private DrugInteractionBeanLoader interactionLoader;
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L41">	public DrugInteractionDAO(DAOFactory factory) {</span>
+<span class="fc" id="L42">		this.factory = factory;</span>
+<span class="fc" id="L43">		interactionLoader = new DrugInteractionBeanLoader();</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Returns a list of all drug interactions for the input drug name
+	 * 
+	 * @param drugCode
+	 *            drugCode
+	 * @return A java.util.List of DrugInteractionBeans.
+	 * @throws DBException
+	 */
+	public List&lt;DrugInteractionBean&gt; getInteractions(String drugCode) throws DBException {
+<span class="pc" id="L55">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L56">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM druginteractions WHERE FirstDrug = ? OR SecondDrug = ?&quot;)) {</span>
+<span class="fc" id="L57">			stmt.setString(1, drugCode);</span>
+<span class="fc" id="L58">			stmt.setString(2, drugCode);</span>
+<span class="fc" id="L59">			ResultSet rs = stmt.executeQuery();</span>
+<span class="fc" id="L60">			List&lt;DrugInteractionBean&gt; loadlist = interactionLoader.loadList(rs);</span>
+<span class="fc" id="L61">			rs.close();</span>
+<span class="fc" id="L62">			return loadlist;</span>
+<span class="pc bpc" id="L63" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L64">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Adds a new drug interaction, returns whether or not the addition was
+	 * successful. If the code already exists, an iTrustException is thrown.
+	 * 
+	 * @param firstDrug
+	 *            The name of the first drug in an interaction.
+	 * @param secondDrug
+	 *            The name of the second drug in an interaction.
+	 * @param description
+	 *            Explanation of the drug interaction.
+	 * @return A boolean indicating success or failure.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean reportInteraction(String firstDrug, String secondDrug, String description) throws ITrustException {
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		if (firstDrug.equals(secondDrug))</span>
+<span class="nc" id="L84">			throw new ITrustException(&quot;Drug cannot interact with itself.&quot;);</span>
+
+<span class="fc" id="L86">		List&lt;DrugInteractionBean&gt; currentIntsDrug2 = getInteractions(secondDrug);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		for (DrugInteractionBean dib : currentIntsDrug2) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">			if (dib.getSecondDrug().equals(firstDrug)) {</span>
+<span class="fc" id="L89">				throw new ITrustException(&quot;Error: Interaction between these drugs already exists.&quot;);</span>
+			}
+<span class="fc" id="L91">		}</span>
+
+<span class="fc" id="L93">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L94">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;INSERT INTO druginteractions (FirstDrug, SecondDrug, Description) &quot; + &quot;VALUES (?,?,?)&quot;)) {
+<span class="fc" id="L96">			stmt.setString(1, firstDrug);</span>
+<span class="fc" id="L97">			stmt.setString(2, secondDrug);</span>
+<span class="fc" id="L98">			stmt.setString(3, description);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">			boolean successfullyAdded = stmt.executeUpdate() == 1;</span>
+<span class="fc" id="L100">			return successfullyAdded;</span>
+<span class="pc bpc" id="L101" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">			if (e.getErrorCode() == 1062)</span>
+<span class="fc" id="L103">				throw new ITrustException(&quot;Error: Interaction between these drugs already exists.&quot;);</span>
+<span class="nc" id="L104">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Remove an interaction from the database
+	 * 
+	 * @param firstDrug
+	 *            The name of the first patient
+	 * @param secondDrug
+	 *            The name of the second patient
+	 * @return true if removed successfully, false if not in list
+	 */
+	public boolean deleteInteraction(String firstDrug, String secondDrug) throws DBException {
+<span class="pc" id="L118">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L119">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;DELETE FROM druginteractions WHERE (FirstDrug = ? OR SecondDrug = ?) AND (FirstDrug = ? OR SecondDrug = ?)&quot;)) {
+<span class="fc" id="L121">			stmt.setString(1, firstDrug);</span>
+<span class="fc" id="L122">			stmt.setString(2, firstDrug);</span>
+<span class="fc" id="L123">			stmt.setString(3, secondDrug);</span>
+<span class="fc" id="L124">			stmt.setString(4, secondDrug);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">			return stmt.executeUpdate() != 0;</span>
+<span class="pc bpc" id="L126" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L127">			throw new DBException(e);</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

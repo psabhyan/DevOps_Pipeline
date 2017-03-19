@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZipCodeAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ZipCodeAction.java</span></div><h1>ZipCodeAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.HospitalBean;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.ZipCodeBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.HospitalsDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ZipCodeDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Action class which handles zip code related functionality;
+ */
+public class ZipCodeAction 
+{
+//	private DAOFactory factory;
+//	private long loggedInMID;
+	private ZipCodeDAO zipCodeDAO;
+//	private PersonnelDAO personnelDAO;
+	private HospitalsDAO hospitalDAO;
+	private FindExpertAction expertAction;
+	
+	/**
+	 * Constructor for ZipCodeAction
+	 * @param factory
+	 * @param loggedInMID
+	 */
+	public ZipCodeAction(DAOFactory factory, long loggedInMID)
+<span class="fc" id="L34">	{</span>
+<span class="fc" id="L35">		this.zipCodeDAO = factory.getZipCodeDAO();</span>
+<span class="fc" id="L36">		this.hospitalDAO = factory.getHospitalsDAO();</span>
+<span class="fc" id="L37">		this.expertAction = new FindExpertAction(factory);</span>
+<span class="fc" id="L38">	}</span>
+	
+	/**
+	 * Calculates the distance between two ZipCodes
+	 * @param zipCode1
+	 * @param zipCode2
+	 * @return
+	 * @throws DBException
+	 */
+	public int calcDistance(String zipCode1, String zipCode2) throws DBException
+	{
+<span class="fc" id="L49">		ZipCodeBean bean1 = zipCodeDAO.getZipCode(zipCode1);</span>
+<span class="fc" id="L50">		ZipCodeBean bean2 = zipCodeDAO.getZipCode(zipCode2);</span>
+<span class="fc bfc" id="L51" title="All 4 branches covered.">		if(bean1 == null || bean2 == null)</span>
+		{	
+<span class="fc" id="L53">			return Integer.MAX_VALUE;</span>
+		}
+<span class="fc" id="L55">		double latA = Double.valueOf(bean1.getLatitude());</span>
+<span class="fc" id="L56">		double longA = Double.valueOf(bean1.getLongitude());</span>
+<span class="fc" id="L57">		double latB = Double.valueOf(bean2.getLatitude());</span>
+<span class="fc" id="L58">		double longB = Double.valueOf(bean2.getLongitude());</span>
+		
+<span class="fc" id="L60">		 double theDistance = (Math.sin(Math.toRadians(latA)) *</span>
+<span class="fc" id="L61">                 Math.sin(Math.toRadians(latB)) +</span>
+<span class="fc" id="L62">                 Math.cos(Math.toRadians(latA)) *</span>
+<span class="fc" id="L63">                 Math.cos(Math.toRadians(latB)) *</span>
+<span class="fc" id="L64">                 Math.cos(Math.toRadians(longA - longB)));</span>
+
+<span class="fc" id="L66">		 return (int) ((Math.toDegrees(Math.acos(theDistance))) * 69.09);</span>
+	}
+	
+	
+	/**
+	 * Returns all of the hospitals within the mileage range specified.
+	 * @param specialty
+	 * @param zipCode
+	 * @param mileRange
+	 * @return
+	 * @throws DBException
+	 */
+	private List&lt;HospitalBean&gt; getHosptialsWithinCertainMileage(String specialty, String zipCode, String mileRange) throws DBException
+	{
+<span class="fc" id="L80">		List&lt;HospitalBean&gt; hospitalBeans = hospitalDAO.getAllHospitals();</span>
+<span class="fc" id="L81">		List&lt;HospitalBean&gt; hospitalsWithinRange = new ArrayList&lt;HospitalBean&gt;();</span>
+		int miles;
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		for (HospitalBean hospitalBean : hospitalBeans) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">			if(mileRange.equals(&quot;All&quot;))</span>
+<span class="nc" id="L85">				miles = Integer.MAX_VALUE;</span>
+			else	
+<span class="fc" id="L87">				miles = Integer.parseInt(mileRange);		</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">			if(calcDistance(zipCode, hospitalBean.getHospitalZip()) &lt;= miles)</span>
+			{
+<span class="fc" id="L90">				hospitalsWithinRange.add(hospitalBean);</span>
+			}
+<span class="fc" id="L92">		}</span>
+<span class="fc" id="L93">		return hospitalsWithinRange;</span>
+		
+	}
+	
+	private List&lt;PersonnelBean&gt; getExpertsForHospitals(String specialty, List&lt;HospitalBean&gt; hospitalBeans)
+	{
+<span class="fc" id="L99">		return expertAction.findExpertsForLocalHospitals(hospitalBeans, specialty);</span>
+	}
+	
+	/**
+	 * Gets all the experts within a certain range and with a certain specialty.
+	 * @param specialty
+	 * @param zipCode
+	 * @param mileRange
+	 * @return
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getExperts(String specialty, String zipCode, String mileRange, Long loggedInMID) throws DBException
+	{
+<span class="fc" id="L112">		TransactionLogger.getInstance().logTransaction(TransactionType.FIND_EXPERT, loggedInMID, null , &quot;Zip Code Used for Search&quot;);</span>
+<span class="fc" id="L113">		List&lt;HospitalBean&gt; hosptials = getHosptialsWithinCertainMileage(specialty, zipCode, mileRange);</span>
+<span class="fc" id="L114">		return getExpertsForHospitals(specialty, hosptials);</span>
+	}
+	
+	public void logError(Long loggedInMID){
+<span class="nc" id="L118">		TransactionLogger.getInstance().logTransaction(TransactionType.FIND_EXPERT_ZIP_ERROR, loggedInMID, null , &quot;Zip Code Used for Search&quot;);</span>
+<span class="nc" id="L119">	}</span>
+	
+	
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

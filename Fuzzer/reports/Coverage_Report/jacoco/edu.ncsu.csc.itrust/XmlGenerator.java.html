@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmlGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust</a> &gt; <span class="el_source">XmlGenerator.java</span></div><h1>XmlGenerator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust;
+
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+
+
+/**
+ * XmlGenerator is a class that takes headers and data and converts them into a xml compliant document.
+ */
+<span class="nc" id="L16">public class XmlGenerator{</span>
+	
+	/**
+	 * generateXml converts the headers and data into a xml file
+	 * 
+	 * @param headers - Column names
+	 * @param Data - Data for columns
+	 * @return - Xml document
+	 */
+	public static Document generateXml(ArrayList&lt;String&gt; headers, ArrayList&lt;ArrayList&lt;String&gt;&gt; Data){
+		Document report;
+		try{
+			//sorced from http://stackoverflow.com/questions/8865099/xml-file-generator-in-java
+<span class="fc" id="L29">			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L30">			DocumentBuilder builder = factory.newDocumentBuilder();</span>
+			
+	    //new document
+<span class="fc" id="L33">			report = builder.newDocument();</span>
+			
+	    //head element
+<span class="fc" id="L36">	 		Element head = report.createElement(&quot;PatientReport&quot;);</span>
+<span class="fc" id="L37">			report.appendChild(head);</span>
+			
+			//assumed has document builder and factory
+<span class="fc bfc" id="L40" title="All 2 branches covered.">			for (int x = 0; x &lt; Data.size(); x++)//for each top level element</span>
+			{
+				// makes format &lt;Patient name=&quot;blah&quot; age=&quot;xx&quot; birthdate=&quot;&quot;/&gt; etc...
+<span class="fc" id="L43">				Element patient = report.createElement(&quot;Patient&quot;);</span>
+<span class="pc bpc" id="L44" title="1 of 4 branches missed.">				for (int y = 0; ((y &lt; Data.get(x).size()) &amp;&amp; (y &lt; headers.size())); y++)</span>
+				{
+<span class="fc" id="L46">					patient.setAttribute(parse(headers.get(y)), parse(Data.get(x).get(y)));</span>
+				}
+<span class="fc" id="L48">				head.appendChild(patient);</span>
+			}
+			//for each first level element, loop through second level and 
+			}
+<span class="nc" id="L52">			catch (ParserConfigurationException e){</span>
+				//TODO log error
+<span class="nc" id="L54">				return null;</span>
+<span class="fc" id="L55">			}</span>
+<span class="fc" id="L56">		return report;</span>
+		
+	}
+	
+	/**
+	 * Parses the string for a xml compliant one
+	 * @param s - The string to be fixed
+	 * @return - The xml compliant string
+	 */
+	private static String parse(String s){
+<span class="fc" id="L66">		return s.replaceAll(&quot; &quot;, &quot;_&quot;).replaceAll(&quot;#&quot;, &quot;NUMBER&quot;).replaceAll(&quot;'&quot;, &quot;&quot;);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

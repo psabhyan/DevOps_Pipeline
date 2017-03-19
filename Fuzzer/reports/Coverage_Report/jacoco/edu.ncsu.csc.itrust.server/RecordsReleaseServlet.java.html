@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecordsReleaseServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.server</a> &gt; <span class="el_source">RecordsReleaseServlet.java</span></div><h1>RecordsReleaseServlet.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.server;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import edu.ncsu.csc.itrust.action.EventLoggingAction;
+import edu.ncsu.csc.itrust.action.RequestRecordsReleaseAction;
+import edu.ncsu.csc.itrust.model.old.beans.forms.RecordsReleaseForm;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.exception.DBException;
+import java.io.*;
+
+<span class="nc" id="L12">public class RecordsReleaseServlet extends HttpServlet  {</span>
+
+	private static final long serialVersionUID = 1L;
+	
+	private RecordsReleaseForm form;
+	private RequestRecordsReleaseAction releaseAction;
+	private EventLoggingAction loggingAction;
+	private String loggedInName;
+	private String currentMID;
+	private String isRepresentee;
+	
+	private String releaseHospital;	
+	private String recFirstName;
+	private String recLastName;
+	private String recPhone;
+	private String recEmail;	
+	private String recHospitalName;
+	private String recHospitalAddress1;
+	private String recHospitalAddress2;
+	private String recHospitalCity;
+	private String recHospitalState;
+	private String recHospitalZip;
+	
+	private String releaseJustification;
+	
+	private boolean verifyForm;
+	private String digitalSig;
+	
+	private String patMID;
+
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		
+		try{
+<span class="nc" id="L47">			releaseAction = (RequestRecordsReleaseAction)request.getSession().getAttribute(&quot;releaseAction&quot;);</span>
+<span class="nc" id="L48">			loggingAction = (EventLoggingAction)request.getSession().getAttribute(&quot;loggingAction&quot;);</span>
+<span class="nc" id="L49">			loggedInName = (String)request.getSession().getAttribute(&quot;loggedInName&quot;);			</span>
+<span class="nc" id="L50">			currentMID = request.getParameter(&quot;currentMID&quot;);</span>
+<span class="nc" id="L51">			isRepresentee = request.getParameter(&quot;isRepresentee&quot;);</span>
+			
+<span class="nc" id="L53">			releaseHospital = request.getParameter(&quot;releaseHospital&quot;);</span>
+			
+<span class="nc" id="L55">			recFirstName = request.getParameter(&quot;recFirstName&quot;);</span>
+<span class="nc" id="L56">			recLastName = request.getParameter(&quot;recLastName&quot;);</span>
+<span class="nc" id="L57">			recPhone = request.getParameter(&quot;recPhone&quot;);</span>
+<span class="nc" id="L58">			recEmail = request.getParameter(&quot;recEmail&quot;);</span>
+			
+<span class="nc" id="L60">			recHospitalName = request.getParameter(&quot;recHospitalName&quot;);</span>
+<span class="nc" id="L61">			recHospitalAddress1 = request.getParameter(&quot;recHospitalAddress1&quot;);</span>
+<span class="nc" id="L62">			recHospitalAddress2 = request.getParameter(&quot;recHospitalAddress2&quot;);</span>
+<span class="nc" id="L63">			recHospitalCity = request.getParameter(&quot;recHospitalCity&quot;);</span>
+<span class="nc" id="L64">			recHospitalState = request.getParameter(&quot;recHospitalState&quot;);</span>
+<span class="nc" id="L65">			recHospitalZip = request.getParameter(&quot;recHospitalZip&quot;);</span>
+<span class="nc" id="L66">			releaseJustification = request.getParameter(&quot;releaseJustification&quot;);</span>
+<span class="nc" id="L67">			verifyForm = Boolean.parseBoolean(request.getParameter(&quot;verifyForm&quot;));</span>
+<span class="nc" id="L68">			digitalSig = request.getParameter(&quot;digitalSig&quot;);</span>
+			
+<span class="nc" id="L70">			patMID = (String)request.getSession().getAttribute(&quot;patMID&quot;);</span>
+			
+<span class="nc" id="L72">		} catch(NullPointerException e){</span>
+<span class="nc" id="L73">			e.printStackTrace();</span>
+<span class="nc" id="L74">		}		</span>
+		
+		
+<span class="nc" id="L77">		Boolean checksum = false;		</span>
+		try {
+<span class="nc" id="L79">			checksum = checkCredentials(digitalSig);</span>
+<span class="nc" id="L80">		} catch (Exception e) {</span>
+<span class="nc" id="L81">			e.printStackTrace();</span>
+<span class="nc" id="L82">		}	</span>
+		
+		try{
+<span class="nc" id="L85">			form = new RecordsReleaseForm();</span>
+			
+<span class="nc" id="L87">			form.setReleaseHospitalID(releaseHospital);</span>
+<span class="nc" id="L88">			form.setRecipientFirstName(recFirstName);</span>
+<span class="nc" id="L89">			form.setRecipientLastName(recLastName);</span>
+<span class="nc" id="L90">			form.setRecipientPhone(recPhone);</span>
+<span class="nc" id="L91">			form.setRecipientEmail(recEmail);</span>
+			
+<span class="nc" id="L93">			form.setRecipientHospitalName(recHospitalName);</span>
+<span class="nc" id="L94">			form.setRecipientHospitalAddress(recHospitalAddress1 + recHospitalAddress2 + &quot;, &quot; + recHospitalCity + &quot;, &quot; + recHospitalState + &quot; &quot; + recHospitalZip);</span>
+<span class="nc" id="L95">			form.setRequestJustification(releaseJustification);</span>
+<span class="nc" id="L96">			form.setDigitalSignature(checksum);</span>
+			
+<span class="nc" id="L98">		} catch(NullPointerException e){</span>
+<span class="nc" id="L99">			e.printStackTrace();</span>
+<span class="nc" id="L100">		}</span>
+		
+<span class="nc" id="L102">		String message = &quot;&quot;;</span>
+<span class="nc" id="L103">		message = releaseAction.addRecordsRelease(form);</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		if(!message.equals(RequestRecordsReleaseAction.SUCCESS_MESSAGE)){</span>
+<span class="nc" id="L106">			request.setAttribute(&quot;failure&quot;, message);</span>
+<span class="nc" id="L107">			request.setAttribute(&quot;isRepresentee&quot;, isRepresentee);</span>
+<span class="nc" id="L108">			request.getRequestDispatcher(&quot;requestRecordsRelease.jsp&quot;).forward(request, response);</span>
+<span class="nc" id="L109">			return;</span>
+		}
+				
+		try {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			if(isRepresentee.equals(&quot;false&quot;)){</span>
+<span class="nc" id="L114">				loggingAction.logEvent(TransactionType.PATIENT_RELEASE_HEALTH_RECORDS, Long.parseLong(patMID), Long.parseLong(currentMID), &quot;&quot;);</span>
+			}
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			else if(isRepresentee.equals(&quot;true&quot;)){</span>
+<span class="nc" id="L117">				loggingAction.logEvent(TransactionType.PATIENT_REQUEST_DEPEDENT_RECORDS, Long.parseLong(patMID), Long.parseLong(currentMID), &quot;&quot;);</span>
+			}
+<span class="nc" id="L119">		} catch (DBException e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
+<span class="nc" id="L121">		}</span>
+		
+<span class="nc" id="L123">		request.setAttribute(&quot;currentMID&quot;, currentMID);</span>
+<span class="nc" id="L124">		request.setAttribute(&quot;status&quot;,  &quot;Pending&quot;);	</span>
+		
+<span class="nc" id="L126">		request.setAttribute(&quot;releaseHospital&quot;, releaseHospital);</span>
+		
+<span class="nc" id="L128">		request.setAttribute(&quot;recFirstName&quot;, recFirstName);</span>
+<span class="nc" id="L129">		request.setAttribute(&quot;recLastName&quot;, recLastName);</span>
+<span class="nc" id="L130">		request.setAttribute(&quot;recPhone&quot;, recPhone);</span>
+<span class="nc" id="L131">		request.setAttribute(&quot;recEmail&quot;, recEmail);</span>
+		
+<span class="nc" id="L133">		request.setAttribute(&quot;recHospitalName&quot;, recHospitalName);</span>
+<span class="nc" id="L134">		request.setAttribute(&quot;recHospitalAddress&quot;, recHospitalAddress1 + recHospitalAddress2 + &quot;, &quot; + recHospitalCity + &quot;, &quot; + recHospitalState + &quot; &quot; + recHospitalZip);</span>
+<span class="nc" id="L135">		request.setAttribute(&quot;recHospitalAddress1&quot;, recHospitalAddress1);</span>
+<span class="nc" id="L136">		request.setAttribute(&quot;recHospitalAddress2&quot;, recHospitalAddress2);</span>
+<span class="nc" id="L137">		request.setAttribute(&quot;recHospitalCity&quot;, recHospitalCity);</span>
+<span class="nc" id="L138">		request.setAttribute(&quot;recHospitalState&quot;, recHospitalState);</span>
+<span class="nc" id="L139">		request.setAttribute(&quot;recHospitalZip&quot;, recHospitalZip);</span>
+<span class="nc" id="L140">		request.setAttribute(&quot;releaseJustification&quot;, releaseJustification);</span>
+		
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if(verifyForm){</span>
+<span class="nc" id="L143">			request.setAttribute(&quot;fromServlet&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L144">			request.getRequestDispatcher(&quot;confirmRecordsReleaseServlet.jsp&quot;).forward(request, response);</span>
+		}
+		
+			
+<span class="nc" id="L148">	}</span>
+	
+	private Boolean checkCredentials(String digitalSig) throws Exception{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if(digitalSig.equals(loggedInName)){</span>
+<span class="nc" id="L152">			return true;</span>
+		}
+<span class="nc" id="L154">		return false;		</span>
+	}
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptTypeDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">ApptTypeDAO.java</span></div><h1>ApptTypeDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.ApptTypeBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.ApptTypeBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+public class ApptTypeDAO {
+
+	private transient final DAOFactory factory;
+	private transient final ApptTypeBeanLoader atLoader;
+
+<span class="fc" id="L19">	public ApptTypeDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L20">		this.factory = factory;</span>
+<span class="fc" id="L21">		this.atLoader = new ApptTypeBeanLoader();</span>
+<span class="fc" id="L22">	}</span>
+
+	public List&lt;ApptTypeBean&gt; getApptTypes() throws SQLException, DBException {
+<span class="pc" id="L25">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L26">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM appointmenttype&quot;)) {</span>
+<span class="fc" id="L27">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L29">			final List&lt;ApptTypeBean&gt; atList = this.atLoader.loadList(results);</span>
+<span class="fc" id="L30">			results.close();</span>
+<span class="fc" id="L31">			return atList;</span>
+<span class="pc bpc" id="L32" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L33">			throw new DBException(e);</span>
+		}
+	}
+
+	public boolean addApptType(final ApptTypeBean apptType) throws SQLException, DBException {
+<span class="pc" id="L38">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L39">				PreparedStatement stmt = conn.prepareStatement(&quot;INSERT INTO appointmenttype (appt_type, duration) &quot; + &quot;VALUES (?, ?)&quot;)) {</span>
+<span class="fc" id="L40">			this.atLoader.loadParameters(stmt, apptType);</span>
+<span class="fc" id="L41">			final int rowCount = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">			return rowCount &gt; 0;</span>
+<span class="pc bpc" id="L43" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L44">			throw new DBException(e);</span>
+		}
+	}
+
+	public boolean editApptType(final ApptTypeBean apptType) throws SQLException, DBException {
+<span class="pc" id="L49">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L50">				PreparedStatement stmt = conn.prepareStatement(&quot;UPDATE appointmenttype SET duration=? WHERE appt_type=?&quot;)) {</span>
+<span class="fc" id="L51">			stmt.setInt(1, apptType.getDuration());</span>
+<span class="fc" id="L52">			stmt.setString(2, apptType.getName());</span>
+			
+<span class="fc" id="L54">			final int rowCount = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">			return rowCount &gt; 0;</span>
+<span class="pc bpc" id="L56" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L57">			throw new DBException(e);</span>
+		}
+
+	}
+
+	public ApptTypeBean getApptType(final String apptType) throws SQLException, DBException {
+<span class="fc" id="L63">		ApptTypeBean bean = null;</span>
+<span class="pc" id="L64">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L65">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM appointmenttype WHERE appt_type=?&quot;)) {</span>
+<span class="fc" id="L66">			stmt.setString(1, apptType);</span>
+
+<span class="fc" id="L68">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L70">			final List&lt;ApptTypeBean&gt; beans = atLoader.loadList(results);</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">			if (!beans.isEmpty()) {</span>
+<span class="fc" id="L72">				bean = beans.get(0);</span>
+			}
+<span class="fc" id="L74">			results.close();</span>
+<span class="pc bpc" id="L75" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L76">			throw new DBException(e);</span>
+<span class="fc" id="L77">		}</span>
+<span class="fc" id="L78">		return bean;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

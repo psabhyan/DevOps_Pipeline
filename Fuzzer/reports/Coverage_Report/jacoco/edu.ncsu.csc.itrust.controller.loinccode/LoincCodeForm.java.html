@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoincCodeForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.loinccode</a> &gt; <span class="el_source">LoincCodeForm.java</span></div><h1>LoincCodeForm.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.loinccode;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import edu.ncsu.csc.itrust.controller.loinccode.LoincCodeController;
+import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;loinc_code_form&quot;)
+@ViewScoped
+public class LoincCodeForm {
+	private LoincCodeController controller;
+	private LOINCCode loincCode;
+	// Input Fields
+	private String code;
+	private String component;
+	private String kindOfProperty;
+	private String timeAspect;
+	private String system;
+	private String scaleType;
+	private String methodType;
+
+	private String search;
+	private boolean displayCodes;
+
+	public LoincCodeForm() {
+<span class="fc" id="L30">		this(null);</span>
+<span class="fc" id="L31">	}</span>
+
+<span class="fc" id="L33">	public LoincCodeForm(LoincCodeController loincCodeController) {</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		controller = (loincCodeController == null) ? new LoincCodeController() : loincCodeController;</span>
+<span class="fc" id="L35">		search = &quot;&quot;;</span>
+<span class="fc" id="L36">		setDisplayCodes(false);</span>
+<span class="fc" id="L37">	}</span>
+
+	public void add() {
+<span class="fc" id="L40">		setLoincCode(new LOINCCode(code, component, kindOfProperty, timeAspect, system, scaleType, methodType));</span>
+<span class="fc" id="L41">		controller.add(loincCode);</span>
+<span class="fc" id="L42">		controller.logTransaction(TransactionType.LOINC_CODE_ADD, loincCode.getCode());</span>
+<span class="fc" id="L43">		code = &quot;&quot;;</span>
+<span class="fc" id="L44">		component = &quot;&quot;;</span>
+<span class="fc" id="L45">		kindOfProperty = &quot;&quot;;</span>
+<span class="fc" id="L46">		timeAspect = &quot;&quot;;</span>
+<span class="fc" id="L47">		system = &quot;&quot;;</span>
+<span class="fc" id="L48">		scaleType = &quot;&quot;;</span>
+<span class="fc" id="L49">		methodType = &quot;&quot;;</span>
+<span class="fc" id="L50">	}</span>
+
+	public void update() {
+<span class="fc" id="L53">		setLoincCode(new LOINCCode(code, component, kindOfProperty, timeAspect, system, scaleType, methodType));</span>
+<span class="fc" id="L54">		controller.edit(loincCode);</span>
+<span class="fc" id="L55">		controller.logTransaction(TransactionType.LOINC_CODE_EDIT, loincCode.getCode());</span>
+<span class="fc" id="L56">		code = &quot;&quot;;</span>
+<span class="fc" id="L57">		component = &quot;&quot;;</span>
+<span class="fc" id="L58">		kindOfProperty = &quot;&quot;;</span>
+<span class="fc" id="L59">		timeAspect = &quot;&quot;;</span>
+<span class="fc" id="L60">		system = &quot;&quot;;</span>
+<span class="fc" id="L61">		scaleType = &quot;&quot;;</span>
+<span class="fc" id="L62">		methodType = &quot;&quot;;</span>
+<span class="fc" id="L63">	}</span>
+
+	public void delete() {
+<span class="fc" id="L66">		setLoincCode(new LOINCCode(code, component, kindOfProperty, timeAspect, system, scaleType, methodType));</span>
+<span class="fc" id="L67">		controller.remove(code);</span>
+<span class="fc" id="L68">		code = &quot;&quot;;</span>
+<span class="fc" id="L69">		component = &quot;&quot;;</span>
+<span class="fc" id="L70">		kindOfProperty = &quot;&quot;;</span>
+<span class="fc" id="L71">		timeAspect = &quot;&quot;;</span>
+<span class="fc" id="L72">		system = &quot;&quot;;</span>
+<span class="fc" id="L73">		scaleType = &quot;&quot;;</span>
+<span class="fc" id="L74">		methodType = &quot;&quot;;</span>
+<span class="fc" id="L75">	}</span>
+
+	public void fillInput(String code, String component, String kindOfProperty, String timeAspect, String system,
+			String scaleType, String methodType) {
+<span class="fc" id="L79">		this.code = code;</span>
+<span class="fc" id="L80">		this.component = component;</span>
+<span class="fc" id="L81">		this.kindOfProperty = kindOfProperty;</span>
+<span class="fc" id="L82">		this.timeAspect = timeAspect;</span>
+<span class="fc" id="L83">		this.system = system;</span>
+<span class="fc" id="L84">		this.scaleType = scaleType;</span>
+<span class="fc" id="L85">		this.methodType = methodType;</span>
+<span class="fc" id="L86">	}</span>
+
+	public List&lt;LOINCCode&gt; getCodesWithFilter() {
+<span class="fc" id="L89">		return controller.getCodesWithFilter(search);</span>
+	}
+
+	public String getSearch() {
+<span class="fc" id="L93">		return search;</span>
+	}
+
+	public void setSearch(String search) {
+<span class="fc" id="L97">		this.search = search;</span>
+<span class="fc" id="L98">	}</span>
+
+	public boolean getDisplayCodes() {
+<span class="fc" id="L101">		return displayCodes;</span>
+	}
+
+	/**
+	 * Sets whether or not search results matching the given search string
+	 * should be rendered. If displayCodes is true, this logs the view action
+	 * for all codes matching the search filter.
+	 * 
+	 * @param displayCodes
+	 */
+	public void setDisplayCodes(boolean displayCodes) {
+<span class="fc" id="L112">		this.displayCodes = displayCodes;</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		if (this.displayCodes) {</span>
+<span class="fc" id="L115">			logViewLoincCodes();</span>
+		}
+<span class="fc" id="L117">	}</span>
+
+	/**
+	 * Logs a view action for each LOINC code matching the current search query.
+	 * Only logs if search query is non-empty.
+	 */
+	private void logViewLoincCodes() {
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (search != null &amp;&amp; !search.equals(&quot;&quot;)) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			for (LOINCCode code : controller.getCodesWithFilter(search)) {</span>
+<span class="nc" id="L126">				controller.logTransaction(TransactionType.LOINC_CODE_VIEW, code.getCode());</span>
+<span class="nc" id="L127">			}</span>
+		}
+<span class="fc" id="L129">	}</span>
+
+	public String getCode() {
+<span class="fc" id="L132">		return code;</span>
+	}
+
+	public void setCode(String code) {
+<span class="fc" id="L136">		this.code = code;</span>
+<span class="fc" id="L137">	}</span>
+
+	public LOINCCode getLoincCode() {
+<span class="fc" id="L140">		return loincCode;</span>
+	}
+
+	public void setLoincCode(LOINCCode loincCode) {
+<span class="fc" id="L144">		this.loincCode = loincCode;</span>
+<span class="fc" id="L145">	}</span>
+
+	public String getComponent() {
+<span class="fc" id="L148">		return component;</span>
+	}
+
+	public void setComponent(String component) {
+<span class="fc" id="L152">		this.component = component;</span>
+<span class="fc" id="L153">	}</span>
+
+	public String getTimeAspect() {
+<span class="fc" id="L156">		return timeAspect;</span>
+	}
+
+	public void setTimeAspect(String timeAspect) {
+<span class="fc" id="L160">		this.timeAspect = timeAspect;</span>
+<span class="fc" id="L161">	}</span>
+
+	public String getKindOfProperty() {
+<span class="fc" id="L164">		return kindOfProperty;</span>
+	}
+
+	public void setKindOfProperty(String kindOfProperty) {
+<span class="fc" id="L168">		this.kindOfProperty = kindOfProperty;</span>
+<span class="fc" id="L169">	}</span>
+
+	public String getSystem() {
+<span class="fc" id="L172">		return system;</span>
+	}
+
+	public void setSystem(String system) {
+<span class="fc" id="L176">		this.system = system;</span>
+<span class="fc" id="L177">	}</span>
+
+	public String getScaleType() {
+<span class="fc" id="L180">		return scaleType;</span>
+	}
+
+	public void setScaleType(String scaleType) {
+<span class="fc" id="L184">		this.scaleType = scaleType;</span>
+<span class="fc" id="L185">	}</span>
+
+	public String getMethodType() {
+<span class="fc" id="L188">		return methodType;</span>
+	}
+
+	public void setMethodType(String methodType) {
+<span class="fc" id="L192">		this.methodType = methodType;</span>
+<span class="fc" id="L193">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

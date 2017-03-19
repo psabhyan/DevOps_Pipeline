@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EventLoggingAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">EventLoggingAction.java</span></div><h1>EventLoggingAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.TransactionDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Handles retrieving the log of record accesses for a given user Used by viewAccessLog.jsp
+ * 
+ * 
+ */
+public class EventLoggingAction {
+	private TransactionDAO transDAO;
+
+	/**
+	 * Set up
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param loggedInMID The MID of the person retrieving the logs.
+	 */
+<span class="fc" id="L22">	public EventLoggingAction(DAOFactory factory) {</span>
+<span class="fc" id="L23">		this.transDAO = factory.getTransactionDAO();</span>
+<span class="fc" id="L24">	}</span>
+
+	/**
+	 * Log a transaction, with all of the info. The meaning of secondaryMID and addedInfo changes depending on
+	 * the transaction type.
+	 * 
+	 * @param type The {@link TransactionType} enum representing the type this transaction is.
+	 * @param loggedInMID The MID of the user who is logged in.
+	 * @param secondaryMID Typically, the MID of the user who is being acted upon.
+	 * @param addedInfo A note about a subtransaction, or specifics of this transaction (for posterity).
+	 * @throws DBException
+	 */
+	public void logEvent(TransactionType type, long loggedInMID, long secondaryMID, String addedInfo)
+			throws DBException {
+<span class="fc" id="L38">		this.transDAO.logTransaction(type, loggedInMID, secondaryMID, addedInfo);</span>
+<span class="fc" id="L39">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

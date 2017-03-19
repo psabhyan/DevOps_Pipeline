@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewPersonnelAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewPersonnelAction.java</span></div><h1>ViewPersonnelAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.Email;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.FakeEmailDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.Messages;
+
+/**
+ * Handles retrieving personnel beans for a given personnel Used by viewPersonnel.jsp
+ * 
+ * 
+ */
+public class ViewPersonnelAction {
+	private PersonnelDAO personnelDAO;
+	private FakeEmailDAO emailDAO;
+	private long loggedInMID;
+
+	/**
+	 * Set up defaults
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param loggedInMID The MID of the person retrieving personnel beans.
+	 */
+<span class="fc" id="L29">	public ViewPersonnelAction(DAOFactory factory, long loggedInMID) {</span>
+<span class="fc" id="L30">		this.emailDAO = factory.getFakeEmailDAO();</span>
+<span class="fc" id="L31">		this.personnelDAO = factory.getPersonnelDAO();</span>
+<span class="fc" id="L32">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L33">	}</span>
+
+	/**
+	 * Retrieves a PersonnelBean for the mid passed as a param
+	 * 
+	 * @param input
+	 *            the mid for which the PersonnelBean will be returned
+	 * @return PersonnelBean
+	 * @throws ITrustException
+	 */
+	public PersonnelBean getPersonnel(String input) throws ITrustException {
+		try {
+<span class="fc" id="L45">			long mid = Long.valueOf(input);</span>
+<span class="fc" id="L46">			PersonnelBean personnel = personnelDAO.getPersonnel(mid);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">			if (personnel != null) {</span>
+<span class="fc" id="L48">				return personnel;</span>
+			} else
+<span class="fc" id="L50">				throw new ITrustException(Messages.getString(&quot;ViewPersonnelAction.1&quot;)); //$NON-NLS-1$</span>
+<span class="fc" id="L51">		} catch (NumberFormatException e) {</span>
+			
+<span class="fc" id="L53">			throw new ITrustException(Messages.getString(&quot;ViewPersonnelAction.2&quot;)); //$NON-NLS-1$</span>
+		}
+	}
+	
+	/**
+	 * Returns a PatientBean for the currently logged in personnel
+	 * 
+	 * @return The PatientBean
+	 * @throws ITrustException
+	 */
+	public List&lt;Email&gt; getEmailHistory() throws ITrustException {
+<span class="nc" id="L64">		return emailDAO.getEmailsByPerson(personnelDAO.getPersonnel(loggedInMID).getEmail());</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

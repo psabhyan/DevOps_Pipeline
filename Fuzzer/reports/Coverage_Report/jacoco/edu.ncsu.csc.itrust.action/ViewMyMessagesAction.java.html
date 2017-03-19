@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewMyMessagesAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewMyMessagesAction.java</span></div><h1>ViewMyMessagesAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.MessageBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.MessageDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Action class for ViewMyMessages.jsp
+ */
+public class ViewMyMessagesAction {
+	private long loggedInMID;
+	private PatientDAO patientDAO;
+	private PersonnelDAO personnelDAO;
+	private MessageDAO messageDAO;
+
+	/**
+	 * Set up defaults
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param loggedInMID The MID of the user who is viewing their messages.
+	 * @throws SQLException 
+	 * @throws DBException 
+	 */
+<span class="fc" id="L39">	public ViewMyMessagesAction(DAOFactory factory, long loggedInMID) throws DBException, SQLException {</span>
+<span class="fc" id="L40">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L41">		this.patientDAO = factory.getPatientDAO();</span>
+<span class="fc" id="L42">		this.personnelDAO = factory.getPersonnelDAO();</span>
+<span class="fc" id="L43">		this.messageDAO = factory.getMessageDAO();</span>
+<span class="fc" id="L44">		TransactionLogger.getInstance().logTransaction(TransactionType.MESSAGE_VIEW, loggedInMID, 0L, &quot;&quot;);                     </span>
+<span class="fc" id="L45">		TransactionLogger.getInstance().logTransaction(TransactionType.NOTIFICATIONS_VIEW, loggedInMID, 0l, &quot;&quot;);</span>
+<span class="fc" id="L46">	}</span>
+	
+	/**
+	 * Gets all the messages for the logged in user
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 * @throws DBException 
+	 */
+	public List&lt;MessageBean&gt; getAllMyMessages() throws SQLException, DBException {
+
+<span class="fc" id="L57">		TransactionLogger.getInstance().logTransaction(TransactionType.INBOX_VIEW, loggedInMID, 0L, &quot;&quot;);</span>
+<span class="fc" id="L58">		return messageDAO.getMessagesForMID(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the messages for the logged in user and sorts by ascending time
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 * @throws DBException 
+	 */
+	public List&lt;MessageBean&gt; getAllMyMessagesTimeAscending() throws SQLException, DBException {
+		
+<span class="fc" id="L70">		return messageDAO.getMessagesTimeAscending(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the messages for the logged in user and sorts names in ascending order
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 * @throws DBException 
+	 */
+	public List&lt;MessageBean&gt; getAllMyMessagesNameAscending() throws SQLException, DBException {
+		
+<span class="fc" id="L82">		return messageDAO.getMessagesNameAscending(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the messages for the logged in user and sorts name in descending order
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 * @throws DBException 
+	 */
+	public List&lt;MessageBean&gt; getAllMyMessagesNameDescending() throws SQLException, DBException {
+		
+<span class="fc" id="L94">		return messageDAO.getMessagesNameDescending(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the sent messages for the logged in user
+	 * 
+	 * @return a list of all the user's sent messages
+	 * @throws SQLException
+	 */
+	public List&lt;MessageBean&gt; getAllMySentMessages() throws DBException, SQLException {
+<span class="fc" id="L104">		TransactionLogger.getInstance().logTransaction(TransactionType.OUTBOX_VIEW, loggedInMID, 0l, &quot;&quot;);</span>
+<span class="fc" id="L105">		return messageDAO.getMessagesFrom(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the messages for the logged in user and sorts by ascending time
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 */
+	public List&lt;MessageBean&gt; getAllMySentMessagesTimeAscending() throws DBException, SQLException {
+<span class="fc" id="L115">		return messageDAO.getMessagesFromTimeAscending(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the messages for the logged in user and sorts names in ascending order
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 */
+	public List&lt;MessageBean&gt; getAllMySentMessagesNameAscending() throws DBException, SQLException {
+		
+<span class="fc" id="L126">		return messageDAO.getMessagesFromNameAscending(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the messages for the logged in user and sorts name in descending order
+	 * 
+	 * @return a list of all the user's messages
+	 * @throws SQLException
+	 */
+	public List&lt;MessageBean&gt; getAllMySentMessagesNameDescending() throws DBException, SQLException {
+		
+<span class="fc" id="L137">		return messageDAO.getMessagesFromNameDescending(loggedInMID);</span>
+	}
+	
+	
+	/**
+	 * Gets a list of messages for a user based on their filter criteria.
+	 * 
+	 * @param messages List of all of a user's MessageBeans
+	 * @param filter String containing a user's filter criteria.
+	 * @return a List of MessageBeans that meet the criteria of the filter.
+	 * @throws ITrustException
+	 * @throws ParseException
+	 */
+	public List&lt;MessageBean&gt; filterMessages(List&lt;MessageBean&gt; messages, String filter) throws ITrustException, ParseException {
+<span class="fc" id="L151">		List&lt;MessageBean&gt; filtered = new ArrayList&lt;MessageBean&gt;();</span>
+<span class="fc" id="L152">		String[] f = filter.split(&quot;,&quot;, -1);</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		for(MessageBean m : messages) {</span>
+			/**
+			 * Check the sender filter field.
+			 * Exclude if this MessageBean does not match the 
+			 * requested sender, if one is specified.
+			 */
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">			if(!f[0].equals(&quot;&quot;)) {</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">				if(!this.getName(m.getFrom()).equalsIgnoreCase(f[0]))</span>
+<span class="fc" id="L161">					continue;</span>
+			}
+			/**
+			 * Check the subject filter field.
+			 * Exclude if this MessageBean does not match the 
+			 * requested subject, if one is specified.
+			 */
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">			if(!f[1].equals(&quot;&quot;)) {</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">				if(!m.getSubject().equalsIgnoreCase(f[1]))</span>
+<span class="fc" id="L170">					continue;</span>
+			}
+			/**
+			 * Check the body of the message for certain words.
+			 * Exclude if this MessageBean if it does not contain 
+			 * those words in the message body.
+			 */
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">			if(!f[2].equals(&quot;&quot;)) {</span>
+<span class="pc bpc" id="L178" title="3 of 4 branches missed.">				if(!m.getSubject().toLowerCase().contains(f[2].toLowerCase()) &amp;&amp; !m.getBody().toLowerCase().contains(f[2].toLowerCase()))</span>
+<span class="nc" id="L179">					continue;</span>
+			}
+			/**
+			 * Check the body of the message for certain words.
+			 * Exclude if this MessageBean if it does contain 
+			 * those words in the message body.
+			 */
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">			if(!f[3].equals(&quot;&quot;)) {</span>
+<span class="pc bpc" id="L187" title="2 of 4 branches missed.">				if(m.getSubject().toLowerCase().contains(f[3].toLowerCase()) || m.getBody().toLowerCase().contains(f[3].toLowerCase()))</span>
+<span class="nc" id="L188">					continue;</span>
+			}
+			/**
+			 * Check the start date filter field.
+			 * Exclude if this MessageBean was not sent after
+			 * this date.
+			 */
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">			if(!f[4].equals(&quot;&quot;)) {</span>
+<span class="fc" id="L196">				DateFormat format = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L197">				Date s = format.parse(f[4]);</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">				if(s.after(m.getSentDate()))</span>
+<span class="nc" id="L199">						continue;</span>
+				
+			}
+			/**
+			 * Check the end date filter field.
+			 * Exclude if this MessageBean was not sent before
+			 * this date.
+			 */
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			if(!f[5].equals(&quot;&quot;)) {</span>
+<span class="fc" id="L208">				DateFormat format = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L209">				Date s = format.parse(f[5]);</span>
+<span class="fc" id="L210">				Calendar c = Calendar.getInstance();</span>
+<span class="fc" id="L211">				c.setTime(s);</span>
+<span class="fc" id="L212">				c.add(Calendar.DAY_OF_MONTH, 1);</span>
+<span class="fc" id="L213">				s = c.getTime();</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">				if(s.before(m.getSentDate()))</span>
+<span class="fc" id="L215">						continue;</span>
+				
+			}
+			/**
+			 * If the message has not been eliminated by any 
+			 * of the filter fields, add it to the new list 
+			 * of messages.
+			 */
+<span class="fc" id="L223">			filtered.add(m);</span>
+<span class="fc" id="L224">		}</span>
+		
+<span class="fc" id="L226">		return filtered;</span>
+	}
+	
+	/**
+	 * Gets a patient's name from their MID
+	 * 
+	 * @param mid the MID of the patient
+	 * @return the patient's name
+	 * @throws ITrustException
+	 */
+	public String getName(long mid) throws ITrustException {
+<span class="fc bfc" id="L237" title="All 2 branches covered.">		if(mid &lt; 7000000000L)</span>
+<span class="fc" id="L238">			return patientDAO.getName(mid);</span>
+		else
+<span class="fc" id="L240">			return personnelDAO.getName(mid);</span>
+	}
+	
+	/**
+	 * Gets a personnel's name from their MID
+	 * 
+	 * @param mid the MID of the personnel
+	 * @return the personnel's name
+	 * @throws ITrustException
+	 */
+	public String getPersonnelName(long mid) throws ITrustException {
+<span class="fc" id="L251">		return personnelDAO.getName(mid);</span>
+	}
+	
+	/**
+	 * Set the state of the MessageBean to read, after 
+	 * it is read by a user.
+	 * @param mBean MessageBean to be read
+	 */
+	public void setRead(MessageBean mBean) {
+		try {
+<span class="fc" id="L261">			messageDAO.updateRead(mBean);</span>
+<span class="nc" id="L262">		} catch (DBException e) {</span>
+			//TODO
+<span class="fc" id="L264">		}</span>
+<span class="fc" id="L265">	}</span>
+	
+	/**
+	 * Get the number of unread messages that the current user has.
+	 * 
+	 * @return The number of unread messages.
+	 * @throws SQLException
+	 * @throws DBException 
+	 */
+	public int getUnreadCount() throws SQLException, DBException {
+<span class="fc" id="L275">		List&lt;MessageBean&gt; messages = getAllMyMessages();</span>
+<span class="fc" id="L276">		int count = 0;</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">		for (MessageBean mb: messages) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">			if (mb.getRead() == 0) {</span>
+<span class="fc" id="L279">				count++;</span>
+			}
+<span class="fc" id="L281">		}</span>
+<span class="fc" id="L282">		return count;</span>
+	}
+
+	
+	/**
+	 * getCCdMessages
+	 * @param refID refID
+	 * @return messageDAO
+	 * @throws DBException
+	 * @throws SQLException
+	 */
+	public List&lt;MessageBean&gt; getCCdMessages(long refID) throws DBException, SQLException{
+<span class="fc" id="L294">		return messageDAO.getCCdMessages(refID);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

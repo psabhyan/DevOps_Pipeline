@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LabProcedureController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.labProcedure</a> &gt; <span class="el_source">LabProcedureController.java</span></div><h1>LabProcedureController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.labProcedure;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.ValidationFormat;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedure;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedure.LabProcedureStatus;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureData;
+import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureMySQL;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;lab_procedure_controller&quot;)
+@SessionScoped
+public class LabProcedureController extends iTrustController {
+
+	private static final String INVALID_LAB_PROCEDURE = &quot;Invalid lab procedure&quot;;
+	private LabProcedureData labProcedureData;
+
+	public LabProcedureController() {
+<span class="fc" id="L30">		super();</span>
+		try {
+<span class="nc" id="L32">			labProcedureData = new LabProcedureMySQL();</span>
+<span class="fc" id="L33">		} catch (DBException e) {</span>
+<span class="fc" id="L34">			e.printStackTrace();</span>
+<span class="nc" id="L35">		}</span>
+<span class="fc" id="L36">	}</span>
+
+	/**
+	 * Constructor injection, intended only for unit testing purposes.
+	 * 
+	 * @param ds
+	 *            The injected DataSource dependency
+	 */
+	public LabProcedureController(DataSource ds) {
+<span class="fc" id="L45">		super();</span>
+<span class="fc" id="L46">		labProcedureData = new LabProcedureMySQL(ds);</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Setter injection for lab procedure data. ONLY use for unit testing
+	 * purposes.
+	 */
+	public void setLabProcedureData(LabProcedureData data) {
+<span class="fc" id="L54">		this.labProcedureData = data;</span>
+<span class="fc" id="L55">	}</span>
+
+	/**
+	 * Adds a lab procedure.
+	 * 
+	 * @param procedure
+	 *            The lab procedure to add
+	 */
+	public void add(LabProcedure procedure) {
+<span class="fc" id="L64">		boolean successfullyAdded = false;</span>
+		// Only the HCP role can add LabProcedures
+<span class="fc" id="L66">		String role = getSessionUtils().getSessionUserRole();</span>
+<span class="pc bpc" id="L67" title="2 of 4 branches missed.">		if (role == null || !role.equals(&quot;hcp&quot;)) {</span>
+<span class="nc" id="L68">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Invalid user authentication&quot;,</span>
+					&quot;Only HCPs can add Lab Procedures&quot;, null);
+<span class="nc" id="L70">			return;</span>
+		}
+		try {
+<span class="fc" id="L73">			procedure.setHcpMID(Long.parseLong(getSessionUtils().getSessionLoggedInMID()));</span>
+<span class="fc" id="L74">			successfullyAdded = labProcedureData.add(procedure);</span>
+<span class="nc" id="L75">		} catch (DBException e) {</span>
+<span class="nc" id="L76">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_LAB_PROCEDURE, e.getExtendedMessage(), null);</span>
+<span class="fc" id="L77">		} catch (NumberFormatException e) {</span>
+<span class="fc" id="L78">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Couldn't add lab procedure&quot;, &quot;Couldn't parse HCP MID&quot;,</span>
+					null);
+<span class="nc" id="L80">		} catch (Exception e) {</span>
+<span class="nc" id="L81">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_LAB_PROCEDURE, INVALID_LAB_PROCEDURE, null);</span>
+<span class="pc" id="L82">		}</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">		if (successfullyAdded) {</span>
+<span class="fc" id="L84">			printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Lab Procedure Successfully Updated&quot;,</span>
+					&quot;Lab Procedure Successfully Updated&quot;, null);
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">			if (procedure != null) {</span>
+<span class="fc" id="L87">				logTransaction(TransactionType.LAB_RESULTS_CREATE, procedure.getLabProcedureCode());</span>
+<span class="fc" id="L88">				Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">				logTransaction(TransactionType.LAB_PROCEDURE_ADD, ovid == null ? null : ovid.toString());</span>
+			}
+		}
+<span class="fc" id="L92">	}</span>
+
+	/**
+	 * Updates a lab procedure. Prints FacesContext info message when
+	 * successfully updated, error message when the update fails.
+	 * 
+	 * @param procedure
+	 *            The lab procedure to update
+	 */
+	public void edit(LabProcedure procedure) {
+<span class="fc" id="L102">		boolean successfullyUpdated = false;</span>
+
+		try {
+<span class="fc" id="L105">			successfullyUpdated = labProcedureData.update(procedure);</span>
+<span class="fc" id="L106">		} catch (DBException e) {</span>
+<span class="fc" id="L107">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_LAB_PROCEDURE, e.getExtendedMessage(), null);</span>
+<span class="nc" id="L108">		} catch (Exception e) {</span>
+<span class="nc" id="L109">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_LAB_PROCEDURE, INVALID_LAB_PROCEDURE, null);</span>
+<span class="fc" id="L110">		}</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		if (successfullyUpdated) {</span>
+<span class="fc" id="L112">			printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Lab Procedure Successfully Updated&quot;,</span>
+					&quot;Lab Procedure Successfully Updated&quot;, null);
+<span class="fc" id="L114">			Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">			logTransaction(TransactionType.LAB_PROCEDURE_EDIT, ovid == null ? null : ovid.toString());</span>
+		}
+<span class="fc" id="L117">	}</span>
+
+	/**
+	 * Removes lab procedure from the system. Prints FacesContext info message
+	 * when successfully removed, error message when the removal fails.
+	 * 
+	 * @param labProcedureID
+	 *            The ID of the lab procedure to remove.
+	 */
+	public void remove(String labProcedureID) {
+<span class="fc" id="L127">		boolean successfullyRemoved = false;</span>
+
+<span class="fc" id="L129">		long id = -1;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (labProcedureID != null) {</span>
+			try {
+<span class="fc" id="L132">				id = Long.parseLong(labProcedureID);</span>
+<span class="fc" id="L133">				successfullyRemoved = labProcedureData.removeLabProcedure(id);</span>
+<span class="fc" id="L134">			} catch (NumberFormatException e) {</span>
+<span class="fc" id="L135">				printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Could not remove lab procedure&quot;,</span>
+						&quot;Failed to parse lab procedure ID&quot;, null);
+<span class="nc" id="L137">			} catch (Exception e) {</span>
+<span class="nc" id="L138">				printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Could not remove lab procedure&quot;,</span>
+						&quot;Could not remove lab procedure&quot;, null);
+<span class="fc" id="L140">			}</span>
+		}
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		if (successfullyRemoved) {</span>
+<span class="fc" id="L143">			printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Lab procedure successfully removed&quot;,</span>
+					&quot;Lab procedure successfully removed&quot;, null);
+<span class="fc" id="L145">			Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			logTransaction(TransactionType.LAB_PROCEDURE_REMOVE, ovid == null ? null : ovid.toString());</span>
+		}
+<span class="fc" id="L148">	}</span>
+
+	public LabProcedure getLabProcedureByID(String labProcedureID) {
+<span class="fc" id="L151">		long id = -1;</span>
+		try {
+<span class="fc" id="L153">			id = Long.parseLong(labProcedureID);</span>
+<span class="fc" id="L154">			return labProcedureData.getByID(id);</span>
+<span class="fc" id="L155">		} catch (NumberFormatException ne) {</span>
+<span class="fc" id="L156">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Lab Procedure&quot;,</span>
+					&quot;Unable to Retrieve Lab Procedure&quot;, null);
+<span class="nc" id="L158">		} catch (DBException e) {</span>
+<span class="nc" id="L159">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Lab Procedure&quot;,</span>
+					&quot;Unable to Retrieve Lab Procedure&quot;, null);
+<span class="fc" id="L161">		}</span>
+<span class="fc" id="L162">		return null;</span>
+	}
+
+	/**
+	 * Returns lab procedures with given office visit ID, or empty list if no
+	 * such procedures exist.
+	 */
+	public List&lt;LabProcedure&gt; getLabProceduresByOfficeVisit(String officeVisitID) throws DBException {
+<span class="fc" id="L170">		List&lt;LabProcedure&gt; procedures = Collections.emptyList();</span>
+<span class="fc" id="L171">		long mid = -1;</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if ((officeVisitID != null) &amp;&amp; ValidationFormat.NPMID.getRegex().matcher(officeVisitID).matches()) {</span>
+<span class="fc" id="L173">			mid = Long.parseLong(officeVisitID);</span>
+			try {
+<span class="fc" id="L175">				procedures = labProcedureData.getLabProceduresByOfficeVisit(mid).stream().sorted((o1, o2) -&gt; {</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">					return (o1.getPriority() == o2.getPriority()) ? o1.getUpdatedDate().compareTo(o2.getUpdatedDate())</span>
+<span class="fc" id="L177">							: o1.getPriority() - o2.getPriority();</span>
+<span class="fc" id="L178">				}).collect(Collectors.toList());</span>
+<span class="nc" id="L179">			} catch (Exception e) {</span>
+<span class="nc" id="L180">				printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Lab Procedures&quot;,</span>
+						&quot;Unable to Retrieve Lab Procedures&quot;, null);
+<span class="fc" id="L182">			}</span>
+		}
+<span class="fc" id="L184">		return procedures;</span>
+	}
+
+	public List&lt;LabProcedure&gt; getLabProceduresByLabTechnician(String technicianID) throws DBException {
+<span class="fc" id="L188">		List&lt;LabProcedure&gt; procedures = Collections.emptyList();</span>
+<span class="fc" id="L189">		long mid = -1;</span>
+<span class="pc bpc" id="L190" title="1 of 4 branches missed.">		if ((technicianID != null) &amp;&amp; ValidationFormat.NPMID.getRegex().matcher(technicianID).matches()) {</span>
+<span class="fc" id="L191">			mid = Long.parseLong(technicianID);</span>
+			try {
+<span class="fc" id="L193">				procedures = labProcedureData.getLabProceduresForLabTechnician(mid).stream().sorted((o1, o2) -&gt; {</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">					return (o1.getPriority() == o2.getPriority()) ? o1.getUpdatedDate().compareTo(o2.getUpdatedDate())</span>
+<span class="fc" id="L195">							: o1.getPriority() - o2.getPriority();</span>
+<span class="fc" id="L196">				}).collect(Collectors.toList());</span>
+<span class="nc" id="L197">			} catch (Exception e) {</span>
+<span class="nc" id="L198">				printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Lab Procedures&quot;,</span>
+						&quot;Unable to Retrieve Lab Procedures&quot;, null);
+<span class="fc" id="L200">			}</span>
+		}
+<span class="fc" id="L202">		return procedures;</span>
+	}
+
+	public List&lt;LabProcedure&gt; getPendingLabProceduresByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L206">		return getLabProceduresByLabTechnician(technicianID).stream().filter((o) -&gt; {</span>
+<span class="fc" id="L207">			return o.getStatus().name().equals(LabProcedureStatus.PENDING.name());</span>
+<span class="fc" id="L208">		}).collect(Collectors.toList());</span>
+	}
+
+	public List&lt;LabProcedure&gt; getInTransitLabProceduresByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L212">		return getLabProceduresByLabTechnician(technicianID).stream().filter((o) -&gt; {</span>
+<span class="fc" id="L213">			return o.getStatus().name().equals(LabProcedureStatus.IN_TRANSIT.name());</span>
+<span class="fc" id="L214">		}).collect(Collectors.toList());</span>
+	}
+
+	public List&lt;LabProcedure&gt; getReceivedLabProceduresByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L218">		return getReceivedLabProceduresStreamByTechnician(technicianID).collect(Collectors.toList());</span>
+	}
+
+	public Stream&lt;LabProcedure&gt; getReceivedLabProceduresStreamByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L222">		return getLabProceduresByLabTechnician(technicianID).stream().filter((o) -&gt; {</span>
+<span class="fc" id="L223">			return o.getStatus().name().equals(LabProcedureStatus.RECEIVED.name());</span>
+		});
+	}
+
+	public List&lt;LabProcedure&gt; getTestingLabProceduresByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L228">		return getTestingLabProceduresStreamsByTechnician(technicianID).collect(Collectors.toList());</span>
+	}
+
+	public Stream&lt;LabProcedure&gt; getTestingLabProceduresStreamsByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L232">		return getLabProceduresByLabTechnician(technicianID).stream().filter((o) -&gt; {</span>
+<span class="fc" id="L233">			return o.getStatus().name().equals(LabProcedureStatus.TESTING.name());</span>
+		});
+	}
+
+	public List&lt;LabProcedure&gt; getCompletedLabProceduresByTechnician(String technicianID) throws DBException {
+<span class="fc" id="L238">		return getLabProceduresByLabTechnician(technicianID).stream().filter((o) -&gt; {</span>
+<span class="fc" id="L239">			return o.getStatus().name().equals(LabProcedureStatus.COMPLETED.name());</span>
+<span class="fc" id="L240">		}).collect(Collectors.toList());</span>
+	}
+
+	public List&lt;LabProcedure&gt; getCompletedLabProceduresByOfficeVisit(String officeVisitID) throws DBException {
+<span class="fc" id="L244">		return getLabProceduresByOfficeVisit(officeVisitID).stream().filter((o) -&gt; {</span>
+<span class="fc" id="L245">			return o.getStatus().name().equals(LabProcedureStatus.COMPLETED.name());</span>
+<span class="fc" id="L246">		}).collect(Collectors.toList());</span>
+	}
+
+	public List&lt;LabProcedure&gt; getTestingAndReceivedLabProceduresByTechnician(String technicianID) throws DBException {
+	    // TODO
+<span class="nc" id="L251">		Stream&lt;LabProcedure&gt; testing = getTestingLabProceduresStreamsByTechnician(technicianID);</span>
+<span class="nc" id="L252">		Stream&lt;LabProcedure&gt; received = getReceivedLabProceduresStreamByTechnician(technicianID);</span>
+<span class="nc" id="L253">		return Stream.concat(testing, received).collect(Collectors.toList());</span>
+	}
+
+	/**
+	 * Returns all lab procedures for the given office visit that are not in
+	 * completed state.
+	 * 
+	 * @param officeVisitID
+	 *            ID of the office visit to query by
+	 * @return Lab procedures with the given office visit ID that aren't in
+	 *         completed state
+	 * @throws DBException
+	 */
+	public List&lt;LabProcedure&gt; getNonCompletedLabProceduresByOfficeVisit(String officeVisitID) throws DBException {
+<span class="fc" id="L267">		return getLabProceduresByOfficeVisit(officeVisitID).stream().filter((o) -&gt; {</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">			return !o.getStatus().name().equals(LabProcedureStatus.COMPLETED.name());</span>
+<span class="fc" id="L269">		}).collect(Collectors.toList());</span>
+	}
+
+	public void setLabProcedureToReceivedStatus(String labProcedureID) {
+<span class="fc" id="L273">		boolean successfullyUpdated = false;</span>
+		try {
+<span class="fc" id="L275">			Long id = Long.parseLong(labProcedureID);</span>
+<span class="fc" id="L276">			LabProcedure proc = labProcedureData.getByID(id);</span>
+<span class="fc" id="L277">			proc.setStatus(LabProcedureStatus.RECEIVED.getID());</span>
+<span class="fc" id="L278">			successfullyUpdated = labProcedureData.update(proc);</span>
+<span class="fc" id="L279">			updateStatusForReceivedList(proc.getLabTechnicianID().toString());</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">			if (successfullyUpdated) {</span>
+<span class="fc" id="L281">				logTransaction(TransactionType.LAB_RESULTS_RECEIVED, proc.getLabProcedureCode());</span>
+<span class="fc" id="L282">				printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Lab Procedure Successfully Updated to Received Status&quot;,</span>
+						&quot;Lab Procedure Successfully Updated to Received Status&quot;, null);
+			}
+<span class="fc" id="L285">		} catch (DBException e) {</span>
+<span class="fc" id="L286">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_LAB_PROCEDURE, e.getExtendedMessage(), null);</span>
+<span class="fc" id="L287">		} catch (Exception e) {</span>
+<span class="fc" id="L288">			printFacesMessage(FacesMessage.SEVERITY_ERROR, GENERIC_ERROR, GENERIC_ERROR, null);</span>
+<span class="fc" id="L289">		}</span>
+<span class="fc" id="L290">	}</span>
+
+	/**
+	 * 
+	 * @param technicianID
+	 * @throws DBException
+	 */
+	public void updateStatusForReceivedList(String technicianID) throws DBException {
+<span class="fc" id="L298">		List&lt;LabProcedure&gt; received = getReceivedLabProceduresByTechnician(technicianID);</span>
+<span class="fc" id="L299">		List&lt;LabProcedure&gt; testing = getTestingLabProceduresByTechnician(technicianID);</span>
+
+<span class="pc bpc" id="L301" title="2 of 4 branches missed.">		if (testing.size() == 0 &amp;&amp; received.size() &gt; 0) {</span>
+<span class="nc" id="L302">			received.get(0).setStatus(LabProcedureStatus.TESTING.getID());</span>
+<span class="nc" id="L303">			edit(received.get(0));</span>
+		}
+<span class="fc" id="L305">	}</span>
+	
+	public void updateReceivedQueue(){
+	    
+<span class="nc" id="L309">	}</span>
+
+	/**
+	 * Updates the status of the given lab procedure to pending and sets the
+	 * next received lab procedure to testing status.
+	 * 
+	 * @param labProcedure
+	 *            The lab procedure to update to pending
+	 * @throws DBException
+	 */
+	public void recordResults(LabProcedure labProcedure) throws DBException {
+<span class="fc" id="L320">		labProcedure.setStatus(LabProcedureStatus.PENDING.getID());</span>
+<span class="fc" id="L321">		edit(labProcedure);</span>
+<span class="fc" id="L322">		updateStatusForReceivedList(labProcedure.getLabTechnicianID().toString());</span>
+<span class="fc" id="L323">	}</span>
+
+	/**
+	 * Logs that each lab procedure for the given office visit was viewed by the
+	 * logged in MID.
+	 */
+	public void logViewLabProcedure() {
+		try {
+<span class="fc" id="L331">			Long ovID = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">			if (ovID == null) { // Only log if an office visit has been selected</span>
+<span class="fc" id="L333">				return;</span>
+			}
+<span class="fc" id="L335">			List&lt;LabProcedure&gt; procsByOfficeVisit = getLabProceduresByOfficeVisit(ovID.toString());</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">			for (LabProcedure proc : procsByOfficeVisit) {</span>
+<span class="fc" id="L337">				logTransaction(TransactionType.LAB_RESULTS_VIEW, proc.getLabProcedureCode());</span>
+<span class="fc" id="L338">			}</span>
+<span class="nc" id="L339">		} catch (DBException e) {</span>
+<span class="fc" id="L340">		}</span>
+<span class="fc" id="L341">	}</span>
+
+	public void logLabTechnicianViewLabProcedureQueue() {
+<span class="fc" id="L344">		logTransaction(TransactionType.LAB_RESULTS_VIEW_QUEUE, getSessionUtils().getSessionLoggedInMIDLong(), null,</span>
+				null);
+<span class="fc" id="L346">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

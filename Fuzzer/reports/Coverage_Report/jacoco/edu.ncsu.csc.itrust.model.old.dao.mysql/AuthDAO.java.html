@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">AuthDAO.java</span></div><h1>AuthDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.security.SecureRandom;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.tomcat.util.buf.HexUtils;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.Role;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * AuthDAO is for anything that has to do with authentication. Most methods
+ * access the users table.
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class AuthDAO {
+
+	/** LOGIN_TIMEOUT */
+	public static final long LOGIN_TIMEOUT = 15 * 60 * 1000; // 15 min
+	private static final int SALT_LEN = 32;
+	private transient final DAOFactory factory;
+	private SecureRandom secureRandom;
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L48">	public AuthDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L49">		this.factory = factory;</span>
+<span class="fc" id="L50">		this.secureRandom = new SecureRandom();</span>
+<span class="fc" id="L51">	}</span>
+
+	/**
+	 * Add a particular user to the system. Does not add user-specific
+	 * information (e.g. Patient or HCP). Initially sets security question to a
+	 * random set of characters, so that nobody should be able to guess its
+	 * value.
+	 * 
+	 * @param mid
+	 *            The user's MID as a Long.
+	 * @param role
+	 *            The role of the user as a Role enum {@link Role}
+	 * @param password
+	 *            The password for the new user.
+	 * @return A string representing the newly added randomly-generated
+	 *         password.
+	 * @throws DBException
+	 */
+	public String addUser(final Long mid, final Role role, final String password) throws DBException {
+<span class="pc" id="L70">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L71">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;INSERT INTO users (MID, PASSWORD, SALT, ROLE, sQuestion, sAnswer) VALUES (?,?,?,?,?,?)&quot;)) {
+<span class="fc" id="L73">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L74">			String salt = generateRandomSalt();</span>
+<span class="fc" id="L75">			final String hashedPassword = DigestUtils.sha256Hex(password + salt);</span>
+
+<span class="fc" id="L77">			stmt.setString(2, hashedPassword);</span>
+<span class="fc" id="L78">			stmt.setString(3, salt);</span>
+<span class="fc" id="L79">			stmt.setString(4, role.toString());</span>
+<span class="fc" id="L80">			stmt.setString(5, &quot;Enter the random password given in your account email&quot;);</span>
+<span class="fc" id="L81">			stmt.setString(6, password);</span>
+<span class="fc" id="L82">			stmt.executeUpdate();</span>
+<span class="fc" id="L83">			return password;</span>
+<span class="pc bpc" id="L84" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L85">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Reset the security question and answer for a particular user
+	 * 
+	 * @param question
+	 *            The security question as a string.
+	 * @param answer
+	 *            The security answer as a string.
+	 * @param mid
+	 *            The MID of the user as a long.
+	 * @throws DBException
+	 */
+	public void setSecurityQuestionAnswer(final String question, final String answer, final long mid)
+			throws DBException {
+<span class="pc" id="L102">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L103">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L104">						.prepareStatement(&quot;UPDATE users SET sQuestion = ?, sAnswer = ? WHERE MID = ?&quot;)) {</span>
+<span class="fc" id="L105">			stmt.setString(1, question);</span>
+<span class="fc" id="L106">			stmt.setString(2, answer);</span>
+<span class="fc" id="L107">			stmt.setLong(3, mid);</span>
+<span class="fc" id="L108">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L109" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L110">			throw new DBException(e);</span>
+<span class="fc" id="L111">		}</span>
+<span class="fc" id="L112">	}</span>
+
+	/**
+	 * Returns the user name of a user from just the MID
+	 * 
+	 * @param mid
+	 *            The MID of the user to get the name of.
+	 * @return The user's name as a String.
+	 * @throws ITrustException
+	 */
+	public String getUserName(final long mid) throws ITrustException {
+<span class="fc" id="L123">		final Role role = getUserRole(mid);</span>
+		String uName;
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">		switch (role) {</span>
+		case HCP:
+		case PHA:
+		case ADMIN:
+		case UAP:
+		case ER:
+		case LT:
+<span class="fc" id="L132">			uName = factory.getPersonnelDAO().getName(mid);</span>
+<span class="fc" id="L133">			break;</span>
+		case PATIENT:
+<span class="fc" id="L135">			uName = factory.getPatientDAO().getName(mid);</span>
+<span class="fc" id="L136">			break;</span>
+		case TESTER:
+<span class="nc" id="L138">			uName = String.valueOf(mid);</span>
+<span class="nc" id="L139">			break;</span>
+		default:
+<span class="nc" id="L141">			throw new ITrustException(&quot;Role &quot; + role + &quot; not supported&quot;);</span>
+		}
+<span class="fc" id="L143">		return uName;</span>
+	}
+
+	/**
+	 * Returns the role of a particular MID
+	 * 
+	 * @param mid
+	 *            The MID of the user to look up.
+	 * @return The {@link Role} of the user as an enum.
+	 * @throws ITrustException
+	 */
+	public Role getUserRole(final long mid) throws ITrustException {
+<span class="fc" id="L155">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L156">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT role FROM users WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L157">			stmt.setLong(1, mid);</span>
+			final ResultSet results;
+<span class="fc" id="L159">			results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">			if (results.next()) {</span>
+<span class="fc" id="L161">				final Role result = Role.parse(results.getString(&quot;role&quot;));</span>
+<span class="fc" id="L162">				results.close();</span>
+<span class="fc" id="L163">				return result;</span>
+			} else {
+<span class="fc" id="L165">				throw new ITrustException(&quot;User does not exist&quot;);</span>
+			}
+<span class="pc bpc" id="L167" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L168">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns whether a user is deactivated. Currently works only for patients
+	 * 
+	 * @param mid
+	 *            The MID of the user to look up.
+	 * @return Activation status of the user
+	 * @throws ITrustException
+	 */
+	public boolean getDeactivated(final long mid) throws ITrustException {
+<span class="fc" id="L181">		final Role role = getUserRole(mid);</span>
+		boolean isDeactivated;
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (role.equals(Role.PATIENT)) {</span>
+<span class="pc" id="L184">			try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L185">					PreparedStatement stmt = conn</span>
+<span class="fc" id="L186">							.prepareStatement(&quot;SELECT DateOfDeactivation FROM patients WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L187">				stmt.setLong(1, mid);</span>
+				ResultSet results;
+<span class="fc" id="L189">				results = stmt.executeQuery();</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">				if (results.next()) {</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">					if (results.getString(&quot;DateOfDeactivation&quot;) == null) {</span>
+<span class="fc" id="L192">						results.close();</span>
+<span class="fc" id="L193">						isDeactivated = false;</span>
+					} else {
+<span class="fc" id="L195">						results.close();</span>
+<span class="fc" id="L196">						isDeactivated = true;</span>
+					}
+				} else {
+<span class="nc" id="L199">					throw new ITrustException(&quot;User does not exist&quot;);</span>
+				}
+<span class="pc bpc" id="L201" title="12 of 16 branches missed.">			} catch (SQLException e) {</span>
+<span class="nc" id="L202">				throw new DBException(e);</span>
+<span class="fc" id="L203">			}</span>
+		} else {
+<span class="nc" id="L205">			isDeactivated = false;</span>
+		}
+<span class="fc" id="L207">		return isDeactivated;</span>
+	}
+
+	/**
+	 * Change the password of a particular user
+	 * 
+	 * @param mid
+	 *            The MID of the user whose password we are changing.
+	 * @param password
+	 *            The new password.
+	 * @throws DBException
+	 */
+	public void resetPassword(final long mid, final String password) throws DBException {
+<span class="pc" id="L220">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L221">				PreparedStatement stmt = conn.prepareStatement(&quot;UPDATE users SET password=?, salt=? WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L222">			String salt = generateRandomSalt();</span>
+<span class="fc" id="L223">			String newPassword = DigestUtils.sha256Hex(password + salt);</span>
+<span class="fc" id="L224">			stmt.setString(1, newPassword);</span>
+<span class="fc" id="L225">			stmt.setString(2, salt);</span>
+<span class="fc" id="L226">			stmt.setLong(3, mid);</span>
+<span class="fc" id="L227">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L228" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L229">			throw new DBException(e);</span>
+<span class="fc" id="L230">		}</span>
+<span class="fc" id="L231">	}</span>
+
+	/**
+	 * Return the security question for a particular user.
+	 * 
+	 * @param mid
+	 *            The MID of the user we are looking up.
+	 * @return The security question of the user we are looking up.
+	 * @throws ITrustException
+	 */
+	public String getSecurityQuestion(final long mid) throws ITrustException {
+<span class="fc" id="L242">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L243">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT sQuestion FROM users WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L244">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L245">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">			if (results.next()) {</span>
+<span class="fc" id="L247">				final String result = results.getString(&quot;sQuestion&quot;);</span>
+<span class="fc" id="L248">				results.close();</span>
+<span class="fc" id="L249">				return result;</span>
+			} else {
+<span class="fc" id="L251">				results.close();</span>
+<span class="fc" id="L252">				throw new ITrustException(&quot;No security question set for MID: &quot; + mid);</span>
+			}
+<span class="pc bpc" id="L254" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L255">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return the security answer of a particular user
+	 * 
+	 * @param mid
+	 *            The MID of the user we are looking up.
+	 * @return The security answer as a String.
+	 * @throws ITrustException
+	 */
+	public String getSecurityAnswer(final long mid) throws ITrustException {
+<span class="fc" id="L268">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L269">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT sAnswer FROM users WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L270">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L271">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">			if (results.next()) {</span>
+<span class="fc" id="L273">				final String result = results.getString(&quot;sAnswer&quot;);</span>
+<span class="fc" id="L274">				results.close();</span>
+<span class="fc" id="L275">				return result;</span>
+			} else {
+<span class="fc" id="L277">				results.close();</span>
+<span class="fc" id="L278">				throw new ITrustException(&quot;No security answer set for MID &quot; + mid);</span>
+			}
+<span class="pc bpc" id="L280" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L281">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Record a login failure, which blacklists the ipAddress. Uses the database
+	 * table like a hash table where the key is the user's IP address. If the
+	 * user's IP address is not in the table, a row with &quot;1&quot; is added.
+	 * 
+	 * @param ipAddr
+	 *            The IP address of the user as a String.
+	 * @throws DBException
+	 */
+	public void recordLoginFailure(final String ipAddr) throws DBException {
+<span class="pc" id="L295">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L296">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;UPDATE loginfailures SET FailureCount=FailureCount+1, lastFailure=CURRENT_TIMESTAMP WHERE IPAddress=?&quot;)) {
+<span class="fc" id="L298">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L299">			final int numUpdated = stmt.executeUpdate();</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">			if (numUpdated == 0) { // if no login failures yet for this IP</span>
+<span class="fc" id="L301">				insertLoginFailureRow(ipAddr, 1); // then insert one</span>
+			}
+<span class="pc bpc" id="L303" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L304">			throw new DBException(e);</span>
+<span class="fc" id="L305">		}</span>
+<span class="fc" id="L306">	}</span>
+
+	/**
+	 * Record a reset password failure, which blacklists the ipAddress. Uses the
+	 * database table like a hash table where the key is the user's IP address.
+	 * If the user's IP address is not in the table, a row with &quot;1&quot; is added.
+	 * 
+	 * @param ipAddr
+	 *            The IP address of the user as a String.
+	 * @throws DBException
+	 */
+	public void recordResetPasswordFailure(final String ipAddr) throws DBException {
+<span class="pc" id="L318">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L319">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;UPDATE resetpasswordfailures SET failurecount=failurecount+1 WHERE ipaddress=?&quot;)) {
+<span class="fc" id="L321">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L322">			final int numUpdated = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">			if (numUpdated == 0) { // if no login failures yet for this IP</span>
+<span class="nc" id="L324">				insertResetPasswordRow(ipAddr, 1); // then insert one</span>
+			}
+<span class="pc bpc" id="L326" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L327">			throw new DBException(e);</span>
+<span class="fc" id="L328">		}</span>
+<span class="fc" id="L329">	}</span>
+
+	/**
+	 * Return the number of failures from resetting a password, given an IP
+	 * address.
+	 * 
+	 * @param ipAddr
+	 *            An IP address for the associated attempt as a String.
+	 * @return An int representing the number of failures.
+	 * @throws DBException
+	 */
+	public int getResetPasswordFailures(final String ipAddr) throws DBException {
+		int numFailures;
+<span class="pc" id="L342">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L343">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L344">						.prepareStatement(&quot;SELECT * FROM resetpasswordfailures WHERE IPADDRESS=?&quot;)) {</span>
+<span class="fc" id="L345">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L346">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">			if (results.next()) {</span>
+				// if we're more than LOGIN_TIMEOUT minutes out, clear the
+				// failure count
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">				if (System.currentTimeMillis() - results.getTimestamp(&quot;lastFailure&quot;).getTime() &gt; LOGIN_TIMEOUT) {</span>
+<span class="nc" id="L351">					updateResetFailuresToZero(ipAddr);</span>
+<span class="nc" id="L352">					results.close();</span>
+<span class="nc" id="L353">					numFailures = 0;</span>
+				} else {
+<span class="fc" id="L355">					final int result = results.getInt(&quot;failureCount&quot;);</span>
+<span class="fc" id="L356">					results.close();</span>
+<span class="fc" id="L357">					numFailures = result;</span>
+<span class="fc" id="L358">				}</span>
+			} else {
+<span class="fc" id="L360">				insertResetPasswordRow(ipAddr, 0);</span>
+<span class="fc" id="L361">				results.close();</span>
+<span class="fc" id="L362">				numFailures = 0;</span>
+			}
+<span class="pc bpc" id="L364" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L365">			throw new DBException(e);</span>
+<span class="fc" id="L366">		}</span>
+<span class="fc" id="L367">		return numFailures;</span>
+	}
+
+	/**
+	 * Return the number of failures from login failures a password, given an IP
+	 * address.
+	 * 
+	 * @param ipAddr
+	 *            The IP address for this attempt as a String.
+	 * @return An int representing the number of failures which have occured.
+	 * @throws DBException
+	 */
+	public int getLoginFailures(final String ipAddr) throws DBException {
+		int numFailures;
+<span class="pc" id="L381">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L382">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM loginfailures WHERE IPADDRESS=?&quot;)) {</span>
+<span class="fc" id="L383">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L384">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">			if (results.next()) {</span>
+				// if we're more than LOGIN_TIMEOUT minutes out, clear the
+				// failure count
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">				if (System.currentTimeMillis() - results.getTimestamp(&quot;lastFailure&quot;).getTime() &gt; LOGIN_TIMEOUT) {</span>
+<span class="nc" id="L389">					updateFailuresToZero(ipAddr);</span>
+<span class="nc" id="L390">					results.close();</span>
+<span class="nc" id="L391">					numFailures = 0;</span>
+				} else {
+<span class="fc" id="L393">					final int result = results.getInt(&quot;failureCount&quot;);</span>
+<span class="fc" id="L394">					results.close();</span>
+<span class="fc" id="L395">					numFailures = result;</span>
+<span class="fc" id="L396">				}</span>
+			} else {
+<span class="fc" id="L398">				insertLoginFailureRow(ipAddr, 0);</span>
+<span class="fc" id="L399">				results.close();</span>
+<span class="fc" id="L400">				numFailures = 0;</span>
+			}
+<span class="pc bpc" id="L402" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L403">			throw new DBException(e);</span>
+<span class="fc" id="L404">		}</span>
+<span class="fc" id="L405">		return numFailures;</span>
+	}
+
+	private void insertLoginFailureRow(final String ipAddr, int failureCount) throws DBException, SQLException {
+<span class="pc" id="L409">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L410">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L411">						.prepareStatement(&quot;INSERT INTO loginfailures(IPAddress, failureCount) VALUES(?,?)&quot;)) {</span>
+<span class="fc" id="L412">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L413">			stmt.setInt(2, failureCount);</span>
+<span class="fc" id="L414">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L415" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L416">			throw new DBException(e);</span>
+<span class="fc" id="L417">		}</span>
+<span class="fc" id="L418">	}</span>
+
+	private void insertResetPasswordRow(final String ipAddr, final int failureCount) throws DBException, SQLException {
+<span class="pc" id="L421">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L422">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L423">						.prepareStatement(&quot;INSERT INTO resetpasswordfailures(IPAddress, failureCount) VALUES(?,?)&quot;)) {</span>
+<span class="fc" id="L424">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L425">			stmt.setInt(2, failureCount);</span>
+<span class="fc" id="L426">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L427" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L428">			throw new DBException(e);</span>
+<span class="fc" id="L429">		}</span>
+<span class="fc" id="L430">	}</span>
+
+	private void updateFailuresToZero(final String ipAddr) throws DBException, SQLException {
+<span class="nc" id="L433">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L434">				PreparedStatement stmt = conn</span>
+<span class="nc" id="L435">						.prepareStatement(&quot;UPDATE loginfailures SET failureCount=0 WHERE IPAddress=?&quot;)) {</span>
+<span class="nc" id="L436">			stmt.setString(1, ipAddr);</span>
+<span class="nc" id="L437">			stmt.executeUpdate();</span>
+<span class="nc bnc" id="L438" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L439">			throw new DBException(e);</span>
+<span class="nc" id="L440">		}</span>
+<span class="nc" id="L441">	}</span>
+
+	/**
+	 * Resets number of login failures for the given IP address to 0.
+	 * 
+	 * @param ipAddr
+	 *            The IP address to reset
+	 * @throws DBException
+	 * @throws SQLException
+	 */
+	public void resetLoginFailuresToZero(final String ipAddr) throws DBException, SQLException {
+<span class="pc" id="L452">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L453">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L454">						.prepareStatement(&quot;UPDATE loginfailures SET failureCount=0 WHERE IPAddress=?&quot;)) {</span>
+<span class="fc" id="L455">			stmt.setString(1, ipAddr);</span>
+<span class="fc" id="L456">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L457" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L458">			throw new DBException(e);</span>
+<span class="fc" id="L459">		}</span>
+<span class="fc" id="L460">	}</span>
+
+	private void updateResetFailuresToZero(final String ipAddr) throws DBException, SQLException {
+<span class="nc" id="L463">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L464">				PreparedStatement stmt = conn</span>
+<span class="nc" id="L465">						.prepareStatement(&quot;UPDATE resetpasswordfailures SET failureCount=0 WHERE IPAddress=?&quot;)) {</span>
+<span class="nc" id="L466">			stmt.setString(1, ipAddr);</span>
+<span class="nc" id="L467">			stmt.executeUpdate();</span>
+<span class="nc bnc" id="L468" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L469">			throw new DBException(e);</span>
+<span class="nc" id="L470">		}</span>
+<span class="nc" id="L471">	}</span>
+
+	/**
+	 * Returns true if a user with given MID exists in the system.
+	 * 
+	 * @param mid
+	 *            The MID to check for
+	 * @return true if the user with given MID exists in the system.
+	 * @throws DBException
+	 */
+	public boolean checkUserExists(final long mid) throws DBException {
+<span class="pc" id="L482">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L483">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM users WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L484">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L485">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L486">			final boolean check = results.next();</span>
+<span class="fc" id="L487">			results.close();</span>
+<span class="fc" id="L488">			return check;</span>
+<span class="pc bpc" id="L489" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L490">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return whether the given MID/password pair is correct.
+	 * 
+	 * @param mid
+	 *            MID of the user
+	 * @param password
+	 *            Password of the user
+	 * @return true if the password matches for that user
+	 */
+	public boolean authenticatePassword(final long mid, final String password) throws DBException {
+<span class="pc" id="L504">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L505">				PreparedStatement stmt = conn.prepareStatement(&quot;Select * FROM users WHERE MID=? AND password=?&quot;)) {</span>
+<span class="fc" id="L506">			String salt = getSalt(mid);</span>
+<span class="fc" id="L507">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L508">			stmt.setString(2, DigestUtils.sha256Hex(password + salt));</span>
+<span class="fc" id="L509">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L510">			final boolean check = results.next();</span>
+<span class="fc" id="L511">			results.close();</span>
+<span class="fc" id="L512">			return check;</span>
+<span class="pc bpc" id="L513" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L514">			throw new DBException(e);</span>
+		}
+
+	}
+
+	/**
+	 * Change the dependency status of the specified user
+	 * 
+	 * @param mid
+	 *            the MID of the user to change dependency status
+	 * @param dependency
+	 *            the dependency status to change user to
+	 * @throws DBException
+	 */
+	public void setDependent(long mid, boolean dependency) throws DBException {
+<span class="pc" id="L529">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L530">				PreparedStatement stmt = conn.prepareStatement(&quot;UPDATE users SET isDependent=? WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L531">			stmt.setBoolean(1, dependency);</span>
+<span class="fc" id="L532">			stmt.setLong(2, mid);</span>
+<span class="fc" id="L533">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L534" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L535">			throw new DBException(e);</span>
+<span class="fc" id="L536">		}</span>
+<span class="fc" id="L537">	}</span>
+
+	/**
+	 * Check that the specified user is a dependent
+	 * 
+	 * @param mid
+	 *            MID of the user
+	 * @return true if the user is a dependent, false otherwise
+	 * @throws DBException
+	 *             if the SQL statement is not valid
+	 */
+	public boolean isDependent(final long mid) throws DBException {
+<span class="pc" id="L549">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L550">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM users WHERE MID=? AND isDependent=1&quot;)) {</span>
+<span class="fc" id="L551">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L552">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L553">			final boolean check = results.next();</span>
+<span class="fc" id="L554">			results.close();</span>
+<span class="fc" id="L555">			return check;</span>
+<span class="pc bpc" id="L556" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L557">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the salt for user with given MID.
+	 * 
+	 * @param mid
+	 *            The user we are looking for.
+	 * @return The salt for that user.
+	 */
+	public String getSalt(long mid) {
+<span class="fc" id="L569">		String result = &quot;&quot;;</span>
+<span class="pc" id="L570">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L571">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT Salt FROM users WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L572">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L573">			ResultSet rs = stmt.executeQuery();</span>
+<span class="pc bpc" id="L574" title="1 of 2 branches missed.">			result = rs.next() ? rs.getString(1) : generateRandomSalt();</span>
+<span class="pc bpc" id="L575" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L576">			result = generateRandomSalt();</span>
+<span class="fc" id="L577">		}</span>
+<span class="fc" id="L578">		return result;</span>
+	}
+
+	/**
+	 * Generates a random salt.
+	 * 
+	 * @return A random string 64 characters long.
+	 */
+	private String generateRandomSalt() {
+<span class="fc" id="L587">		byte[] buf = new byte[SALT_LEN];</span>
+<span class="fc" id="L588">		secureRandom.nextBytes(buf);</span>
+<span class="fc" id="L589">		return HexUtils.toHexString(buf);</span>
+	}
+	
+	/** Logs that given user was logged in */
+	public void logUserAuthenticated(Long mid) {
+<span class="nc" id="L594">		TransactionLogger.getInstance().logTransaction(TransactionType.LOGIN_SUCCESS, mid, null, &quot;&quot;);</span>
+<span class="nc" id="L595">	}</span>
+	
+	/** Logs that given user was logged out */
+	public void logUserLoggedOut(Long mid) {
+<span class="nc" id="L599">		TransactionLogger.getInstance().logTransaction(TransactionType.LOGOUT, mid, null, &quot;&quot;);</span>
+<span class="nc" id="L600">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

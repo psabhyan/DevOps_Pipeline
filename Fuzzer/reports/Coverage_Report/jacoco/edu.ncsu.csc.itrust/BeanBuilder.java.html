@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BeanBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust</a> &gt; <span class="el_source">BeanBuilder.java</span></div><h1>BeanBuilder.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust; 
+
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Takes a parameter map and creates a bean from that map of the appropriate type.
+ * @param &lt;T&gt; The type to be returned from the appropriate parameter map.
+ */
+<span class="fc" id="L13">public class BeanBuilder&lt;T&gt; {</span>
+	/**
+	 * The code here is not obvious, but this method should not need rewriting unless a bug is found
+	 * 
+	 * @param map -
+	 *            typically a request.getParameterMap; also can be a HashMap
+	 * @param bean -
+	 *            an instantiated bean to be loaded. Loaded bean is returned.
+	 * @return a loaded &quot;bean&quot;
+	 * @throws Exception -
+	 *             Several exceptions are thrown here, so promotion seemed fitting
+	 */
+	// this warning is only suppressed because Map isn't parameterized (old JSP)
+	@SuppressWarnings(&quot;rawtypes&quot;)
+	public T build(Map map, T bean) throws Exception {
+		// JavaBeans should not have overloaded methods, according to their API
+		// (a stupid limitation!)
+		// Nevertheless, we should check for it
+<span class="fc" id="L31">		checkOverloadedMethods(bean);</span>
+
+		// Use an introspector to find all of the getXXX or setXXX, we only want
+		// the setXXX
+<span class="fc" id="L35">		PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(bean.getClass())</span>
+<span class="fc" id="L36">				.getPropertyDescriptors();</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">		for (PropertyDescriptor descriptor : propertyDescriptors) {</span>
+			// if object is null, either it was ignored or empty - just go with
+			// bean's default
+<span class="fc" id="L40">			String[] value = (String[]) map.get(descriptor.getName());</span>
+<span class="fc" id="L41">			Method writeMethod = descriptor.getWriteMethod();</span>
+<span class="pc bpc" id="L42" title="1 of 6 branches missed.">			if (!&quot;class&quot;.equals(descriptor.getName()) &amp;&amp; value != null &amp;&amp; writeMethod != null) {</span>
+				// descriptor's name is the name of your property; like
+				// firstName
+				// only take the first string
+				try {
+					// Skip the setters for enumerations
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">					if (writeMethod.getParameterTypes()[0].getEnumConstants() == null)</span>
+<span class="fc" id="L49">						writeMethod.invoke(bean, new Object[] { value[0] });</span>
+<span class="nc" id="L50">				} catch (IllegalArgumentException e) {</span>
+					// Throw a more informative exception
+<span class="nc" id="L52">					throw new IllegalArgumentException(e.getMessage() + &quot; with &quot; + writeMethod.getName()</span>
+							+ &quot; and &quot; + value[0]);
+<span class="fc" id="L54">				}</span>
+			}
+		}
+<span class="fc" id="L57">		return bean;</span>
+	}
+
+	/**
+	 * Checks for overloaded methods
+	 * 
+	 * @param bean item to check
+	 */
+	private void checkOverloadedMethods(T bean) {
+<span class="fc" id="L66">		Method[] methods = bean.getClass().getDeclaredMethods();</span>
+<span class="fc" id="L67">		HashMap&lt;String, String&gt; nameMap = new HashMap&lt;String, String&gt;(methods.length);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		for (Method method : methods) {</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">			if (nameMap.get(method.getName()) != null)</span>
+<span class="fc" id="L70">				throw new IllegalArgumentException(bean.getClass().getName()</span>
+<span class="fc" id="L71">						+ &quot; should not have any overloaded methods, like &quot; + method.getName());</span>
+<span class="fc bfc" id="L72" title="All 4 branches covered.">			if (!(&quot;equals&quot;.equals(method.getName())||&quot;compareTo&quot;.equals(method.getName()))) // allow an equals, compareTo override</span>
+<span class="fc" id="L73">				nameMap.put(method.getName(), &quot;exists&quot;);</span>
+		}
+
+<span class="fc" id="L76">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

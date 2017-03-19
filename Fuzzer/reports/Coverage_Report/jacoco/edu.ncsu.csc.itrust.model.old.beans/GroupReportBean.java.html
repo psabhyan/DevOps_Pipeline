@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GroupReportBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">GroupReportBean.java</span></div><h1>GroupReportBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.util.ArrayList;
+import java.util.List;
+import edu.ncsu.csc.itrust.report.ReportFilter;
+
+/**
+ * 
+ *
+ */
+public class GroupReportBean {
+	private List&lt;PatientBean&gt; patients;
+	private List&lt;ReportFilter&gt; filters;
+	
+	/**
+	 * 
+	 * @param patients
+	 * @param filters
+	 */
+<span class="fc" id="L20">	public GroupReportBean(List&lt;PatientBean&gt; patients, List&lt;ReportFilter&gt; filters) {</span>
+<span class="fc" id="L21">		this.patients = patients;</span>
+<span class="fc" id="L22">		this.filters = filters;</span>
+<span class="fc" id="L23">	}</span>
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List&lt;PatientBean&gt; getPatients() {
+<span class="fc" id="L30">		return patients;</span>
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List&lt;ReportFilter&gt; getFilters() {
+<span class="fc" id="L38">		return filters;</span>
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List&lt;String&gt; getFilterStrings() {
+<span class="fc" id="L46">		List&lt;String&gt; out = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">		for(ReportFilter filter : filters) {</span>
+<span class="fc" id="L48">			out.add(filter.toString());</span>
+<span class="fc" id="L49">		}</span>
+<span class="fc" id="L50">		return out;</span>
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List&lt;String&gt;	getPatientNames() {
+<span class="fc" id="L58">		List&lt;String&gt; out = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		for(PatientBean patient : patients) {</span>
+<span class="fc" id="L60">			out.add(patient.getFullName());</span>
+<span class="fc" id="L61">		}</span>
+<span class="fc" id="L62">		return out;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

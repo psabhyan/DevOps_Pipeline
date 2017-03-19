@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteMonitoringDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">RemoteMonitoringDAO.java</span></div><h1>RemoteMonitoringDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.RemoteMonitoringDataBean;
+import edu.ncsu.csc.itrust.model.old.beans.TelemedicineBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.RemoteMonitoringDataBeanLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.RemoteMonitoringListsBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Used for the keeping track of remote monitoring data.
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class RemoteMonitoringDAO {
+
+	private transient final DAOFactory factory;
+<span class="fc" id="L38">	private transient final RemoteMonitoringDataBeanLoader loader = new RemoteMonitoringDataBeanLoader();</span>
+<span class="fc" id="L39">	private transient final RemoteMonitoringListsBeanLoader rmListLoader = new RemoteMonitoringListsBeanLoader();</span>
+<span class="fc" id="L40">	private transient final PersonnelLoader personnelLoader = new PersonnelLoader();</span>
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L49">	public RemoteMonitoringDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L50">		this.factory = factory;</span>
+<span class="fc" id="L51">	}</span>
+
+	/**
+	 * Return remote monitoring list data for a given patient.
+	 * 
+	 * @param patientMID
+	 *            Patient to retrieve data for.
+	 * @return List of TelemedicineBeans
+	 * @throws DBException
+	 */
+	public List&lt;TelemedicineBean&gt; getTelemedicineBean(final long patientMID) throws DBException {
+<span class="pc" id="L62">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L63">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L64">						.prepareStatement(&quot;SELECT * FROM remotemonitoringlists WHERE PatientMID=?&quot;)) {</span>
+<span class="fc" id="L65">			stmt.setLong(1, patientMID);</span>
+<span class="fc" id="L66">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L68">			final List&lt;TelemedicineBean&gt; telemedicine = rmListLoader.loadList(results);</span>
+<span class="fc" id="L69">			results.close();</span>
+<span class="fc" id="L70">			return telemedicine;</span>
+<span class="pc bpc" id="L71" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L72">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns patient data for a given HCP
+	 * 
+	 * @param loggedInMID
+	 *            loggedInMID
+	 * @return dataList
+	 * @throws DBException
+	 */
+	public List&lt;RemoteMonitoringDataBean&gt; getPatientsData(final long loggedInMID) throws DBException {
+<span class="pc" id="L85">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L86">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L87">						.prepareStatement(&quot;SELECT * FROM remotemonitoringlists WHERE HCPMID=? ORDER BY PatientMID&quot;);</span>
+<span class="fc" id="L88">				PreparedStatement pstmt1 = conn.prepareStatement(</span>
+						&quot;SELECT * FROM remotemonitoringdata WHERE timelogged &gt;= CURRENT_DATE ORDER BY PatientID, timeLogged DESC&quot;);
+<span class="fc" id="L90">				final ResultSet dataRS = pstmt1.executeQuery()) {</span>
+<span class="fc" id="L91">			stmt.setLong(1, loggedInMID);</span>
+<span class="fc" id="L92">			final ResultSet patientRS = stmt.executeQuery();</span>
+
+<span class="fc" id="L94">			final List&lt;String&gt; patientList = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">			while (patientRS.next()) {</span>
+<span class="fc" id="L96">				patientList.add(Long.valueOf(patientRS.getLong(&quot;PatientMID&quot;)).toString());</span>
+			}
+<span class="fc" id="L98">			final List&lt;RemoteMonitoringDataBean&gt; dataList = loader.loadList(dataRS);</span>
+
+			int idx1;
+			int idx2;
+			// Go through all patients and remove any that aren't monitored by
+			// this HCP
+<span class="fc bfc" id="L104" title="All 2 branches covered.">			for (idx1 = 0; idx1 &lt; dataList.size(); idx1++) {</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">				if (!patientList.contains(Long.valueOf(dataList.get(idx1).getPatientMID()).toString())) {</span>
+<span class="nc" id="L106">					dataList.remove(idx1);</span>
+<span class="nc" id="L107">					idx1--;</span>
+				}
+			}
+
+			// Add values in patient list with no data for today to list.
+			boolean itsThere;
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			for (idx1 = 0; idx1 &lt; patientList.size(); idx1++) {</span>
+<span class="fc" id="L114">				itsThere = false;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">				for (idx2 = 0; idx2 &lt; dataList.size(); idx2++) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">					if (dataList.get(idx2).getPatientMID() == Long.parseLong(patientList.get(idx1))) {</span>
+<span class="fc" id="L117">						itsThere = true;</span>
+<span class="fc" id="L118">						break;</span>
+					}
+				}
+<span class="fc bfc" id="L121" title="All 2 branches covered.">				if (!itsThere) {</span>
+<span class="fc" id="L122">					dataList.add(new RemoteMonitoringDataBean(Long.parseLong(patientList.get(idx1))));</span>
+				}
+			}
+
+<span class="fc" id="L126">			return dataList;</span>
+<span class="pc bpc" id="L127" title="24 of 32 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L128">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * getPatientDataByDate
+	 * 
+	 * @param patientMID
+	 *            patientMID
+	 * @param lower
+	 *            lower
+	 * @param upper
+	 *            upeer
+	 * @return dataList
+	 * @throws DBException
+	 */
+	public List&lt;RemoteMonitoringDataBean&gt; getPatientDataByDate(final long patientMID, final Date lower,
+			final Date upper) throws DBException {
+<span class="pc" id="L146">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L147">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT * FROM remotemonitoringdata WHERE PatientID=? AND timeLogged &gt;= ? AND timeLogged &lt;= ? ORDER BY timeLogged DESC&quot;)) {
+<span class="fc" id="L149">			stmt.setLong(1, patientMID);</span>
+<span class="fc" id="L150">			stmt.setTimestamp(2, new Timestamp(lower.getTime()));</span>
+			// add 1 day's worth to include the upper
+<span class="fc" id="L152">			stmt.setTimestamp(3, new Timestamp(upper.getTime() + 1000L * 60L * 60 * 24L));</span>
+<span class="fc" id="L153">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L154">			final List&lt;RemoteMonitoringDataBean&gt; dataList = loader.loadList(results);</span>
+<span class="fc" id="L155">			results.close();</span>
+<span class="fc" id="L156">			return dataList;</span>
+<span class="pc bpc" id="L157" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L158">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get the requested type of data for the specified patient.
+	 * 
+	 * @param patientMID
+	 *            The MID of the patient
+	 * @param dataType
+	 *            The type of telemedicine data to return
+	 * @return A list of beans which all contain information of the requested
+	 *         type
+	 * @throws DBException
+	 */
+	public List&lt;RemoteMonitoringDataBean&gt; getPatientDataByType(final long patientMID, final String dataType)
+			throws DBException {
+<span class="pc" id="L175">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L176">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L177">						.prepareStatement(&quot;SELECT * FROM remotemonitoringdata WHERE PatientID=? AND &quot; + dataType</span>
+								+ &quot; != -1 ORDER BY timeLogged ASC&quot;)) {
+<span class="fc" id="L179">			stmt.setLong(1, patientMID);</span>
+
+<span class="fc" id="L181">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L182">			final List&lt;RemoteMonitoringDataBean&gt; dataList = loader.loadList(results);</span>
+<span class="fc" id="L183">			results.close();</span>
+<span class="fc" id="L184">			return dataList;</span>
+<span class="pc bpc" id="L185" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L186">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Store pedometer reading and height/weight data for a given patient in the
+	 * RemoteMonitoringData table
+	 * 
+	 * @param patientMID
+	 *            The MID of the patient
+	 * @param bean
+	 *            bean
+	 * @param height
+	 *            The height of the patient
+	 * @param weight
+	 *            The weight of the patient
+	 * @param reporterRole
+	 *            The role of the person that reported these monitoring stats
+	 * @param reporterMID
+	 *            The MID of the person that reported these monitoring stats
+	 * @throws ITrustException
+	 */
+	public void storePatientData(final long patientMID, final RemoteMonitoringDataBean bean, final String reporterRole,
+			final long reporterMID) throws ITrustException {
+<span class="fc" id="L210">		float height = bean.getHeight();</span>
+<span class="fc" id="L211">		float weight = bean.getWeight();</span>
+<span class="fc" id="L212">		int pedometer = bean.getPedometerReading();</span>
+<span class="fc" id="L213">		int sbp = bean.getSystolicBloodPressure();</span>
+<span class="fc" id="L214">		int dbp = bean.getDiastolicBloodPressure();</span>
+<span class="fc" id="L215">		int glucose = bean.getGlucoseLevel();</span>
+
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		if (height == 0) {</span>
+<span class="fc" id="L218">			height = -1;</span>
+		}
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		if (weight == 0) {</span>
+<span class="fc" id="L221">			weight = -1;</span>
+		}
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		if (pedometer == 0) {</span>
+<span class="fc" id="L224">			pedometer = -1;</span>
+		}
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		if (sbp == 0) {</span>
+<span class="fc" id="L227">			sbp = -1;</span>
+		}
+<span class="fc bfc" id="L229" title="All 2 branches covered.">		if (dbp == 0) {</span>
+<span class="fc" id="L230">			dbp = -1;</span>
+		}
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		if (glucose == 0) {</span>
+<span class="fc" id="L233">			glucose = -1;</span>
+		}
+
+<span class="pc bpc" id="L236" title="3 of 4 branches missed.">		if (getNumberOfDailyEntries(patientMID, &quot;height&quot;) &gt;= 1 &amp;&amp; height != -1) {</span>
+<span class="nc" id="L237">			throw new ITrustException(&quot;Patient height entries for today cannot exceed 1.&quot;);</span>
+		}
+<span class="pc bpc" id="L239" title="1 of 4 branches missed.">		if (getNumberOfDailyEntries(patientMID, &quot;weight&quot;) &gt;= 1 &amp;&amp; weight != -1) {</span>
+<span class="fc" id="L240">			throw new ITrustException(&quot;Patient weight entries for today cannot exceed 1.&quot;);</span>
+		}
+<span class="pc bpc" id="L242" title="1 of 4 branches missed.">		if (getNumberOfDailyEntries(patientMID, &quot;pedometerReading&quot;) &gt;= 1 &amp;&amp; pedometer != -1) {</span>
+<span class="fc" id="L243">			throw new ITrustException(&quot;Patient pedometer reading entries for today cannot exceed 1.&quot;);</span>
+		}
+<span class="fc bfc" id="L245" title="All 4 branches covered.">		if (getNumberOfDailyEntries(patientMID, &quot;glucoseLevel&quot;) &gt;= 10 &amp;&amp; glucose != -1) {</span>
+<span class="fc" id="L246">			throw new ITrustException(&quot;Patient glucose level entries for today cannot exceed 10.&quot;);</span>
+		}
+<span class="pc bpc" id="L248" title="1 of 4 branches missed.">		if (getNumberOfDailyEntries(patientMID, &quot;systolicBloodPressure&quot;) &gt;= 10 &amp;&amp; sbp != -1) {</span>
+<span class="nc" id="L249">			throw new ITrustException(&quot;Patient systolic blood pressure entries for today cannot exceed 10.&quot;);</span>
+		}
+<span class="pc bpc" id="L251" title="1 of 4 branches missed.">		if (getNumberOfDailyEntries(patientMID, &quot;diastolicBloodPressure&quot;) &gt;= 10 &amp;&amp; dbp != -1) {</span>
+<span class="nc" id="L252">			throw new ITrustException(&quot;Patient diastolic blood pressure entries for today cannot exceed 10.&quot;);</span>
+
+		}
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		if (&quot;patient representative&quot;.equals(reporterRole)) {</span>
+<span class="fc" id="L256">			validatePR(reporterMID, patientMID);</span>
+		}
+<span class="pc" id="L258">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L259">				PreparedStatement pstmt = conn</span>
+<span class="fc" id="L260">						.prepareStatement(&quot;INSERT INTO remotemonitoringdata(PatientID, height, weight, &quot;</span>
+								+ &quot;pedometerReading, systolicBloodPressure, diastolicBloodPressure, glucoseLevel, ReporterRole, ReporterID) VALUES(?,?,?,?,?,?,?,?,?)&quot;)) {
+<span class="fc" id="L262">			pstmt.setLong(1, patientMID);</span>
+<span class="fc" id="L263">			pstmt.setFloat(2, height);</span>
+<span class="fc" id="L264">			pstmt.setFloat(3, weight);</span>
+<span class="fc" id="L265">			pstmt.setInt(4, pedometer);</span>
+<span class="fc" id="L266">			pstmt.setInt(5, sbp);</span>
+<span class="fc" id="L267">			pstmt.setInt(6, dbp);</span>
+<span class="fc" id="L268">			pstmt.setInt(7, glucose);</span>
+<span class="fc" id="L269">			pstmt.setString(8, reporterRole);</span>
+<span class="fc" id="L270">			pstmt.setLong(9, reporterMID);</span>
+
+<span class="fc" id="L272">			pstmt.executeUpdate();</span>
+<span class="pc bpc" id="L273" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L274">			throw new DBException(e);</span>
+<span class="fc" id="L275">		}</span>
+<span class="fc" id="L276">	}</span>
+
+	/**
+	 * Private method to get the number of entries for a certain patientID and a
+	 * certain data type for today.
+	 * 
+	 * @param patientMID
+	 * @param dataType
+	 * @return the number of entries
+	 * @throws DBException
+	 */
+	private int getNumberOfDailyEntries(final long patientMID, final String dataType) throws DBException {
+<span class="pc" id="L288">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L289">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L290">						.prepareStatement(&quot;SELECT * FROM remotemonitoringdata WHERE PatientID=? AND &quot; + dataType</span>
+								+ &quot;!=? AND DATE(timeLogged)=CURRENT_DATE&quot;)) {
+<span class="fc" id="L292">			stmt.setLong(1, patientMID);</span>
+<span class="fc" id="L293">			stmt.setInt(2, -1);</span>
+<span class="fc" id="L294">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L295">			final List&lt;RemoteMonitoringDataBean&gt; patients = loader.loadList(results);</span>
+<span class="fc" id="L296">			results.close();</span>
+<span class="fc" id="L297">			return patients.size();</span>
+<span class="pc bpc" id="L298" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L299">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * validatePR
+	 * 
+	 * @param representativeMID
+	 *            representativeMID
+	 * @param patientMID
+	 *            patientMID
+	 * @throws ITrustException
+	 */
+	public void validatePR(final long representativeMID, final long patientMID) throws ITrustException {
+<span class="fc" id="L313">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L314">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT * FROM representatives WHERE RepresenterMID=? AND RepresenteeMID=?&quot;)) {
+<span class="fc" id="L316">			stmt.setLong(1, representativeMID);</span>
+<span class="fc" id="L317">			stmt.setLong(2, patientMID);</span>
+<span class="fc" id="L318">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L319">			boolean exists = results.next();</span>
+<span class="fc" id="L320">			results.close();</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">			if (!exists) {</span>
+<span class="fc" id="L322">				throw new ITrustException(&quot;Representer is not valid for patient &quot; + patientMID);</span>
+			}
+<span class="pc bpc" id="L324" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L325">			throw new DBException(e);</span>
+<span class="fc" id="L326">		}</span>
+<span class="fc" id="L327">	}</span>
+
+	/**
+	 * Show the list of HCPs monitoring this patient
+	 * 
+	 * @param patientMID
+	 *            The MID of the patient
+	 * @return list of HCPs monitoring the provided patient
+	 */
+	public List&lt;PersonnelBean&gt; getMonitoringHCPs(final long patientMID) throws DBException {
+<span class="pc" id="L337">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L338">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM personnel, remotemonitoringlists &quot;</span>
+						+ &quot;WHERE remotemonitoringlists.PatientMID=? AND remotemonitoringlists.HCPMID=personnel.MID&quot;)) {
+<span class="fc" id="L340">			stmt.setLong(1, patientMID);</span>
+<span class="fc" id="L341">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L342">			final List&lt;PersonnelBean&gt; personnel = personnelLoader.loadList(results);</span>
+<span class="fc" id="L343">			results.close();</span>
+
+<span class="fc" id="L345">			return personnel;</span>
+<span class="pc bpc" id="L346" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L347">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Add a patient to the list of HCPs' monitoring lists of Patients
+	 * 
+	 * @param patientMID
+	 *            The MID of the patient
+	 * @param HCPMID
+	 *            The MID of the HCP
+	 * @param tBean
+	 *            The TelemedicineBean indicating what telemedicine data the
+	 *            patient is allowed to enter.
+	 * @return true if added successfully, false if already in list
+	 */
+	public boolean addPatientToList(final long patientMID, final long HCPMID, final TelemedicineBean tBean)
+			throws DBException {
+<span class="fc" id="L365">		String permissionPS = &quot;SystolicBloodPressure, DiastolicBloodPressure, GlucoseLevel, Height, Weight, PedometerReading&quot;;</span>
+<span class="pc" id="L366">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L367">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L368">						.prepareStatement(&quot;SELECT * FROM remotemonitoringlists WHERE PatientMID = ? AND HCPMID = ?&quot;);</span>
+<span class="fc" id="L369">				PreparedStatement stmt2 = conn.prepareStatement(&quot;INSERT INTO remotemonitoringlists(PatientMID, HCPMID, &quot;</span>
+						+ permissionPS + &quot;) VALUES(?,?,?,?,?,?,?,?)&quot;)) {
+<span class="fc" id="L371">			stmt.setLong(1, patientMID);</span>
+<span class="fc" id="L372">			stmt.setLong(2, HCPMID);</span>
+<span class="fc" id="L373">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L374">			boolean hasResults = results.next();</span>
+<span class="fc" id="L375">			results.close();</span>
+
+<span class="fc bfc" id="L377" title="All 2 branches covered.">			if (hasResults) {</span>
+<span class="fc" id="L378">				return false;</span>
+			}
+
+			// TODO: somebody should probably make this use a loader of some kind
+<span class="fc" id="L382">			stmt2.setLong(1, patientMID);</span>
+<span class="fc" id="L383">			stmt2.setLong(2, HCPMID);</span>
+<span class="fc" id="L384">			stmt2.setBoolean(3, tBean.isSystolicBloodPressureAllowed());</span>
+<span class="fc" id="L385">			stmt2.setBoolean(4, tBean.isDiastolicBloodPressureAllowed());</span>
+<span class="fc" id="L386">			stmt2.setBoolean(5, tBean.isGlucoseLevelAllowed());</span>
+<span class="fc" id="L387">			stmt2.setBoolean(6, tBean.isHeightAllowed());</span>
+<span class="fc" id="L388">			stmt2.setBoolean(7, tBean.isWeightAllowed());</span>
+<span class="fc" id="L389">			stmt2.setBoolean(8, tBean.isPedometerReadingAllowed());</span>
+<span class="fc" id="L390">			stmt2.executeUpdate();</span>
+
+<span class="fc" id="L392">			return true;</span>
+<span class="pc bpc" id="L393" title="24 of 36 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L394">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Remove a patient from the list of HCPs' monitoring lists of Patients
+	 * 
+	 * @param patientMID
+	 *            The MID of the patient
+	 * @param HCPMID
+	 *            The MID of the HCP
+	 * @return true if removed successfully, false if not in list
+	 */
+	public boolean removePatientFromList(final long patientMID, final long HCPMID) throws DBException {
+<span class="pc" id="L408">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L409">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L410">						.prepareStatement(&quot;DELETE FROM remotemonitoringlists WHERE PatientMID = ? AND HCPMID = ?&quot;)) {</span>
+<span class="fc" id="L411">			stmt.setLong(1, patientMID);</span>
+<span class="fc" id="L412">			stmt.setLong(2, HCPMID);</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">			boolean removed = stmt.executeUpdate() != 0;</span>
+<span class="fc" id="L414">			return removed;</span>
+<span class="pc bpc" id="L415" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L416">			throw new DBException(e);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

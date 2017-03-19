@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EditApptAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">EditApptAction.java</span></div><h1>EditApptAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.old.validate.ApptBeanValidator;
+
+/**
+ * EditApptAction
+ */
+public class EditApptAction extends ApptAction {
+	
+<span class="fc" id="L20">	private ApptBeanValidator validator = new ApptBeanValidator();</span>
+	private long loggedInMID;
+	private long originalPatient;
+	private long originalApptID;
+	
+	/**
+	 * EditApptAction
+	 * @param factory factory
+	 * @param loggedInMID loggedInMID
+	 */
+	public EditApptAction(DAOFactory factory, long loggedInMID) {
+<span class="fc" id="L31">		this(factory, loggedInMID, 0L, 0L);</span>
+<span class="fc" id="L32">	}</span>
+	
+	public void setOriginalApptID(long id) {
+<span class="nc" id="L35">		this.originalApptID = id;</span>
+<span class="nc" id="L36">	}</span>
+	
+	public void setOriginalPatient(long patient) {
+<span class="nc" id="L39">		this.originalPatient = patient;</span>
+<span class="nc" id="L40">	}</span>
+	
+	public void logViewAction() {
+<span class="nc" id="L43">		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_VIEW, loggedInMID, originalPatient, &quot;&quot;);</span>
+<span class="nc" id="L44">	}</span>
+	
+	/**
+	 * EditApptAction
+	 * @param factory factory
+	 * @param loggedInMID loggedInMID
+	 */
+	public EditApptAction(DAOFactory factory, long loggedInMID, long originalPatient, long originalApptID) {
+<span class="fc" id="L52">		super(factory, loggedInMID);</span>
+<span class="fc" id="L53">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L54">		this.originalPatient = originalPatient;</span>
+<span class="fc" id="L55">		this.originalApptID = originalApptID;</span>
+<span class="fc" id="L56">	}</span>
+	
+	/**
+	 * Retrieves an appointment from the database, given its ID.
+	 * Returns null if there is no match, or multiple matches.
+	 * 
+	 * @param apptID apptID
+	 * @return ApptBean with matching ID
+	 * @throws DBException 
+	 * @throws SQLException 
+	 */
+	public ApptBean getAppt(int apptID) throws DBException, SQLException {
+		try {
+<span class="fc" id="L69">			List&lt;ApptBean&gt; apptBeans = apptDAO.getAppt(apptID);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">			if (apptBeans.size() == 1){</span>
+<span class="fc" id="L71">				return apptBeans.get(0);</span>
+			}
+<span class="fc" id="L73">			return null;</span>
+<span class="fc" id="L74">		} catch (DBException e) {</span>
+<span class="fc" id="L75">			return null;</span>
+		}
+	}
+	
+	/**
+	 * Updates an existing appointment
+	 * 
+	 * @param appt Appointment Bean containing the updated information
+	 * @param ignoreConflicts ignoreConflicts
+	 * @return Message to be displayed
+	 * @throws FormValidationException
+	 * @throws SQLException 
+	 * @throws DBException 
+	 */
+	public String editAppt(ApptBean appt, boolean ignoreConflicts) throws FormValidationException, SQLException, DBException {
+<span class="fc" id="L90">		validator.validate(appt);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if(appt.getDate().before(new Timestamp(System.currentTimeMillis())))</span>
+<span class="fc" id="L92">			return &quot;The scheduled date of this appointment (&quot;+appt.getDate()+&quot;) has already passed.&quot;;</span>
+		
+<span class="fc bfc" id="L94" title="All 2 branches covered.">		if(!ignoreConflicts){</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">			if(getConflictsForAppt(appt.getHcp(), appt).size()&gt;0){</span>
+<span class="fc" id="L96">				return &quot;Warning! This appointment conflicts with other appointments&quot;;</span>
+			}
+		}
+		
+		try {
+<span class="fc" id="L101">			apptDAO.editAppt(appt);</span>
+<span class="fc" id="L102">			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_EDIT, loggedInMID, originalPatient, &quot;&quot;+appt.getApptID());</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">			if(ignoreConflicts){</span>
+<span class="fc" id="L104">				TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, originalPatient, &quot;&quot;);</span>
+			}
+<span class="fc" id="L106">			return &quot;Success: Appointment changed&quot;;</span>
+<span class="fc" id="L107">		} catch (DBException e) {</span>
+			
+<span class="fc" id="L109">			return e.getMessage();</span>
+		} 
+	}
+	
+	
+	
+	/**
+	 * Removes an existing appointment
+	 * 
+	 * @param appt Appointment Bean containing the ID of the appointment to be removed.
+	 * @return Message to be displayed
+	 * @throws DBException 
+	 */
+	public String removeAppt(ApptBean appt) throws DBException, SQLException {
+		try {
+<span class="fc" id="L124">			apptDAO.removeAppt(appt);</span>
+<span class="fc" id="L125">			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REMOVE, loggedInMID, originalPatient, &quot;&quot;+originalApptID);</span>
+<span class="fc" id="L126">			return &quot;Success: Appointment removed&quot;;</span>
+<span class="nc" id="L127">		} catch (SQLException e) {</span>
+			
+<span class="nc" id="L129">			return e.getMessage();</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateSelect.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.tags</a> &gt; <span class="el_source">StateSelect.java</span></div><h1>StateSelect.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.tags;
+
+import java.io.IOException;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.Tag;
+
+import edu.ncsu.csc.itrust.model.old.enums.State;
+
+/**
+ * JSP tag that adds an HTML select for states, from the enum.
+ * 
+ * @see {@link State}
+ * 
+ * Also selects the current state
+ */
+public class StateSelect implements Tag {
+	private PageContext pageContext;
+	private Tag parent;
+	private String name;
+	private String value;
+
+	/**
+	 * StateSelect
+	 */
+	public StateSelect() {
+<span class="fc" id="L28">		super();</span>
+<span class="fc" id="L29">	}</span>
+
+	/**
+	 * doStarTag
+	 * @throws JspException
+	 */
+	@Override
+	public int doStartTag() throws JspException {
+		try {
+<span class="fc" id="L38">			JspWriter out = pageContext.getOut();</span>
+<span class="fc" id="L39">			out.write(&quot;&lt;select name=\&quot;&quot; + getName() + &quot;\&quot; &gt;&quot;);</span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">			if (name == null || &quot;&quot;.equals(name))</span>
+<span class="fc" id="L41">				out.write(&quot;&lt;option value=\&quot;\&quot;&gt;Select State&lt;/option&gt;&quot;);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">			for (State state : State.values()) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">				String selected = state.toString().equals(getValue()) ? &quot;selected=selected&quot; : &quot;&quot;;</span>
+<span class="fc" id="L44">				out.write(&quot;&lt;option value=\&quot;&quot; + state.toString() + &quot;\&quot; &quot; + selected + &quot;&gt;&quot; + state.getName()</span>
+						+ &quot;&lt;/option&gt;&quot;);
+			}
+<span class="fc" id="L47">			out.write(&quot;&lt;/select&gt;&quot;);</span>
+<span class="fc" id="L48">		} catch (IOException e) {</span>
+			//TODO
+<span class="fc" id="L50">		}</span>
+<span class="fc" id="L51">		return SKIP_BODY;</span>
+	}
+
+	/**
+	 * doEndTag
+	 * @return SKIP_BODY
+	 * @throws JspException
+	 */
+	@Override
+	public int doEndTag() throws JspException {
+<span class="fc" id="L61">		return SKIP_BODY;</span>
+	}
+
+	/**
+	 * release
+	 */
+	@Override
+	public void release() {
+<span class="fc" id="L69">	}</span>
+
+	/**
+	 * setPageContext
+	 * @param pageContext pageContext
+	 */
+	@Override
+	public void setPageContext(PageContext pageContext) {
+<span class="fc" id="L77">		this.pageContext = pageContext;</span>
+<span class="fc" id="L78">	}</span>
+
+	/**
+	 * setParent
+	 * @param parent parent
+	 */
+	@Override
+	public void setParent(Tag parent) {
+<span class="fc" id="L86">		this.parent = parent;</span>
+<span class="fc" id="L87">	}</span>
+
+	/**
+	 * getParent
+	 */
+	@Override
+	public Tag getParent() {
+<span class="fc" id="L94">		return parent;</span>
+	}
+
+	/**
+	 * getName
+	 * @return
+	 */
+	public String getName() {
+<span class="fc" id="L102">		return name;</span>
+	}
+
+	/**
+	 * setName
+	 * @param name anem
+	 */
+	public void setName(String name) {
+<span class="fc" id="L110">		this.name = name;</span>
+<span class="fc" id="L111">	}</span>
+
+	/**
+	 * getValue
+	 * @return value
+	 */
+	public String getValue() {
+<span class="fc" id="L118">		return value;</span>
+	}
+
+	/**
+	 * setValue
+	 * @param value value
+	 */
+	public void setValue(String value) {
+<span class="fc" id="L126">		this.value = value;</span>
+<span class="fc" id="L127">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

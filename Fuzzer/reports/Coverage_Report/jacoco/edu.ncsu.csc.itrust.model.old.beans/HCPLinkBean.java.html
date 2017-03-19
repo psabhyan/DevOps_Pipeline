@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HCPLinkBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">HCPLinkBean.java</span></div><h1>HCPLinkBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+/**
+ * A mini-bean to pass data between viewPrescriptionRecords.jsp and reportAdverseEvent.jsp
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters.
+ * to create these easily)
+ */
+<span class="fc" id="L11">public class HCPLinkBean {</span>
+	long prescriberMID;
+	String drug;
+	boolean checked;
+	String code;
+	
+	public boolean isChecked() {
+<span class="fc" id="L18">		return checked;</span>
+	}
+
+	public void setChecked(boolean checked) {
+<span class="fc" id="L22">		this.checked = checked;</span>
+<span class="fc" id="L23">	}</span>
+
+	public String getCode() {
+<span class="fc" id="L26">		return code;</span>
+	}
+
+	public void setCode(String code) {
+<span class="fc" id="L30">		this.code = code;</span>
+<span class="fc" id="L31">	}</span>
+
+	/**
+	 * @return the patient MID
+	 */
+	public long getPrescriberMID() {
+<span class="fc" id="L37">		return prescriberMID;</span>
+	}
+	
+	/**
+	 * 
+	 * @param mID the patients MID
+	 */
+	public void setPrescriberMID(long mID) {
+<span class="fc" id="L45">		prescriberMID = mID;</span>
+<span class="fc" id="L46">	}</span>
+	
+	/**
+	 * 
+	 * @return the drug the event is being reported for
+	 */
+	public String getDrug() {
+<span class="fc" id="L53">		return drug;</span>
+	}
+	
+	/**
+	 * 
+	 * @param drug sets the drug the event is being reported for
+	 */
+	public void setDrug(String drug) {
+<span class="fc" id="L61">		this.drug = drug;</span>
+<span class="fc" id="L62">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

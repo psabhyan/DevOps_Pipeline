@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Diagnosis.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.diagnosis</a> &gt; <span class="el_source">Diagnosis.java</span></div><h1>Diagnosis.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.diagnosis;
+
+import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
+
+/**
+ * Model of HCP's diagnosis of a patient during office visit.
+ */
+public class Diagnosis {
+
+	/**
+	 * Primary identifier of diagnosis.
+	 */
+	private long id;
+	
+	/**
+	 * ID references the office visit that the diagnosis belongs.
+	 */
+	private long visitId;
+	
+	/**
+	 * ICD10CM code representing description of the diagnosis.
+	 */
+	private ICDCode icdCode;
+
+	/**
+	 * Default constructor.
+	 */
+	public Diagnosis() {
+<span class="fc" id="L29">		super();</span>
+<span class="fc" id="L30">		icdCode = new ICDCode();</span>
+<span class="fc" id="L31">	}</span>
+	
+	/**
+	 * Constructor for creating an instance of Diagnosis.
+	 * 
+	 * @param id
+	 * 			id of diagnosis
+	 * @param visitId
+	 * 			office visit id of diagnosis
+	 * @param icdCode
+	 * 			ICD10CM code for diagnosis
+	 */
+	public Diagnosis(long id, long visitId, ICDCode icdCode) {
+<span class="fc" id="L44">		super();</span>
+<span class="fc" id="L45">		this.id = id;</span>
+<span class="fc" id="L46">		this.visitId = visitId;</span>
+<span class="fc" id="L47">		this.icdCode = icdCode;</span>
+<span class="fc" id="L48">	}</span>
+
+	/**
+	 * @return id of the instance
+	 */
+	public long getId() {
+<span class="fc" id="L54">		return id;</span>
+	}
+
+	/**
+	 * @return office visit id of the instance
+	 */
+	public long getVisitId() {
+<span class="fc" id="L61">		return visitId;</span>
+	}
+
+	/**
+	 * Sets the office visit id of the instance.
+	 * @param visitId
+	 * 			new office visit id of the instance
+	 */
+	public void setVisitId(long visitId) {
+<span class="fc" id="L70">		this.visitId = visitId;</span>
+<span class="fc" id="L71">	}</span>
+
+	/**
+	 * @return ICD10CM code of the instance
+	 */
+	public ICDCode getIcdCode() {
+<span class="fc" id="L77">		return icdCode;</span>
+	}
+
+	/**
+	 * Sets the ICD10CM code of the instance.
+	 * @param icdCode
+	 * 			new ICD10CM code of the instance
+	 */
+	public void setIcdCode(ICDCode icdCode) {
+<span class="fc" id="L86">		this.icdCode = icdCode;</span>
+<span class="fc" id="L87">	}</span>
+	
+	/**
+	 * @return ICD10CM code string of the instance
+	 */
+	public String getCode() {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		return getIcdCode() == null ? &quot;&quot; : getIcdCode().getCode();</span>
+	}
+	
+	/**
+	 * @return ICD10CM name description of the instance
+	 */
+	public String getName() {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		return getIcdCode() == null ? &quot;&quot; : getIcdCode().getName();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

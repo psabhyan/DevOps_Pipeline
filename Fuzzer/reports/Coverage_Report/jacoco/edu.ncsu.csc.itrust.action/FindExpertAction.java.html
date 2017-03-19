@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FindExpertAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">FindExpertAction.java</span></div><h1>FindExpertAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.CustomComparator;
+import edu.ncsu.csc.itrust.model.old.beans.HospitalBean;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.HospitalsDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Action class to find experts based on the distance from the user and type of expert.
+ *
+ */
+public class FindExpertAction {
+
+	/**
+	 * HospitalDAO to grab hospitals from
+	 */
+	HospitalsDAO hospitalsDAO;
+
+	/**
+	 * PersonnelDAO to find experts from
+	 */
+	PersonnelDAO personnelDAO;
+
+	/**
+	 * Constructor simply is used to initialize the DAOs
+	 * @param factory used to initialize DAOs
+	 */
+<span class="fc" id="L39">	public FindExpertAction(DAOFactory factory){</span>
+<span class="fc" id="L40">		hospitalsDAO = new HospitalsDAO(factory);</span>
+<span class="fc" id="L41">		personnelDAO = new PersonnelDAO(factory);</span>
+<span class="fc" id="L42">	}</span>
+
+	/**
+	 * 
+	 * Main method used to find the hospitals and all specified personnel within range
+	 * 
+	 * @param distance The maximum distance that a hospital must be within range in order for it to return
+	 * @param specialty The specialty that the user is interested in
+	 * @param patientZip Zipcode entered by the patient
+	 * @param zipRange The range to search hospitals for. The amount of zipcode digits to match, starting with the first digit.
+	 * @return A relationship between hospitals within the defined proximity and the specified experts at the hospital.
+	 */
+	public HashMap&lt;HospitalBean, List&lt;PersonnelBean&gt;&gt; findHospitalsBySpecialty(String specialty, String patientZip, int zipRange){
+<span class="fc" id="L55">		HashMap&lt;HospitalBean, List&lt;PersonnelBean&gt;&gt; experts = null;</span>
+		try {
+			//Grab all hospitals and filter them based on distance
+<span class="fc" id="L58">			List&lt;HospitalBean&gt; hospitals = filterHospitals(hospitalsDAO.getAllHospitals(), patientZip, zipRange);</span>
+			//Find experts in hospitals
+<span class="fc" id="L60">			experts = findExperts(hospitals, specialty);</span>
+<span class="nc" id="L61">		} catch (DBException e) {</span>
+			//
+<span class="fc" id="L63">		}</span>
+<span class="fc" id="L64">		return experts;</span>
+	}
+
+	/**
+	 * Method used to find experts of specified specialty from hospitals that are in range
+	 * @param hospitals The hospitals within the proximity of the user
+	 * @param specialty The expertise specified
+	 * @return A relationship between the hospitals within proximity and the personnel with the specified expertise within them.
+	 */
+	public HashMap&lt;HospitalBean, List&lt;PersonnelBean&gt;&gt; findExperts(List&lt;HospitalBean&gt; hospitals, String specialty){
+<span class="fc" id="L74">		HashMap&lt;HospitalBean, List&lt;PersonnelBean&gt;&gt; experts = new HashMap&lt;HospitalBean, List&lt;PersonnelBean&gt;&gt;();</span>
+		try{
+			//Go through all nearby hospitals
+<span class="fc bfc" id="L77" title="All 2 branches covered.">			for(HospitalBean hospital : hospitals){</span>
+				//Put the specified experts into a hashmap with the hospital
+<span class="fc" id="L79">				experts.put(hospital, personnelDAO.getPersonnelFromHospital(hospital.getHospitalID(), specialty));</span>
+<span class="fc" id="L80">			}</span>
+<span class="nc" id="L81">		} catch (DBException e){</span>
+			//
+<span class="fc" id="L83">		}</span>
+<span class="fc" id="L84">		return experts;</span>
+	}
+	
+	/**
+	 * Method used to find experts of specified specialty from hospitals that are in range
+	 * @param hospitals The hospitals within the proximity of the user
+	 * @param specialty The expertise specified
+	 * @return A relationship between the hospitals within proximity and the personnel with the specified expertise within them.
+	 */
+	public List&lt;PersonnelBean&gt; findExpertsForLocalHospitals(List&lt;HospitalBean&gt; hospitals, String specialty){
+<span class="fc" id="L94">		List&lt;PersonnelBean&gt; beans = new ArrayList&lt;PersonnelBean&gt;();</span>
+		boolean searchForAll;
+<span class="fc" id="L96">		searchForAll = specialty.equalsIgnoreCase(&quot;all&quot;);</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (searchForAll) {</span>
+			
+		}
+		try{
+			//Go through all nearby hospitals
+<span class="fc bfc" id="L102" title="All 2 branches covered.">			for(HospitalBean hospital : hospitals){</span>
+				//Put the specified experts into a hashmap with the hospital
+				//experts.put(hospital, personnelDAO.getPersonnelFromHospital(hospital.getHospitalID(), specialty));
+<span class="fc" id="L105">				List&lt;PersonnelBean&gt; personnelBeans = personnelDAO.getPersonnelFromHospital(hospital.getHospitalID(), specialty);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">				for (PersonnelBean personnelBean : personnelBeans) {</span>
+<span class="fc" id="L107">					beans.add(personnelBean);</span>
+<span class="fc" id="L108">				}</span>
+<span class="fc" id="L109">			}</span>
+<span class="nc" id="L110">		} catch (DBException e){</span>
+<span class="nc" id="L111">			e.printStackTrace();</span>
+<span class="fc" id="L112">		}</span>
+<span class="fc" id="L113">		Collections.sort(beans, new CustomComparator());</span>
+<span class="fc" id="L114">		return beans;</span>
+	}
+	
+	public List&lt;HospitalBean&gt; findHospitalsAssignedToHCP(long pid) throws DBException
+	{
+<span class="nc" id="L119">		return hospitalsDAO.getHospitalsAssignedToPhysician(pid);</span>
+	}
+
+	/**
+	 * Filters hospitals down to just the hospitals in the specified range of the user
+	 * @param hospitals Hospitals to filter
+	 * @param patientZip Zipcode entered by the patient
+	 * @param zipRange The range to search hospitals for. The amount of zipcode digits to match, starting with the first digit.
+	 * @return All hospitals within the specified range of the user
+	 */
+	public List&lt;HospitalBean&gt; filterHospitals(List&lt;HospitalBean&gt; hospitals, String patientZip, int zipRange){
+<span class="fc" id="L130">		List&lt;HospitalBean&gt; inRange = new ArrayList&lt;HospitalBean&gt;();</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">		for (int i = 0; i &lt; hospitals.size(); i++) {</span>
+			try {
+				//A hospital is in range if its zipcode matches the user entered one from the first number to the zipRangeth number
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">				if (hospitals.get(i).getHospitalZip().substring(0, zipRange).equals(patientZip.substring(0, zipRange)))</span>
+<span class="fc" id="L135">					inRange.add(hospitals.get(i));</span>
+<span class="fc" id="L136">			} catch (NullPointerException e1) {</span>
+				//Examine next hospital if current has null zipcode entry
+<span class="fc" id="L138">			} catch (IndexOutOfBoundsException e2) {</span>
+				//If the hospital's zip code is not at least 5 digits long, examine next hospital
+<span class="fc" id="L140">			}</span>
+		}
+<span class="fc" id="L142">		return inRange;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

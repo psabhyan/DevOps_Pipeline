@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserMySQLConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.user</a> &gt; <span class="el_source">UserMySQLConverter.java</span></div><h1>UserMySQLConverter.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.user;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.DataBean;
+import edu.ncsu.csc.itrust.model.SQLLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.Role;
+@ManagedBean
+@RequestScoped
+public class UserMySQLConverter implements DataBean&lt;User&gt;, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8056934124263634466L;
+	@Resource(name=&quot;jdbc/itrust&quot;)
+	private static DAOFactory factory;
+	private SQLLoader&lt;User&gt; loader;
+	private DataSource ds;
+	//private transient final ProductionConnectionDriver driver = new ProductionConnectionDriver();
+
+
+	/**
+	 * @throws DBException
+	 */
+<span class="nc" id="L42">	public UserMySQLConverter() throws DBException{</span>
+<span class="nc" id="L43">		loader = new UserSQLConvLoader();</span>
+		try {
+<span class="nc" id="L45">			Context ctx = new InitialContext();</span>
+<span class="nc" id="L46">				ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="nc" id="L47">		} catch (NamingException e) {</span>
+<span class="nc" id="L48">			throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot;+e.getMessage()));</span>
+<span class="nc" id="L49">		}</span>
+
+
+<span class="nc" id="L52">	}</span>
+	
+	/**Constructor used for unit testing
+	 * @param ds
+	 * @throws DBException
+	 */
+<span class="fc" id="L58">	public UserMySQLConverter(DataSource ds) throws DBException{</span>
+<span class="fc" id="L59">		this.ds = ds;</span>
+
+<span class="fc" id="L61">			loader = new UserSQLConvLoader();</span>
+
+<span class="fc" id="L63">	}</span>
+	
+	@Override
+	public List&lt;User&gt; getAll() throws DBException {
+<span class="nc" id="L67">		List&lt;User&gt; list = new ArrayList&lt;User&gt;();</span>
+<span class="nc" id="L68">		Connection conn = null;</span>
+<span class="nc" id="L69">		PreparedStatement pstring = null;</span>
+<span class="nc" id="L70">		ResultSet results = null;</span>
+		try {
+<span class="nc" id="L72">			conn = ds.getConnection();</span>
+<span class="nc" id="L73">			pstring = conn.prepareStatement(&quot;SELECT * FROM users&quot;);</span>
+		
+<span class="nc" id="L75">			results = pstring.executeQuery();</span>
+<span class="nc" id="L76">			list = loader.loadList(results);</span>
+<span class="nc" id="L77">			return list;</span>
+<span class="nc" id="L78">		} catch (SQLException e) {</span>
+<span class="nc" id="L79">			throw new DBException(e);</span>
+		} finally {
+<span class="nc" id="L81">			try{</span>
+<span class="nc bnc" id="L82" title="All 4 branches missed.">				if(results !=null){</span>
+<span class="nc" id="L83">					results.close();</span>
+				}
+<span class="nc" id="L85">			} catch (SQLException e) {</span>
+<span class="nc" id="L86">				throw new DBException(e);</span>
+			} finally {
+<span class="nc" id="L88">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L89">			}</span>
+		}
+
+	}
+	@Override
+	public User getByID(long id) throws DBException {
+<span class="fc" id="L95">		User ret = null;</span>
+<span class="fc" id="L96">		Connection conn = null;</span>
+<span class="fc" id="L97">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L98">		ResultSet results = null;</span>
+<span class="fc" id="L99">		String stmt = &quot;&quot;;</span>
+<span class="fc" id="L100">		Role userRole = getUserRole(id);</span>
+<span class="pc bpc" id="L101" title="2 of 4 branches missed.">		switch (userRole) {</span>
+		case HCP:
+		case PHA:
+		case ADMIN:
+		case UAP:
+		case ER:
+		case LT:
+<span class="fc" id="L108">			stmt = &quot;SELECT users.MID AS MID, users.Role AS Role, personnel.firstName AS firstName, personnel.lastName AS lastName FROM users INNER JOIN personnel ON users.MID = personnel.MID WHERE users.MID=?;&quot;;</span>
+<span class="fc" id="L109">			break;</span>
+//ToDo: add back in when needed
+		case PATIENT:
+<span class="fc" id="L112">			stmt = &quot;SELECT users.MID AS MID, users.Role AS Role, patients.firstName AS firstName, patients.lastName AS lastName FROM users INNER JOIN patients ON users.MID = patients.MID WHERE users.MID=?;&quot;;</span>
+//			throw new IllegalStateException(&quot;unimplemented&quot;);
+<span class="fc" id="L114">			break;</span>
+		case TESTER:
+<span class="nc" id="L116">			stmt = &quot;SELECT MID AS MID, Role, '' AS firstName, MID AS lastName from Users WHERE MID=?;&quot;;</span>
+<span class="nc" id="L117">			break;</span>
+		default:
+<span class="nc" id="L119">			throw new DBException(new SQLException(&quot;Role &quot; + userRole + &quot; not supported&quot;));</span>
+		}
+		try {
+<span class="fc" id="L122">			List&lt;User&gt; list = null;</span>
+<span class="fc" id="L123">			conn=ds.getConnection();</span>
+<span class="fc" id="L124">			pstring = conn.prepareStatement(stmt);</span>
+<span class="fc" id="L125">			pstring.setString(1, Long.toString(id));</span>
+<span class="fc" id="L126">			results = pstring.executeQuery();</span>
+<span class="fc" id="L127">			list = loader.loadList(results);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			if(!list.isEmpty()){</span>
+<span class="fc" id="L129">				ret = list.get(0);</span>
+			}
+<span class="fc" id="L131">			return ret;</span>
+<span class="nc" id="L132">		} catch (SQLException e) {</span>
+<span class="nc" id="L133">			throw new DBException(e);</span>
+		} 
+		finally {
+		
+<span class="nc" id="L137">			try{</span>
+<span class="pc bpc" id="L138" title="3 of 4 branches missed.">				if(results !=null){</span>
+<span class="pc" id="L139">					results.close();</span>
+				}
+<span class="nc" id="L141">			} catch (SQLException e) {</span>
+<span class="nc" id="L142">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L144">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L145">			}</span>
+		}
+
+	}
+	@Override
+	public boolean add(User addObj) throws DBException {
+<span class="nc" id="L151">		throw new IllegalStateException(&quot;unimplemented&quot;);</span>
+		// TODO implement as needed
+
+	}
+	@Override
+	public boolean update(User updateObj) throws DBException {
+		// TODO Implement as needed
+<span class="nc" id="L158">		throw new IllegalStateException(&quot;unimplemented&quot;);</span>
+	}
+	
+	private Role getUserRole(long mid) throws DBException{
+<span class="fc" id="L162">		Role userRole = null;</span>
+<span class="fc" id="L163">		Connection conn = null;</span>
+<span class="fc" id="L164">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L165">		ResultSet results = null;</span>
+		try {
+<span class="fc" id="L167">			conn=ds.getConnection();</span>
+<span class="fc" id="L168">			pstring = conn.prepareStatement(&quot;SELECT Role FROM users WHERE MID = ?;&quot;);</span>
+<span class="fc" id="L169">			pstring.setString(1, Long.toString(mid));</span>
+<span class="fc" id="L170">			results = pstring.executeQuery();</span>
+<span class="fc" id="L171">			results.next();</span>
+<span class="fc" id="L172">			String roleName = results.getString(&quot;Role&quot;);</span>
+<span class="fc" id="L173">			userRole = Role.parse(roleName);</span>
+
+<span class="fc" id="L175">			return userRole;</span>
+<span class="nc" id="L176">		} catch (SQLException e) {</span>
+<span class="nc" id="L177">			throw new DBException(e);</span>
+		} 
+		finally{
+<span class="nc" id="L180">			try{</span>
+<span class="pc bpc" id="L181" title="3 of 4 branches missed.">				if(results != null){</span>
+<span class="pc" id="L182">					results.close();</span>
+				}
+<span class="nc" id="L184">			} catch (SQLException e) {</span>
+<span class="nc" id="L185">				throw new DBException(e);</span>
+			} 
+			
+			
+			finally{
+<span class="pc" id="L190">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L191">			}</span>
+		}
+
+		
+		
+	}
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

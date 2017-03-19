@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonnelLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans.loaders</a> &gt; <span class="el_source">PersonnelLoader.java</span></div><h1>PersonnelLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans.loaders;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+
+/**
+ * A loader for PersonnelBeans.
+ * 
+ * Loads in information to/from beans using ResultSets and PreparedStatements. Use the superclass to enforce consistency. 
+ * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
+ */
+<span class="fc" id="L17">public class PersonnelLoader implements BeanLoader&lt;PersonnelBean&gt; {</span>
+	@Override
+	public List&lt;PersonnelBean&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L20">		List&lt;PersonnelBean&gt; list = new ArrayList&lt;PersonnelBean&gt;();</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L22">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L24">		return list;</span>
+	}
+
+	@Override
+	public PersonnelBean loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L29">		PersonnelBean p = new PersonnelBean();</span>
+<span class="fc" id="L30">		p.setMID(rs.getLong(&quot;MID&quot;));</span>
+<span class="fc" id="L31">		p.setAMID(rs.getLong(&quot;amid&quot;));</span>
+<span class="fc" id="L32">		p.setRoleString(rs.getString(&quot;role&quot;));</span>
+<span class="fc" id="L33">		p.setLastName(rs.getString(&quot;lastName&quot;));</span>
+<span class="fc" id="L34">		p.setFirstName(rs.getString(&quot;firstName&quot;));</span>
+<span class="fc" id="L35">		p.setPhone(rs.getString(&quot;phone&quot;));</span>
+<span class="fc" id="L36">		p.setStreetAddress1(rs.getString(&quot;address1&quot;));</span>
+<span class="fc" id="L37">		p.setStreetAddress2(rs.getString(&quot;address2&quot;));</span>
+<span class="fc" id="L38">		p.setCity(rs.getString(&quot;city&quot;));</span>
+<span class="fc" id="L39">		p.setState(rs.getString(&quot;state&quot;));</span>
+<span class="fc" id="L40">		p.setZip((rs.getString(&quot;zip&quot;)));</span>
+<span class="fc" id="L41">		p.setEmail(rs.getString(&quot;email&quot;));</span>
+<span class="fc" id="L42">		p.setSpecialty(rs.getString(&quot;specialty&quot;));</span>
+<span class="fc" id="L43">		return p;</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(PreparedStatement ps, PersonnelBean p) throws SQLException {
+<span class="fc" id="L48">		int i = 1;</span>
+<span class="fc" id="L49">		ps.setLong(i++, p.getAMID());</span>
+<span class="fc" id="L50">		ps.setString(i++, p.getFirstName());</span>
+<span class="fc" id="L51">		ps.setString(i++, p.getLastName());</span>
+<span class="fc" id="L52">		ps.setString(i++, p.getPhone());</span>
+<span class="fc" id="L53">		ps.setString(i++, p.getStreetAddress1());</span>
+<span class="fc" id="L54">		ps.setString(i++, p.getStreetAddress2());</span>
+<span class="fc" id="L55">		ps.setString(i++, p.getCity());</span>
+<span class="fc" id="L56">		ps.setString(i++, p.getState());</span>
+<span class="fc" id="L57">		ps.setString(i++, p.getZip());</span>
+<span class="fc" id="L58">		ps.setString(i++, p.getSpecialty());</span>
+<span class="fc" id="L59">		ps.setString(i++, p.getEmail());</span>
+<span class="fc" id="L60">		return ps;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

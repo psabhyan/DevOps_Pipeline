@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>State.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.enums</a> &gt; <span class="el_source">State.java</span></div><h1>State.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.enums;
+
+/**
+ * All of our wonderful states.
+ * 
+ *  
+ * 
+ */
+<span class="pc" id="L9">public enum State {</span>
+<span class="fc" id="L10">	AL(&quot;Alabama&quot;), AK(&quot;Alaska&quot;), AZ(&quot;Arizona&quot;), AR(&quot;Arkansas&quot;), CA(&quot;California&quot;), CO(&quot;Colorado&quot;), CT(</span>
+<span class="fc" id="L11">			&quot;Connecticut&quot;), DE(&quot;Delaware&quot;), DC(&quot;District of Columbia&quot;), FL(&quot;Florida&quot;), GA(&quot;Georgia&quot;), HI(</span>
+<span class="fc" id="L12">			&quot;Hawaii&quot;), ID(&quot;Idaho&quot;), IL(&quot;Illinois&quot;), IN(&quot;Indiana&quot;), IA(&quot;Iowa&quot;), KS(&quot;Kansas&quot;), KY(&quot;Kentucky&quot;), LA(</span>
+<span class="fc" id="L13">			&quot;Louisiana&quot;), ME(&quot;Maine&quot;), MD(&quot;Maryland&quot;), MA(&quot;Massachusetts&quot;), MI(&quot;Michigan&quot;), MN(&quot;Minnesota&quot;), MS(</span>
+<span class="fc" id="L14">			&quot;Mississippi&quot;), MO(&quot;Missouri&quot;), MT(&quot;Montana&quot;), NE(&quot;Nebraska&quot;), NV(&quot;Nevada&quot;), NH(&quot;New Hampshire&quot;), NJ(</span>
+<span class="fc" id="L15">			&quot;New Jersey&quot;), NM(&quot;New Mexico&quot;), NY(&quot;New York&quot;), NC(&quot;North Carolina&quot;), ND(&quot;North Dakota&quot;), OH(</span>
+<span class="fc" id="L16">			&quot;Ohio&quot;), OK(&quot;Oklahoma&quot;), OR(&quot;Oregon&quot;), PA(&quot;Pennsylvania&quot;), RI(&quot;Rhode Island&quot;), SC(</span>
+<span class="fc" id="L17">			&quot;South Carolina&quot;), SD(&quot;South Dakota&quot;), TN(&quot;Tennessee&quot;), TX(&quot;Texas&quot;), UT(&quot;Utah&quot;), VT(&quot;Vermont&quot;), VA(</span>
+<span class="fc" id="L18">			&quot;Virginia&quot;), WA(&quot;Washington&quot;), WV(&quot;West Virginia&quot;), WI(&quot;Wisconsin&quot;), WY(&quot;Wyoming&quot;);</span>
+	private String name;
+
+<span class="fc" id="L21">	private State(String name) {</span>
+<span class="fc" id="L22">		this.name = name;</span>
+<span class="fc" id="L23">	}</span>
+
+	public String getName() {
+<span class="fc" id="L26">		return name;</span>
+	}
+
+	public String getAbbrev() {
+<span class="fc" id="L30">		return toString();</span>
+	}
+
+	// Just to show that this is intentional
+	@Override
+	public String toString() {
+<span class="fc" id="L36">		return super.toString();</span>
+	}
+
+	public static State parse(String state) {
+<span class="fc" id="L40">		State[] values = State.values();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		for (State myState : values) {</span>
+<span class="fc bfc" id="L42" title="All 4 branches covered.">			if (myState.getName().equals(state) || myState.getAbbrev().equals(state))</span>
+<span class="fc" id="L43">				return myState;</span>
+		}
+<span class="fc" id="L45">		return State.NC;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

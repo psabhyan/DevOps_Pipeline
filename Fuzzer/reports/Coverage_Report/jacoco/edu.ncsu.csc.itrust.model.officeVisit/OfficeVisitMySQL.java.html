@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OfficeVisitMySQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.officeVisit</a> &gt; <span class="el_source">OfficeVisitMySQL.java</span></div><h1>OfficeVisitMySQL.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package edu.ncsu.csc.itrust.model.officeVisit;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.faces.bean.ManagedBean;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.ValidationFormat;
+
+/**
+ * @author seelder
+ *
+ */
+@ManagedBean
+public class OfficeVisitMySQL implements Serializable, OfficeVisitData {
+	@Resource(name = &quot;jdbc/itrust2&quot;)
+	private OfficeVisitSQLLoader ovLoader;
+	private static final long serialVersionUID = -8631210448583854595L;
+	private DataSource ds;
+	private OfficeVisitValidator validator;
+
+	/**
+	 * Default constructor for OfficeVisitMySQL.
+	 * 
+	 * @throws DBException if there is a context lookup naming exception
+	 */
+<span class="nc" id="L43">	public OfficeVisitMySQL() throws DBException {</span>
+<span class="nc" id="L44">		ovLoader = new OfficeVisitSQLLoader();</span>
+		try {
+<span class="nc" id="L46">			Context ctx = new InitialContext();</span>
+<span class="nc" id="L47">			this.ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="nc" id="L48">		} catch (NamingException e) {</span>
+<span class="nc" id="L49">			throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+<span class="nc" id="L50">		}</span>
+<span class="nc" id="L51">		validator = new OfficeVisitValidator(this.ds);</span>
+<span class="nc" id="L52">	}</span>
+
+	/**
+	 * Constructor for testing.
+	 * 
+	 * @param ds
+	 */
+<span class="fc" id="L59">	public OfficeVisitMySQL(DataSource ds) {</span>
+<span class="fc" id="L60">		ovLoader = new OfficeVisitSQLLoader();</span>
+<span class="fc" id="L61">		this.ds = ds;</span>
+<span class="fc" id="L62">		validator = new OfficeVisitValidator(this.ds);</span>
+<span class="fc" id="L63">	}</span>
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;OfficeVisit&gt; getVisitsForPatient(Long patientID) throws DBException {
+<span class="fc" id="L70">		Connection conn = null;</span>
+<span class="fc" id="L71">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L72">		ResultSet results = null;</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (ValidationFormat.NPMID.getRegex().matcher(Long.toString(patientID)).matches()) {</span>
+			try {
+<span class="fc" id="L75">				conn = ds.getConnection();</span>
+<span class="fc" id="L76">				pstring = conn.prepareStatement(&quot;SELECT * FROM officeVisit WHERE patientMID=?&quot;);</span>
+
+<span class="fc" id="L78">				pstring.setLong(1, patientID);</span>
+
+<span class="fc" id="L80">				results = pstring.executeQuery();</span>
+
+<span class="fc" id="L82">				final List&lt;OfficeVisit&gt; visitList = ovLoader.loadList(results);</span>
+<span class="fc" id="L83">				return visitList;</span>
+<span class="nc" id="L84">			} catch (SQLException e) {</span>
+<span class="nc" id="L85">				throw new DBException(e);</span>
+			} finally {
+<span class="fc" id="L87">				try {</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">					if (results != null) {</span>
+<span class="pc" id="L89">						results.close();</span>
+					}
+<span class="nc" id="L91">				} catch (SQLException e) {</span>
+<span class="nc" id="L92">					throw new DBException(e);</span>
+				} finally {
+<span class="pc" id="L94">					DBUtil.closeConnection(conn, pstring);</span>
+
+<span class="fc" id="L96">				}</span>
+			}
+		} else {
+<span class="nc" id="L99">			return null;</span>
+		}
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean add(OfficeVisit ov) throws DBException {
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		return addReturnGeneratedId(ov) &gt;= 0;</span>
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public long addReturnGeneratedId(OfficeVisit ov) throws DBException {
+<span class="fc" id="L117">		Connection conn = null;</span>
+<span class="fc" id="L118">		PreparedStatement pstring = null;</span>
+		try {
+<span class="fc" id="L120">			validator.validate(ov);</span>
+<span class="fc" id="L121">		} catch (FormValidationException e1) {</span>
+<span class="fc" id="L122">			throw new DBException(new SQLException(e1.getMessage()));</span>
+<span class="fc" id="L123">		}</span>
+<span class="fc" id="L124">		long generatedId = -1;</span>
+		try {
+<span class="fc" id="L126">			conn = ds.getConnection();</span>
+<span class="fc" id="L127">			pstring = ovLoader.loadParameters(conn, pstring, ov, true);</span>
+<span class="fc" id="L128">			int results = pstring.executeUpdate();</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			if (results != 0) {</span>
+<span class="fc" id="L130">				ResultSet generatedKeys = pstring.getGeneratedKeys();</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">				if(generatedKeys.next()) {</span>
+<span class="fc" id="L132">					generatedId = generatedKeys.getLong(1);</span>
+				}
+			}
+<span class="nc" id="L135">		} catch (SQLException e) {</span>
+<span class="nc" id="L136">			throw new DBException(e);</span>
+		} finally {
+<span class="pc" id="L138">			DBUtil.closeConnection(conn, pstring);</span>
+<span class="fc" id="L139">		}</span>
+<span class="fc" id="L140">		return generatedId;</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;OfficeVisit&gt; getAll() throws DBException {
+<span class="fc" id="L148">		Connection conn = null;</span>
+<span class="fc" id="L149">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L150">		ResultSet results = null;</span>
+		try {
+<span class="fc" id="L152">			conn = ds.getConnection();</span>
+<span class="fc" id="L153">			pstring = conn.prepareStatement(&quot;SELECT * FROM officeVisit&quot;);</span>
+<span class="fc" id="L154">			results = pstring.executeQuery();</span>
+<span class="fc" id="L155">			final List&lt;OfficeVisit&gt; visitList = ovLoader.loadList(results);</span>
+<span class="fc" id="L156">			return visitList;</span>
+<span class="nc" id="L157">		} catch (SQLException e) {</span>
+<span class="nc" id="L158">			throw new DBException(e);</span>
+		} finally {
+<span class="nc" id="L160">			try {</span>
+<span class="pc bpc" id="L161" title="3 of 4 branches missed.">				if (results != null) {</span>
+<span class="pc" id="L162">					results.close();</span>
+				}
+<span class="nc" id="L164">			} catch (SQLException e) {</span>
+<span class="nc" id="L165">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L167">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L168">			}</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public OfficeVisit getByID(long id) throws DBException {
+<span class="fc" id="L177">		OfficeVisit ret = null;</span>
+<span class="fc" id="L178">		Connection conn = null;</span>
+<span class="fc" id="L179">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L180">		ResultSet results = null;</span>
+<span class="fc" id="L181">		List&lt;OfficeVisit&gt; visitList = null;</span>
+		try {
+<span class="fc" id="L183">			conn = ds.getConnection();</span>
+<span class="fc" id="L184">			pstring = conn.prepareStatement(&quot;SELECT * FROM officeVisit WHERE visitID=?&quot;);</span>
+
+<span class="fc" id="L186">			pstring.setLong(1, id);</span>
+
+<span class="fc" id="L188">			results = pstring.executeQuery();</span>
+
+			/* May update with loader instead */
+<span class="fc" id="L191">			visitList = ovLoader.loadList(results);</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">			if (visitList.size() &gt; 0) {</span>
+<span class="fc" id="L193">				ret = visitList.get(0);</span>
+			}
+<span class="nc" id="L195">		} catch (SQLException e) {</span>
+<span class="nc" id="L196">			throw new DBException(e);</span>
+		} finally {
+<span class="nc" id="L198">			try {</span>
+<span class="pc bpc" id="L199" title="3 of 4 branches missed.">				if (results != null) {</span>
+<span class="pc" id="L200">					results.close();</span>
+				}
+<span class="nc" id="L202">			} catch (SQLException e) {</span>
+<span class="nc" id="L203">				throw new DBException(e);</span>
+			} finally {
+
+<span class="pc" id="L206">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L207">			}</span>
+<span class="fc" id="L208">		}</span>
+<span class="fc" id="L209">		return ret;</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean update(OfficeVisit ov) throws DBException {
+<span class="fc" id="L217">		boolean retval = false;</span>
+<span class="fc" id="L218">		Connection conn = null;</span>
+<span class="fc" id="L219">		PreparedStatement pstring = null;</span>
+		try {
+<span class="fc" id="L221">			validator.validate(ov);</span>
+<span class="nc" id="L222">		} catch (FormValidationException e1) {</span>
+<span class="nc" id="L223">			throw new DBException(new SQLException(e1.getMessage()));</span>
+<span class="fc" id="L224">		}</span>
+		int results;
+
+		try {
+<span class="fc" id="L228">			conn = ds.getConnection();</span>
+<span class="fc" id="L229">			pstring = ovLoader.loadParameters(conn, pstring, ov, false);</span>
+<span class="fc" id="L230">			results = pstring.executeUpdate();</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">			retval = (results &gt; 0);</span>
+<span class="nc" id="L232">		} catch (SQLException e) {</span>
+<span class="nc" id="L233">			throw new DBException(e);</span>
+		} finally {
+<span class="pc" id="L235">			DBUtil.closeConnection(conn, pstring);</span>
+<span class="fc" id="L236">		}</span>
+<span class="fc" id="L237">		return retval;</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public LocalDate getPatientDOB(final Long patientMID) {
+<span class="fc" id="L244">		Connection conn = null;</span>
+<span class="fc" id="L245">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L246">		ResultSet results = null;</span>
+<span class="fc" id="L247">		java.sql.Date patientDOB = null;</span>
+		try {
+<span class="fc" id="L249">			conn = ds.getConnection();</span>
+<span class="fc" id="L250">			pstring = conn.prepareStatement(&quot;SELECT DateOfBirth FROM patients WHERE MID=?&quot;);</span>
+<span class="fc" id="L251">			pstring.setLong(1, patientMID);</span>
+<span class="fc" id="L252">			results = pstring.executeQuery();</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">			if (!results.next()) {</span>
+<span class="fc" id="L254">				return null;</span>
+			}
+<span class="fc" id="L256">			patientDOB = results.getDate(&quot;DateOfBirth&quot;);</span>
+<span class="fc" id="L257">		} catch (SQLException e) {</span>
+<span class="fc" id="L258">			return null;</span>
+		} finally {
+<span class="nc" id="L260">			try {</span>
+<span class="pc bpc" id="L261" title="4 of 8 branches missed.">				if (results != null) {</span>
+<span class="pc" id="L262">					results.close();</span>
+				}
+<span class="pc" id="L264">			} catch (SQLException e) {</span>
+<span class="pc" id="L265">				return null;</span>
+			} finally {
+<span class="pc" id="L267">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L268">			}</span>
+<span class="fc" id="L269">		}</span>
+
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">		if (patientDOB == null) {</span>
+<span class="nc" id="L272">			return null;</span>
+		}
+
+<span class="fc" id="L275">		return patientDOB.toLocalDate();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

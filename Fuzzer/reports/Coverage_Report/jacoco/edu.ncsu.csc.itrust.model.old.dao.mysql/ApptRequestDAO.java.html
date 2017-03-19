@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptRequestDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">ApptRequestDAO.java</span></div><h1>ApptRequestDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.ApptRequestBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.ApptRequestBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * 
+ *
+ */
+public class ApptRequestDAO {
+
+	private transient final DAOFactory factory;
+	private transient final ApptRequestBeanLoader loader;
+
+<span class="fc" id="L23">	public ApptRequestDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L24">		this.factory = factory;</span>
+<span class="fc" id="L25">		loader = new ApptRequestBeanLoader();</span>
+<span class="fc" id="L26">	}</span>
+
+	/**
+	 * 
+	 * @param hcpid
+	 * @return
+	 * @throws DBException
+	 */
+	public List&lt;ApptRequestBean&gt; getApptRequestsFor(final long hcpid) throws SQLException, DBException {
+<span class="pc" id="L35">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L36">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L37">						.prepareStatement(&quot;SELECT * FROM appointmentrequests WHERE doctor_id=? ORDER BY sched_date&quot;)) {</span>
+<span class="fc" id="L38">			stmt.setLong(1, hcpid);</span>
+
+<span class="fc" id="L40">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L41">			final List&lt;ApptRequestBean&gt; list = loader.loadList(results);</span>
+<span class="fc" id="L42">			results.close();</span>
+<span class="fc" id="L43">			return list;</span>
+<span class="pc bpc" id="L44" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L45">			throw new DBException(e);</span>
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param req
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public void addApptRequest(final ApptRequestBean req) throws SQLException, DBException {
+<span class="pc" id="L57">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L58">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;INSERT INTO appointmentrequests (appt_type, patient_id, doctor_id, sched_date, &quot;
+								+ &quot;comment, pending, accepted) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;)) {
+<span class="fc" id="L61">			loader.loadParameters(stmt, req);</span>
+<span class="fc" id="L62">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L63" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L64">			throw new DBException(e);</span>
+<span class="fc" id="L65">		}</span>
+
+<span class="fc" id="L67">	}</span>
+
+	/**
+	 * 
+	 * @param req
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public void updateApptRequest(final ApptRequestBean req) throws SQLException, DBException {
+<span class="pc" id="L76">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L77">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L78">						.prepareStatement(&quot;UPDATE appointmentrequests SET pending=?, accepted=? WHERE appt_id=?&quot;)) {</span>
+<span class="fc" id="L79">			stmt.setBoolean(1, req.isPending());</span>
+<span class="fc" id="L80">			stmt.setBoolean(2, req.isAccepted());</span>
+<span class="fc" id="L81">			stmt.setInt(3, req.getRequestedAppt().getApptID());</span>
+
+<span class="fc" id="L83">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L84" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L85">			throw new DBException(e);</span>
+<span class="fc" id="L86">		}</span>
+<span class="fc" id="L87">	}</span>
+
+	public ApptRequestBean getApptRequest(final int reqID) throws SQLException, DBException {
+		ApptRequestBean bean;
+<span class="pc" id="L91">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L92">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM appointmentrequests WHERE appt_id=?&quot;)) {</span>
+<span class="fc" id="L93">			stmt.setInt(1, reqID);</span>
+<span class="fc" id="L94">			final ResultSet results = stmt.executeQuery();</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">			if (results.next()) {</span>
+<span class="fc" id="L96">				bean = loader.loadSingle(results);</span>
+			} else {
+<span class="nc" id="L98">				bean = null;</span>
+			}
+<span class="fc" id="L100">			results.close();</span>
+<span class="pc bpc" id="L101" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L102">			throw new DBException(e);</span>
+<span class="fc" id="L103">		}</span>
+<span class="fc" id="L104">		return bean;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

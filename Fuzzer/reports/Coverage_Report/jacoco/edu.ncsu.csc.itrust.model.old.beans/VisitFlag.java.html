@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VisitFlag.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">VisitFlag.java</span></div><h1>VisitFlag.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+/**
+ * A bean for storing data to flag an office visit.
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters.
+ * to create these easily)
+ */
+public class VisitFlag {
+
+	public static final String DIAGNOSED = &quot;Diagnosed&quot;;
+	public static final String MISSED_MEDICATION = &quot;Missed Medication&quot;;
+	public static final String MISSING_MEDICATION = &quot;Currently Missing Medication&quot;;
+	public static final String LAST_VISIT = &quot;Last Visit&quot;;
+	public static final String IMMUNIZATION = &quot;Needs Immunization&quot;;
+
+	private String type;
+	private String value;
+
+<span class="fc" id="L22">	public VisitFlag(String type) {</span>
+<span class="fc" id="L23">		this.type = type;</span>
+<span class="fc" id="L24">	}</span>
+
+<span class="nc" id="L26">	public VisitFlag(String type, String value) {</span>
+<span class="nc" id="L27">		this.type = type;</span>
+<span class="nc" id="L28">		this.value = value;</span>
+<span class="nc" id="L29">	}</span>
+
+	public String getType() {
+<span class="fc" id="L32">		return type;</span>
+	}
+
+	public void setType(String type) {
+<span class="fc" id="L36">		this.type = type;</span>
+<span class="fc" id="L37">	}</span>
+
+	public String getValue() {
+<span class="fc" id="L40">		return value;</span>
+	}
+
+	public void setValue(String value) {
+<span class="fc" id="L44">		this.value = value;</span>
+<span class="fc" id="L45">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

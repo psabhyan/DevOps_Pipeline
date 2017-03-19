@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginFailureAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">LoginFailureAction.java</span></div><h1>LoginFailureAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
+
+/**
+ * Please note that this is not the best mitigation for Denial of Service attacks. The better way would be to
+ * keep track of password failure attempts per user account, NOT with easily spoofable ip addresses. The
+ * reason this feature is implemented with ip addresses is a limitation in Tomcat authentication (actually,
+ * it's technically JSP's fault for not specifying a form of account lockout). &lt;br /&gt;
+ * &lt;br /&gt;
+ * All authentication in this application is done by the container (Tomcat), which doesn't support account
+ * lockout. So our options would be (a) to implement our own authentication (yuck!), or (2) to extend the
+ * JDBCRealm class in the Tomcat source code and add the logic. I've looked into this and it's actually pretty
+ * easy. The ONLY reason it's not implemented here is that the code would be buried in a jar in your Tomcat
+ * installation - not very educational for those who want to learn about authentication in webapps. Feel free
+ * to change this; extending this would be perfectly acceptable.
+ * 
+ * 
+ */
+public class LoginFailureAction {
+	private AuthDAO authDAO;
+	private String ipAddr;
+	private boolean validCaptcha;
+	private boolean hasAttempts;
+
+	/**
+	 * Set up defaults
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param ipAddr The IP address of the user making the login attempt.
+	 */
+<span class="fc" id="L35">	public LoginFailureAction(DAOFactory factory, String ipAddr) {</span>
+<span class="fc" id="L36">		this.authDAO = factory.getAuthDAO();</span>
+<span class="fc" id="L37">		this.ipAddr = ipAddr;</span>
+<span class="fc" id="L38">		validCaptcha = false;</span>
+<span class="fc" id="L39">		hasAttempts = false;</span>
+<span class="fc" id="L40">	}</span>
+
+	/**
+	 * Calls authDAO to record the login failure in the database
+	 * 
+	 * @return How many login failure attempts or a DBException message
+	 */
+	public String recordLoginFailure() {
+		try {
+<span class="fc" id="L49">			authDAO.recordLoginFailure(ipAddr);</span>
+<span class="fc" id="L50">			int loginFailures = authDAO.getLoginFailures(ipAddr);</span>
+<span class="fc" id="L51">			hasAttempts = true;</span>
+<span class="fc" id="L52">			return &quot;Login failed, attempt &quot; + loginFailures;</span>
+<span class="fc" id="L53">		} catch (DBException e) {</span>
+			
+<span class="fc" id="L55">			return e.getMessage();</span>
+		}
+	}
+
+	/**
+	 * Checks to see if the current user can login (#failures&lt;3)
+	 * 
+	 * @return true if the user is valid to login
+	 */
+	public boolean isValidForLogin() {
+		try {
+<span class="pc bpc" id="L66" title="1 of 4 branches missed.">			return authDAO.getLoginFailures(ipAddr) &lt; 3 || validCaptcha;</span>
+<span class="fc" id="L67">		} catch (DBException e) {</span>
+<span class="fc" id="L68">			return false;</span>
+		}
+	}
+	
+	public boolean needsCaptcha() {
+		try {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">			return authDAO.getLoginFailures(ipAddr) &gt;= 3;</span>
+<span class="fc" id="L75">		} catch (DBException e) {</span>
+<span class="fc" id="L76">			System.err.println(&quot;Denying access due to DBException&quot;);</span>
+<span class="fc" id="L77">			return false;</span>
+		}
+	}
+	
+	/**
+	 * resetFailure
+	 * @throws DBException
+	 * @throws SQLException
+	 */
+	public void resetFailures() throws DBException, SQLException{
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if(hasAttempts) {</span>
+<span class="fc" id="L88">			authDAO.resetLoginFailuresToZero(ipAddr);</span>
+<span class="fc" id="L89">			hasAttempts = false;</span>
+		}
+<span class="fc" id="L91">	}</span>
+	
+	/**
+	 * setCaptcha
+	 * @param val val
+	 */
+	public void setCaptcha(boolean val) {
+<span class="fc" id="L98">		validCaptcha = val;</span>
+<span class="fc" id="L99">	}</span>
+	
+	/**
+	 * getFailureCount
+	 * @return 0
+	 */
+	public int getFailureCount() {
+<span class="fc" id="L106">		int loginFailures = 0;</span>
+		try {
+<span class="fc" id="L108">			loginFailures = authDAO.getLoginFailures(ipAddr);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">			if (loginFailures &gt; 0) {</span>
+<span class="fc" id="L110">				hasAttempts = true;</span>
+			}
+<span class="fc" id="L112">			return loginFailures;</span>
+<span class="fc" id="L113">		} catch (DBException e) {</span>
+<span class="fc" id="L114">			return 0;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

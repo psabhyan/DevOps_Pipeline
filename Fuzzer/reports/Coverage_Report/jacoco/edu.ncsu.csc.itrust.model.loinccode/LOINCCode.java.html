@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LOINCCode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.loinccode</a> &gt; <span class="el_source">LOINCCode.java</span></div><h1>LOINCCode.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.loinccode;
+
+public class LOINCCode {
+	private String code;
+	private String component;
+	private String kindOfProperty;
+	private String timeAspect;
+	private String system;
+	private String scaleType;
+	private String methodType;
+<span class="fc" id="L11">	public LOINCCode(String code, String component, String kindOfProperty) {</span>
+<span class="fc" id="L12">		this.code = code;</span>
+<span class="fc" id="L13">		this.component = component;</span>
+<span class="fc" id="L14">		this.kindOfProperty = kindOfProperty;</span>
+<span class="fc" id="L15">	}</span>
+	public LOINCCode(String code, String component, String kindOfProperty, String timeAspect, String system,
+			String scaleType, String methodType) {
+<span class="fc" id="L18">		this(code, component, kindOfProperty);</span>
+<span class="fc" id="L19">		this.timeAspect = timeAspect;</span>
+<span class="fc" id="L20">		this.system = system;</span>
+<span class="fc" id="L21">		this.scaleType = scaleType;</span>
+<span class="fc" id="L22">		this.methodType = methodType;</span>
+<span class="fc" id="L23">	}</span>
+	public String getCode() {
+<span class="fc" id="L25">		return code;</span>
+	}
+	public String getComponent() {
+<span class="fc" id="L28">		return component;</span>
+	}
+	public void setComponent(String component) {
+<span class="fc" id="L31">		this.component = component;</span>
+<span class="fc" id="L32">	}</span>
+	public String getKindOfProperty() {
+<span class="fc" id="L34">		return kindOfProperty;</span>
+	}
+	public void setKindOfProperty(String kindOfProperty) {
+<span class="fc" id="L37">		this.kindOfProperty = kindOfProperty;</span>
+<span class="fc" id="L38">	}</span>
+	public String getTimeAspect() {
+<span class="fc" id="L40">		return timeAspect;</span>
+	}
+	public void setTimeAspect(String timeAspect) {
+<span class="fc" id="L43">		this.timeAspect = timeAspect;</span>
+<span class="fc" id="L44">	}</span>
+	public String getSystem() {
+<span class="fc" id="L46">		return system;</span>
+	}
+	public void setSystem(String system) {
+<span class="fc" id="L49">		this.system = system;</span>
+<span class="fc" id="L50">	}</span>
+	public String getScaleType() {
+<span class="fc" id="L52">		return scaleType;</span>
+	}
+	public void setScaleType(String scaleType) {
+<span class="fc" id="L55">		this.scaleType = scaleType;</span>
+<span class="fc" id="L56">	}</span>
+	public String getMethodType() {
+<span class="fc" id="L58">		return methodType;</span>
+	}
+	public void setMethodType(String methodType) {
+<span class="fc" id="L61">		this.methodType = methodType;</span>
+<span class="fc" id="L62">	}</span>
+	public String toString(){
+<span class="nc" id="L64">	    return code + &quot; - &quot; + component + &quot; - &quot; + kindOfProperty + &quot; - &quot; + timeAspect + &quot; - &quot; + system + &quot; - &quot; + scaleType + &quot; - &quot; + methodType;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

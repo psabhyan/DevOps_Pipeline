@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HospitalMySQLConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.hospital</a> &gt; <span class="el_source">HospitalMySQLConverter.java</span></div><h1>HospitalMySQLConverter.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.hospital;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.SQLLoader;
+import edu.ncsu.csc.itrust.model.ValidationFormat;
+import edu.ncsu.csc.itrust.model.hospital.Hospital;
+@ManagedBean
+public class HospitalMySQLConverter implements HospitalData, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 964736533764578154L;
+	private DataSource ds;
+	private static SQLLoader&lt;Hospital&gt; hospitalLoader;
+
+<span class="nc" id="L30">	public HospitalMySQLConverter() throws DBException{</span>
+<span class="nc" id="L31">		hospitalLoader = new HospitalMySQLLoader();</span>
+		try {
+<span class="nc" id="L33">			Context ctx = new InitialContext();</span>
+<span class="nc" id="L34">			this.ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="nc" id="L35">		} catch (NamingException e) {</span>
+<span class="nc" id="L36">			throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot;+e.getMessage()));</span>
+<span class="nc" id="L37">		}</span>
+
+<span class="nc" id="L39">	}</span>
+	
+<span class="fc" id="L41">	public HospitalMySQLConverter(DataSource ds){</span>
+<span class="fc" id="L42">		hospitalLoader = new HospitalMySQLLoader();</span>
+<span class="fc" id="L43">		this.ds = ds;</span>
+<span class="fc" id="L44">	}</span>
+	
+	@Override
+	public List&lt;Hospital&gt; getAll() throws DBException{
+<span class="fc" id="L48">		List&lt;Hospital&gt; ret = null;</span>
+<span class="fc" id="L49">		Connection conn = null;</span>
+<span class="fc" id="L50">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L51">		ResultSet results = null;</span>
+		try{
+
+<span class="fc" id="L54">			conn=ds.getConnection();</span>
+<span class="fc" id="L55">			pstring = conn.prepareStatement(&quot;SELECT HospitalID, HospitalName,  Address, City, State, Zip FROM hospitals;&quot;);</span>
+		
+<span class="fc" id="L57">			results = pstring.executeQuery();</span>
+<span class="fc" id="L58">			ret = hospitalLoader.loadList(results);</span>
+		}
+<span class="nc" id="L60">		catch(SQLException e){</span>
+<span class="nc" id="L61">			throw new DBException(e);</span>
+		}
+		 finally {
+<span class="nc" id="L64">				try{</span>
+<span class="pc bpc" id="L65" title="3 of 4 branches missed.">					if(results !=null){</span>
+<span class="pc" id="L66">						results.close();</span>
+					}
+<span class="nc" id="L68">				} catch (SQLException e) {</span>
+<span class="nc" id="L69">					throw new DBException(e);</span>
+				} finally {
+<span class="pc" id="L71">						DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L72">				}</span>
+<span class="fc" id="L73">			}</span>
+
+<span class="fc" id="L75">		return ret;</span>
+	}
+
+	
+	@Override
+	public String getHospitalName(String id) throws DBException{
+<span class="fc" id="L81">			String hospitalname = null;</span>
+<span class="fc" id="L82">			Connection conn = null;</span>
+<span class="fc" id="L83">			PreparedStatement pstring = null;</span>
+<span class="fc" id="L84">			ResultSet results = null;</span>
+			try{
+
+<span class="fc" id="L87">				conn=ds.getConnection();</span>
+<span class="fc" id="L88">				pstring = conn.prepareStatement(&quot;SELECT HospitalName FROM hospitals WHERE HospitalID = ?;&quot;);</span>
+			
+<span class="fc" id="L90">				pstring.setString(1, id);</span>
+			
+<span class="fc" id="L92">				results = pstring.executeQuery();</span>
+				@SuppressWarnings(&quot;unused&quot;) //temp is useful for debugging purposes
+<span class="fc" id="L94">				boolean temp = results.next();</span>
+				
+<span class="fc" id="L96">				hospitalname = results.getString(&quot;HospitalName&quot;);</span>
+		
+			}
+<span class="nc" id="L99">			catch(SQLException e){</span>
+<span class="nc" id="L100">				throw new DBException(e);</span>
+			}
+			 finally {
+<span class="nc" id="L103">					try{</span>
+<span class="pc bpc" id="L104" title="3 of 4 branches missed.">						if(results !=null){</span>
+<span class="pc" id="L105">							results.close();</span>
+						}
+<span class="nc" id="L107">					} catch (SQLException e) {</span>
+<span class="nc" id="L108">						throw new DBException(e);</span>
+					} finally {
+<span class="pc" id="L110">							DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L111">					}</span>
+<span class="fc" id="L112">				}</span>
+<span class="fc" id="L113">			return hospitalname;</span>
+	}
+
+	@Override
+	@Deprecated
+	public Hospital getByID(long id) throws DBException {
+<span class="nc" id="L119">		throw new IllegalStateException(&quot;HospitalID is NOT a 'long' value&quot;);</span>
+
+	}
+
+	@Override
+	public boolean add(Hospital hospital) throws DBException {
+<span class="nc" id="L125">		boolean retval = false;</span>
+<span class="nc" id="L126">		Connection conn = null;</span>
+<span class="nc" id="L127">		PreparedStatement pstring = null;</span>
+		int results;
+		try {
+<span class="nc" id="L130">			conn = ds.getConnection();</span>
+<span class="nc" id="L131">			pstring = hospitalLoader.loadParameters(conn, pstring, hospital, true);</span>
+<span class="nc" id="L132">			results = pstring.executeUpdate();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			retval = (results &gt;0);</span>
+		}
+<span class="nc" id="L135">		catch(SQLException e){</span>
+<span class="nc" id="L136">			throw new DBException(e);</span>
+			
+		}
+		finally{
+
+<span class="nc" id="L141">			DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L142">		}</span>
+<span class="nc" id="L143">		return retval;	</span>
+	}
+
+	@Override
+	public boolean update(Hospital hospital) throws DBException {
+<span class="nc" id="L148">		boolean retval = false;</span>
+<span class="nc" id="L149">		Connection conn = null;</span>
+<span class="nc" id="L150">		PreparedStatement pstring = null;</span>
+		int results;
+		try {
+<span class="nc" id="L153">			conn = ds.getConnection();</span>
+<span class="nc" id="L154">			pstring = hospitalLoader.loadParameters(conn, pstring, hospital, false);</span>
+<span class="nc" id="L155">			results = pstring.executeUpdate();</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			retval = (results &gt;0);</span>
+		}
+<span class="nc" id="L158">		catch(SQLException e){</span>
+<span class="nc" id="L159">			throw new DBException(e);</span>
+			
+		}
+		finally{
+
+<span class="nc" id="L164">			DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L165">		}</span>
+<span class="nc" id="L166">		return retval;		}</span>
+
+	@Override
+	public Hospital getHospitalByID(String locationID) throws DBException {
+<span class="fc" id="L170">		Hospital ret = null;</span>
+<span class="fc" id="L171">		Connection conn = null;</span>
+<span class="fc" id="L172">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L173">		ResultSet results = null;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		if(!(ValidationFormat.HOSPITAL_ID.getRegex().matcher(locationID).matches())){</span>
+<span class="fc" id="L175">			throw new DBException(new SQLException(&quot;Invalid Location ID&quot;));</span>
+		}
+		try{
+
+<span class="fc" id="L179">			conn=ds.getConnection();</span>
+<span class="fc" id="L180">			pstring = conn.prepareStatement(&quot;SELECT * FROM hospitals WHERE HospitalID=?;&quot;);</span>
+<span class="fc" id="L181">			ValidationFormat.HOSPITAL_ID.getRegex().matcher(locationID).matches();</span>
+<span class="fc" id="L182">			pstring.setString(1, locationID);</span>
+		
+<span class="fc" id="L184">			results = pstring.executeQuery();</span>
+<span class="fc" id="L185">			results.next();</span>
+<span class="fc" id="L186">			ret = hospitalLoader.loadSingle(results);</span>
+		
+		}
+<span class="nc" id="L189">		catch(SQLException e){</span>
+<span class="nc" id="L190">			throw new DBException(e);</span>
+		}
+		 finally {
+<span class="nc" id="L193">				try{</span>
+<span class="pc bpc" id="L194" title="3 of 4 branches missed.">					if(results !=null){</span>
+<span class="pc" id="L195">						results.close();</span>
+					}
+<span class="nc" id="L197">				} catch (SQLException e) {</span>
+<span class="nc" id="L198">					throw new DBException(e);</span>
+				} finally {
+<span class="pc" id="L200">					DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L201">				}</span>
+<span class="fc" id="L202">			}</span>
+<span class="fc" id="L203">		return ret;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

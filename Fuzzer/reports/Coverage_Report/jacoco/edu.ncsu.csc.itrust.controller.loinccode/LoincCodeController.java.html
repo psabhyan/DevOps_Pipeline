@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoincCodeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.loinccode</a> &gt; <span class="el_source">LoincCodeController.java</span></div><h1>LoincCodeController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.loinccode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
+import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
+
+@ManagedBean(name = &quot;loinccode_controller&quot;)
+@SessionScoped
+public class LoincCodeController extends iTrustController {
+
+	private static final String INVALID_CODE = &quot;Invalid LOINC Code&quot;;
+    private static final String UNKNOWN_ERROR = &quot;Unknown error&quot;;
+    private static final String NONEXISTENT_CODE = &quot;Code does not exist&quot;;
+    private static final String DUPLICATE_CODE = &quot;Cannot add duplicate code&quot;;
+	private LOINCCodeMySQL sql;
+	//private SessionUtils sessionUtils;
+
+<span class="fc" id="L28">	public LoincCodeController() {</span>
+		try {
+<span class="nc" id="L30">			sql = new LOINCCodeMySQL();</span>
+<span class="fc" id="L31">		} catch (DBException e) {</span>
+<span class="fc" id="L32">		    sql = null;</span>
+<span class="nc" id="L33">		}</span>
+<span class="fc" id="L34">	}</span>
+
+	/**
+	 * Constructor injection, intended only for unit testing purposes.
+	 * 
+	 * @param ds
+	 *            The injected DataSource dependency
+	 */
+<span class="fc" id="L42">	public LoincCodeController(DataSource ds) {</span>
+<span class="fc" id="L43">		sql = new LOINCCodeMySQL(ds);</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Setter injection for lab procedure data. ONLY use for unit testing
+	 * purposes.
+	 */
+	public void setSQLData(LOINCCodeMySQL data) {
+<span class="fc" id="L51">		this.sql = data;</span>
+<span class="fc" id="L52">	}</span>
+
+	public void add(LOINCCode code) {
+	    try {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (!sql.add(code)){</span>
+<span class="fc" id="L57">                printFacesMessage(FacesMessage.SEVERITY_ERROR, DUPLICATE_CODE, DUPLICATE_CODE, null);</span>
+            }
+<span class="fc" id="L59">        } catch (FormValidationException e) {</span>
+<span class="fc" id="L60">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_CODE, e.getErrorList().toString(), null);</span>
+<span class="fc" id="L61">        } catch (Exception e) {</span>
+<span class="fc" id="L62">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+<span class="fc" id="L63">        }</span>
+<span class="fc" id="L64">	}</span>
+
+	public void edit(LOINCCode code) {
+	    try {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            if (!sql.update(code)){</span>
+<span class="fc" id="L69">                printFacesMessage(FacesMessage.SEVERITY_ERROR, NONEXISTENT_CODE, NONEXISTENT_CODE, null);</span>
+            }
+<span class="nc" id="L71">        } catch (FormValidationException e) {</span>
+<span class="nc" id="L72">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_CODE, e.getErrorList().toString(), null);</span>
+<span class="fc" id="L73">        } catch (Exception e) {</span>
+<span class="fc" id="L74">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+<span class="pc" id="L75">        }</span>
+<span class="fc" id="L76">	}</span>
+
+
+	public void remove(String loincCodeID) {
+	    try {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (!sql.delete(new LOINCCode(loincCodeID, &quot;&quot;, &quot;&quot;))){</span>
+<span class="fc" id="L82">                printFacesMessage(FacesMessage.SEVERITY_ERROR, NONEXISTENT_CODE, NONEXISTENT_CODE, null);</span>
+            }
+<span class="fc" id="L84">        } catch (Exception e) {</span>
+<span class="fc" id="L85">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">	}</span>
+
+	public LOINCCode getCodeByID(String loincCodeID) {
+	    try {
+<span class="fc" id="L91">            return sql.getByCode(loincCodeID);</span>
+<span class="fc" id="L92">        } catch (Exception e) {</span>
+<span class="fc" id="L93">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+        }
+<span class="fc" id="L95">        return null;</span>
+	}
+	
+	public List&lt;LOINCCode&gt; getCodesWithFilter(String filterString){		
+	    try {
+<span class="fc" id="L100">            return sql.getCodesWithFilter(filterString);</span>
+<span class="fc" id="L101">        } catch (Exception e) {</span>
+<span class="fc" id="L102">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+        }
+<span class="fc" id="L104">        return new ArrayList&lt;&gt;();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

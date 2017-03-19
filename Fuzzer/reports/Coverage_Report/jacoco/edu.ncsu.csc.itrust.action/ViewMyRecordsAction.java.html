@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewMyRecordsAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewMyRecordsAction.java</span></div><h1>ViewMyRecordsAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;
+import edu.ncsu.csc.itrust.model.old.beans.Email;
+import edu.ncsu.csc.itrust.model.old.beans.FamilyMemberBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.ReportRequestBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.FakeEmailDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.FamilyDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ReportRequestDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Handles patients viewing their own records Used by viewMyRecords.jsp
+ * 
+ * 
+ */
+public class ViewMyRecordsAction {
+	/** The number of months in a year */
+	public static final int MONTHS_IN_YEAR = 12;
+	
+	private PatientDAO patientDAO;
+	private PersonnelDAO personnelDAO;
+	private AllergyDAO allergyDAO;
+	private FamilyDAO familyDAO;
+	private FakeEmailDAO emailDAO;
+	private ReportRequestDAO reportRequestDAO;
+	private long loggedInMID;
+
+	/**
+	 * Set up
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param loggedInMID The MID of the person viewing the records.
+	 */
+<span class="nc" id="L47">	public ViewMyRecordsAction(DAOFactory factory, long loggedInMID) {</span>
+<span class="nc" id="L48">		this.patientDAO = factory.getPatientDAO();</span>
+<span class="nc" id="L49">		this.personnelDAO = factory.getPersonnelDAO();</span>
+<span class="nc" id="L50">		this.allergyDAO = factory.getAllergyDAO();</span>
+<span class="nc" id="L51">		this.familyDAO = factory.getFamilyDAO();</span>
+<span class="nc" id="L52">		this.emailDAO = factory.getFakeEmailDAO();</span>
+<span class="nc" id="L53">		this.reportRequestDAO = factory.getReportRequestDAO();</span>
+<span class="nc" id="L54">		this.loggedInMID = loggedInMID;</span>
+<span class="nc" id="L55">	}</span>
+	
+
+	/**
+	 * Takes the patient's representee as a param and returns it as a long if the patient represents the input
+	 * param
+	 * 
+	 * @param input
+	 *            the patient's representee mid
+	 * @return representee's mid as a long
+	 * @throws ITrustException
+	 */
+	public long representPatient(String input) throws ITrustException {
+
+		try {
+<span class="nc" id="L70">			long reppeeMID = Long.valueOf(input);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">			if (patientDAO.represents(loggedInMID, reppeeMID)) {</span>
+<span class="nc" id="L72">				loggedInMID = reppeeMID;</span>
+<span class="nc" id="L73">				return reppeeMID;</span>
+			} else
+<span class="nc" id="L75">				throw new ITrustException(&quot;You do not represent patient &quot; + reppeeMID);</span>
+<span class="nc" id="L76">		} catch (NumberFormatException e) {</span>
+<span class="nc" id="L77">			throw new ITrustException(&quot;MID is not a number&quot;);</span>
+		}
+	}
+
+	/**
+	 * Returns a PatientBean for the currently logged in patient
+	 * 
+	 * @return PatientBean for the currently logged in patient
+	 * @throws ITrustException
+	 */
+	public PatientBean getPatient() throws ITrustException {
+<span class="nc" id="L88">		return patientDAO.getPatient(loggedInMID);</span>
+	}
+	
+	/**
+	 * Returns a PatientBean for the specified MID
+	 * @param mid id of the requested bean
+	 * @return PatientBean for the specified MID
+	 * @throws ITrustException
+	 */
+	public PatientBean getPatient(long mid) throws ITrustException {
+<span class="nc" id="L98">		return patientDAO.getPatient(mid);</span>
+	}
+
+	/**
+	 * Returns a PersonnelBean for the requested MID
+	 * @param mid id of the requested bean
+	 * @return a PersonnelBean for the requested MID
+	 * @throws ITrustException
+	 */
+	public PersonnelBean getPersonnel(long mid) throws ITrustException {
+<span class="nc" id="L108">		return personnelDAO.getPersonnel(mid);</span>
+	}
+
+	/**
+	 * Returns a PatientBean for the currently logged in patient
+	 * 
+	 * @return PatientBean for the currently logged in patient
+	 * @throws ITrustException
+	 */
+	public List&lt;Email&gt; getEmailHistory() throws ITrustException {
+<span class="nc" id="L118">		TransactionLogger.getInstance().logTransaction(TransactionType.EMAIL_HISTORY_VIEW, loggedInMID, (long)0, &quot;&quot;);</span>
+<span class="nc" id="L119">		return emailDAO.getEmailsByPerson(getPatient().getEmail());</span>
+	}
+
+	/**
+	 * Returns a list of AllergyBeans for the currently logged in patient
+	 * 
+	 * @return a list of AllergyBeans for the currently logged in patient
+	 * @throws ITrustException
+	 */
+	public List&lt;AllergyBean&gt; getAllergies() throws ITrustException {
+<span class="nc" id="L129">		return allergyDAO.getAllergies(loggedInMID);</span>
+	}
+
+	/**
+	 * Returns a list of Parents, Siblings, and Children of the currently logged in patient
+	 * 
+	 * @return list of FamilyMemberBeans
+	 */
+	public List&lt;FamilyMemberBean&gt; getFamily() throws ITrustException {
+<span class="nc" id="L138">		List&lt;FamilyMemberBean&gt; fam = new ArrayList&lt;FamilyMemberBean&gt;();</span>
+<span class="nc" id="L139">		List&lt;FamilyMemberBean&gt; parents = null;</span>
+		try {
+<span class="nc" id="L141">			parents = familyDAO.getParents(loggedInMID);</span>
+<span class="nc" id="L142">			fam.addAll(parents);</span>
+<span class="nc" id="L143">			fam.addAll(familyDAO.getSiblings(loggedInMID));</span>
+<span class="nc" id="L144">			fam.addAll(familyDAO.getChildren(loggedInMID));</span>
+<span class="nc" id="L145">		} catch (DBException e) {</span>
+<span class="nc" id="L146">			throw new ITrustException(e.getMessage());</span>
+<span class="nc" id="L147">		}</span>
+		
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		if(parents != null) {</span>
+<span class="nc" id="L150">			List&lt;FamilyMemberBean&gt; grandparents = new ArrayList&lt;FamilyMemberBean&gt;();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			for(FamilyMemberBean parent : parents) {</span>
+				try {
+<span class="nc" id="L153">					grandparents.addAll(familyDAO.getParents(parent.getMid()));</span>
+<span class="nc" id="L154">				} catch (DBException e) {</span>
+<span class="nc" id="L155">					throw new ITrustException(e.getMessage());</span>
+<span class="nc" id="L156">				}</span>
+<span class="nc" id="L157">			}</span>
+			
+<span class="nc" id="L159">			fam.addAll(grandparents);</span>
+			
+<span class="nc bnc" id="L161" title="All 2 branches missed.">			for(FamilyMemberBean gp : grandparents) {</span>
+<span class="nc" id="L162">				gp.setRelation(&quot;Grandparent&quot;);</span>
+<span class="nc" id="L163">			}</span>
+		}
+<span class="nc" id="L165">		return fam;</span>
+	}
+	
+	/**
+	 * Returns a list of Parents, Siblings, and Grand Parents of the currently logged in patient
+	 * 
+	 * @return list of FamilyMemberBeans
+	 */
+	public List&lt;FamilyMemberBean&gt; getFamilyHistory() throws ITrustException {
+<span class="nc" id="L174">		List&lt;FamilyMemberBean&gt; fam = new ArrayList&lt;FamilyMemberBean&gt;();</span>
+<span class="nc" id="L175">		List&lt;FamilyMemberBean&gt; parents = null;</span>
+		try {
+<span class="nc" id="L177">			parents = familyDAO.getParents(loggedInMID);</span>
+<span class="nc" id="L178">			fam.addAll(parents);</span>
+<span class="nc" id="L179">			fam.addAll(familyDAO.getSiblings(loggedInMID));</span>
+<span class="nc" id="L180">		} catch (DBException e) {</span>
+<span class="nc" id="L181">			throw new ITrustException(e.getMessage());</span>
+<span class="nc" id="L182">		}</span>
+		
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if(parents != null) {</span>
+<span class="nc" id="L185">			List&lt;FamilyMemberBean&gt; grandparents = new ArrayList&lt;FamilyMemberBean&gt;();</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">			for(FamilyMemberBean parent : parents) {</span>
+				try {
+<span class="nc" id="L188">					grandparents.addAll(familyDAO.getParents(parent.getMid()));</span>
+<span class="nc" id="L189">				} catch (DBException e) {</span>
+<span class="nc" id="L190">					throw new ITrustException(e.getMessage());</span>
+<span class="nc" id="L191">				}</span>
+<span class="nc" id="L192">			}</span>
+			
+<span class="nc" id="L194">			fam.addAll(grandparents);</span>
+			
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			for(FamilyMemberBean gp : grandparents) {</span>
+<span class="nc" id="L197">				gp.setRelation(&quot;Grandparent&quot;);</span>
+<span class="nc" id="L198">			}</span>
+		}
+<span class="nc" id="L200">		return fam;</span>
+	}
+
+	
+	/**
+	 * Returns a list of PatientBeans of all patients the currently logged in patient represents
+	 * 
+	 * @return a list of PatientBeans of all patients the currently logged in patient represents
+	 * @throws ITrustException
+	 */
+	public List&lt;PatientBean&gt; getRepresented() throws ITrustException {
+<span class="nc" id="L211">		return patientDAO.getRepresented(loggedInMID);</span>
+	}
+
+	/**
+	 * Returns a list of PatientBeans of all patients the currently logged in patient represents
+	 * 
+	 * @return a list of PatientBeans of all patients the currently logged in patient represents
+	 * @throws ITrustException
+	 */
+	public List&lt;PatientBean&gt; getRepresenting() throws ITrustException {
+<span class="nc" id="L221">		return patientDAO.getRepresenting(loggedInMID);</span>
+	}
+
+
+	/**
+	 * Returns all the report requests for the logged in patient
+	 * @return the report requests for the logged in patient
+	 * @throws ITrustException
+	 */
+	public List&lt;ReportRequestBean&gt; getReportRequests() throws ITrustException {
+<span class="nc" id="L231">		return reportRequestDAO.getAllReportRequestsForPatient(loggedInMID);</span>
+	}
+
+	/**
+	 * Get patient's (logged in user's) age in months by taking the date of viewing the patient's records
+	 * and comparing it with the patient's date of birth. 
+	 * 
+	 * @param viewDate The date of the patient's records are being viewed
+	 * @return the patient's age in months
+	 * @throws DBException
+	 */
+	public int getPatientAgeInMonths(Calendar viewDate) throws DBException {
+		//Create int for patient's age in months
+<span class="nc" id="L244">		int ageInMonths = 0;</span>
+		
+		//Get the patient's birthdate
+<span class="nc" id="L247">		Calendar birthDate = Calendar.getInstance();</span>
+<span class="nc" id="L248">		PatientBean patient = patientDAO.getPatient(loggedInMID);</span>
+<span class="nc" id="L249">		birthDate.setTime(patient.getDateOfBirth());</span>
+		
+		//Split the patient's birthdate into day, month, and year
+<span class="nc" id="L252">		int birthDay = birthDate.get(Calendar.DAY_OF_MONTH);</span>
+<span class="nc" id="L253">		int birthMonth = birthDate.get(Calendar.MONTH) + 1;</span>
+<span class="nc" id="L254">		int birthYear = birthDate.get(Calendar.YEAR);</span>
+		//Split the office visit date into day month and year
+<span class="nc" id="L256">		int visitDay = viewDate.get(Calendar.DAY_OF_MONTH);</span>
+<span class="nc" id="L257">		int visitMonth = viewDate.get(Calendar.MONTH) + 1;</span>
+<span class="nc" id="L258">		int visitYear = viewDate.get(Calendar.YEAR);</span>
+		
+		//Calculate the year, month, and day differences
+<span class="nc" id="L261">		int yearDiff = visitYear - birthYear;</span>
+<span class="nc" id="L262">		int monthDiff = visitMonth - birthMonth;</span>
+<span class="nc" id="L263">		int dayDiff = visitDay - birthDay;</span>
+		
+		//Get the patient's age in months by multiplying the year difference by 12
+		//and adding the month difference
+<span class="nc" id="L267">		ageInMonths = yearDiff * MONTHS_IN_YEAR + monthDiff;</span>
+		
+		//If the day difference is negative, subtract a month from the age
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		if (dayDiff &lt; 0) {</span>
+<span class="nc" id="L271">			ageInMonths -= 1;</span>
+		}
+		
+		//Return the age in months
+<span class="nc" id="L275">		return ageInMonths;</span>
+	}
+	
+	public void logViewMedicalRecords(Long mid, Long secondary) {
+<span class="nc" id="L279">		TransactionLogger.getInstance().logTransaction(TransactionType.MEDICAL_RECORD_VIEW, mid, secondary, &quot;&quot;);</span>
+<span class="nc" id="L280">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">ApptDAO.java</span></div><h1>ApptDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.ApptBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+public class ApptDAO {
+
+	private transient final DAOFactory factory;
+	private transient final ApptBeanLoader abloader;
+	private transient final ApptTypeDAO apptTypeDAO;
+
+	private static final int MIN_MID = 999999999;
+
+<span class="fc" id="L22">	public ApptDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L23">		this.factory = factory;</span>
+<span class="fc" id="L24">		this.apptTypeDAO = factory.getApptTypeDAO();</span>
+<span class="fc" id="L25">		this.abloader = new ApptBeanLoader();</span>
+<span class="fc" id="L26">	}</span>
+
+	public List&lt;ApptBean&gt; getAppt(final int apptID) throws SQLException, DBException {
+<span class="fc" id="L29">		ResultSet results = null;</span>
+<span class="pc" id="L30">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L31">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM appointment WHERE appt_id=?&quot;)) {</span>
+<span class="fc" id="L32">			stmt.setInt(1, apptID);</span>
+<span class="fc" id="L33">			results = stmt.executeQuery();</span>
+<span class="fc" id="L34">			final List&lt;ApptBean&gt; abList = this.abloader.loadList(results);</span>
+<span class="fc" id="L35">			return abList;</span>
+<span class="pc bpc" id="L36" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L37">			throw new DBException(e);</span>
+		}
+	}
+
+	public List&lt;ApptBean&gt; getApptsFor(final long mid) throws SQLException, DBException {
+<span class="pc" id="L42">		try (Connection conn = factory.getConnection();</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">				PreparedStatement stmt = (mid &gt;= MIN_MID)</span>
+<span class="pc" id="L44">						? conn.prepareStatement(</span>
+								&quot;SELECT * FROM appointment WHERE doctor_id=? AND sched_date &gt; NOW() ORDER BY sched_date;&quot;)
+<span class="pc" id="L46">						: conn.prepareStatement(</span>
+								&quot;SELECT * FROM appointment WHERE patient_id=? AND sched_date &gt; NOW() ORDER BY sched_date;&quot;)) {
+<span class="fc" id="L48">			stmt.setLong(1, mid);</span>
+
+<span class="fc" id="L50">			ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L51">			List&lt;ApptBean&gt; abList = this.abloader.loadList(results);</span>
+<span class="fc" id="L52">			results.close();</span>
+<span class="fc" id="L53">			return abList;</span>
+<span class="pc bpc" id="L54" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L55">			throw new DBException(e);</span>
+		}
+	}
+
+	public List&lt;ApptBean&gt; getAllApptsFor(long mid) throws SQLException, DBException {
+<span class="pc" id="L60">		try (Connection conn = factory.getConnection();</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">				PreparedStatement stmt = (mid &gt;= MIN_MID)</span>
+<span class="fc" id="L62">						? conn.prepareStatement(&quot;SELECT * FROM appointment WHERE doctor_id=? ORDER BY sched_date;&quot;)</span>
+<span class="fc" id="L63">						: conn.prepareStatement(&quot;SELECT * FROM appointment WHERE patient_id=? ORDER BY sched_date;&quot;)) {</span>
+<span class="fc" id="L64">			stmt.setLong(1, mid);</span>
+
+<span class="fc" id="L66">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L67">			final List&lt;ApptBean&gt; abList = this.abloader.loadList(results);</span>
+<span class="fc" id="L68">			results.close();</span>
+<span class="fc" id="L69">			return abList;</span>
+<span class="pc bpc" id="L70" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L71">			throw new DBException(e);</span>
+		}
+
+	}
+
+	public void scheduleAppt(final ApptBean appt) throws SQLException, DBException {
+<span class="pc" id="L77">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L78">				PreparedStatement stmt = this.abloader.loadParameters(conn.prepareStatement(</span>
+						&quot;INSERT INTO appointment (appt_type, patient_id, doctor_id, sched_date, comment) &quot;
+								+ &quot;VALUES (?, ?, ?, ?, ?)&quot;),
+						appt)) {
+<span class="fc" id="L82">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L83" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L84">			throw new DBException(e);</span>
+<span class="fc" id="L85">		}</span>
+<span class="fc" id="L86">	}</span>
+
+	public void editAppt(final ApptBean appt) throws SQLException, DBException {
+<span class="pc" id="L89">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L90">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L91">						.prepareStatement(&quot;UPDATE appointment SET appt_type=?, sched_date=?, comment=? WHERE appt_id=?&quot;)) {</span>
+<span class="fc" id="L92">			stmt.setString(1, appt.getApptType());</span>
+<span class="fc" id="L93">			stmt.setTimestamp(2, appt.getDate());</span>
+<span class="fc" id="L94">			stmt.setString(3, appt.getComment());</span>
+<span class="fc" id="L95">			stmt.setInt(4, appt.getApptID());</span>
+
+<span class="fc" id="L97">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L98" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L99">			throw new DBException(e);</span>
+<span class="fc" id="L100">		}</span>
+<span class="fc" id="L101">	}</span>
+
+	public void removeAppt(final ApptBean appt) throws SQLException, DBException {
+<span class="pc" id="L104">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L105">				PreparedStatement stmt = conn.prepareStatement(&quot;DELETE FROM appointment WHERE appt_id=?&quot;)) {</span>
+<span class="fc" id="L106">			stmt.setInt(1, appt.getApptID());</span>
+
+<span class="fc" id="L108">			stmt.executeUpdate();</span>
+<span class="fc" id="L109">			stmt.close();</span>
+<span class="pc bpc" id="L110" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L111">			throw new DBException(e);</span>
+<span class="fc" id="L112">		}</span>
+<span class="fc" id="L113">	}</span>
+
+	public List&lt;ApptBean&gt; getAllHCPConflictsForAppt(final long mid, final ApptBean appt)
+			throws SQLException, DBException {
+
+<span class="fc" id="L118">		final int duration = apptTypeDAO.getApptType(appt.getApptType()).getDuration();</span>
+
+<span class="pc" id="L120">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L121">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * &quot; </span>
+						+ &quot;FROM appointment a, appointmenttype type &quot; // and the corresponding types 
+						+ &quot;WHERE a.appt_type=type.appt_type AND &quot; // match them with types
+						+ &quot;((DATE_ADD(a.sched_date, INTERVAL type.duration MINUTE)&gt;? AND &quot; // a1 ends after a2 starts AND
+						+ &quot;a.sched_date&lt;=?) OR &quot; // a1 starts before a2 OR
+						+ &quot;(DATE_ADD(?, INTERVAL ? MINUTE)&gt;a.sched_date AND &quot; // a2 ends after a1 starts AND
+						+ &quot;?&lt;=a.sched_date)) AND &quot; // a2 starts before a1 starts
+						+ &quot;a.doctor_id=? AND a.appt_id!=?;&quot;)
+			) {
+<span class="fc" id="L130">			stmt.setTimestamp(1, appt.getDate());</span>
+<span class="fc" id="L131">			stmt.setTimestamp(2, appt.getDate());</span>
+<span class="fc" id="L132">			stmt.setTimestamp(3, appt.getDate());</span>
+<span class="fc" id="L133">			stmt.setInt(4, duration);</span>
+<span class="fc" id="L134">			stmt.setTimestamp(5, appt.getDate());</span>
+<span class="fc" id="L135">			stmt.setLong(6, mid);</span>
+<span class="fc" id="L136">			stmt.setInt(7, appt.getApptID());</span>
+
+<span class="fc" id="L138">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L140">			final List&lt;ApptBean&gt; conflictList = this.abloader.loadList(results);</span>
+<span class="fc" id="L141">			results.close();</span>
+<span class="fc" id="L142">			return conflictList;</span>
+<span class="pc bpc" id="L143" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L144">			throw new DBException(e);</span>
+		}
+	}
+
+	public List&lt;ApptBean&gt; getAllPatientConflictsForAppt(final long mid, final ApptBean appt)
+			throws SQLException, DBException {
+<span class="fc" id="L150">		final int duration = apptTypeDAO.getApptType(appt.getApptType()).getDuration();</span>
+<span class="pc" id="L151">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L152">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * &quot; </span>
+						+ &quot;FROM appointment a, appointmenttype type &quot; // and the corresponding types
+						+ &quot;WHERE a.appt_type=type.appt_type AND &quot; // match them with types
+						+ &quot;((DATE_ADD(a.sched_date, INTERVAL type.duration MINUTE)&gt;? AND &quot;// a1 ends after a2 starts AND
+						+ &quot;a.sched_date&lt;=?) OR &quot; // a1 starts before a2 OR
+						+ &quot;(DATE_ADD(?, INTERVAL ? MINUTE)&gt;a.sched_date AND &quot; // a2 ends after a1 starts AND
+						+ &quot;?&lt;=a.sched_date)) AND &quot; // a2 starts before a1 starts
+						+ &quot;a.patient_id=? AND a.appt_id!=?;&quot;)
+			) {
+<span class="fc" id="L161">			stmt.setTimestamp(1, appt.getDate());</span>
+<span class="fc" id="L162">			stmt.setTimestamp(2, appt.getDate());</span>
+<span class="fc" id="L163">			stmt.setTimestamp(3, appt.getDate());</span>
+<span class="fc" id="L164">			stmt.setInt(4, duration);</span>
+<span class="fc" id="L165">			stmt.setTimestamp(5, appt.getDate());</span>
+<span class="fc" id="L166">			stmt.setLong(6, mid);</span>
+<span class="fc" id="L167">			stmt.setInt(7, appt.getApptID());</span>
+
+<span class="fc" id="L169">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L171">			final List&lt;ApptBean&gt; conflictList = this.abloader.loadList(results);</span>
+<span class="fc" id="L172">			results.close();</span>
+<span class="fc" id="L173">			return conflictList;</span>
+<span class="pc bpc" id="L174" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L175">			throw new DBException(e);</span>
+		}
+
+	}
+
+	/**
+	 * Returns all past and future appointment conflicts for the doctor with the
+	 * given MID
+	 * 
+	 * @param mid
+	 * @throws SQLException
+	 */
+	public List&lt;ApptBean&gt; getAllConflictsForDoctor(final long mid) throws SQLException, DBException {
+<span class="pc" id="L188">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L189">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT a1.* &quot;</span>
+						+ &quot;FROM appointment a1, appointment a2, &quot; // all possible sets of 2 appts
+						+ &quot;appointmenttype type1,appointmenttype type2 &quot; // and the corresponding types
+						+ &quot;WHERE a1.appt_id!=a2.appt_id AND &quot; // exclude itself
+						+ &quot;a1.appt_type=type1.appt_type AND a2.appt_type=type2.appt_type AND &quot; // match then with types
+						+ &quot;((DATE_ADD(a1.sched_date, INTERVAL type1.duration MINUTE)&gt;a2.sched_date AND &quot; // a1 ends after a2 starts AND
+						+ &quot;a1.sched_date&lt;=a2.sched_date) OR&quot; // a1 starts before a2 OR
+						+ &quot;(DATE_ADD(a2.sched_date, INTERVAL type2.duration MINUTE)&gt;a1.sched_date AND &quot; // a2 ends after a1 starts AND
+						+ &quot;a2.sched_date&lt;=a1.sched_date)) AND &quot; // a2 starts before a1 starts
+						+ &quot;a1.doctor_id=? AND a2.doctor_id=?;&quot;)
+			) {
+<span class="fc" id="L200">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L201">			stmt.setLong(2, mid);</span>
+
+<span class="fc" id="L203">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L205">			final List&lt;ApptBean&gt; conflictList = this.abloader.loadList(results);</span>
+<span class="fc" id="L206">			results.close();</span>
+<span class="fc" id="L207">			return conflictList;</span>
+<span class="pc bpc" id="L208" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L209">			throw new DBException(e);</span>
+		}
+
+	}
+
+	/**
+	 * Returns all past and future appointment conflicts for the patient with
+	 * the given MID
+	 * 
+	 * @param mid
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public List&lt;ApptBean&gt; getAllConflictsForPatient(final long mid) throws SQLException, DBException {
+<span class="pc" id="L223">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L224">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT a1.* &quot;</span>
+						+ &quot;FROM appointment a1, appointment a2, &quot; // all possible sets of 2 appts
+						+ &quot;appointmenttype type1,appointmenttype type2 &quot; // and the corresponding types
+						+ &quot;WHERE a1.appt_id!=a2.appt_id AND &quot; // exclude itself
+						+ &quot;a1.appt_type=type1.appt_type AND a2.appt_type=type2.appt_type AND &quot; // match them with types
+						+ &quot;((DATE_ADD(a1.sched_date, INTERVAL type1.duration MINUTE)&gt;a2.sched_date AND &quot; // a1 ends after a2 starts AND
+						+ &quot;a1.sched_date&lt;=a2.sched_date) OR&quot; // a1 starts before a2 OR
+						+ &quot;(DATE_ADD(a2.sched_date, INTERVAL type2.duration MINUTE)&gt;a1.sched_date AND &quot; // a2 ends after a1 starts AND
+						+ &quot;a2.sched_date&lt;=a1.sched_date)) AND &quot; // a2 starts before a1 starts
+						+ &quot;a1.patient_id=? AND a2.patient_id=?;&quot;)
+			) {
+<span class="fc" id="L235">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L236">			stmt.setLong(2, mid);</span>
+
+<span class="fc" id="L238">			final ResultSet results = stmt.executeQuery();</span>
+
+<span class="fc" id="L240">			final List&lt;ApptBean&gt; conflictList = this.abloader.loadList(results);</span>
+<span class="fc" id="L241">			results.close();</span>
+<span class="fc" id="L242">			return conflictList;</span>
+<span class="pc bpc" id="L243" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L244">			throw new DBException(e);</span>
+		}
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

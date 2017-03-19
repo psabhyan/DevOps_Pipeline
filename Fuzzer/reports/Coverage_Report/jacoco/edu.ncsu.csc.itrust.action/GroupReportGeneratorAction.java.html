@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GroupReportGeneratorAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">GroupReportGeneratorAction.java</span></div><h1>GroupReportGeneratorAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.GroupReportBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.report.DemographicReportFilter;
+import edu.ncsu.csc.itrust.report.DemographicReportFilter.DemographicReportFilterType;
+import edu.ncsu.csc.itrust.report.MedicalReportFilter;
+import edu.ncsu.csc.itrust.report.MedicalReportFilter.MedicalReportFilterType;
+import edu.ncsu.csc.itrust.report.PersonnelReportFilter;
+import edu.ncsu.csc.itrust.report.PersonnelReportFilter.PersonnelReportFilterType;
+import edu.ncsu.csc.itrust.report.ReportFilter;
+
+/**
+ * Generates group reports, producing ArrayLists containing
+ * the headers, data, and filters.  
+ */
+public class GroupReportGeneratorAction {
+	
+	/**
+	 * DAOFactory for database operations
+	 */
+<span class="fc" id="L30">	DAOFactory factory = null;</span>
+	
+	/**
+	 * GroupReportAction for generating the individual records
+	 */
+	GroupReportAction action;
+	
+	/**
+	 * List of ReportFilters to be used in the report
+	 */
+<span class="fc" id="L40">	List&lt;ReportFilter&gt; filters = null;</span>
+	
+	/**
+	 * List of report filter types that were used in the report
+	 */
+<span class="fc" id="L45">	ArrayList&lt;String&gt; reportFilterTypes = new ArrayList&lt;String&gt;();</span>
+	
+	/**
+	 * List of report filter values that were used in the report
+	 */
+<span class="fc" id="L50">	ArrayList&lt;String&gt; reportFilterValues = new ArrayList&lt;String&gt;();</span>
+	
+	/**
+	 * List of headers for the report
+	 */
+<span class="fc" id="L55">	ArrayList&lt;String&gt; reportHeaders = new ArrayList&lt;String&gt;();</span>
+	
+	/**
+	 * List of lists (each of the sub-lists is a record) in the report
+	 */
+<span class="fc" id="L60">	ArrayList&lt;ArrayList&lt;String&gt;&gt; reportData = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
+
+	/**
+	 * Initializes the group report generator with a list of filters
+	 * 
+	 * @param filters List of filters to be used in the report
+	 * @throws DBException 
+	 */
+<span class="fc" id="L68">	public GroupReportGeneratorAction(DAOFactory factory, List&lt;ReportFilter&gt; filters, long mid) throws DBException{</span>
+<span class="fc" id="L69">		this.factory=factory;</span>
+<span class="fc" id="L70">		this.filters=filters;</span>
+<span class="fc" id="L71">		action = new GroupReportAction(factory, mid);</span>
+		
+
+<span class="fc" id="L74">	}</span>
+	
+	/**
+	 * Initializes the group report generator with a list of filters after parsing them
+	 * 
+	 * @param filters HttpServletRequest to grab and parse parameters from
+	 * @throws DBException 
+	 */
+<span class="fc" id="L82">	public GroupReportGeneratorAction(DAOFactory factory, HttpServletRequest request, long mid) throws DBException{</span>
+<span class="fc" id="L83">		this.factory=factory;</span>
+<span class="fc" id="L84">		this.filters = new ArrayList&lt;ReportFilter&gt;();</span>
+<span class="fc" id="L85">		parseFilters(request);</span>
+<span class="fc" id="L86">		action = new GroupReportAction(factory, mid);</span>
+<span class="fc" id="L87">	}</span>
+	
+	/**
+	 * Gets a list of the filters used in the report.
+	 * 
+	 * @return List of FilterTypes used in the report
+	 */
+	public ArrayList&lt;String&gt; getReportFilterTypes(){
+<span class="fc" id="L95">		return reportFilterTypes;</span>
+	}
+	
+	/**
+	 * Gets a list of the filter values used in the report.
+	 * 
+	 * @return List of filter values used in the report
+	 */
+	public ArrayList&lt;String&gt; getReportFilterValues(){
+<span class="fc" id="L104">		return reportFilterValues;</span>
+	}
+	
+	/**
+	 * Gets a list of the report headers.
+	 * 
+	 * @return List of report headers
+	 */
+	public ArrayList&lt;String&gt; getReportHeaders(){
+<span class="fc" id="L113">		return reportHeaders;</span>
+	}
+	
+	/**
+	 * Gets a list of lists of report records (patients)
+	 * 
+	 * @return List of lists of report records
+	 */
+	public ArrayList&lt;ArrayList&lt;String&gt;&gt; getReportData(){
+<span class="fc" id="L122">		return reportData;</span>
+	}
+	
+	/**
+	 * Generates the ArrayLists for the report based on the filters passed
+	 * in the constructor.
+	 */
+	public void generateReport(){
+		
+		//Initialize the GroupReportBean
+<span class="fc" id="L132">		GroupReportBean report = action.generateReport(filters);</span>
+		
+		//Populate the filter lists
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (ReportFilter filter : filters) {</span>
+<span class="fc" id="L136">			reportFilterTypes.add(filter.getFilterTypeString());</span>
+<span class="fc" id="L137">			reportFilterValues.add(filter.getFilterValue());</span>
+<span class="fc" id="L138">		}</span>
+		
+		//Populate the header list with the DemographicReportFilters
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (DemographicReportFilterType type : DemographicReportFilterType.values()) {</span>
+<span class="fc bfc" id="L142" title="All 4 branches covered.">			if (type != DemographicReportFilterType.LOWER_AGE_LIMIT &amp;&amp; type != DemographicReportFilterType.UPPER_AGE_LIMIT){</span>
+<span class="fc" id="L143">				reportHeaders.add(type.toString());</span>
+			}
+		}
+		
+		//Populate the header list with the MedicalReportFilters
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (MedicalReportFilterType type : MedicalReportFilterType.values()) {</span>
+<span class="fc bfc" id="L149" title="All 4 branches covered.">			if (type != MedicalReportFilterType.LOWER_OFFICE_VISIT_DATE &amp;&amp; type != MedicalReportFilterType.UPPER_OFFICE_VISIT_DATE){</span>
+<span class="fc" id="L150">				reportHeaders.add(type.toString());</span>
+			}
+<span class="fc bfc" id="L152" title="All 2 branches covered.">			if (type == MedicalReportFilterType.LOWER_OFFICE_VISIT_DATE){</span>
+<span class="fc" id="L153">				reportHeaders.add(&quot;OFFICE VISIT DATE&quot;);</span>
+			}
+		}
+		
+		//Populate the header list with the PersonnelReportFilters
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (PersonnelReportFilterType type : PersonnelReportFilterType.values()) {</span>
+<span class="fc" id="L159">			reportHeaders.add(type.toString());</span>
+		}
+		
+		//Loop through all the patients in the report
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (PatientBean patient : report.getPatients()) {</span>
+			
+			//Create a temporary ArrayList for the current patient's data
+<span class="fc" id="L166">			ArrayList&lt;String&gt; currentPatientData = new ArrayList&lt;String&gt;();</span>
+			
+			//Populate the current record with Demographic data
+<span class="fc bfc" id="L169" title="All 2 branches covered.">			for (DemographicReportFilterType type : DemographicReportFilterType.values()) {</span>
+<span class="fc bfc" id="L170" title="All 4 branches covered.">				if (type != DemographicReportFilterType.LOWER_AGE_LIMIT &amp;&amp; type != DemographicReportFilterType.UPPER_AGE_LIMIT) {</span>
+<span class="fc" id="L171">					String val = action.getComprehensiveDemographicInfo(patient, type);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">					if (val != null) {</span>
+<span class="fc" id="L173">						currentPatientData.add(val);</span>
+					} else {
+<span class="nc" id="L175">						currentPatientData.add(&quot;&quot;);</span>
+					}
+				}
+			}
+			
+			//Populate the current record with Medical data
+<span class="fc bfc" id="L181" title="All 2 branches covered.">			for (MedicalReportFilterType type : MedicalReportFilterType.values()) {</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">				if (type != MedicalReportFilterType.UPPER_OFFICE_VISIT_DATE) {</span>
+<span class="fc" id="L183">					String val = action.getComprehensiveMedicalInfo(patient, type);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">					if (val != null) {</span>
+<span class="fc" id="L185">						currentPatientData.add(val);</span>
+					} else {
+<span class="fc" id="L187">						currentPatientData.add(&quot;&quot;);</span>
+					}
+				}
+			}
+			
+			//Populate the current record with Personnel data
+<span class="fc bfc" id="L193" title="All 2 branches covered.">			for (PersonnelReportFilterType type : PersonnelReportFilterType.values()) {</span>
+<span class="fc" id="L194">				String val = action.getComprehensivePersonnelInfo(patient, type);</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">				if (val != null) {</span>
+<span class="fc" id="L196">					currentPatientData.add(val);</span>
+				} else {
+<span class="nc" id="L198">					currentPatientData.add(&quot;&quot;);</span>
+				}
+			}
+			
+			//Add the current record to the list of records
+<span class="fc" id="L203">			reportData.add(currentPatientData);</span>
+<span class="fc" id="L204">		}</span>
+		
+		//Remove MID from report
+<span class="fc" id="L207">		int midIndex = reportHeaders.indexOf(&quot;MID&quot;);</span>
+<span class="fc" id="L208">		reportHeaders.remove(midIndex);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		for(ArrayList&lt;String&gt; patients : reportData){</span>
+<span class="fc" id="L210">			patients.remove(midIndex);</span>
+<span class="fc" id="L211">		}</span>
+<span class="fc" id="L212">	}</span>
+	
+	/**
+	 * Method that parses the request parameters to create the filter list in order to run report.
+	 * 
+	 * @param request with form parameters to create the filter list
+	 */
+	private void parseFilters(HttpServletRequest request){
+<span class="fc" id="L220">		boolean hasDeactivatedFilter = false;</span>
+<span class="pc bpc" id="L221" title="1 of 4 branches missed.">		if (request.getParameter(&quot;demoparams&quot;) != null &amp;&amp; !request.getParameter(&quot;demoparams&quot;).isEmpty()) {</span>
+<span class="fc" id="L222">			String demoparams = request.getParameter(&quot;demoparams&quot;);</span>
+<span class="fc" id="L223">			String demoFilters[] = demoparams.split(&quot; &quot;);</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">			for (String filter : demoFilters) {</span>
+<span class="pc bpc" id="L225" title="2 of 4 branches missed.">				if (request.getParameter(filter) != null &amp;&amp; !request.getParameter(filter).isEmpty()) {</span>
+<span class="fc" id="L226">					DemographicReportFilterType filterType = DemographicReportFilter.filterTypeFromString(filter);</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">					if(filterType.toString().equals(&quot;DEACTIVATED&quot;)){</span>
+<span class="nc" id="L228">						hasDeactivatedFilter=true;</span>
+					}
+<span class="fc" id="L230">					DemographicReportFilter fil = new DemographicReportFilter(filterType, request.getParameter(filter), factory);</span>
+<span class="fc" id="L231">					filters.add(fil);</span>
+				}
+			}
+		}
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">		if(!hasDeactivatedFilter){</span>
+<span class="fc" id="L236">			filters.add(new DemographicReportFilter(DemographicReportFilter.filterTypeFromString(&quot;DEACTIVATED&quot;), &quot;exclude&quot;, factory));</span>
+		}
+<span class="pc bpc" id="L238" title="1 of 4 branches missed.">		if (request.getParameter(&quot;medparams&quot;) != null &amp;&amp; !request.getParameter(&quot;medparams&quot;).isEmpty()) {</span>
+<span class="fc" id="L239">			String medparams = request.getParameter(&quot;medparams&quot;);</span>
+<span class="fc" id="L240">			String medFilters[] = medparams.split(&quot; &quot;);</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">			for (String filter : medFilters) {</span>
+<span class="pc bpc" id="L242" title="2 of 4 branches missed.">				if (request.getParameter(filter) != null &amp;&amp; !request.getParameter(filter).isEmpty()) {</span>
+<span class="fc" id="L243">					MedicalReportFilterType filterType = MedicalReportFilter.filterTypeFromString(filter);</span>
+<span class="pc bpc" id="L244" title="9 of 12 branches missed.">					if (filterType == MedicalReportFilterType.DIAGNOSIS_ICD_CODE</span>
+							|| filterType == MedicalReportFilterType.MISSING_DIAGNOSIS_ICD_CODE
+							|| filterType == MedicalReportFilterType.ALLERGY
+							|| filterType == MedicalReportFilterType.CURRENT_PRESCRIPTIONS
+							|| filterType == MedicalReportFilterType.PASTCURRENT_PRESCRIPTIONS
+							|| filterType == MedicalReportFilterType.PROCEDURE) {
+<span class="fc" id="L250">						String[] vals = request.getParameterValues(filter);</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">						for (String val : vals) {</span>
+<span class="nc" id="L252">							MedicalReportFilter fil = new MedicalReportFilter(filterType, val, factory);</span>
+<span class="nc" id="L253">							filters.add(fil);</span>
+						}
+<span class="fc" id="L255">					} else {</span>
+<span class="nc" id="L256">						MedicalReportFilter fil = new MedicalReportFilter(filterType, request.getParameter(filter), factory);</span>
+<span class="nc" id="L257">						filters.add(fil);</span>
+					}
+				}
+			}
+		}
+<span class="pc bpc" id="L262" title="1 of 4 branches missed.">		if (request.getParameter(&quot;persparams&quot;) != null &amp;&amp; !request.getParameter(&quot;persparams&quot;).isEmpty()) {</span>
+<span class="fc" id="L263">			String persparams = request.getParameter(&quot;persparams&quot;);</span>
+<span class="fc" id="L264">			String personnelFilters[] = persparams.split(&quot; &quot;);</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">			for (String filter : personnelFilters) {</span>
+<span class="nc bnc" id="L266" title="All 4 branches missed.">				if (request.getParameter(filter) != null &amp;&amp; !request.getParameter(filter).isEmpty()) {</span>
+<span class="nc" id="L267">					PersonnelReportFilterType filterType = PersonnelReportFilter.filterTypeFromString(filter);</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">					if (filterType == PersonnelReportFilterType.DLHCP) {</span>
+<span class="nc" id="L269">						String[] vals = request.getParameterValues(filter);</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">						for (String val : vals) {</span>
+<span class="nc" id="L271">							PersonnelReportFilter fil = new PersonnelReportFilter(filterType, val, factory);</span>
+<span class="nc" id="L272">							filters.add(fil);</span>
+						}
+<span class="nc" id="L274">					} else {</span>
+<span class="nc" id="L275">						PersonnelReportFilter fil = new PersonnelReportFilter(filterType, request.getParameter(filter), factory);</span>
+<span class="nc" id="L276">						filters.add(fil);</span>
+					}
+				}
+			}
+		}
+<span class="fc" id="L281">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

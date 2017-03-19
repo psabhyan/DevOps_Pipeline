@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">PatientBean.java</span></div><h1>PatientBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import edu.ncsu.csc.itrust.model.old.enums.BloodType;
+import edu.ncsu.csc.itrust.model.old.enums.Ethnicity;
+import edu.ncsu.csc.itrust.model.old.enums.Gender;
+
+/**
+ * A bean for storing data about a patient.
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters 
+ * to create these easily)
+ */
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">public class PatientBean implements Serializable, Comparable&lt;PatientBean&gt; {</span>
+	private static final long serialVersionUID = -6474182977342257877L;
+	
+<span class="fc" id="L23">	private long MID = 0;</span>
+<span class="fc" id="L24">	private String firstName = &quot;&quot;;</span>
+<span class="fc" id="L25">	private String lastName = &quot;&quot;;</span>
+<span class="fc" id="L26">	private String email = &quot;&quot;;</span>
+<span class="fc" id="L27">	private String securityQuestion = &quot;&quot;;</span>
+<span class="fc" id="L28">	private String securityAnswer = &quot;&quot;;</span>
+<span class="fc" id="L29">	private String password = &quot;&quot;;</span>
+<span class="fc" id="L30">	private String confirmPassword = &quot;&quot;;</span>
+<span class="fc" id="L31">	private String streetAddress1 = &quot;&quot;;</span>
+<span class="fc" id="L32">	private String streetAddress2 = &quot;&quot;;</span>
+<span class="fc" id="L33">	private String city = &quot;&quot;;</span>
+<span class="fc" id="L34">	private String state = &quot;AK&quot;;</span>
+<span class="fc" id="L35">	private String zip = &quot;&quot;;</span>
+<span class="fc" id="L36">	private String phone = &quot;&quot;;</span>
+<span class="fc" id="L37">	private String emergencyName = &quot;&quot;;</span>
+<span class="fc" id="L38">	private String emergencyPhone = &quot;&quot;;</span>
+<span class="fc" id="L39">	private String icName = &quot;&quot;;</span>
+<span class="fc" id="L40">	private String icAddress1 = &quot;&quot;;</span>
+<span class="fc" id="L41">	private String icAddress2 = &quot;&quot;;</span>
+<span class="fc" id="L42">	private String icCity = &quot;&quot;;</span>
+<span class="fc" id="L43">	private String icState = &quot;AK&quot;;</span>
+<span class="fc" id="L44">	private String icZip = &quot;&quot;;</span>
+<span class="fc" id="L45">	private String icPhone = &quot;&quot;;</span>
+<span class="fc" id="L46">	private String icID = &quot;&quot;;</span>
+<span class="fc" id="L47">	private String creditCardType = &quot;&quot;;</span>
+<span class="fc" id="L48">	private String creditCardNumber = &quot;&quot;;</span>
+	// Topical Health Information
+<span class="fc" id="L50">	private String dateOfBirthStr = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).format(new Date());</span>
+<span class="fc" id="L51">	private String dateOfDeathStr = &quot;&quot;;</span>
+<span class="fc" id="L52">	private String causeOfDeath = &quot;&quot;;</span>
+<span class="fc" id="L53">	private String motherMID = &quot;0&quot;;</span>
+<span class="fc" id="L54">	private String fatherMID = &quot;0&quot;;</span>
+<span class="fc" id="L55">	private BloodType bloodType = BloodType.NS;</span>
+<span class="fc" id="L56">	private Ethnicity ethnicity = Ethnicity.NotSpecified;</span>
+<span class="fc" id="L57">	private Gender gender = Gender.NotSpecified;</span>
+<span class="fc" id="L58">	private String topicalNotes = &quot;&quot;;</span>
+<span class="fc" id="L59">	private String directionsToHome = &quot;&quot;;</span>
+<span class="fc" id="L60">	private String religion = &quot;&quot;;</span>
+<span class="fc" id="L61">	private String language = &quot;&quot;;</span>
+<span class="fc" id="L62">	private String spiritualPractices = &quot;&quot;;</span>
+<span class="fc" id="L63">	private String alternateName = &quot;&quot;;</span>
+<span class="fc" id="L64">	private String dateOfDeactivationStr = &quot;&quot;;</span>
+
+
+	public BloodType getBloodType() {
+<span class="fc" id="L68">		return bloodType;</span>
+	}
+
+	public void setBloodTypeStr(String bloodType) {
+<span class="fc" id="L72">		this.bloodType = BloodType.parse(bloodType);</span>
+<span class="fc" id="L73">	}</span>
+
+	public void setBloodType(BloodType bloodType) {
+<span class="fc" id="L76">		this.bloodType = bloodType;</span>
+<span class="fc" id="L77">	}</span>
+
+	public String getCauseOfDeath() {
+<span class="fc" id="L80">		return causeOfDeath;</span>
+	}
+
+	public void setCauseOfDeath(String causeOfDeath) {
+<span class="fc" id="L84">		this.causeOfDeath = causeOfDeath;</span>
+<span class="fc" id="L85">	}</span>
+
+	public String getCity() {
+<span class="fc" id="L88">		return city;</span>
+	}
+
+	public void setCity(String city) {
+<span class="fc" id="L92">		this.city = city;</span>
+<span class="fc" id="L93">	}</span>
+
+	public String getDateOfBirthStr() {
+<span class="fc" id="L96">		return dateOfBirthStr;</span>
+	}
+
+	public Date getDateOfBirth() {
+		try {
+<span class="fc" id="L101">			return new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).parse(dateOfBirthStr);</span>
+<span class="fc" id="L102">		} catch (ParseException e) {</span>
+			
+<span class="fc" id="L104">			return null;</span>
+		}
+	}
+
+	public Date getDateOfDeath() {
+		try {
+<span class="fc" id="L110">			return new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).parse(dateOfDeathStr);</span>
+<span class="fc" id="L111">		} catch (ParseException e) {</span>
+			
+<span class="fc" id="L113">			return null;</span>
+		}
+	}
+
+	public void setDateOfBirthStr(String dateOfBirthStr) {
+<span class="fc" id="L118">		this.dateOfBirthStr = dateOfBirthStr;</span>
+<span class="fc" id="L119">	}</span>
+
+	public int getAge() {
+		try {
+<span class="fc" id="L123">			long ageInMs = System.currentTimeMillis()</span>
+<span class="fc" id="L124">					- new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).parse(dateOfBirthStr).getTime();</span>
+<span class="fc" id="L125">			long age = ageInMs / (1000L * 60L * 60L * 24L * 365L);</span>
+<span class="fc" id="L126">			return (int) age;</span>
+<span class="fc" id="L127">		} catch (ParseException e) {</span>
+			
+<span class="fc" id="L129">			return -1;</span>
+		}
+	}
+	
+	public long getAgeInDays() {
+		
+		long age;
+		long ageInMs;
+
+		try {
+<span class="nc" id="L139">			ageInMs = System.currentTimeMillis()</span>
+<span class="nc" id="L140">					- new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).parse(dateOfBirthStr).getTime();</span>
+<span class="nc" id="L141">			age = ageInMs / (1000L * 60L * 60L * 24L);</span>
+	
+		}
+<span class="nc" id="L144">		catch (ParseException e) {</span>
+			
+<span class="nc" id="L146">			return -1;</span>
+<span class="nc" id="L147">		}</span>
+		
+<span class="nc" id="L149">		return age;</span>
+	}
+
+	public long getAgeInWeeks() {
+		
+		long age;
+		long ageInMs;
+
+		try {
+<span class="nc" id="L158">			ageInMs = System.currentTimeMillis()</span>
+<span class="nc" id="L159">					- new SimpleDateFormat(&quot;MM/dd/yyyy&quot;).parse(dateOfBirthStr).getTime();</span>
+<span class="nc" id="L160">			age = ageInMs / (1000L * 60L * 60L * 24L * 7L);</span>
+	
+		}
+<span class="nc" id="L163">		catch (ParseException e) {</span>
+			
+<span class="nc" id="L165">			return -1;</span>
+<span class="nc" id="L166">		}</span>
+		
+<span class="nc" id="L168">		return age;</span>
+	}
+	
+	public String getDateOfDeathStr() {
+<span class="fc" id="L172">		return dateOfDeathStr;</span>
+	}
+
+	public void setDateOfDeathStr(String dateOfDeathStr) {
+<span class="fc" id="L176">		this.dateOfDeathStr = dateOfDeathStr;</span>
+<span class="fc" id="L177">	}</span>
+
+	public String getEmail() {
+<span class="fc" id="L180">		return email;</span>
+	}
+
+	public void setEmail(String email) {
+<span class="fc" id="L184">		this.email = email;</span>
+<span class="fc" id="L185">	}</span>
+
+	public String getEmergencyName() {
+<span class="fc" id="L188">		return emergencyName;</span>
+	}
+
+	public void setEmergencyName(String emergencyName) {
+<span class="fc" id="L192">		this.emergencyName = emergencyName;</span>
+<span class="fc" id="L193">	}</span>
+
+	public Ethnicity getEthnicity() {
+<span class="fc" id="L196">		return ethnicity;</span>
+	}
+
+	public void setEthnicityStr(String ethnicity) {
+<span class="fc" id="L200">		this.ethnicity = Ethnicity.parse(ethnicity);</span>
+<span class="fc" id="L201">	}</span>
+
+	public void setEthnicity(Ethnicity ethnicity) {
+<span class="nc" id="L204">		this.ethnicity = ethnicity;</span>
+<span class="nc" id="L205">	}</span>
+
+	public String getFatherMID() {
+<span class="fc" id="L208">		return fatherMID;</span>
+	}
+
+	public void setFatherMID(String fatherMID) {
+<span class="fc" id="L212">		this.fatherMID = fatherMID;</span>
+<span class="fc" id="L213">	}</span>
+
+	public String getFullName() {
+<span class="fc" id="L216">		return getFirstName() + &quot; &quot; + getLastName();</span>
+	}
+
+	public String getFirstName() {
+<span class="fc" id="L220">		return firstName;</span>
+	}
+
+	public void setFirstName(String firstName) {
+<span class="fc" id="L224">		this.firstName = firstName;</span>
+<span class="fc" id="L225">	}</span>
+
+	public Gender getGender() {
+<span class="fc" id="L228">		return gender;</span>
+	}
+
+	public void setGenderStr(String gender) {
+<span class="fc" id="L232">		this.gender = Gender.parse(gender);</span>
+<span class="fc" id="L233">	}</span>
+
+	public void setGender(Gender gender) {
+<span class="nc" id="L236">		this.gender = gender;</span>
+<span class="nc" id="L237">	}</span>
+
+	public String getIcAddress1() {
+<span class="fc" id="L240">		return icAddress1;</span>
+	}
+
+	public void setIcAddress1(String icAddress1) {
+<span class="fc" id="L244">		this.icAddress1 = icAddress1;</span>
+<span class="fc" id="L245">	}</span>
+
+	public String getIcAddress2() {
+<span class="fc" id="L248">		return icAddress2;</span>
+	}
+
+	public void setIcAddress2(String icAddress2) {
+<span class="fc" id="L252">		this.icAddress2 = icAddress2;</span>
+<span class="fc" id="L253">	}</span>
+
+	// Composition of city, state, and zip
+	public String getIcAddress3() {
+<span class="fc" id="L257">		return getIcCity() + &quot;, &quot; + getIcState() + &quot; &quot; + getIcZip();</span>
+	}
+
+	public String getIcCity() {
+<span class="fc" id="L261">		return icCity;</span>
+	}
+
+	public void setIcCity(String icCity) {
+<span class="fc" id="L265">		this.icCity = icCity;</span>
+<span class="fc" id="L266">	}</span>
+
+	public String getIcID() {
+<span class="fc" id="L269">		return icID;</span>
+	}
+
+	public void setIcID(String icID) {
+<span class="fc" id="L273">		this.icID = icID;</span>
+<span class="fc" id="L274">	}</span>
+	
+	public String getCreditCardType() {
+<span class="fc" id="L277">		return creditCardType;</span>
+	}
+	
+	public void setCreditCardType(String creditCardType) {
+<span class="fc" id="L281">		this.creditCardType = creditCardType;</span>
+<span class="fc" id="L282">	}</span>
+	
+	public String getCreditCardNumber() {
+<span class="fc" id="L285">		return creditCardNumber;</span>
+	}
+	
+	public void setCreditCardNumber(String creditCardNumber) {
+<span class="fc" id="L289">		this.creditCardNumber = creditCardNumber;</span>
+<span class="fc" id="L290">	}</span>
+
+	public String getIcName() {
+<span class="fc" id="L293">		return icName;</span>
+	}
+
+	public void setIcName(String icName) {
+<span class="fc" id="L297">		this.icName = icName;</span>
+<span class="fc" id="L298">	}</span>
+
+	public String getIcZip() {
+<span class="fc" id="L301">		return icZip;</span>
+	}
+
+	public void setIcZip(String icZip) {
+<span class="fc" id="L305">		this.icZip = icZip;</span>
+<span class="fc" id="L306">	}</span>
+
+	public String getIcState() {
+<span class="fc" id="L309">		return icState;</span>
+	}
+
+	public void setIcState(String icState) {
+<span class="fc" id="L313">		this.icState = icState;</span>
+<span class="fc" id="L314">	}</span>
+
+	public String getLastName() {
+<span class="fc" id="L317">		return lastName;</span>
+	}
+
+	public void setLastName(String lastName) {
+<span class="fc" id="L321">		this.lastName = lastName;</span>
+<span class="fc" id="L322">	}</span>
+
+	public long getMID() {
+<span class="fc" id="L325">		return MID;</span>
+	}
+
+	public void setMID(long mid) {
+<span class="fc" id="L329">		MID = mid;</span>
+<span class="fc" id="L330">	}</span>
+
+	public String getMotherMID() {
+<span class="fc" id="L333">		return motherMID;</span>
+	}
+
+	public void setMotherMID(String motherMID) {
+<span class="fc" id="L337">		this.motherMID = motherMID;</span>
+<span class="fc" id="L338">	}</span>
+
+	public String getPhone() {
+<span class="fc" id="L341">		return phone;</span>
+	}
+
+	public void setPhone(String phone) {
+<span class="fc" id="L345">		this.phone = phone;</span>
+<span class="fc" id="L346">	}</span>
+
+	public String getSecurityAnswer() {
+<span class="fc" id="L349">		return securityAnswer;</span>
+	}
+
+	public void setSecurityAnswer(String securityAnswer) {
+<span class="fc" id="L353">		this.securityAnswer = securityAnswer;</span>
+<span class="fc" id="L354">	}</span>
+
+	public String getSecurityQuestion() {
+<span class="fc" id="L357">		return securityQuestion;</span>
+	}
+
+	public void setSecurityQuestion(String securityQuestion) {
+<span class="fc" id="L361">		this.securityQuestion = securityQuestion;</span>
+<span class="fc" id="L362">	}</span>
+
+	public String getState() {
+<span class="fc" id="L365">		return state;</span>
+	}
+
+	public void setState(String state) {
+<span class="fc" id="L369">		this.state = state;</span>
+<span class="fc" id="L370">	}</span>
+
+	public String getStreetAddress1() {
+<span class="fc" id="L373">		return streetAddress1;</span>
+	}
+
+	public void setStreetAddress1(String streetAddress1) {
+<span class="fc" id="L377">		this.streetAddress1 = streetAddress1;</span>
+<span class="fc" id="L378">	}</span>
+
+	public String getStreetAddress2() {
+<span class="fc" id="L381">		return streetAddress2;</span>
+	}
+
+	public void setStreetAddress2(String streetAddress2) {
+<span class="fc" id="L385">		this.streetAddress2 = streetAddress2;</span>
+<span class="fc" id="L386">	}</span>
+
+	// Composition of the city, state, zip
+	public String getStreetAddress3() {
+<span class="fc" id="L390">		return getCity() + &quot;, &quot; + getState() + &quot; &quot; + getZip();</span>
+	}
+
+	public String getTopicalNotes() {
+<span class="fc" id="L394">		return topicalNotes;</span>
+	}
+
+	public void setTopicalNotes(String topicalNotes) {
+<span class="fc" id="L398">		this.topicalNotes = topicalNotes;</span>
+<span class="fc" id="L399">	}</span>
+
+	public String getZip() {
+<span class="fc" id="L402">		return zip;</span>
+	}
+
+	public void setZip(String zip) {
+<span class="fc" id="L406">		this.zip = zip;</span>
+<span class="fc" id="L407">	}</span>
+
+	public String getEmergencyPhone() {
+<span class="fc" id="L410">		return emergencyPhone;</span>
+	}
+
+	public void setEmergencyPhone(String emergencyPhone) {
+<span class="fc" id="L414">		this.emergencyPhone = emergencyPhone;</span>
+<span class="fc" id="L415">	}</span>
+
+	public String getIcPhone() {
+<span class="fc" id="L418">		return icPhone;</span>
+	}
+
+	public void setIcPhone(String icPhone) {
+<span class="fc" id="L422">		this.icPhone = icPhone;</span>
+<span class="fc" id="L423">	}</span>
+
+	public String getConfirmPassword() {
+<span class="fc" id="L426">		return confirmPassword;</span>
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+<span class="fc" id="L430">		this.confirmPassword = confirmPassword;</span>
+<span class="fc" id="L431">	}</span>
+
+	public String getPassword() {
+<span class="fc" id="L434">		return password;</span>
+	}
+
+	public void setPassword(String password) {
+<span class="fc" id="L438">		this.password = password;</span>
+<span class="fc" id="L439">	}</span>
+
+	public String getDirectionsToHome() {
+<span class="fc" id="L442">		return directionsToHome;</span>
+	}
+
+	public void setDirectionsToHome(String directionsToHome) {
+<span class="fc" id="L446">		this.directionsToHome = directionsToHome;</span>
+<span class="fc" id="L447">	}</span>
+
+	public String getReligion() {
+<span class="fc" id="L450">		return religion;</span>
+	}
+
+	public void setReligion(String religion) {
+<span class="fc" id="L454">		this.religion = religion;</span>
+<span class="fc" id="L455">	}</span>
+
+	public String getLanguage() {
+<span class="fc" id="L458">		return language;</span>
+	}
+
+	public void setLanguage(String language) {
+<span class="fc" id="L462">		this.language = language;</span>
+<span class="fc" id="L463">	}</span>
+
+	public String getSpiritualPractices() {
+<span class="fc" id="L466">		return spiritualPractices;</span>
+	}
+
+	public void setSpiritualPractices(String spiritualPractices) {
+<span class="fc" id="L470">		this.spiritualPractices = spiritualPractices;</span>
+<span class="fc" id="L471">	}</span>
+
+	public String getAlternateName() {
+<span class="fc" id="L474">		return alternateName;</span>
+	}
+
+	public void setAlternateName(String alternateName) {
+<span class="fc" id="L478">		this.alternateName = alternateName;</span>
+<span class="fc" id="L479">	}</span>
+	
+	public String getDateOfDeactivationStr() {
+<span class="fc" id="L482">		return dateOfDeactivationStr;</span>
+	}
+
+	public void setDateOfDeactivationStr(String dateOfDeactivationStr) {
+<span class="fc" id="L486">		this.dateOfDeactivationStr = dateOfDeactivationStr;</span>
+<span class="fc" id="L487">	}</span>
+
+	@Override
+	public int compareTo(PatientBean o) {
+<span class="fc" id="L491">		return (int)(o.MID-this.MID);</span>
+	}
+	
+	
+	public int equals(PatientBean o) {
+<span class="nc" id="L496">		return (int)(o.MID-this.MID);</span>
+	}
+	
+	@Override
+	public int hashCode() {
+<span class="nc bnc" id="L501" title="All 2 branches missed.">		assert false : &quot;hashCode not designed&quot;;</span>
+<span class="nc" id="L502">		return 42; // any arbitrary constant will do</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

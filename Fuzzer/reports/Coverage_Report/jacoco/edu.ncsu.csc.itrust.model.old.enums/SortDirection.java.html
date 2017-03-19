@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SortDirection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.enums</a> &gt; <span class="el_source">SortDirection.java</span></div><h1>SortDirection.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.enums;
+
+/**
+ * Sorting direction.  Used to dynamically build SQL queries.
+ */
+<span class="nc" id="L6">public enum SortDirection {</span>
+	
+<span class="nc" id="L8">	ASCENDING(&quot;ASC&quot;),</span>
+<span class="nc" id="L9">	DESCENDING(&quot;DESC&quot;);</span>
+	
+	private String dirString;
+
+<span class="nc" id="L13">	SortDirection(String dirString) {</span>
+<span class="nc" id="L14">		this.dirString = dirString;</span>
+<span class="nc" id="L15">	}</span>
+	@Override
+	public String toString() {
+<span class="nc" id="L18">		return dirString;</span>
+	}
+
+	public static SortDirection parse(String str) {
+<span class="nc bnc" id="L22" title="All 2 branches missed.">		for (SortDirection sort : values()) {</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">			if (sort.dirString.toLowerCase().equals(str.toLowerCase()))</span>
+<span class="nc" id="L24">				return sort;</span>
+		}
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		if (str.toLowerCase().equals(&quot;ascending&quot;)) {</span>
+<span class="nc" id="L27">			return ASCENDING;</span>
+		}
+<span class="nc bnc" id="L29" title="All 2 branches missed.">		if (str.toLowerCase().equals(&quot;descending&quot;)) {</span>
+<span class="nc" id="L30">			return DESCENDING;</span>
+		}
+<span class="nc" id="L32">		throw new IllegalArgumentException(&quot;SortDirection &quot; + str + &quot; does not exist&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

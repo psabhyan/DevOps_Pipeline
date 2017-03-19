@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmergencyRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.emergencyRecord</a> &gt; <span class="el_source">EmergencyRecord.java</span></div><h1>EmergencyRecord.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.emergencyRecord;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.prescription.Prescription;
+import edu.ncsu.csc.itrust.model.diagnosis.Diagnosis;
+import edu.ncsu.csc.itrust.model.immunization.Immunization;
+import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;
+
+/**
+ * A class for storing emergency health record data for UC21
+ * @author nmiles
+ *
+ */
+<span class="fc" id="L16">public class EmergencyRecord {</span>
+    private String name;
+    private int age;
+    private String gender;
+    private String contactName;
+    private String contactPhone;
+    private List&lt;AllergyBean&gt; allergies;
+    private String bloodType;
+    private List&lt;Diagnosis&gt; diagnoses;
+    private List&lt;Prescription&gt; prescriptions;
+    private List&lt;Immunization&gt; immunizations;
+    
+    /**
+     * Get the patient name
+     * @return
+     */
+    public String getName() {
+<span class="fc" id="L33">        return name;</span>
+    }
+    
+    /**
+     * Set the patient name
+     * @param name
+     */
+    public void setName(String name) {
+<span class="fc" id="L41">        this.name = name;</span>
+<span class="fc" id="L42">    }</span>
+    
+    /**
+     * Get the patient age
+     * @return
+     */
+    public int getAge() {
+<span class="fc" id="L49">        return age;</span>
+    }
+    
+    /**
+     * Set the patient age
+     * @param age
+     */
+    public void setAge(int age) {
+<span class="fc" id="L57">        this.age = age;</span>
+<span class="fc" id="L58">    }</span>
+    
+    /**
+     * Get the patient's gender
+     * @return
+     */
+    public String getGender() {
+<span class="fc" id="L65">        return gender;</span>
+    }
+    
+    /**
+     * Set the patient's gender
+     * @param gender
+     */
+    public void setGender(String gender) {
+<span class="fc" id="L73">        this.gender = gender;</span>
+<span class="fc" id="L74">    }</span>
+    
+    /**
+     * Get the patient's emergency contact's name
+     * @return
+     */
+    public String getContactName() {
+<span class="fc" id="L81">        return contactName;</span>
+    }
+    
+    /**
+     * Set the patient's emergency contact's name
+     * @param contactName
+     */
+    public void setContactName(String contactName) {
+<span class="fc" id="L89">        this.contactName = contactName;</span>
+<span class="fc" id="L90">    }</span>
+    
+    /**
+     * Get the patient's emergency contact's phone number
+     * @return
+     */
+    public String getContactPhone() {
+<span class="fc" id="L97">        return contactPhone;</span>
+    }
+    
+    /**
+     * Set the patient's emergency contact's name
+     * @param contactPhone
+     */
+    public void setContactPhone(String contactPhone) {
+<span class="fc" id="L105">        this.contactPhone = contactPhone;</span>
+<span class="fc" id="L106">    }</span>
+    
+    /**
+     * Gets a list of all this patient's allergies.
+     * WARNING: Allergy functionality has not been added to the system yet, so
+     * this list will always be empty or null.
+     * @return
+     */
+    public List&lt;AllergyBean&gt; getAllergies() {
+<span class="fc" id="L115">        return allergies;</span>
+    }
+    
+    /**
+     * Sets a List of all this patient's allergies
+     * @param allergies
+     */
+    public void setAllergies(List&lt;AllergyBean&gt; allergies) {
+<span class="fc" id="L123">        this.allergies = allergies;</span>
+<span class="fc" id="L124">    }</span>
+    
+    /**
+     * Gets the patient's blood type
+     * @return
+     */
+    public String getBloodType() {
+<span class="fc" id="L131">        return bloodType;</span>
+    }
+    
+    /**
+     * Sets the patient's blood type
+     * @param bloodType
+     */
+    public void setBloodType(String bloodType) {
+<span class="fc" id="L139">        this.bloodType = bloodType;</span>
+<span class="fc" id="L140">    }</span>
+    
+    /**
+     * Gets a List of all the patient's diagnoses
+     * WARNING: Diagnosis functionality has not been added to the system yet,
+     * so this list will always be empty or null.
+     * @return
+     */
+    public List&lt;Diagnosis&gt; getDiagnoses() {
+<span class="fc" id="L149">        return diagnoses;</span>
+    }
+    
+    /**
+     * Sets the List of this patient's diagnoses
+     * @param diagnoses
+     */
+    public void setDiagnoses(List&lt;Diagnosis&gt; diagnoses) {
+<span class="fc" id="L157">        this.diagnoses = new ArrayList&lt;Diagnosis&gt;(diagnoses);</span>
+<span class="fc" id="L158">    }</span>
+    
+    /**
+     * Gets a List of all the patient's prescriptions
+     * WARNING: Prescription functionality has not been added to the system yet,
+     * so this list will always be empty or null.
+     * @return
+     */
+    public List&lt;Prescription&gt; getPrescriptions() {
+<span class="fc" id="L167">        return prescriptions;</span>
+    }
+    
+    /**
+     * Sets a List of all the patient's prescriptions
+     * @param prescriptions
+     */
+    public void setPrescriptions(List&lt;Prescription&gt; prescriptions) {
+<span class="fc" id="L175">        this.prescriptions = prescriptions;</span>
+<span class="fc" id="L176">    }</span>
+    
+    /**
+     * Gets a List of all the patient's immunizations
+     * WARNING: Immunization functionality has not been added to the system yet,
+     * so this list will always be empty or null.
+     * @return
+     */
+    public List&lt;Immunization&gt; getImmunizations() {
+<span class="fc" id="L185">        return immunizations;</span>
+    }
+    
+    /**
+     * Sets a List of all the patient's immunizations
+     * @param immunizations
+     */
+    public void setImmunizations(List&lt;Immunization&gt; immunizations) {
+<span class="fc" id="L193">        this.immunizations = immunizations;</span>
+<span class="fc" id="L194">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

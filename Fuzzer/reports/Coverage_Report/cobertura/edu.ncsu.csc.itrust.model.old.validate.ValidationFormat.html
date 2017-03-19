@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Coverage Report</title>
+<link title="Style" type="text/css" rel="stylesheet" href="css/main.css"/>
+<script type="text/javascript" src="js/popup.js"></script>
+</head>
+<body>
+<h5>Coverage Report - edu.ncsu.csc.itrust.model.old.validate.ValidationFormat</h5>
+<div class="separator">&nbsp;</div>
+<table class="report">
+<thead><tr>  <td class="heading">Classes in this File</td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Line Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Branch Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Complexity</a></td></tr></thead>
+  <tr><td><a href="edu.ncsu.csc.itrust.model.old.validate.ValidationFormat.html">ValidationFormat</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">86/86</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">N/A</a></td><td class="percentgraph"><div class="percentgraph"><div class="na" style="width:100px"><span class="text"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">N/A</a></span></div></div></td></tr></table></td><td class="value"><span class="hidden">1.0;</span>1</td></tr>
+
+</table>
+<div class="separator">&nbsp;</div>
+<table cellspacing="0" cellpadding="0" class="src">
+<tr>  <td class="numLine">&nbsp;1</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">package</span> edu.ncsu.csc.itrust.model.old.validate;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;2</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;3</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.regex.Pattern;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;4</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;5</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;6</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * Enum with all of the validation formats that fit into a regex.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;7</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;8</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> *  </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;9</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> * </span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;10</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;11</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;12</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;13</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;14</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> enum ValidationFormat {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;15</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        NAME(<span class="string">"^(?=.*[a-zA-Z])[\\sa-zA-Z'-]{1,20}$"</span>,                                 <span class="string">"Up to 20 Letters, space, ' and -"</span>), </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;16</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DATE(<span class="string">"[\\d]{2}/[\\d]{2}/[\\d]{4}"</span>,                         <span class="string">"MM/DD/YYYY"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;17</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PHONE_NUMBER(<span class="string">"[\\d]{3}-[\\d]{3}-[\\d]{4}"</span>,         <span class="string">"xxx-xxx-xxxx"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;18</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        MID(<span class="string">"[\\d]{1,10}"</span>,                                                        <span class="string">"Between 1 and 10 digits"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;19</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        NPMID(<span class="string">"[0-8][0-9]{0,9}"</span>,                                         <span class="string">"1-10 digit number not beginning with 9"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;20</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DATETIME(<span class="string">"[\\d]{4}-[\\d]{2}-[\\d]{2}[\\s]{1}[\\d]{2}:[\\d]{2}:[\\d]{2}.[\\d]{1}"</span>, <span class="string">"mm/dd/yyyy"</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;21</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;22</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EMAIL(<span class="string">".+@.+\\..+"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;23</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                                        <span class="string">"Up to 30 alphanumeric characters and symbols . and _ @"</span>), </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;24</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                                        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;25</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        QUESTION(<span class="string">"[a-zA-Z0-9?\\-'.\\s]{1,50}"</span>, <span class="string">"Up to 50 alphanumeric characters and symbols ?-'."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;26</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ANSWER(<span class="string">"[a-zA-Z0-9\\s]{1,30}"</span>, <span class="string">"Up to 30 alphanumeric characters"</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;27</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;28</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ADDRESS(<span class="string">"[a-zA-Z0-9.\\s]{1,30}"</span>, <span class="string">"Up to 30 alphanumeric characters, and ."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;29</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        FULL_ADDRESS(<span class="string">"[a-zA-Z0-9.,\\s]{1,100}"</span>, <span class="string">"Up to 100 alphanumeric characters, comma, and ."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;30</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        APPT_COMMENT(<span class="string">"[0-9a-zA-Z\\s'\"?!:;\\-._\n\t]{1,1000}"</span>, <span class="string">"Between 0 and 1000 alphanumerics with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;31</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        APPT_TYPE_NAME(<span class="string">"[a-zA-Z ]{1,30}"</span>, <span class="string">"Between 1 and 30 alpha characters and space"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;32</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        APPT_TYPE_DURATION(<span class="string">"[0-9]{1,5}"</span>, <span class="string">"Between 1 and 5 numeric digits"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;33</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CITY(<span class="string">"[a-zA-Z\\s]{1,15}"</span>, <span class="string">"Up to 15 characters"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;34</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        STATE(<span class="string">"[A-Z]{2}"</span>, <span class="string">"Two capital letters"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;35</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ZIPCODE(<span class="string">"([0-9]{5})|([0-9]{5}-[0-9]{4})"</span>, <span class="string">"xxxxx or xxxxx-xxxx"</span>), <span class="comment">// ^[0-9]{5}(?:-[0-9]{4})?$</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;37</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        BLOODTYPE(<span class="string">"((O)|(A)|(B)|(AB))([+-]{1})"</span>, <span class="string">"Must be [O,A,B,AB]+/-"</span>), <span class="comment">// ^(?:O|A|B|AB)[+-]$</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;39</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        NOTES(<span class="string">"[a-zA-Z0-9\\s'\"?!:#;\\-.,_\n\t]{1,300}"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 300 alphanumeric characters, with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;41</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        MESSAGES_BODY(<span class="string">"[a-zA-Z0-9\\s'\"?!:;\\-.,_\n\t()\\\\/]{1,1000}"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 1000 alphanumeric characters, with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;44</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        MESSAGES_SUBJECT(<span class="string">"[a-zA-Z0-9\\s'\"?!:;\\-._\n\t()]{1,100}"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 100 alphanumeric characters, with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;46</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PASSWORD(<span class="string">"[a-zA-Z0-9]{8,20}"</span>, <span class="string">"8-20 alphanumeric characters"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;47</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        INSURANCE_ID(<span class="string">"[\\s\\da-zA-Z'-]{1,20}"</span>, <span class="string">"Up to 20 letters, digits, space, ' and -"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;48</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HOSPITAL_ID(<span class="string">"[\\d]{1,10}"</span>, <span class="string">"Between 1 and 10 digits"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;49</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HOSPITAL_NAME(<span class="string">"[0-9a-zA-Z' .]{1,30}"</span>, <span class="string">"Between 1 and 30 alphanumerics, space, ', and ."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;50</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ND_CODE_DESCRIPTION(<span class="string">"[a-zA-Z0-9\\s]{1,100}"</span>, <span class="string">"Up to 100 characters, letters, numbers, and a space"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;51</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DRUG_INT_COMMENTS(<span class="string">"[a-zA-Z0-9.\\-',!;:()?\\s]{1,500}"</span>, <span class="string">"Up to 500 alphanumeric characters and .-',!;:()?"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;52</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EMAILS(<span class="string">"[a-zA-Z0-9.\\-',!;:()?\\s\\\\/]{1,500}"</span>, </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;53</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                   <span class="string">"Up to 500 alphanumeric characters and .-',!;:()?"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;55</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ADVERSE_EVENT_COMMENTS(<span class="string">"[a-zA-Z0-9.\\-',!;:()?\\s]{1,2000}"</span>, <span class="string">"Up to 2000 alphanumeric characters and .-',!;:()?"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;56</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ICD_CODE_DESCRIPTION(<span class="string">"[a-zA-Z0-9\\s]{1,30}"</span>, <span class="string">"Up to 30 characters, letters, numbers, and a space"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;57</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CPT_CODE_DESCRIPTION(<span class="string">"[a-zA-Z0-9\\s]{1,30}"</span>, <span class="string">"Up to 30 characters, letters, numbers, and a space"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;58</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ALLERGY_DESCRIPTION(<span class="string">"[a-zA-Z0-9\\s]{1,30}"</span>, <span class="string">"Up to 30 characters, letters, numbers, and a space"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;59</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ICD9CM(<span class="string">"([\\d]{1,3})|([\\d]{1,3}\\.[\\d]{0,2})"</span>, <span class="string">"xxx.xx"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;60</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        CPT(<span class="string">"[\\d]{1,4}[A-Za-z0-9]"</span>, <span class="string">"Up to four digit integer plus a letter or digit"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;61</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HeadCircumference(<span class="string">"[\\d]{0,3}(\\.(\\d){0,1}){0,1}"</span>, <span class="string">"Up to 3-digit number + up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        Height(<span class="string">"[\\d]{0,3}(\\.(\\d){0,1}){0,1}"</span>, <span class="string">"Up to 3-digit number + up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        Weight(<span class="string">"[\\d]{0,4}(\\.(\\d){0,1}){0,1}"</span>, <span class="string">"Up to 4-digit number + up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        YEAR(<span class="string">"[\\d]{4}"</span>, <span class="string">"Must be 4 digits"</span>), </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        GENDERCOD(<span class="string">"(Male)|(Female)|(Not Specified)"</span>, <span class="string">"Only Male, Female, or All Patients"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LOINC(<span class="string">"[\\d]{1,5}[-]{1}[\\d]{1}"</span>, <span class="string">"Must be 1-5 digits followed by a - then another digit"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;67</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ND(<span class="string">"[\\d]{1,9}"</span>, <span class="string">"Up to nine digit integer"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;68</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LOINC_ITEM(<span class="string">"[^\"]{1,100}"</span>, <span class="string">"Up to 100 characters, excluding quotation marks"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;69</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        COMMENTS(<span class="string">"[a-zA-Z0-9.\\s]{1,500}"</span>, <span class="string">"Up to 500 alphanumeric characters"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;70</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LAB_STATUS(<span class="string">"(In Transit)|(Received)|(Testing)|(Pending)|(Completed)"</span>, <span class="string">"Only In Transit, Received, Testing, Pending, or Completed"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;71</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LAB_RIGHTS(<span class="string">"(ALLOWED)|(RESTRICTED)"</span>, <span class="string">"Only ALLOWED, or RESTRICTED"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;72</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        SYSTOLIC_BLOOD_PRESSURE(<span class="string">"^([4-9][0-9]|1[0-9][0-9]|2[0-3][0-9]|240)$"</span>, <span class="string">"Must be between 40 and 240"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;73</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        DIASTOLIC_BLOOD_PRESSURE(<span class="string">"^([4-9][0-9]|1[0-4][0-9]|150)$"</span>, <span class="string">"Must be between 40 and 150"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;74</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        GLUCOSE_LEVEL(<span class="string">"^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|250)$"</span>, <span class="string">"Must be between 0 and 250"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;75</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PEDOMETER_READING(<span class="string">"^([0-9]{1,10})$"</span>, <span class="string">"Up to ten digit integer"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HEIGHT(<span class="string">"^([0-9]{1,4}\\.[0-9])$"</span>, <span class="string">"Up to 4 digit number and 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;77</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        WEIGHT(<span class="string">"^([0-9]{1,4}\\.[0-9])$"</span>, <span class="string">"Up to 4 digit number and 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;78</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        ORC(<span class="string">"[\\d]{1,5}"</span>, <span class="string">"Up to five digit integer"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;79</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        OR_CODE_DESCRIPTION(<span class="string">"[a-zA-Z0-9\\s]{1,80}"</span>, <span class="string">"Up to 80 characters, letters, numbers, and a space"</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;80</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;81</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_INSTRUCTIONS_NAME(<span class="string">"^[a-zA-Z0-9#;?\\-'.:,!/ \n]{1,100}$"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;82</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 100 alphanumeric characters, with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;83</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_INSTRUCTIONS_COMMENTS(<span class="string">"^[a-zA-Z0-9#;?\\-'.:,!/ \n]{1,500}$"</span>, </pre></td></tr>
+<tr>  <td class="numLine">&nbsp;84</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 500 alphanumeric characters, with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;85</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PATIENT_INSTRUCTIONS_URL(<span class="string">"^.{1,200}$"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 200 characters, as a valid URL"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;87</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LABPROCEDURE_NUMRESULT_CONTENT(<span class="string">"^[\\-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"A number containing an optional minus sign and an optional decimal point."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;89</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LABPROCEDURE_NUMRESULT_LENGTH(<span class="string">"^.{1,20}$"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"A number containing between 1 and 20 characters, including the optional minus sign and decimal point."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;91</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LABPROCEDURE_COMMENTS(<span class="string">"^[^&lt;&gt;&amp;]{1,500}$"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;92</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        <span class="string">"Up to 500 characters without newline, less than, greater than, or ampersand."</span>),</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;93</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        </pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        REFERRAL_NOTES(<span class="string">"[a-zA-Z0-9\\s'\"?!:;\\-.,_\n\t()\\\\/]{1,500}"</span>,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;95</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                         <span class="string">"Up to 500 alphanumeric characters, with space, and other punctuation"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;96</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PRIORITY(<span class="string">"[1-3]"</span>, <span class="string">"Priority must be between 1 and 3"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        WEEKS_PREGNANT(<span class="string">"^([0-9]|[1-3][0-9]|4[0-2])-[0-6]{1}$"</span>, <span class="string">"Weeks must be between 0 and 42, Days must be between 0 and 6"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HOURS_LABOR(<span class="string">"[\\d]{0,3}.[\\d]{0,2}"</span>, <span class="string">"Hours in labor must between 0.0 and 999.99"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;99</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        FHR(<span class="string">"^[0-9]\\d*"</span>, <span class="string">"Must be 0 or positive integer."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;100</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        FHU(<span class="string">"^[0-9]*.^[1-9][0-9]*|^[1-9][0-9]*.?[0-9]*$"</span>, <span class="string">"Must be a positive double."</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        WEEKS_PREGNANT_OV(<span class="string">"^([0-9]|[1-3][0-9]|4[0-2])-[0-6]{1}$"</span>, <span class="string">"The patient chosen is not a current obstetrics patient"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;102</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        MEALTYPE(<span class="string">"^(?:Breakfast|Lunch|Snack|Dinner)$"</span>, <span class="string">"must be one of {Breakfast, Lunch, Snack, Dinner}"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;103</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        EXERCISETYPE(<span class="string">"^(?:Cardio|Weight Training)$"</span>, <span class="string">"must be one of {Cardio, Weight Training}"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        SLEEPTYPE(<span class="string">"^(?:Nightly|Nap)$"</span>, <span class="string">"must be one of {Nightly, Nap}"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;105</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HEIGHT_OV(<span class="string">"^[0-9]{0,3}(?:\\.[0-9])?$"</span>, <span class="string">"Up to 3 digit number and up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;106</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LENGTH_OV(<span class="string">"^[0-9]{0,3}(?:\\.[0-9])?$"</span>, <span class="string">"Up to 3 digit number and up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        WEIGHT_OV(<span class="string">"^[0-9]{0,3}(?:\\.[0-9])?$"</span>, <span class="string">"Up to 4 digit number and up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HEAD_CIRCUMFERENCE_OV(<span class="string">"^[0-9]{0,3}(?:\\.[0-9])?$"</span>, <span class="string">"Up to 3 digit number and up to 1 decimal place"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;109</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        BLOOD_PRESSURE_OV(<span class="string">"^[0-9]{1,3}\\/[0-9]{1,3}$"</span>, <span class="string">"Up to 3-digit number / Up to 3-digit number"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HDL_OV(<span class="string">"^[0-8]?[0-9]$"</span>, <span class="string">"integer less than 90"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        TRIGLYCERIDE_OV(<span class="string">"^(?:[1-5][0-9]{2}|600)$"</span>, <span class="string">"integer between 100 and 600"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;112</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        LDL_OV(<span class="string">"^(?:[1-5]?[0-9]{1,2}|600)$"</span>, <span class="string">"integer between 0 and 600"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;113</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        HSS_OV(<span class="string">"^[1-3]$"</span>,<span class="string">"1, 2, or 3, representing household smoking status"</span>),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;114</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        PSS_OV(<span class="string">"^[1-59]$"</span>,<span class="string">"1-5 or 9, representing patient smoking status"</span>)</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        ;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> Pattern regex;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> String description;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;120</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;        ValidationFormat(String regex, String errorMessage) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;121</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">this</span>.regex = Pattern.compile(regex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;122</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">this</span>.description = errorMessage;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;123</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;124</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> Pattern getRegex() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;863</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> regex;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;127</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">public</span> String getDescription() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;130</td>  <td class="nbHitsCovered">&nbsp;923</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> description;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;132</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
+</table>
+
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 3/12/17 7:17 PM.</div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrescriptionMySQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.prescription</a> &gt; <span class="el_source">PrescriptionMySQL.java</span></div><h1>PrescriptionMySQL.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.prescription;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PatientLoader;
+
+public class PrescriptionMySQL {
+    private DataSource ds;
+    private PrescriptionValidator validator;
+    
+    /**
+     * Standard constructor for use in deployment
+     * @throws DBException
+     */
+<span class="fc" id="L31">    public PrescriptionMySQL() throws DBException {</span>
+        try {
+<span class="fc" id="L33">            this.ds = getDataSource();</span>
+<span class="fc" id="L34">            this.validator = new PrescriptionValidator();</span>
+<span class="fc" id="L35">        } catch (NamingException e) {</span>
+<span class="fc" id="L36">            throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+<span class="fc" id="L37">        }</span>
+<span class="fc" id="L38">    }</span>
+    
+    protected DataSource getDataSource() throws NamingException {
+<span class="fc" id="L41">    	Context ctx = new InitialContext();</span>
+<span class="nc" id="L42">    	return ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+    }
+    
+    /**
+     * Constructor for testing purposes
+     * @param ds The DataSource to use
+     */
+<span class="fc" id="L49">    public PrescriptionMySQL(DataSource ds) {</span>
+<span class="fc" id="L50">        this.ds = ds;</span>
+<span class="fc" id="L51">        this.validator = new PrescriptionValidator();</span>
+<span class="fc" id="L52">    }</span>
+    
+    /**
+     * Gets all prescriptions for the patient with the given MID with ending
+     * dates equal to or after the given end date
+     * 
+     * @param mid The mid of the patient whose prescriptions we should get
+     * @param endDate The end date to get prescriptions after
+     * @return A List of prescriptions for the given patient that end on or
+     *         after the given date.
+     * @throws SQLException 
+     */
+    public List&lt;Prescription&gt; getPrescriptionsForPatientEndingAfter(long mid, LocalDate endDate) throws SQLException{
+        
+<span class="fc" id="L66">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L67">                PreparedStatement pstring = createERPreparedStatement(conn, mid, endDate);</span>
+<span class="fc" id="L68">                ResultSet results = pstring.executeQuery()){</span>
+<span class="fc" id="L69">            return loadRecords(results);</span>
+<span class="pc bpc" id="L70" title="12 of 24 branches missed.">        }</span>
+    }
+    
+    /**
+     * Adds a Prescription to the database.
+     * 
+     * @param p The prescription to add
+     * @return True if the record was successfully added, false otherwise
+     * @throws SQLException 
+     */
+    public boolean add(Prescription p) throws SQLException {
+    	try {
+<span class="fc" id="L82">    		validator.validate(p);</span>
+<span class="nc" id="L83">    	} catch (FormValidationException e) {</span>
+<span class="nc" id="L84">    		throw new SQLException(e.getMessage());</span>
+<span class="fc" id="L85">    	}</span>
+<span class="pc" id="L86">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L87">                PreparedStatement pstring = createAddPreparedStatement(conn, p);){</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L89" title="12 of 16 branches missed.">        }</span>
+    }
+    
+    public Prescription get(long id) throws SQLException {
+<span class="pc" id="L93">    	try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L94">    			PreparedStatement pstring = createGetStatement(conn, id);</span>
+<span class="fc" id="L95">    			ResultSet results = pstring.executeQuery()) {</span>
+<span class="fc" id="L96">    		List&lt;Prescription&gt; list = loadRecords(results);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">    		return list.isEmpty() ? null : list.get(0);</span>
+<span class="pc bpc" id="L98" title="18 of 24 branches missed.">    	}</span>
+    }
+    
+    /**
+     * Get all prescription for the patient with the given MID.
+     * 
+     * @param mid
+     * 			MID of patient
+     * @return list of MID beloning to the given patient
+     * @throws SQLException
+     */
+    public List&lt;Prescription&gt; getPrescriptionsByMID(long mid) throws SQLException {
+<span class="pc" id="L110">    	try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L111">    			PreparedStatement pstring = createGetByMIDStatement(conn, mid);</span>
+<span class="fc" id="L112">    			ResultSet results = pstring.executeQuery()) {</span>
+<span class="fc" id="L113">    		return loadRecords(results);</span>
+<span class="pc bpc" id="L114" title="18 of 24 branches missed.">    	}</span>
+    }
+    
+    /**
+     * Removes a Prescription from the database. It will remove the record
+     * with the same id as this one, but will not pay attention to any other
+     * fields.
+     * @param p The Prescription to remove
+     * @return True if the Prescription was successfully removed, false if not
+     * @throws SQLException 
+     */
+    public boolean remove(long id) throws SQLException{
+<span class="pc" id="L126">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L127">                PreparedStatement pstring = createRemovePreparedStatement(conn, id);){</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L129" title="12 of 16 branches missed.">        }</span>
+    }
+    
+    /**
+     * Updates a Prescription in the database.
+     * @param p The Prescription to update
+     * @return True if the Prescription was successfully updated, false if not
+     * @throws SQLException 
+     */
+    public boolean update(Prescription p) throws SQLException {
+    	try {
+<span class="fc" id="L140">    		validator.validate(p);</span>
+<span class="nc" id="L141">    	} catch (FormValidationException e) {</span>
+<span class="nc" id="L142">    		throw new SQLException(e.getMessage());</span>
+<span class="fc" id="L143">    	}</span>
+<span class="pc" id="L144">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L145">                PreparedStatement pstring = createUpdatePreparedStatement(conn, p);){</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L147" title="12 of 16 branches missed.">        }</span>
+    }
+    
+    /**
+     * A utility method for creating a PreparedStatement for an update operation
+     * @param conn The connection to use
+     * @param p The Prescription we're updating
+     * @return The generated PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createUpdatePreparedStatement(Connection conn, Prescription p) throws SQLException{
+<span class="fc" id="L158">        PreparedStatement pstring = conn.prepareStatement(&quot;UPDATE prescription SET patientMID=?, drugCode=?, startDate=?, endDate=?, officeVisitId=?, instructions=?, hcpMID=?, dosage=? WHERE id=?;&quot;);</span>
+        
+<span class="fc" id="L160">        pstring.setLong(1, p.getPatientMID());</span>
+<span class="fc" id="L161">        pstring.setString(2, p.getCode());</span>
+<span class="fc" id="L162">        pstring.setDate(3, Date.valueOf(p.getStartDate()));</span>
+<span class="fc" id="L163">        pstring.setDate(4, Date.valueOf(p.getEndDate()));</span>
+<span class="fc" id="L164">        pstring.setLong(5, p.getOfficeVisitId());</span>
+<span class="fc" id="L165">        pstring.setString(6, p.getInstructions());</span>
+<span class="fc" id="L166">        pstring.setLong(7, p.getHcpMID());</span>
+<span class="fc" id="L167">        pstring.setLong(8, p.getDosage());</span>
+<span class="fc" id="L168">        pstring.setLong(9, p.getId());</span>
+<span class="fc" id="L169">        return pstring;</span>
+    }
+
+    /**
+     * A utility method for creating a PreparedStatement for a remove operation
+     * @param conn The connection to use
+     * @param p The Prescription we're removing
+     * @return The generated PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createRemovePreparedStatement(Connection conn, long id) throws SQLException {
+<span class="fc" id="L180">        PreparedStatement pstring = conn.prepareStatement(&quot;DELETE FROM prescription WHERE id=?&quot;);</span>
+<span class="fc" id="L181">        pstring.setLong(1, id);</span>
+<span class="fc" id="L182">        return pstring;</span>
+    }
+
+    /**
+     * Gets all prescriptions associated with the given OfficeVisit ID
+     * @param officeVisitId The ID of the OfficeVisit we should get Prescriptions for
+     * @return A List&lt;Prescription&gt; of all Prescriptions associated with this
+     *         OfficeVisit ID
+     * @throws SQLException
+     */
+    public List&lt;Prescription&gt; getPrescriptionsForOfficeVisit(long officeVisitId) throws SQLException{
+<span class="pc" id="L193">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L194">                PreparedStatement pstring = createOVPreparedStatement(conn, officeVisitId);</span>
+<span class="fc" id="L195">                ResultSet results = pstring.executeQuery()){</span>
+<span class="fc" id="L196">            return loadRecords(results);</span>
+<span class="pc bpc" id="L197" title="18 of 24 branches missed.">        }</span>
+    }
+    
+    /**
+     * Gets the list of patient that the user represents
+     * @param pid
+     * 			id of a representer
+     * @return all patients represented by the given representer
+     * @throws SQLException
+     */
+    public List&lt;PatientBean&gt; getListOfRepresentees(long pid) throws SQLException {    
+<span class="pc" id="L208">    	try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L209">    			PreparedStatement pstring = createListOfRepsPreparedStatement(conn, pid);</span>
+<span class="fc" id="L210">    			ResultSet rs = pstring.executeQuery()){</span>
+<span class="fc" id="L211">    		return new PatientLoader().loadList(rs);</span>
+<span class="pc bpc" id="L212" title="18 of 24 branches missed.">    	}</span>
+    }
+    
+    /**
+     * Utility method to generate a prepared statement 
+     * in order to get the list of representees of a user
+     * 
+     * @param conn Connection to use
+     * @param mid mid of representer
+     * @return Prepared statement for getting all representees of a representer
+     * @throws SQLException
+     */
+    private PreparedStatement createListOfRepsPreparedStatement(Connection conn, long mid) throws SQLException {
+<span class="fc" id="L225">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT patients.* FROM representatives, &quot;</span>
+        		+ &quot;patients WHERE RepresenterMID=? AND RepresenteeMID=patients.MID&quot;);
+<span class="fc" id="L227">        pstring.setLong(1, mid);</span>
+<span class="fc" id="L228">        return pstring;</span>
+    }
+    
+    
+    /**
+     * Gets a codes actual name
+     * 
+     * @param code id to search and get name for
+     * @return string representation of the code
+     * @throws SQLException
+     */
+    public String getCodeName(String code) throws SQLException {
+<span class="pc" id="L240">    	try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L241">    			PreparedStatement pstring = createGetCodeNamePreparedStatement(conn, code);</span>
+<span class="fc" id="L242">    			ResultSet rs = pstring.executeQuery()){</span>
+    		
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">    		if (!rs.next()) </span>
+<span class="nc" id="L245">				return &quot;&quot;;</span>
+
+<span class="fc" id="L247">    		return rs.getString(&quot;Description&quot;);</span>
+<span class="pc bpc" id="L248" title="30 of 36 branches missed.">    	}</span>
+    }
+    
+    /**
+     * A utility method for creating a PreparedStatement for 
+     * getting a codes actual name
+     * 
+     * @param conn The Connection to use
+     * @param mid The code's unique code to search for
+     * 
+     * @return A string representation of the code
+     * @throws SQLException
+     */
+    private PreparedStatement createGetCodeNamePreparedStatement(Connection conn, String code) throws SQLException {
+<span class="fc" id="L262">    	PreparedStatement pstring = conn.prepareStatement(&quot;SELECT a.Description FROM ndcodes a JOIN prescription On a.code=?&quot;);</span>
+<span class="fc" id="L263">        pstring.setString(1, code);</span>
+<span class="fc" id="L264">        return pstring;</span>
+    }
+    
+    /**
+     * A utility method that loads all Prescriptions from a ResultSet into a
+     * List&lt;Prescription&gt; and returns it.
+     * @param rs The ResultSet to load
+     * @return A List of all Prescriptions in the ResultSet
+     * @throws SQLException
+     */
+    public List&lt;Prescription&gt; loadRecords(ResultSet rs) throws SQLException{
+<span class="fc" id="L275">        List&lt;Prescription&gt; prescriptions = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        while (rs.next()){</span>
+<span class="fc" id="L277">            Prescription newP = new Prescription();</span>
+<span class="fc" id="L278">            newP.setDrugCode(new MedicationBean(rs.getString(&quot;code&quot;), rs.getString(&quot;description&quot;)));</span>
+<span class="fc" id="L279">            newP.setEndDate(rs.getDate(&quot;endDate&quot;).toLocalDate());</span>
+<span class="fc" id="L280">            newP.setStartDate(rs.getDate(&quot;startDate&quot;).toLocalDate());</span>
+<span class="fc" id="L281">            newP.setOfficeVisitId(rs.getLong(&quot;officeVisitId&quot;));</span>
+<span class="fc" id="L282">            newP.setPatientMID(rs.getLong(&quot;patientMID&quot;));</span>
+<span class="fc" id="L283">            newP.setId(rs.getLong(&quot;id&quot;));</span>
+<span class="fc" id="L284">            newP.setInstructions(rs.getString(&quot;instructions&quot;));</span>
+<span class="fc" id="L285">            newP.setDosage(rs.getLong(&quot;dosage&quot;));</span>
+<span class="fc" id="L286">            newP.setHcpMID(rs.getLong(&quot;hcpMID&quot;));</span>
+<span class="fc" id="L287">            prescriptions.add(newP);</span>
+<span class="fc" id="L288">        }</span>
+        
+<span class="fc" id="L290">        return prescriptions;</span>
+    }
+    
+    /**
+     * A utility method for creating a PreparedStatement for an EmergencyRecord
+     * operation.
+     * 
+     * @param conn The Connection to use
+     * @param mid The MID of the patient we need the records for
+     * @param endDate All prescriptions for this patient that end after this
+     *                date will be returned.
+     * @return A List&lt;Prescription&gt; containing all appropriate Prescriptions for
+     *         the EmergencyRecord
+     * @throws SQLException
+     */
+    private PreparedStatement createERPreparedStatement(Connection conn, long mid, LocalDate endDate) throws SQLException{
+<span class="fc" id="L306">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM prescription, ndcodes WHERE drugCode = code AND patientMID=? AND endDate&gt;=? ORDER BY endDate DESC&quot;);</span>
+
+<span class="fc" id="L308">        pstring.setLong(1, mid);</span>
+<span class="fc" id="L309">        pstring.setDate(2, Date.valueOf(endDate));</span>
+<span class="fc" id="L310">        return pstring;</span>
+    }
+    
+    /**
+     * A utility method for creating a PreparedStatement for an add operation
+     * @param conn The Connection to use
+     * @param p The Prescription to add
+     * @return The new PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createAddPreparedStatement(Connection conn, Prescription p) throws SQLException{
+<span class="fc" id="L321">        PreparedStatement pstring = conn.prepareStatement(&quot;INSERT INTO prescription(patientMID, drugCode, startDate, endDate, officeVisitId, instructions, hcpMID, dosage) &quot;</span>
+                 + &quot;VALUES(?, ?, ?, ?, ?, ?, ?, ?)&quot;);
+<span class="fc" id="L323">        pstring.setLong(1, p.getPatientMID());</span>
+<span class="fc" id="L324">        pstring.setString(2, p.getCode());</span>
+<span class="fc" id="L325">        pstring.setDate(3, Date.valueOf(p.getStartDate()));</span>
+<span class="fc" id="L326">        pstring.setDate(4, Date.valueOf(p.getEndDate()));</span>
+<span class="fc" id="L327">        pstring.setLong(5, p.getOfficeVisitId());</span>
+<span class="fc" id="L328">        pstring.setString(6, p.getInstructions());</span>
+<span class="fc" id="L329">        pstring.setLong(7, p.getHcpMID());</span>
+<span class="fc" id="L330">        pstring.setLong(8, p.getDosage());</span>
+<span class="fc" id="L331">        return pstring;</span>
+    }
+    
+    /**
+     * A utility method for creating a PreparedStatement for getting all
+     * Prescriptions for an office visit
+     * @param conn The Connection to use
+     * @param officeVisitId The ID of theOfficeVisit to get Prescriptions for
+     * @return The new PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createOVPreparedStatement(Connection conn, long officeVisitId) throws SQLException{
+<span class="fc" id="L343">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM prescription, ndcodes WHERE drugCode = code AND officeVisitId=?&quot;);</span>
+
+<span class="fc" id="L345">        pstring.setLong(1, officeVisitId);</span>
+<span class="fc" id="L346">        return pstring;</span>
+    }
+    
+    /**
+     * Construct a prepared statement to retrieve all prescriptions for a given MID.
+     * 
+     * @param conn connection to use
+     * @param patientMID patient's MID
+     * @return PreparedStatement getting all patient's prescriptions
+     * @throws SQLException 
+     */
+    private PreparedStatement createGetByMIDStatement(Connection conn, long patientMID) throws SQLException {
+<span class="fc" id="L358">    	PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM prescription, ndcodes WHERE drugCode = code AND patientMID=? ORDER BY startDate DESC&quot;);</span>
+<span class="fc" id="L359">    	pstring.setLong(1,  patientMID);</span>
+<span class="fc" id="L360">    	return pstring;</span>
+    }
+    
+    /**
+     * Construct a prepared statement to retrieve prescription for a given id.
+     * 
+     * @param conn connection to use
+     * @param id prescription id
+     * @return PreparedStatement getting all patient's prescriptions
+     * @throws SQLException 
+     */
+    private PreparedStatement createGetStatement(Connection conn, long id) throws SQLException {
+<span class="fc" id="L372">    	PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM prescription, ndcodes WHERE drugCode = code AND id=?&quot;);</span>
+<span class="fc" id="L373">    	pstring.setLong(1,  id);</span>
+<span class="fc" id="L374">    	return pstring;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

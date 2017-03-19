@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CPTCodeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.cptcode</a> &gt; <span class="el_source">CPTCodeController.java</span></div><h1>CPTCodeController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.cptcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
+import edu.ncsu.csc.itrust.model.cptcode.CPTCodeMySQL;
+
+@ManagedBean(name = &quot;cptcode_controller&quot;)
+@SessionScoped
+public class CPTCodeController extends iTrustController {
+
+	private static final String INVALID_CODE = &quot;Invalid CPT Code&quot;;
+	private static final String UNKNOWN_ERROR = &quot;Unknown error&quot;;
+	private static final String NONEXISTENT_CODE = &quot;Code does not exist&quot;;
+    private static final String DUPLICATE_CODE = &quot;Cannot add duplicate code&quot;;
+	private CPTCodeMySQL sql;
+	//private SessionUtils sessionUtils;
+
+<span class="fc" id="L28">	public CPTCodeController() {</span>
+		try {
+<span class="nc" id="L30">			sql = new CPTCodeMySQL();</span>
+<span class="fc" id="L31">		} catch (DBException e) {</span>
+<span class="fc" id="L32">			sql = null;</span>
+<span class="nc" id="L33">		}</span>
+<span class="fc" id="L34">	}</span>
+
+	/**
+	 * Constructor injection, intended only for unit testing purposes.
+	 * 
+	 * @param ds
+	 *            The injected DataSource dependency
+	 */
+<span class="fc" id="L42">	public CPTCodeController(DataSource ds) {</span>
+<span class="fc" id="L43">		sql = new CPTCodeMySQL(ds);</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Setter injection for lab procedure data. ONLY use for unit testing
+	 * purposes.
+	 */
+	public void setMySQL(CPTCodeMySQL data) {
+<span class="fc" id="L51">		this.sql = data;</span>
+<span class="fc" id="L52">	}</span>
+
+	/**
+	 * Adds a cptCode.
+	 * 
+	 * @param code 
+	 *            The code to add
+	 */
+	public void add(CPTCode code) {
+		try {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (!sql.add(code)){</span>
+<span class="fc" id="L63">                printFacesMessage(FacesMessage.SEVERITY_ERROR, DUPLICATE_CODE, DUPLICATE_CODE, null);</span>
+            }
+<span class="fc" id="L65">        } catch (FormValidationException e) {</span>
+<span class="fc" id="L66">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_CODE, e.getErrorList().toString(), null);</span>
+<span class="fc" id="L67">        } catch (Exception e) {</span>
+<span class="fc" id="L68">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">	}</span>
+
+	/**
+	 * Updates a cptCode. Prints FacesContext info message when
+	 * successfully updated, error message when the update fails.
+	 * 
+	 * @param code 
+	 *            The code to add
+	 */
+	public void edit(CPTCode code) {
+	    try {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (!sql.update(code)){</span>
+<span class="fc" id="L82">                printFacesMessage(FacesMessage.SEVERITY_ERROR, NONEXISTENT_CODE, NONEXISTENT_CODE, null);</span>
+            }
+<span class="fc" id="L84">        } catch (FormValidationException e) {</span>
+<span class="fc" id="L85">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_CODE, e.getErrorList().toString(), null);</span>
+<span class="fc" id="L86">        } catch (Exception e) {</span>
+<span class="fc" id="L87">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">	}</span>
+
+
+	public void remove(String cptCodeID) {
+	    try {
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            if (!sql.delete(new CPTCode(cptCodeID, null))){</span>
+<span class="fc" id="L95">                printFacesMessage(FacesMessage.SEVERITY_ERROR, NONEXISTENT_CODE, NONEXISTENT_CODE, null);</span>
+            }
+<span class="fc" id="L97">        } catch (Exception e) {</span>
+<span class="fc" id="L98">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+<span class="fc" id="L99">        }</span>
+<span class="fc" id="L100">	}</span>
+
+	public CPTCode getCodeByID(String cptCodeID) {
+	    try {
+<span class="fc" id="L104">            return sql.getByCode(cptCodeID);</span>
+<span class="fc" id="L105">        } catch (Exception e) {</span>
+<span class="fc" id="L106">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+        }
+<span class="fc" id="L108">	    return null;</span>
+	}
+	
+	public List&lt;CPTCode&gt; getCodesWithFilter(String filterString){
+		try {
+<span class="fc" id="L113">            return sql.getCodesWithFilter(filterString);</span>
+<span class="fc" id="L114">        } catch (Exception e) {</span>
+<span class="fc" id="L115">            printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);</span>
+        }
+<span class="fc" id="L117">		return new ArrayList&lt;&gt;();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

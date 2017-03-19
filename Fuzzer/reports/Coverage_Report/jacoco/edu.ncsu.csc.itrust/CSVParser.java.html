@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust</a> &gt; <span class="el_source">CSVParser.java</span></div><h1>CSVParser.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.*;
+
+import edu.ncsu.csc.itrust.exception.CSVFormatException;
+import edu.ncsu.csc.itrust.exception.ErrorList;
+
+/**
+ * Provides a generic CSV parsing framework.
+ * Implemented for patient file importing.
+ */
+//@SuppressWarnings(&quot;unused&quot;)
+public class CSVParser {
+	/**
+	 * Holds the header fields from the top of the CSV file
+	 */
+<span class="fc" id="L21">	private ArrayList&lt;String&gt; CSVHeader=new ArrayList&lt;String&gt;();</span>
+	/**
+	 * Holds the fields and records from the CSV file
+	 */
+<span class="fc" id="L25">	private ArrayList&lt;ArrayList&lt;String&gt;&gt; CSVData=new ArrayList&lt;ArrayList&lt;String&gt;&gt;();</span>
+	/**
+	 * Holds a list of errors accumulated while parsing the CSV file.
+	 */
+<span class="fc" id="L29">	private ErrorList errors=new ErrorList();</span>
+	
+	/**
+	 * Constructor taking an InputStream
+	 * 
+	 * @param csvstream csvstream
+	 * @throws CSVFormatException
+	 */
+<span class="fc" id="L37">	public CSVParser(InputStream csvstream) throws CSVFormatException{</span>
+<span class="fc" id="L38">		Scanner CSVScanner = null;</span>
+		try {
+			//First try at UTF-8
+<span class="fc" id="L41">			CSVScanner = new Scanner(new InputStreamReader(csvstream, &quot;UTF-8&quot;));</span>
+<span class="nc" id="L42">		} catch (UnsupportedEncodingException e) {</span>
+			try {
+				//Try the default
+<span class="nc" id="L45">				CSVScanner = new Scanner(new InputStreamReader(csvstream, Charset.defaultCharset().displayName()));</span>
+<span class="nc" id="L46">			} catch (UnsupportedEncodingException e1) {</span>
+<span class="nc" id="L47">				throw new CSVFormatException(&quot;Encoding errors!&quot;);</span>
+<span class="nc" id="L48">			}</span>
+<span class="fc" id="L49">		}</span>
+<span class="fc" id="L50">		parseCSV(CSVScanner);</span>
+<span class="fc" id="L51">	}</span>
+	
+	/**
+	 * Constructor taking an already-prepared Scanner
+	 * (For testing purposes)
+	 * 
+	 * @param CSVScanner CSVScanner
+	 * @throws CSVFormatException
+	 */
+<span class="fc" id="L60">	public CSVParser(Scanner CSVScanner) throws CSVFormatException{</span>
+<span class="fc" id="L61">		parseCSV(CSVScanner);</span>
+<span class="fc" id="L62">	}</span>
+	
+	/**
+	 * Returns the ArrayList of Strings containing the CSV header fields
+	 * 
+	 * @return ArrayList of Strings containing CSV header fields
+	 */
+	public ArrayList&lt;String&gt; getHeader(){
+<span class="fc" id="L70">		return CSVHeader;</span>
+	}
+	
+	/**
+	 * Returns the ArrayList of ArrayLists of Strings containing the CSV data fields
+	 * 
+	 * @return ArrayList of ArrayLists Strings containing CSV data fields
+	 */
+	public ArrayList&lt;ArrayList&lt;String&gt;&gt; getData(){
+<span class="fc" id="L79">		return CSVData;</span>
+	}
+	
+	/**
+	 * Returns the ErrorList of errors accumulated while parsing CSV
+	 * 
+	 * @return ErrorList of errors accumulated while parsing CSV
+	 */
+	public ErrorList getErrors(){
+<span class="fc" id="L88">		return errors;</span>
+	}
+	
+	/**
+	 * Parses the CSV file line-by-line.
+	 * 
+	 * @param CSVScanner A scanner to a CSV stream.
+	 * @throws CSVFormatException
+	 */
+	private void parseCSV(Scanner CSVScanner) throws CSVFormatException{
+		String currentLine;
+<span class="fc" id="L99">		ArrayList&lt;String&gt; parsedLine=null;</span>
+		//The number of fields (columns) in the CSV file as determined by the number of headers
+<span class="fc" id="L101">		int numFields=0;</span>
+		//The current line number being processed (Used to report the line number of errors)
+<span class="fc" id="L103">		int currentLineNumber=1;</span>
+		
+		//Attempt to read the first line (the header) from the file
+<span class="fc bfc" id="L106" title="All 2 branches covered.">		if(CSVScanner.hasNextLine()){</span>
+<span class="fc" id="L107">			currentLine=CSVScanner.nextLine();</span>
+<span class="fc" id="L108">			CSVHeader=parseCSVLine(currentLine);</span>
+<span class="fc" id="L109">			numFields=CSVHeader.size();</span>
+		//If it does not exist (or if the file isn't a text file at all), the entire process fails
+		}else{
+<span class="fc" id="L112">			throw new CSVFormatException(&quot;File is not valid CSV file.&quot;);</span>
+		}
+		
+		//Read the file line-by-line and call the line parser for each line
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		while(CSVScanner.hasNextLine()){</span>
+<span class="fc" id="L117">			currentLineNumber++;</span>
+<span class="fc" id="L118">			currentLine=CSVScanner.nextLine();</span>
+			try{
+<span class="fc" id="L120">				parsedLine=parseCSVLine(currentLine);</span>
+				//If the line doesn't have the right number of fields, it is ignored
+<span class="fc bfc" id="L122" title="All 2 branches covered.">				if(parsedLine.size()==numFields){</span>
+<span class="fc" id="L123">					CSVData.add(parsedLine);</span>
+				}else{
+<span class="fc" id="L125">					errors.addIfNotNull(&quot;Field number mismatch on line &quot;+currentLineNumber);</span>
+				}
+			//If the line is otherwise invalid, it is also ignored
+<span class="fc" id="L128">			}catch(CSVFormatException e){</span>
+<span class="fc" id="L129">				errors.addIfNotNull(e.getMessage()+&quot; on line &quot;+currentLineNumber);</span>
+<span class="fc" id="L130">			}</span>
+		}
+<span class="fc" id="L132">	}</span>
+	
+	/**
+	 * Parses the passed line character-by-character
+	 * 
+	 * @param line Line from the CSV file to parse
+	 * @return ArrayList of Strings, each containing the data from one field
+	 * @throws CSVFormatException
+	 */
+	private ArrayList&lt;String&gt; parseCSVLine(String line) throws CSVFormatException{
+		//Contains the fields from each line parsed
+<span class="fc" id="L143">		ArrayList&lt;String&gt; aLine=new ArrayList&lt;String&gt;();</span>
+		//Contains the data from the current field being read
+<span class="fc" id="L145">		String currentField=&quot;&quot;;</span>
+		//Contains the status of whether or not the parser is inside a quoted area
+		//Used to handle commas and other special characters within the field.
+<span class="fc" id="L148">		boolean insideQuotes=false;</span>
+		
+		//Read the line character-by-character
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		for(int i=0; i&lt;line.length(); i++){</span>
+			//Comma denotes the end of the current field unless it is quoted
+<span class="fc bfc" id="L153" title="All 4 branches covered.">			if(line.charAt(i)==',' &amp;&amp; !insideQuotes){</span>
+<span class="fc" id="L154">				aLine.add(currentField);</span>
+<span class="fc" id="L155">				currentField=&quot;&quot;;</span>
+			//If the field is not ending
+			}else{
+				//If the character is a &quot;, ignore it and flip the quote status
+<span class="fc bfc" id="L159" title="All 2 branches covered.">				if(line.charAt(i)=='&quot;'){</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">					insideQuotes=!insideQuotes;</span>
+				//Otherwise, add the character to the string
+				}else{
+<span class="fc" id="L163">					currentField=currentField+line.substring(i, i+1);</span>
+				}
+			}
+		}
+		//If the line parser ends while still inside a quoted section, the input line was invalid
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		if(insideQuotes){</span>
+<span class="fc" id="L169">			throw new CSVFormatException(&quot;Line ended while inside quotes&quot;);</span>
+		}
+		//Grab text from last field too, since the last field does not end with a comma
+<span class="fc" id="L172">		aLine.add(currentField);</span>
+		
+<span class="fc" id="L174">		return aLine;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

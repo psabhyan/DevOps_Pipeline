@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.webutils</a> &gt; <span class="el_source">SessionUtils.java</span></div><h1>SessionUtils.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.webutils;
+
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+
+/**
+ * Singleton class containing session-related utility methods.
+ * @author mwreesjo
+ */
+public class SessionUtils {
+
+	/**
+	 * Name of representees
+	 */
+	private static final String REPRESENTEES = &quot;representees&quot;;
+
+	/**
+	 * Name of patient role
+	 */
+	private static final String PATIENT = &quot;patient&quot;;
+
+	/**
+	 * HttpSession variable name of the current logged in user role.
+	 */
+	private static final String USER_ROLE = &quot;userRole&quot;;
+
+	/**
+	 * HttpSession variable name of the current logged in patient MID.
+	 */
+	private static final String LOGGED_IN_MID = &quot;loggedInMID&quot;;
+
+	/**
+	 * HttpSession variable name of the HCP selected patient MID.
+	 */
+	private static final String PID = &quot;pid&quot;;
+	
+	/**
+	 * Get the current office visit id that the user (HCP) is viewing.
+	 */
+	private static final String OFFICE_VISIT_ID = &quot;officeVisitId&quot;;
+	
+	
+
+	/** The singleton instance of this class. */
+<span class="fc" id="L52">	private static SessionUtils singleton = null;</span>
+	
+<span class="fc" id="L54">	private SessionUtils() {}</span>
+	
+	public void setSessionVariable(String varname, Object value){
+<span class="nc" id="L57">		HttpServletRequest req = getHttpServletRequest();</span>
+<span class="nc" id="L58">		HttpSession httpSession = req.getSession(false);</span>
+<span class="nc" id="L59">		httpSession.setAttribute(varname, value);</span>
+<span class="nc" id="L60">	}</span>
+	
+	/**
+	 * Uses FacesContext to seek a HttpSession variable of a string type within
+	 * the FaceContext.
+	 * 
+	 * @param varname
+	 *            variable name in the HTTP session
+	 * @return session variable of any type
+	 */
+	public Object getSessionVariable(String varname) {
+<span class="fc" id="L71">		Object variable = null;</span>
+
+<span class="fc" id="L73">		HttpServletRequest req = getHttpServletRequest();</span>
+
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">		if (req == null) {</span>
+<span class="fc" id="L76">			return variable;</span>
+		}
+
+<span class="nc" id="L79">		HttpSession httpSession = req.getSession(false);</span>
+
+<span class="nc bnc" id="L81" title="All 2 branches missed.">		if (httpSession == null) {</span>
+<span class="nc" id="L82">			return variable;</span>
+		}
+
+<span class="nc" id="L85">		variable = httpSession.getAttribute(varname);</span>
+
+<span class="nc" id="L87">		return variable;</span>
+	}
+
+	/**
+	 * Returns the session variable in string form.
+	 * 
+	 * @param variable
+	 *            A session variable in Object form, could be of String type or
+	 *            Long type
+	 * @return String representation of the session variable, or null if it is
+	 *         neither String nor Long
+	 */
+	public String parseString(Object variable) {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		if (variable instanceof String) {</span>
+<span class="fc" id="L101">			return (String) variable;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">		} else if (variable instanceof Long) {</span>
+<span class="fc" id="L103">			return parseLong(variable).toString();</span>
+		} else {
+<span class="fc" id="L105">			return null;</span>
+		}
+	}
+
+	/**
+	 * Returns the session variable in Long form.
+	 * 
+	 * @param variable
+	 *            A session variable in Object form, could be of String type or
+	 *            Long type
+	 * @return Long representation of the session variable, or null if it is not Long
+	 */
+	public Long parseLong(Object variable) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		if (variable instanceof Long) {</span>
+<span class="fc" id="L119">			return (Long) variable;</span>
+		}
+<span class="fc" id="L121">		return null;</span>
+	}
+
+	/**
+	 * @return role of the currently logged in user
+	 */
+	public String getSessionUserRole() {
+<span class="fc" id="L128">		return parseString(getSessionVariable(USER_ROLE));</span>
+	}
+
+	/**
+	 * @return MID of the patient that the HCP selected in the session
+	 */
+	public String getSessionPID() {
+<span class="fc" id="L135">		return parseString(getSessionVariable(PID));</span>
+	}
+
+	/**
+	 * @return current logged in patient's MID
+	 */
+	public String getSessionLoggedInMID() {
+<span class="fc" id="L142">		return parseString(getSessionVariable(LOGGED_IN_MID));</span>
+	}
+	
+	/**
+	 * @return current logged in patient's MID in Long form
+	 */
+	public Long getSessionLoggedInMIDLong() {
+<span class="fc" id="L149">		Long mid = null;</span>
+		try {
+<span class="fc" id="L151">			mid = Long.parseLong(getSessionLoggedInMID());</span>
+<span class="fc" id="L152">		} catch(NumberFormatException e) {</span>
+			// Leave mid null
+<span class="fc" id="L154">		}</span>
+<span class="fc" id="L155">		return mid;</span>
+	}
+
+	/**
+	 * Checks whether if a patient is logged in, if so, retrieve this patient's
+	 * mid, otherwise, check whether if an HCP selected a patient in his/her
+	 * session.
+	 * 
+	 * @return MID of patient, null if no patient is logged in or selected by
+	 *         HCP
+	 */
+	public String getCurrentPatientMID() {
+<span class="fc" id="L167">		String patientMID = getSessionPID();</span>
+<span class="fc" id="L168">		String role = getSessionUserRole();</span>
+<span class="fc bfc" id="L169" title="All 4 branches covered.">		if (role != null &amp;&amp; role.equals(PATIENT)) {</span>
+<span class="fc" id="L170">			patientMID = getSessionLoggedInMID();</span>
+		}
+<span class="fc" id="L172">		return patientMID;</span>
+	}
+	
+	public Long getCurrentPatientMIDLong() {
+<span class="fc" id="L176">		Long mid = null;</span>
+		try {
+<span class="fc" id="L178">			mid = Long.parseLong(getCurrentPatientMID());</span>
+<span class="fc" id="L179">		} catch(NumberFormatException e) {</span>
+			// Leave mid null
+<span class="fc" id="L181">		}</span>
+<span class="fc" id="L182">		return mid;</span>
+	}
+	
+	/**
+	 * @return office visit that the current logged in user (HCP) selected
+	 */
+	public Long getCurrentOfficeVisitId() {
+<span class="fc" id="L189">		return parseLong(getSessionVariable(OFFICE_VISIT_ID));</span>
+	}
+	
+	public List&lt;PatientBean&gt; getRepresenteeList() {
+<span class="fc" id="L193">		return (List&lt;PatientBean&gt;) getSessionVariable(REPRESENTEES);</span>
+	}
+
+	public void setRepresenteeList(List&lt;PatientBean&gt; list) {
+<span class="fc" id="L197">		setSessionVariable(REPRESENTEES, list);</span>
+<span class="fc" id="L198">	}</span>
+
+	/**
+	 * Returns the value of a request parameter as a String, or null if the
+	 * parameter does not exist.
+	 * 
+	 * @param name a String specifying the name of the parameter
+	 * @return a String representing the single value of the parameter
+	 */
+	public String getRequestParameter(String name) {
+<span class="nc" id="L208">		HttpServletRequest req = getHttpServletRequest();</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		return (req == null) ? null : req.getParameter(name);</span>
+	}
+
+	/**
+	 * @return HTTPRequest in FacesContext, null if no request is found
+	 */
+	private HttpServletRequest getHttpServletRequest() {
+<span class="fc" id="L216">		FacesContext ctx = getCurrentFacesContext();</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (ctx == null) {</span>
+<span class="fc" id="L218">			return null;</span>
+		}
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		return ctx.getExternalContext().getRequest() instanceof HttpServletRequest</span>
+<span class="nc" id="L221">				? (HttpServletRequest) ctx.getExternalContext().getRequest() : null;</span>
+	}
+	
+	/**
+	 * Sends a FacesMessage for FacesContext to display.
+	 * 
+	 * @param severity
+	 *            severity of the message
+	 * @param summary
+	 *            localized summary message text
+	 * @param detail
+	 *            localized detail message text
+	 * @param clientId
+	 *            The client identifier with which this message is associated
+	 *            (if any)
+	 */
+	public void printFacesMessage(Severity severity, String summary, String detail, String clientId) {
+<span class="fc" id="L238">		FacesContext ctx = getCurrentFacesContext();</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (ctx == null) {</span>
+<span class="fc" id="L240">			return;</span>
+		}
+<span class="nc" id="L242">		ctx.getExternalContext().getFlash().setKeepMessages(true);</span>
+<span class="nc" id="L243">		ctx.addMessage(clientId, new FacesMessage(severity, summary, detail));</span>
+<span class="nc" id="L244">	}</span>
+	
+	/**
+	 * @return the current instance of FacesContext
+	 */
+	public FacesContext getCurrentFacesContext() {
+<span class="fc" id="L250">		return FacesContext.getCurrentInstance();</span>
+	}
+	
+	public static SessionUtils getInstance() {
+<span class="fc bfc" id="L254" title="All 2 branches covered.">		if (singleton == null) </span>
+<span class="fc" id="L255">			singleton = new SessionUtils();</span>
+<span class="fc" id="L256">		return singleton;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

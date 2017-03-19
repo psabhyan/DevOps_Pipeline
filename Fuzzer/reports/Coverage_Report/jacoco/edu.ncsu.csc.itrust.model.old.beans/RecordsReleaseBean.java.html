@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecordsReleaseBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">RecordsReleaseBean.java</span></div><h1>RecordsReleaseBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+/**
+ * A bean for storing information about releasing medical records.
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters 
+ * to create these easily)
+ */
+public class RecordsReleaseBean {
+	
+<span class="fc" id="L17">	private long releaseID = 0;</span>
+	private long pid;
+	private String releaseHospitalID;
+	private String recHospitalName;
+	private String recHospitalAddress;
+	private String docFirstName;
+	private String docLastName;
+	private String docPhone;
+	private String docEmail;
+	private String justification;
+	private int status;
+	private Timestamp dateRequested;
+	
+	/**
+	 * Constructor for RecordsRelease bean. Creates a RecordsReleaseBean with null fields
+	 */
+<span class="fc" id="L33">	public RecordsReleaseBean() {	</span>
+<span class="fc" id="L34">	}</span>
+	
+	/**
+	 * Sets the releaseID of the release request
+	 * @param releaseID the id of the release request as a long
+	 */
+	public void setReleaseID(long releaseID) {
+<span class="fc" id="L41">		this.releaseID = releaseID;</span>
+<span class="fc" id="L42">	}</span>
+	
+	/**
+	 * Gets the release request id as a long
+	 * @return the release request id
+	 */ 
+	public long getReleaseID() {
+<span class="fc" id="L49">		return releaseID;</span>
+	}
+	
+	/**
+	 * Sets the patient mid
+	 * @param pid the patient's mid as a long
+	 */
+	public void setPid(long pid) {
+<span class="fc" id="L57">		this.pid = pid;</span>
+<span class="fc" id="L58">	}</span>
+	
+	/**
+	 * Gets the patient's mid
+	 * @return the patient's mid
+	 */
+	public long getPid() {
+<span class="fc" id="L65">		return pid;</span>
+	}
+	
+	/**
+	 * Sets the name of the release hospital for the records release
+	 * @param hospital the hospital's name as a string
+	 */
+	public void setReleaseHospitalID(String hospitalID) {
+<span class="fc" id="L73">		releaseHospitalID = hospitalID;</span>
+<span class="fc" id="L74">	}</span>
+	
+	/**
+	 * Gets the id of the hospital for which to release the patient's medical records
+	 * @return the name of the hospital
+	 */
+	public String getReleaseHospitalID() {
+<span class="fc" id="L81">		return releaseHospitalID;</span>
+	}
+	
+	/**
+	 * Set the receiving hospital's name
+	 * @param name the receiving hospital's name as a string
+	 */
+	public void setRecHospitalName(String name) {
+<span class="fc" id="L89">		recHospitalName = name;</span>
+<span class="fc" id="L90">	}</span>
+	
+	/**
+	 * Get the receiving hospital's name
+	 * @return the receiving hospital's name
+	 */
+	public String getRecHospitalName() {
+<span class="fc" id="L97">		return recHospitalName;</span>
+	}
+	
+	/**
+	 * Set the receiving hospital's address.
+	 * @param address the receiving hospital's address
+	 */
+	public void setRecHospitalAddress(String address) {
+<span class="fc" id="L105">		recHospitalAddress = address;</span>
+<span class="fc" id="L106">	}</span>
+	
+	/**
+	 * Get the receiving hospital's address
+	 * @return the receiving hospital's address
+	 */
+	public String getRecHospitalAddress() {
+<span class="fc" id="L113">		return recHospitalAddress;</span>
+	}
+	
+	/**
+	 * Set the first name of the receiving doctor
+	 * @param firstName the first name of the receiving doctor as a string
+	 */
+	public void setDocFirstName(String firstName) {
+<span class="fc" id="L121">		docFirstName = firstName;</span>
+<span class="fc" id="L122">	}</span>
+	
+	/**
+	 * Gets the first name of the receiving doctor
+	 * @return the receiving doctor's first name
+	 */
+	public String getDocFirstName() {
+<span class="fc" id="L129">		return docFirstName;</span>
+	}
+	
+	/**
+	 * Set the last name of the receiving doctor
+	 * @param lastName the first name of the receiving doctor as a string
+	 */
+	public void setDocLastName(String lastName) {
+<span class="fc" id="L137">		docLastName = lastName;</span>
+<span class="fc" id="L138">	}</span>
+	
+	/**
+	 * Get the receiving doctor's last name
+	 * @return the doctor's last name
+	 */
+	public String getDocLastName() {
+<span class="fc" id="L145">		return docLastName;</span>
+	}
+	
+	/**
+	 * Set the receiving doctor's phone number
+	 * @param phoneNumber the doctor's phone number as a string
+	 */
+	public void setDocPhone(String phoneNumber) {
+<span class="fc" id="L153">		docPhone = phoneNumber;</span>
+<span class="fc" id="L154">	}</span>
+	
+	/**
+	 * Get the receiving doctor's phone number 
+	 * @return the receiving doctor's phone number
+	 */
+	public String getDocPhone() {
+<span class="fc" id="L161">		return docPhone;</span>
+	}
+	
+	/**
+	 * Set the receiving doctor's email address
+	 * @param email the receiving doctor's email address as a string
+	 */
+	public void setDocEmail(String email) {
+<span class="fc" id="L169">		docEmail = email;</span>
+<span class="fc" id="L170">	}</span>
+	
+	/**
+	 * Get the receiving doctor's email address
+	 * @return the receiving doctor's email address
+	 */
+	public String getDocEmail() {
+<span class="fc" id="L177">		return docEmail;</span>
+	}
+	
+	/**
+	 * Set the justification for the medical records release
+	 * @param justification the justification as a string
+	 */
+	public void setJustification(String justification) {
+<span class="fc" id="L185">		this.justification = justification;</span>
+<span class="fc" id="L186">	}</span>
+	
+	/**
+	 * Get the justification for the medical records release
+	 * @return the justification for the medical records release
+	 */
+	public String getJustification() {
+<span class="fc" id="L193">		return justification;</span>
+	}
+	
+	/**
+	 * Sets the status of the medical records release request.
+	 * 0 for pending. 1 for approved. 2 for denied.
+	 * @param status the status as an integer. 0 for pending. 1 for approved. 2 for denied.
+	 */
+	public void setStatus(int status) {
+<span class="fc" id="L202">		this.status = status;</span>
+<span class="fc" id="L203">	}</span>
+	
+	/**
+	 * Gets the status of the medical records release request.
+	 * 0 for pending. 1 for approved. 2 for denied.
+	 * @return the status of the release request. 0 for pending. 1 for approved. 2 for denied.
+	 */
+	public int getStatus() {
+<span class="fc" id="L211">		return status;</span>
+	}
+	
+	/**
+	 * Gets the status description of the release request.
+	 * @return the status description of the release request
+	 */
+	public String getStatusStr() {
+<span class="fc bfc" id="L219" title="All 4 branches covered.">		switch (status) {</span>
+		case 0:
+<span class="fc" id="L221">			return &quot;Pending&quot;;</span>
+		case 1:
+<span class="fc" id="L223">			return &quot;Approved&quot;;</span>
+		case 2:
+<span class="fc" id="L225">			return &quot;Denied&quot;;</span>
+		default:
+<span class="fc" id="L227">			return &quot;&quot;;</span>
+		}
+	}
+	
+	/**
+	 * Sets the date that the medical records release is requested 
+	 * @param requestDate the date of the medical records release as a Date object
+	 */
+	public void setDateRequested(Timestamp requestDate) {
+<span class="fc" id="L236">		this.dateRequested = (Timestamp) requestDate.clone();</span>
+<span class="fc" id="L237">	}</span>
+	
+	/**
+	 * Gets the date that the medical records release was requested
+	 * @return the date that the medical records release was requested
+	 */
+	public Timestamp getDateRequested() {
+<span class="fc" id="L244">		return (Timestamp) dateRequested.clone();</span>
+	}
+	
+	/**
+	 * Gets the date of the request as a string in mm/dd/yyyy format
+	 * @return the date of the request as a string 
+	 */
+	public String getDateRequestedStr() {
+<span class="fc" id="L252">		DateFormat df = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L253">		String dateString = df.format(dateRequested);</span>
+<span class="fc" id="L254">		return dateString;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

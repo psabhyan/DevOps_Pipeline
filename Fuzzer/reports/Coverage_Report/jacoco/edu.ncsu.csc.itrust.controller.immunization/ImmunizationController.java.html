@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmunizationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.immunization</a> &gt; <span class="el_source">ImmunizationController.java</span></div><h1>ImmunizationController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.immunization;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.immunization.Immunization;
+import edu.ncsu.csc.itrust.model.immunization.ImmunizationMySQL;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;immunization_controller&quot;)
+@SessionScoped
+public class ImmunizationController extends iTrustController {
+
+    private static final String INVALID_IMMUNIZATION = &quot;Invalid Immmunization&quot;;
+    
+    ImmunizationMySQL sql;
+    
+    public ImmunizationController() throws DBException {
+<span class="nc" id="L27">        super();</span>
+<span class="nc" id="L28">        sql = new ImmunizationMySQL();</span>
+<span class="nc" id="L29">    }</span>
+    
+    public ImmunizationController(DataSource ds) {
+<span class="fc" id="L32">        super();</span>
+<span class="fc" id="L33">        sql = new ImmunizationMySQL(ds);</span>
+<span class="fc" id="L34">    }</span>
+    
+    /**
+     * This is for setting the MySQL instance for testing purposes. Never use
+     * this except for testing.
+     * @param newSQL The new SQL instance
+     */
+    public void setSQL(ImmunizationMySQL newSQL){
+<span class="fc" id="L42">        sql = newSQL;</span>
+<span class="fc" id="L43">    }</span>
+    
+    public void add(Immunization immunization) {
+        try {
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if (sql.add(immunization)) {</span>
+<span class="fc" id="L48">                printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Immunization successfully created&quot;,</span>
+                        &quot;Immunization successfully created&quot;, null);
+<span class="fc" id="L50">                Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">                logTransaction(TransactionType.IMMUNIZATION_ADD, ovid == null ? null : ovid.toString());</span>
+<span class="fc" id="L52">            } else {</span>
+<span class="nc" id="L53">                throw new Exception();</span>
+            }
+<span class="fc" id="L55">        } catch (Exception e) {</span>
+<span class="fc" id="L56">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_IMMUNIZATION, INVALID_IMMUNIZATION, null);</span>
+<span class="fc" id="L57">        }</span>
+<span class="fc" id="L58">    }</span>
+    
+    public void edit(Immunization immunization) {
+        try {
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">            if (sql.update(immunization)) {</span>
+<span class="fc" id="L63">                printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Immunization successfully updated&quot;,</span>
+                        &quot;Immunization successfully updated&quot;, null);
+            } else {
+<span class="nc" id="L66">                throw new Exception();</span>
+            }
+<span class="fc" id="L68">        } catch (Exception e) {</span>
+<span class="fc" id="L69">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_IMMUNIZATION, INVALID_IMMUNIZATION, null);</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">    }</span>
+    
+    public void remove(long immunizationID) {
+        try {
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            if (sql.remove(immunizationID)) {</span>
+<span class="fc" id="L76">                printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Immunization successfully deleted&quot;,</span>
+                        &quot;Immunization successfully deleted&quot;, null);
+<span class="fc" id="L78">                Long ovid = getSessionUtils().getCurrentOfficeVisitId();</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                logTransaction(TransactionType.IMMUNIZATION_REMOVE, ovid == null ? null : ovid.toString());</span>
+<span class="fc" id="L80">            } else {</span>
+<span class="nc" id="L81">                throw new Exception();</span>
+            }
+<span class="fc" id="L83">        } catch (SQLException e) {</span>
+<span class="fc" id="L84">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_IMMUNIZATION, e.getMessage(), null);</span>
+<span class="fc" id="L85">        } catch (Exception e) {</span>
+<span class="fc" id="L86">            printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_IMMUNIZATION, INVALID_IMMUNIZATION, null);</span>
+<span class="fc" id="L87">        }</span>
+<span class="fc" id="L88">    }</span>
+    
+    public List&lt;Immunization&gt; getImmunizationsByOfficeVisit(String officeVisitID) throws DBException {
+<span class="fc" id="L91">        List&lt;Immunization&gt; immunizations = Collections.emptyList();</span>
+<span class="fc" id="L92">        long ovID = -1;</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if ( officeVisitID != null ) {</span>
+<span class="fc" id="L94">            ovID = Long.parseLong(officeVisitID);</span>
+            try {
+<span class="fc" id="L96">                immunizations = sql.getImmunizationsForOfficeVisit(ovID);</span>
+<span class="fc" id="L97">            } catch (Exception e) {</span>
+<span class="fc" id="L98">                printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Immunizations&quot;, &quot;Unable to Retrieve Immunizations&quot;, null);</span>
+<span class="fc" id="L99">            }</span>
+        }
+<span class="fc" id="L101">        return immunizations;</span>
+    }
+    
+    public String getCodeName(String codeString){
+<span class="fc" id="L105">        String codeName = &quot;&quot;;</span>
+        
+        try {
+<span class="fc" id="L108">            codeName = sql.getCodeName(codeString);</span>
+<span class="fc" id="L109">        }  catch (SQLException e) {</span>
+<span class="fc" id="L110">            printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Invalid Immunization&quot;, e.getMessage(), null);</span>
+<span class="fc" id="L111">        }</span>
+        
+<span class="fc" id="L113">        return codeName;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

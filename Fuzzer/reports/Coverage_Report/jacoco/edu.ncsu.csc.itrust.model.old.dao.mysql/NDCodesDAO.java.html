@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NDCodesDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">NDCodesDAO.java</span></div><h1>NDCodesDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.MedicationBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Used for managing the ND Codes.
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ * 
+ * The National Drug Code (NDC) is a universal product identifier used in the
+ * United States for drugs intended for human use.
+ * 
+ * @see http://www.fda.gov/Drugs/InformationOnDrugs/ucm142438.htm
+ */
+public class NDCodesDAO {
+
+	private DAOFactory factory;
+<span class="fc" id="L36">	private MedicationBeanLoader medicationLoader = new MedicationBeanLoader();</span>
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L45">	public NDCodesDAO(DAOFactory factory) {</span>
+<span class="fc" id="L46">		this.factory = factory;</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Returns a list of all ND codes
+	 * 
+	 * @return A java.util.List of MedicationBeans.
+	 * @throws DBException
+	 */
+	public List&lt;MedicationBean&gt; getAllNDCodes() throws DBException {
+<span class="pc" id="L56">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L57">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM ndcodes ORDER BY CODE&quot;);</span>
+<span class="fc" id="L58">				ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc" id="L59">			List&lt;MedicationBean&gt; loadlist = medicationLoader.loadList(rs);</span>
+<span class="fc" id="L60">			return loadlist;</span>
+<span class="pc bpc" id="L61" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L62">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns a particular description for a given code.
+	 * 
+	 * @param code
+	 *            The ND code to be looked up.
+	 * @return A bean representing the Medication that was looked up.
+	 * @throws DBException
+	 */
+	public MedicationBean getNDCode(String code) throws DBException {
+<span class="pc" id="L75">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L76">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM ndcodes WHERE Code = ?&quot;)) {</span>
+<span class="fc" id="L77">			stmt.setString(1, code);</span>
+<span class="fc" id="L78">			ResultSet rs = stmt.executeQuery();</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">			MedicationBean result = rs.next() ? medicationLoader.loadSingle(rs) : null;</span>
+<span class="fc" id="L81">			rs.close();</span>
+<span class="fc" id="L82">			return result;</span>
+<span class="pc bpc" id="L83" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L84">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Adds a new ND code, returns whether or not the change was made. If the
+	 * code already exists, an iTrustException is thrown.
+	 * 
+	 * @param med
+	 *            The medication bean to be added.
+	 * @return A boolean indicating success or failure.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean addNDCode(MedicationBean med) throws DBException, ITrustException {
+<span class="fc" id="L99">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L100">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L101">						.prepareStatement(&quot;INSERT INTO ndcodes (Code, Description) &quot; + &quot;VALUES (?,?)&quot;)) {</span>
+<span class="fc" id="L102">			stmt.setString(1, med.getNDCode());</span>
+<span class="fc" id="L103">			stmt.setString(2, med.getDescription());</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">			boolean successfullyAdded = stmt.executeUpdate() == 1;</span>
+<span class="fc" id="L105">			return successfullyAdded;</span>
+<span class="pc bpc" id="L106" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">			if (e.getErrorCode() == 1062) {</span>
+<span class="fc" id="L108">				throw new ITrustException(&quot;Error: Code already exists.&quot;);</span>
+			} else {
+<span class="fc" id="L110">				throw new DBException(e);</span>
+			}
+		}
+	}
+
+	/**
+	 * Updates a particular code's description
+	 * 
+	 * @param med
+	 *            A bean representing the particular medication to be updated.
+	 * @return An int representing the number of updated rows.
+	 * @throws DBException
+	 */
+	public int updateCode(MedicationBean med) throws DBException {
+<span class="pc" id="L124">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L125">				PreparedStatement stmt = conn.prepareStatement(&quot;UPDATE ndcodes SET Description = ? &quot; + &quot;WHERE Code = ?&quot;)) {</span>
+<span class="fc" id="L126">			stmt.setString(1, med.getDescription());</span>
+<span class="fc" id="L127">			stmt.setString(2, med.getNDCode());</span>
+
+<span class="fc" id="L129">			return stmt.executeUpdate();</span>
+<span class="pc bpc" id="L130" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L131">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Removes a ND code, returns whether or not the change was made.
+	 * 
+	 * @param med
+	 *            The medication bean to be removed.
+	 * @return A boolean indicating success or failure.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean removeNDCode(MedicationBean med) throws DBException, ITrustException {
+<span class="pc" id="L145">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L146">				PreparedStatement stmt = conn.prepareStatement(&quot;DELETE FROM ndcodes WHERE Code=?&quot;)) {</span>
+<span class="fc" id="L147">			stmt.setString(1, med.getNDCode());</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">			return stmt.executeUpdate() == 1;</span>
+<span class="pc bpc" id="L149" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L150">			throw new DBException(e);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

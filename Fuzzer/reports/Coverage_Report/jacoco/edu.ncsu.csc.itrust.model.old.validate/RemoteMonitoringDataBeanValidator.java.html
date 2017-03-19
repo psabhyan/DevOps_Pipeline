@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteMonitoringDataBeanValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.validate</a> &gt; <span class="el_source">RemoteMonitoringDataBeanValidator.java</span></div><h1>RemoteMonitoringDataBeanValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.validate;
+
+import edu.ncsu.csc.itrust.action.AddRemoteMonitoringDataAction;
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.RemoteMonitoringDataBean;
+
+/**
+ * Validator used to validate adding new remote monitoring data in {@link AddRemoteMonitoringDataAction}
+ * 
+ */
+public class RemoteMonitoringDataBeanValidator extends BeanValidator&lt;RemoteMonitoringDataBean&gt; {
+	/**
+	 * The default constructor.
+	 */
+<span class="fc" id="L16">	public RemoteMonitoringDataBeanValidator() {}</span>
+	
+	/**
+	 * Performs the act of validating the bean in question, which varies depending on the
+	 * type of validator.  If the validation does not succeed, a {@link FormValidationException} is thrown.
+	 * 
+	 * @param p A bean of the type to be validated.
+	 */
+	@Override
+	public void validate(RemoteMonitoringDataBean m) throws FormValidationException {
+<span class="fc" id="L26">		ErrorList errorList = new ErrorList();</span>
+		
+		// Skip validation if values were not submitted (0 or -1)
+<span class="pc bpc" id="L29" title="1 of 4 branches missed.">		if (!(m.getSystolicBloodPressure() == 0 || m.getSystolicBloodPressure() == -1))</span>
+<span class="fc" id="L30">			errorList.addIfNotNull(checkFormat(&quot;Systolic Blood Pressure&quot;, &quot;&quot; + m.getSystolicBloodPressure(),</span>
+					ValidationFormat.SYSTOLIC_BLOOD_PRESSURE, true));
+<span class="pc bpc" id="L32" title="1 of 4 branches missed.">		if (!(m.getDiastolicBloodPressure() == 0 || m.getDiastolicBloodPressure() == -1))</span>
+<span class="fc" id="L33">			errorList.addIfNotNull(checkFormat(&quot;Diastolic Blood Pressure&quot;, &quot;&quot; + m.getDiastolicBloodPressure(),</span>
+					ValidationFormat.DIASTOLIC_BLOOD_PRESSURE, true));
+<span class="pc bpc" id="L35" title="1 of 4 branches missed.">		if (!(m.getGlucoseLevel() == 0 || m.getGlucoseLevel() == -1))</span>
+<span class="fc" id="L36">			errorList.addIfNotNull(checkFormat(&quot;Glucose Level&quot;, &quot;&quot; + m.getGlucoseLevel(),</span>
+					ValidationFormat.GLUCOSE_LEVEL, true));
+<span class="pc bpc" id="L38" title="1 of 4 branches missed.">		if (!(m.getPedometerReading() == 0 || m.getPedometerReading() == -1))</span>
+<span class="fc" id="L39">			errorList.addIfNotNull(checkFormat(&quot;Pedometer Reading&quot;, &quot;&quot; + m.getPedometerReading(),</span>
+					ValidationFormat.PEDOMETER_READING, true));
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">		if (!(m.getHeight() == 0 || m.getHeight() == -1))</span>
+<span class="fc" id="L42">			errorList.addIfNotNull(checkFormat(&quot;Height&quot;, &quot;&quot; + m.getHeight(),</span>
+					ValidationFormat.HEIGHT, true));
+<span class="pc bpc" id="L44" title="1 of 4 branches missed.">		if (!(m.getWeight() == 0 || m.getWeight() == -1))</span>
+<span class="fc" id="L45">			errorList.addIfNotNull(checkFormat(&quot;Weight&quot;, &quot;&quot; + m.getWeight(),</span>
+					ValidationFormat.WEIGHT, true));
+<span class="fc bfc" id="L47" title="All 2 branches covered.">		if (errorList.hasErrors()){</span>
+<span class="fc" id="L48">			throw new FormValidationException(errorList);</span>
+		}
+<span class="fc" id="L50">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddRemoteMonitoringDataAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">AddRemoteMonitoringDataAction.java</span></div><h1>AddRemoteMonitoringDataAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.RemoteMonitoringDataBean;
+import edu.ncsu.csc.itrust.model.old.beans.TelemedicineBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.RemoteMonitoringDAO;
+import edu.ncsu.csc.itrust.model.old.validate.RemoteMonitoringDataBeanValidator;
+
+/**
+ * Handles adding remote monitoring patient data to the database
+ * 
+ */
+public class AddRemoteMonitoringDataAction {
+<span class="fc" id="L20">	private RemoteMonitoringDataBeanValidator validator = new RemoteMonitoringDataBeanValidator();</span>
+	private RemoteMonitoringDAO rmDAO;
+	private AuthDAO authDAO;
+	private long loggedInMID;
+	private long patientMID;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param loggedInMID The MID of the person recording the patient's data.
+	 * @param patientMID The MID of the patient
+	 */
+<span class="fc" id="L33">	public AddRemoteMonitoringDataAction(DAOFactory factory, long loggedInMID, long patientMID) {</span>
+<span class="fc" id="L34">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L35">		this.rmDAO = factory.getRemoteMonitoringDAO();</span>
+<span class="fc" id="L36">		this.authDAO = factory.getAuthDAO();</span>
+<span class="fc" id="L37">		this.patientMID = patientMID;</span>
+<span class="fc" id="L38">	}</span>
+	
+	public List&lt;TelemedicineBean&gt; getTelemedicineBean(long patientMID) throws DBException {
+<span class="nc" id="L41">		return rmDAO.getTelemedicineBean(patientMID);</span>
+	} 
+
+	/**
+	 * Adds a patient's telemedicine data to the database.
+	 * 
+	 * @param weight
+	 * @param pedometerReading
+	 * @throws DBException
+	 */
+	public void addRemoteMonitoringData(RemoteMonitoringDataBean rmdBean)
+	  throws DBException, FormValidationException, ITrustException {
+<span class="fc" id="L53">		validator.validate(rmdBean);</span>
+		
+		String role;
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if (loggedInMID == patientMID){</span>
+<span class="fc" id="L57">			role = &quot;self-reported&quot;;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		} else if (authDAO.getUserRole(loggedInMID).getUserRolesString().equals(&quot;uap&quot;)){</span>
+<span class="fc" id="L59">			role = &quot;case-manager&quot;;</span>
+		} else {
+<span class="fc" id="L61">			role = &quot;patient representative&quot;;</span>
+		}		
+		//Store in DB
+<span class="fc" id="L64">		rmDAO.storePatientData(patientMID, rmdBean, role, loggedInMID);</span>
+<span class="fc" id="L65">	}</span>
+
+	/**
+	 * returns the patient name
+	 * 
+	 * @return patient name
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public String getPatientName(long pid) throws ITrustException {
+<span class="nc" id="L75">		return authDAO.getUserName(pid);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

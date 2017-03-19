@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HospitalsDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">HospitalsDAO.java</span></div><h1>HospitalsDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.HospitalBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.HospitalBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Used for managing hospitals
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class HospitalsDAO {
+	
+	private DAOFactory factory;
+<span class="fc" id="L32">	private HospitalBeanLoader hospitalLoader = new HospitalBeanLoader();</span>
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L41">	public HospitalsDAO(DAOFactory factory) {</span>
+<span class="fc" id="L42">		this.factory = factory;</span>
+<span class="fc" id="L43">	}</span>
+
+	/**
+	 * Returns a list of all hospitals sorted alphabetically
+	 * 
+	 * @return A java.util.List of HospitalBeans.
+	 * @throws DBException
+	 */
+	public List&lt;HospitalBean&gt; getAllHospitals() throws DBException {
+<span class="pc" id="L52">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L53">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM hospitals ORDER BY HospitalName&quot;);</span>
+<span class="fc" id="L54">				ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc" id="L55">			List&lt;HospitalBean&gt; loadlist = hospitalLoader.loadList(rs);</span>
+<span class="fc" id="L56">			return loadlist;</span>
+<span class="pc bpc" id="L57" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L58">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns a particular hospital given its ID
+	 * 
+	 * @param id
+	 *            The String ID of the hospital.
+	 * @return A HospitalBean representing this hospital.
+	 * @throws DBException
+	 */
+	public HospitalBean getHospital(String id) throws DBException {
+<span class="pc" id="L71">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L72">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM hospitals WHERE HospitalID = ?&quot;)) {</span>
+<span class="fc" id="L73">			stmt.setString(1, id);</span>
+<span class="fc" id="L74">			ResultSet rs = stmt.executeQuery();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">			if (rs.next()) {</span>
+<span class="fc" id="L76">				HospitalBean loaded = hospitalLoader.loadSingle(rs);</span>
+<span class="fc" id="L77">				rs.close();</span>
+<span class="fc" id="L78">				return loaded;</span>
+			}
+<span class="fc" id="L80">			rs.close();</span>
+<span class="fc" id="L81">			return null;</span>
+<span class="pc bpc" id="L82" title="16 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L83">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Adds a hospital
+	 * 
+	 * @param hosp
+	 *            The HospitalBean object to insert.
+	 * @return A boolean indicating whether the insertion was successful.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean addHospital(HospitalBean hosp) throws DBException, ITrustException {
+<span class="fc" id="L97">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L98">				PreparedStatement stmt = conn.prepareStatement(&quot;INSERT INTO hospitals (HospitalID, HospitalName, Address, City, State, Zip) &quot;</span>
+						+ &quot;VALUES (?,?,?,?,?,?)&quot;)) {
+<span class="fc" id="L100">			stmt.setString(1, hosp.getHospitalID());</span>
+<span class="fc" id="L101">			stmt.setString(2, hosp.getHospitalName());</span>
+<span class="fc" id="L102">			stmt.setString(3, hosp.getHospitalAddress());</span>
+<span class="fc" id="L103">			stmt.setString(4, hosp.getHospitalCity());</span>
+<span class="fc" id="L104">			stmt.setString(5, hosp.getHospitalState());</span>
+<span class="fc" id="L105">			stmt.setString(6, hosp.getHospitalZip());</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			return stmt.executeUpdate() == 1;</span>
+<span class="pc bpc" id="L107" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			if (e.getErrorCode() == 1062) {</span>
+<span class="fc" id="L109">				throw new ITrustException(&quot;Error: Hospital already exists.&quot;);</span>
+			} else {
+<span class="fc" id="L111">				throw new DBException(e);</span>
+			}
+		}
+	}
+
+	/**
+	 * Updates a particular hospital's description. Returns the number of rows
+	 * affected (should be 1)
+	 * 
+	 * @param hosp
+	 *            The HospitalBean to update.
+	 * @return An int indicating the number of affected rows.
+	 * @throws DBException
+	 */
+	public int updateHospital(HospitalBean hosp) throws DBException {
+<span class="pc" id="L126">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L127">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;UPDATE hospitals SET HospitalName=?,Address=?,City=?,State=?,Zip=?&quot; + &quot;WHERE HospitalID = ?&quot;);) {
+<span class="fc" id="L129">			stmt.setString(1, hosp.getHospitalName());</span>
+<span class="fc" id="L130">			stmt.setString(2, hosp.getHospitalAddress());</span>
+<span class="fc" id="L131">			stmt.setString(3, hosp.getHospitalCity());</span>
+<span class="fc" id="L132">			stmt.setString(4, hosp.getHospitalState());</span>
+<span class="fc" id="L133">			stmt.setString(5, hosp.getHospitalZip());</span>
+<span class="fc" id="L134">			stmt.setString(6, hosp.getHospitalID());</span>
+<span class="fc" id="L135">			int rowsUpdated = stmt.executeUpdate();</span>
+<span class="fc" id="L136">			return rowsUpdated;</span>
+<span class="pc bpc" id="L137" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L138">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Assign an HCP to a hospital. If they have already been assigned to that
+	 * hospital, then an iTrustException is thrown.
+	 * 
+	 * @param hcpID
+	 *            The HCP's MID to assign to the hospital.
+	 * @param hospitalID
+	 *            The ID of the hospital to assign them to.
+	 * @return A boolean indicating whether the assignment was a success.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean assignHospital(long hcpID, String hospitalID) throws DBException, ITrustException {
+<span class="fc" id="L155">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L156">				PreparedStatement stmt = conn.prepareStatement(&quot;INSERT INTO hcpassignedhos (HCPID, HosID) VALUES (?,?)&quot;);) {</span>
+<span class="fc" id="L157">			stmt.setLong(1, hcpID);</span>
+<span class="fc" id="L158">			stmt.setString(2, hospitalID);</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">			boolean successfullyAdded = stmt.executeUpdate() == 1;</span>
+<span class="fc" id="L160">			return successfullyAdded;</span>
+<span class="pc bpc" id="L161" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">			if (1062 == e.getErrorCode()) {</span>
+<span class="fc" id="L163">				throw new ITrustException(&quot;HCP &quot; + hcpID + &quot; already assigned to hospital &quot; + hospitalID);</span>
+			} else {
+<span class="fc" id="L165">				throw new DBException(e);</span>
+			}
+		}
+	}
+
+	/**
+	 * Unassigns an HCP to a hospital. Returns whether or not any changes were
+	 * made
+	 * 
+	 * @param hcpID
+	 *            The MID of the HCP to remove.
+	 * @param hospitalID
+	 *            The ID of the hospital being removed from.
+	 * @return A boolean indicating success.
+	 * @throws DBException
+	 */
+	public boolean removeHospitalAssignment(long hcpID, String hospitalID) throws DBException {
+<span class="pc" id="L182">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L183">				PreparedStatement stmt = conn.prepareStatement(&quot;DELETE FROM hcpassignedhos WHERE HCPID = ? AND HosID = ?&quot;);) {</span>
+<span class="fc" id="L184">			stmt.setLong(1, hcpID);</span>
+<span class="fc" id="L185">			stmt.setString(2, hospitalID);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">			boolean successfullyRemoved = stmt.executeUpdate() == 1;</span>
+<span class="fc" id="L187">			return successfullyRemoved;</span>
+<span class="pc bpc" id="L188" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L189">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Removes all hospital assignments for a particular HCP. Returns the number
+	 * of rows affected.
+	 * 
+	 * @param hcpID
+	 *            The MID of the HCP.
+	 * @return An int representing the number of hospital assignments removed.
+	 * @throws DBException
+	 */
+	public int removeAllHospitalAssignmentsFrom(long hcpID) throws DBException {
+<span class="pc" id="L203">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L204">				PreparedStatement stmt = conn.prepareStatement(&quot;DELETE FROM hcpassignedhos WHERE HCPID = ?&quot;);) {</span>
+<span class="fc" id="L205">			stmt.setLong(1, hcpID);</span>
+<span class="fc" id="L206">			int numRemoved = stmt.executeUpdate();</span>
+<span class="fc" id="L207">			return numRemoved;</span>
+<span class="pc bpc" id="L208" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L209">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Checks to see if the LT has an assigned hospital
+	 * 
+	 * @param hcpID
+	 *            The MID of the LT.
+	 * @return true If the LT has an assigned hospital to them, false if not
+	 * @throws DBException
+	 */
+	public boolean checkLTHasHospital(long hcpID) throws DBException {
+<span class="pc" id="L222">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L223">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM hcpassignedhos WHERE HCPID = ?&quot;)) {</span>
+<span class="fc" id="L224">			stmt.setLong(1, hcpID);</span>
+<span class="fc" id="L225">			ResultSet rs = stmt.executeQuery();</span>
+<span class="fc" id="L226">			boolean ltHasAssignedHospitals = rs.next();</span>
+<span class="fc" id="L227">			rs.close();</span>
+<span class="fc" id="L228">			return ltHasAssignedHospitals;</span>
+<span class="pc bpc" id="L229" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L230">			throw new DBException(e);</span>
+		}
+	}
+
+	public List&lt;HospitalBean&gt; getHospitalsAssignedToPhysician(long pid) throws DBException {
+<span class="fc" id="L235">		List&lt;String&gt; hospitalIDs = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L236">		List&lt;HospitalBean&gt; hospitalNames = new ArrayList&lt;HospitalBean&gt;();</span>
+<span class="fc" id="L237">		HospitalBeanLoader loader = new HospitalBeanLoader();</span>
+
+<span class="pc" id="L239">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L240">				PreparedStatement hcpAssignedHosStmt = conn.prepareStatement(&quot;SELECT hosID FROM hcpassignedhos WHERE HCPID=?&quot;);</span>
+<span class="fc" id="L241">				PreparedStatement hospitalsStmt = conn.prepareStatement(&quot;SELECT * FROM hospitals WHERE hospitals.HospitalID=?&quot;)) {</span>
+<span class="fc" id="L242">			hcpAssignedHosStmt.setString(1, String.valueOf(pid));</span>
+<span class="fc" id="L243">			ResultSet rs = hcpAssignedHosStmt.executeQuery();</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">			while (rs.next()) {</span>
+<span class="fc" id="L245">				hospitalIDs.add(rs.getString(&quot;hosID&quot;));</span>
+			}
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">			if (hospitalIDs.size() == 0) {</span>
+<span class="nc" id="L248">				return null;</span>
+			}
+<span class="fc bfc" id="L250" title="All 2 branches covered.">			for (String hID : hospitalIDs) {</span>
+<span class="fc" id="L251">				hospitalsStmt.setString(1, String.valueOf(hID));</span>
+<span class="fc" id="L252">				rs = hospitalsStmt.executeQuery();</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">				while (rs.next()) {</span>
+<span class="fc" id="L254">					hospitalNames.add(loader.loadSingle(rs));</span>
+				}
+<span class="fc" id="L256">			}</span>
+<span class="fc" id="L257">			rs.close();</span>
+<span class="pc bpc" id="L258" title="30 of 36 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L259">			throw new DBException(e);</span>
+<span class="fc" id="L260">		}</span>
+<span class="fc" id="L261">		return hospitalNames;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

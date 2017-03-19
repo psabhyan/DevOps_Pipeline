@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidationFormat.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.validate</a> &gt; <span class="el_source">ValidationFormat.java</span></div><h1>ValidationFormat.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.validate;
+
+import java.util.regex.Pattern;
+
+/**
+ * Enum with all of the validation formats that fit into a regex.
+ * 
+ *  
+ * 
+ *
+ */
+
+
+<span class="pc" id="L14">public enum ValidationFormat {</span>
+<span class="fc" id="L15">	NAME(&quot;^(?=.*[a-zA-Z])[\\sa-zA-Z'-]{1,20}$&quot;, 				&quot;Up to 20 Letters, space, ' and -&quot;), </span>
+<span class="fc" id="L16">	DATE(&quot;[\\d]{2}/[\\d]{2}/[\\d]{4}&quot;, 			&quot;MM/DD/YYYY&quot;),</span>
+<span class="fc" id="L17">	PHONE_NUMBER(&quot;[\\d]{3}-[\\d]{3}-[\\d]{4}&quot;, 	&quot;xxx-xxx-xxxx&quot;),</span>
+<span class="fc" id="L18">	MID(&quot;[\\d]{1,10}&quot;,							&quot;Between 1 and 10 digits&quot;),</span>
+<span class="fc" id="L19">	NPMID(&quot;[0-8][0-9]{0,9}&quot;, 					&quot;1-10 digit number not beginning with 9&quot;),</span>
+<span class="fc" id="L20">	DATETIME(&quot;[\\d]{4}-[\\d]{2}-[\\d]{2}[\\s]{1}[\\d]{2}:[\\d]{2}:[\\d]{2}.[\\d]{1}&quot;, &quot;mm/dd/yyyy&quot;),</span>
+	
+<span class="fc" id="L22">	EMAIL(&quot;.+@.+\\..+&quot;,</span>
+					&quot;Up to 30 alphanumeric characters and symbols . and _ @&quot;), 
+					
+<span class="fc" id="L25">	QUESTION(&quot;[a-zA-Z0-9?\\-'.\\s]{1,50}&quot;, &quot;Up to 50 alphanumeric characters and symbols ?-'.&quot;),</span>
+<span class="fc" id="L26">	ANSWER(&quot;[a-zA-Z0-9\\s]{1,30}&quot;, &quot;Up to 30 alphanumeric characters&quot;),</span>
+	
+<span class="fc" id="L28">	ADDRESS(&quot;[a-zA-Z0-9.\\s]{1,30}&quot;, &quot;Up to 30 alphanumeric characters, and .&quot;),</span>
+<span class="fc" id="L29">	FULL_ADDRESS(&quot;[a-zA-Z0-9.,\\s]{1,100}&quot;, &quot;Up to 100 alphanumeric characters, comma, and .&quot;),</span>
+<span class="fc" id="L30">	APPT_COMMENT(&quot;[0-9a-zA-Z\\s'\&quot;?!:;\\-._\n\t]{1,1000}&quot;, &quot;Between 0 and 1000 alphanumerics with space, and other punctuation&quot;),</span>
+<span class="fc" id="L31">	APPT_TYPE_NAME(&quot;[a-zA-Z ]{1,30}&quot;, &quot;Between 1 and 30 alpha characters and space&quot;),</span>
+<span class="fc" id="L32">	APPT_TYPE_DURATION(&quot;[0-9]{1,5}&quot;, &quot;Between 1 and 5 numeric digits&quot;),</span>
+<span class="fc" id="L33">	CITY(&quot;[a-zA-Z\\s]{1,15}&quot;, &quot;Up to 15 characters&quot;),</span>
+<span class="fc" id="L34">	STATE(&quot;[A-Z]{2}&quot;, &quot;Two capital letters&quot;),</span>
+<span class="fc" id="L35">	ZIPCODE(&quot;([0-9]{5})|([0-9]{5}-[0-9]{4})&quot;, &quot;xxxxx or xxxxx-xxxx&quot;), // ^[0-9]{5}(?:-[0-9]{4})?$</span>
+	
+<span class="fc" id="L37">	BLOODTYPE(&quot;((O)|(A)|(B)|(AB))([+-]{1})&quot;, &quot;Must be [O,A,B,AB]+/-&quot;), // ^(?:O|A|B|AB)[+-]$</span>
+	
+<span class="fc" id="L39">	NOTES(&quot;[a-zA-Z0-9\\s'\&quot;?!:#;\\-.,_\n\t]{1,300}&quot;,</span>
+			&quot;Up to 300 alphanumeric characters, with space, and other punctuation&quot;),
+<span class="fc" id="L41">	MESSAGES_BODY(&quot;[a-zA-Z0-9\\s'\&quot;?!:;\\-.,_\n\t()\\\\/]{1,1000}&quot;,</span>
+
+			&quot;Up to 1000 alphanumeric characters, with space, and other punctuation&quot;),
+<span class="fc" id="L44">	MESSAGES_SUBJECT(&quot;[a-zA-Z0-9\\s'\&quot;?!:;\\-._\n\t()]{1,100}&quot;,</span>
+			&quot;Up to 100 alphanumeric characters, with space, and other punctuation&quot;),
+<span class="fc" id="L46">	PASSWORD(&quot;[a-zA-Z0-9]{8,20}&quot;, &quot;8-20 alphanumeric characters&quot;),</span>
+<span class="fc" id="L47">	INSURANCE_ID(&quot;[\\s\\da-zA-Z'-]{1,20}&quot;, &quot;Up to 20 letters, digits, space, ' and -&quot;),</span>
+<span class="fc" id="L48">	HOSPITAL_ID(&quot;[\\d]{1,10}&quot;, &quot;Between 1 and 10 digits&quot;),</span>
+<span class="fc" id="L49">	HOSPITAL_NAME(&quot;[0-9a-zA-Z' .]{1,30}&quot;, &quot;Between 1 and 30 alphanumerics, space, ', and .&quot;),</span>
+<span class="fc" id="L50">	ND_CODE_DESCRIPTION(&quot;[a-zA-Z0-9\\s]{1,100}&quot;, &quot;Up to 100 characters, letters, numbers, and a space&quot;),</span>
+<span class="fc" id="L51">	DRUG_INT_COMMENTS(&quot;[a-zA-Z0-9.\\-',!;:()?\\s]{1,500}&quot;, &quot;Up to 500 alphanumeric characters and .-',!;:()?&quot;),</span>
+<span class="fc" id="L52">	EMAILS(&quot;[a-zA-Z0-9.\\-',!;:()?\\s\\\\/]{1,500}&quot;, </span>
+
+		   &quot;Up to 500 alphanumeric characters and .-',!;:()?&quot;),
+<span class="fc" id="L55">	ADVERSE_EVENT_COMMENTS(&quot;[a-zA-Z0-9.\\-',!;:()?\\s]{1,2000}&quot;, &quot;Up to 2000 alphanumeric characters and .-',!;:()?&quot;),</span>
+<span class="fc" id="L56">	ICD_CODE_DESCRIPTION(&quot;[a-zA-Z0-9\\s]{1,30}&quot;, &quot;Up to 30 characters, letters, numbers, and a space&quot;),</span>
+<span class="fc" id="L57">	CPT_CODE_DESCRIPTION(&quot;[a-zA-Z0-9\\s]{1,30}&quot;, &quot;Up to 30 characters, letters, numbers, and a space&quot;),</span>
+<span class="fc" id="L58">	ALLERGY_DESCRIPTION(&quot;[a-zA-Z0-9\\s]{1,30}&quot;, &quot;Up to 30 characters, letters, numbers, and a space&quot;),</span>
+<span class="fc" id="L59">	ICD9CM(&quot;([\\d]{1,3})|([\\d]{1,3}\\.[\\d]{0,2})&quot;, &quot;xxx.xx&quot;),</span>
+<span class="fc" id="L60">	CPT(&quot;[\\d]{1,4}[A-Za-z0-9]&quot;, &quot;Up to four digit integer plus a letter or digit&quot;),</span>
+<span class="fc" id="L61">	HeadCircumference(&quot;[\\d]{0,3}(\\.(\\d){0,1}){0,1}&quot;, &quot;Up to 3-digit number + up to 1 decimal place&quot;),</span>
+<span class="fc" id="L62">	Height(&quot;[\\d]{0,3}(\\.(\\d){0,1}){0,1}&quot;, &quot;Up to 3-digit number + up to 1 decimal place&quot;),</span>
+<span class="fc" id="L63">	Weight(&quot;[\\d]{0,4}(\\.(\\d){0,1}){0,1}&quot;, &quot;Up to 4-digit number + up to 1 decimal place&quot;),</span>
+<span class="fc" id="L64">	YEAR(&quot;[\\d]{4}&quot;, &quot;Must be 4 digits&quot;), </span>
+<span class="fc" id="L65">	GENDERCOD(&quot;(Male)|(Female)|(Not Specified)&quot;, &quot;Only Male, Female, or All Patients&quot;),</span>
+<span class="fc" id="L66">	LOINC(&quot;[\\d]{1,5}[-]{1}[\\d]{1}&quot;, &quot;Must be 1-5 digits followed by a - then another digit&quot;),</span>
+<span class="fc" id="L67">	ND(&quot;[\\d]{1,9}&quot;, &quot;Up to nine digit integer&quot;),</span>
+<span class="fc" id="L68">	LOINC_ITEM(&quot;[^\&quot;]{1,100}&quot;, &quot;Up to 100 characters, excluding quotation marks&quot;),</span>
+<span class="fc" id="L69">	COMMENTS(&quot;[a-zA-Z0-9.\\s]{1,500}&quot;, &quot;Up to 500 alphanumeric characters&quot;),</span>
+<span class="fc" id="L70">	LAB_STATUS(&quot;(In Transit)|(Received)|(Testing)|(Pending)|(Completed)&quot;, &quot;Only In Transit, Received, Testing, Pending, or Completed&quot;),</span>
+<span class="fc" id="L71">	LAB_RIGHTS(&quot;(ALLOWED)|(RESTRICTED)&quot;, &quot;Only ALLOWED, or RESTRICTED&quot;),</span>
+<span class="fc" id="L72">	SYSTOLIC_BLOOD_PRESSURE(&quot;^([4-9][0-9]|1[0-9][0-9]|2[0-3][0-9]|240)$&quot;, &quot;Must be between 40 and 240&quot;),</span>
+<span class="fc" id="L73">	DIASTOLIC_BLOOD_PRESSURE(&quot;^([4-9][0-9]|1[0-4][0-9]|150)$&quot;, &quot;Must be between 40 and 150&quot;),</span>
+<span class="fc" id="L74">	GLUCOSE_LEVEL(&quot;^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|250)$&quot;, &quot;Must be between 0 and 250&quot;),</span>
+<span class="fc" id="L75">	PEDOMETER_READING(&quot;^([0-9]{1,10})$&quot;, &quot;Up to ten digit integer&quot;),</span>
+<span class="fc" id="L76">	HEIGHT(&quot;^([0-9]{1,4}\\.[0-9])$&quot;, &quot;Up to 4 digit number and 1 decimal place&quot;),</span>
+<span class="fc" id="L77">	WEIGHT(&quot;^([0-9]{1,4}\\.[0-9])$&quot;, &quot;Up to 4 digit number and 1 decimal place&quot;),</span>
+<span class="fc" id="L78">	ORC(&quot;[\\d]{1,5}&quot;, &quot;Up to five digit integer&quot;),</span>
+<span class="fc" id="L79">	OR_CODE_DESCRIPTION(&quot;[a-zA-Z0-9\\s]{1,80}&quot;, &quot;Up to 80 characters, letters, numbers, and a space&quot;),</span>
+
+<span class="fc" id="L81">	PATIENT_INSTRUCTIONS_NAME(&quot;^[a-zA-Z0-9#;?\\-'.:,!/ \n]{1,100}$&quot;,</span>
+			&quot;Up to 100 alphanumeric characters, with space, and other punctuation&quot;),
+<span class="fc" id="L83">	PATIENT_INSTRUCTIONS_COMMENTS(&quot;^[a-zA-Z0-9#;?\\-'.:,!/ \n]{1,500}$&quot;, </span>
+			&quot;Up to 500 alphanumeric characters, with space, and other punctuation&quot;),
+<span class="fc" id="L85">	PATIENT_INSTRUCTIONS_URL(&quot;^.{1,200}$&quot;,</span>
+			&quot;Up to 200 characters, as a valid URL&quot;),
+<span class="fc" id="L87">	LABPROCEDURE_NUMRESULT_CONTENT(&quot;^[\\-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$&quot;,</span>
+			&quot;A number containing an optional minus sign and an optional decimal point.&quot;),
+<span class="fc" id="L89">	LABPROCEDURE_NUMRESULT_LENGTH(&quot;^.{1,20}$&quot;,</span>
+			&quot;A number containing between 1 and 20 characters, including the optional minus sign and decimal point.&quot;),
+<span class="fc" id="L91">	LABPROCEDURE_COMMENTS(&quot;^[^&lt;&gt;&amp;]{1,500}$&quot;,</span>
+			&quot;Up to 500 characters without newline, less than, greater than, or ampersand.&quot;),
+			
+<span class="fc" id="L94">	REFERRAL_NOTES(&quot;[a-zA-Z0-9\\s'\&quot;?!:;\\-.,_\n\t()\\\\/]{1,500}&quot;,</span>
+			 &quot;Up to 500 alphanumeric characters, with space, and other punctuation&quot;),
+<span class="fc" id="L96">	PRIORITY(&quot;[1-3]&quot;, &quot;Priority must be between 1 and 3&quot;),</span>
+<span class="fc" id="L97">	WEEKS_PREGNANT(&quot;^([0-9]|[1-3][0-9]|4[0-2])-[0-6]{1}$&quot;, &quot;Weeks must be between 0 and 42, Days must be between 0 and 6&quot;),</span>
+<span class="fc" id="L98">	HOURS_LABOR(&quot;[\\d]{0,3}.[\\d]{0,2}&quot;, &quot;Hours in labor must between 0.0 and 999.99&quot;),</span>
+<span class="fc" id="L99">	FHR(&quot;^[0-9]\\d*&quot;, &quot;Must be 0 or positive integer.&quot;),</span>
+<span class="fc" id="L100">	FHU(&quot;^[0-9]*.^[1-9][0-9]*|^[1-9][0-9]*.?[0-9]*$&quot;, &quot;Must be a positive double.&quot;),</span>
+<span class="fc" id="L101">	WEEKS_PREGNANT_OV(&quot;^([0-9]|[1-3][0-9]|4[0-2])-[0-6]{1}$&quot;, &quot;The patient chosen is not a current obstetrics patient&quot;),</span>
+<span class="fc" id="L102">	MEALTYPE(&quot;^(?:Breakfast|Lunch|Snack|Dinner)$&quot;, &quot;must be one of {Breakfast, Lunch, Snack, Dinner}&quot;),</span>
+<span class="fc" id="L103">	EXERCISETYPE(&quot;^(?:Cardio|Weight Training)$&quot;, &quot;must be one of {Cardio, Weight Training}&quot;),</span>
+<span class="fc" id="L104">	SLEEPTYPE(&quot;^(?:Nightly|Nap)$&quot;, &quot;must be one of {Nightly, Nap}&quot;),</span>
+<span class="fc" id="L105">	HEIGHT_OV(&quot;^[0-9]{0,3}(?:\\.[0-9])?$&quot;, &quot;Up to 3 digit number and up to 1 decimal place&quot;),</span>
+<span class="fc" id="L106">	LENGTH_OV(&quot;^[0-9]{0,3}(?:\\.[0-9])?$&quot;, &quot;Up to 3 digit number and up to 1 decimal place&quot;),</span>
+<span class="fc" id="L107">	WEIGHT_OV(&quot;^[0-9]{0,3}(?:\\.[0-9])?$&quot;, &quot;Up to 4 digit number and up to 1 decimal place&quot;),</span>
+<span class="fc" id="L108">	HEAD_CIRCUMFERENCE_OV(&quot;^[0-9]{0,3}(?:\\.[0-9])?$&quot;, &quot;Up to 3 digit number and up to 1 decimal place&quot;),</span>
+<span class="fc" id="L109">	BLOOD_PRESSURE_OV(&quot;^[0-9]{1,3}\\/[0-9]{1,3}$&quot;, &quot;Up to 3-digit number / Up to 3-digit number&quot;),</span>
+<span class="fc" id="L110">	HDL_OV(&quot;^[0-8]?[0-9]$&quot;, &quot;integer less than 90&quot;),</span>
+<span class="fc" id="L111">	TRIGLYCERIDE_OV(&quot;^(?:[1-5][0-9]{2}|600)$&quot;, &quot;integer between 100 and 600&quot;),</span>
+<span class="fc" id="L112">	LDL_OV(&quot;^(?:[1-5]?[0-9]{1,2}|600)$&quot;, &quot;integer between 0 and 600&quot;),</span>
+<span class="fc" id="L113">	HSS_OV(&quot;^[1-3]$&quot;,&quot;1, 2, or 3, representing household smoking status&quot;),</span>
+<span class="fc" id="L114">	PSS_OV(&quot;^[1-59]$&quot;,&quot;1-5 or 9, representing patient smoking status&quot;)</span>
+	;
+
+	private Pattern regex;
+	private String description;
+
+<span class="fc" id="L120">	ValidationFormat(String regex, String errorMessage) {</span>
+<span class="fc" id="L121">		this.regex = Pattern.compile(regex);</span>
+<span class="fc" id="L122">		this.description = errorMessage;</span>
+<span class="fc" id="L123">	}</span>
+
+	public Pattern getRegex() {
+<span class="fc" id="L126">		return regex;</span>
+	}
+
+	public String getDescription() {
+<span class="fc" id="L130">		return description;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptTypeMySQLConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.apptType</a> &gt; <span class="el_source">ApptTypeMySQLConverter.java</span></div><h1>ApptTypeMySQLConverter.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.apptType;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+
+@ManagedBean(name=&quot;appt_type&quot;)
+@SessionScoped
+public class ApptTypeMySQLConverter  implements Serializable, ApptTypeData{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4035629854880598008L;
+	@Resource(name=&quot;jdbc/itrust&quot;)
+	private DataSource ds;
+	private ApptTypeMySQLLoader apptTypeLoader;
+	/**
+	 * @throws DBException 
+	 * 
+	 */
+
+<span class="nc" id="L38">	public ApptTypeMySQLConverter() throws DBException{</span>
+<span class="nc" id="L39">			apptTypeLoader = new ApptTypeMySQLLoader();</span>
+			try {
+<span class="nc" id="L41">				Context ctx = new InitialContext();</span>
+<span class="nc" id="L42">					ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="nc" id="L43">			} catch (NamingException e) {</span>
+<span class="nc" id="L44">				throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot;+e.getMessage()));</span>
+<span class="nc" id="L45">			}</span>
+
+<span class="nc" id="L47">	}</span>
+	
+<span class="fc" id="L49">	public ApptTypeMySQLConverter(DataSource ds){</span>
+<span class="fc" id="L50">		apptTypeLoader = new ApptTypeMySQLLoader();</span>
+<span class="fc" id="L51">		this.ds = ds;</span>
+<span class="fc" id="L52">	}</span>
+	
+	@Override
+	public Map&lt;Long, ApptType&gt; getApptTypeIDs(String name) throws DBException{
+<span class="nc" id="L56">		Map&lt;Long, ApptType&gt; apptRef = null;</span>
+<span class="nc" id="L57">		Connection conn = null;</span>
+<span class="nc" id="L58">		PreparedStatement pstring = null;</span>
+<span class="nc" id="L59">		ResultSet results = null;</span>
+		try{
+<span class="nc" id="L61">			apptRef = new HashMap&lt;Long, ApptType&gt;();</span>
+<span class="nc" id="L62">			conn=ds.getConnection();</span>
+<span class="nc" id="L63">			pstring = conn.prepareStatement(&quot;SELECT * FROM appointmenttype WHERE appt_type=?&quot;);</span>
+		
+<span class="nc" id="L65">			pstring.setString(1, name);</span>
+		
+<span class="nc" id="L67">			results = pstring.executeQuery();</span>
+<span class="nc" id="L68">			apptRef = apptTypeLoader.loadRefList(results);</span>
+	
+		}
+<span class="nc" id="L71">		catch(SQLException e){</span>
+<span class="nc" id="L72">			throw new DBException(e);</span>
+		}
+		 finally {
+<span class="nc" id="L75">				try{</span>
+<span class="nc bnc" id="L76" title="All 4 branches missed.">					if(results !=null){</span>
+<span class="nc" id="L77">						results.close();</span>
+					}
+<span class="nc" id="L79">				} catch (SQLException e) {</span>
+<span class="nc" id="L80">					throw new DBException(e);</span>
+				} finally {
+
+<span class="nc" id="L83">					DBUtil.closeConnection(conn, pstring);</span>
+			
+<span class="nc" id="L85">			}</span>
+<span class="nc" id="L86">		 }</span>
+<span class="nc" id="L87">		return apptRef;</span>
+		
+	}
+
+	@Override
+	public String getApptTypeName(Long id) throws DBException{
+<span class="fc" id="L93">		String apptname = null;</span>
+<span class="fc" id="L94">		Connection conn = null;</span>
+<span class="fc" id="L95">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L96">		ResultSet results = null;</span>
+		try{
+
+<span class="fc" id="L99">			conn=ds.getConnection();</span>
+<span class="fc" id="L100">			pstring = conn.prepareStatement(&quot;SELECT appt_type FROM appointmenttype WHERE apptType_id=?;&quot;);</span>
+		
+<span class="fc" id="L102">			pstring.setLong(1, id);</span>
+		
+<span class="fc" id="L104">			results = pstring.executeQuery();</span>
+			@SuppressWarnings(&quot;unused&quot;) // Check is useful for debugging purposes
+<span class="fc" id="L106">			boolean check = results.next();</span>
+<span class="fc" id="L107">			apptname = results.getString(&quot;appt_type&quot;);</span>
+	
+		}
+<span class="fc" id="L110">		catch(SQLException e){</span>
+<span class="fc" id="L111">			throw new DBException(e);</span>
+		}
+		 finally {
+<span class="fc" id="L114">				try{</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">					if(results !=null){</span>
+<span class="fc" id="L116">						results.close();</span>
+					}
+<span class="nc" id="L118">				} catch (SQLException e) {</span>
+<span class="nc" id="L119">					throw new DBException(e);</span>
+				} finally {
+<span class="pc" id="L121">					DBUtil.closeConnection(conn, pstring);</span>
+<span class="fc" id="L122">				}</span>
+<span class="fc" id="L123">			}</span>
+<span class="fc" id="L124">		return apptname;</span>
+	}
+
+	@Override
+	public List&lt;ApptType&gt; getAll() throws DBException {
+<span class="fc" id="L129">		List&lt;ApptType&gt; ret = null;</span>
+<span class="fc" id="L130">		Connection conn = null;</span>
+<span class="fc" id="L131">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L132">		ResultSet results = null;</span>
+		try{
+<span class="fc" id="L134">			conn=ds.getConnection();</span>
+<span class="fc" id="L135">			pstring = conn.prepareStatement(&quot;SELECT * FROM appointmenttype;&quot;);</span>
+		
+<span class="fc" id="L137">			results = pstring.executeQuery();</span>
+<span class="fc" id="L138">			ret = apptTypeLoader.loadList(results);</span>
+	
+		}
+<span class="nc" id="L141">		catch(SQLException e){</span>
+<span class="nc" id="L142">			throw new DBException(e);</span>
+		}
+		 finally {
+<span class="nc" id="L145">				try{</span>
+<span class="pc bpc" id="L146" title="3 of 4 branches missed.">					if(results !=null){</span>
+<span class="pc" id="L147">						results.close();</span>
+					}
+<span class="nc" id="L149">				} catch (SQLException e) {</span>
+<span class="nc" id="L150">					throw new DBException(e);</span>
+				} finally {
+
+<span class="pc" id="L153">					DBUtil.closeConnection(conn, pstring);</span>
+					
+<span class="pc" id="L155">				}</span>
+<span class="fc" id="L156">			}</span>
+<span class="fc" id="L157">		return ret;</span>
+	}
+
+	@Override
+	public ApptType getByID(long id) throws DBException {
+<span class="nc" id="L162">		ApptType ret = null;</span>
+<span class="nc" id="L163">		Connection conn = null;</span>
+<span class="nc" id="L164">		PreparedStatement pstring = null;</span>
+<span class="nc" id="L165">		ResultSet results = null;</span>
+		try{
+
+<span class="nc" id="L168">			conn=ds.getConnection();</span>
+<span class="nc" id="L169">			pstring = conn.prepareStatement(&quot;SELECT * FROM appointmenttype WHERE apptType_id=?;&quot;);</span>
+		
+<span class="nc" id="L171">			pstring.setLong(1, id);</span>
+		
+<span class="nc" id="L173">			results = pstring.executeQuery();</span>
+<span class="nc" id="L174">			results.next();</span>
+<span class="nc" id="L175">			ret = apptTypeLoader.loadSingle(results);</span>
+		
+		}
+<span class="nc" id="L178">		catch(SQLException e){</span>
+<span class="nc" id="L179">			throw new DBException(e);</span>
+		}
+		 finally {
+<span class="nc" id="L182">				try{</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">					if(results !=null){</span>
+<span class="nc" id="L184">						results.close();</span>
+					}
+<span class="nc" id="L186">				} catch (SQLException e) {</span>
+<span class="nc" id="L187">					throw new DBException(e);</span>
+				} finally {
+<span class="nc" id="L189">					DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L190">				}</span>
+<span class="nc" id="L191">			}</span>
+<span class="nc" id="L192">		return ret;</span>
+	}
+
+	@Override
+	public boolean add(ApptType at) throws DBException {
+<span class="nc" id="L197">		boolean retval = false;</span>
+<span class="nc" id="L198">		Connection conn = null;</span>
+<span class="nc" id="L199">		PreparedStatement pstring = null;</span>
+		int results;
+		try {
+<span class="nc" id="L202">			conn = ds.getConnection();</span>
+<span class="nc" id="L203">			pstring = apptTypeLoader.loadParameters(conn, pstring, at, true);</span>
+<span class="nc" id="L204">			results = pstring.executeUpdate();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">			retval = (results &gt;0);</span>
+		}
+<span class="nc" id="L207">		catch(SQLException e){</span>
+<span class="nc" id="L208">			throw new DBException(e);</span>
+			
+		}
+		finally{
+
+<span class="nc" id="L213">			DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L214">		}</span>
+<span class="nc" id="L215">		return retval;</span>
+	}
+
+	@Override
+	public boolean update(ApptType at) throws DBException {
+<span class="nc" id="L220">		boolean retval = false;</span>
+<span class="nc" id="L221">		Connection conn = null;</span>
+<span class="nc" id="L222">		PreparedStatement pstring = null;</span>
+
+		int results;
+		try {
+<span class="nc" id="L226">			conn = ds.getConnection();</span>
+<span class="nc" id="L227">			pstring = apptTypeLoader.loadParameters(conn, pstring, at, false);</span>
+<span class="nc" id="L228">			results = pstring.executeUpdate();</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			retval = (results &gt;0);</span>
+		}
+<span class="nc" id="L231">		catch(SQLException e){</span>
+<span class="nc" id="L232">			throw new DBException(e);</span>
+			
+		}
+		finally{
+
+<span class="nc" id="L237">			DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L238">		}</span>
+<span class="nc" id="L239">		return retval;</span>
+	}
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

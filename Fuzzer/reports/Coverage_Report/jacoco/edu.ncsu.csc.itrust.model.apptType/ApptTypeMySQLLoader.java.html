@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptTypeMySQLLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.apptType</a> &gt; <span class="el_source">ApptTypeMySQLLoader.java</span></div><h1>ApptTypeMySQLLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.apptType;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import edu.ncsu.csc.itrust.model.SQLLoader;
+
+<span class="fc" id="L14">public class ApptTypeMySQLLoader implements SQLLoader&lt;ApptType&gt; {</span>
+
+	@Override
+	public List&lt;ApptType&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L18">		List&lt;ApptType&gt; list = new ArrayList&lt;ApptType&gt;();</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">		while (rs.next())</span>
+<span class="fc" id="L20">			list.add(loadSingle(rs));</span>
+<span class="fc" id="L21">		return list;</span>
+	}
+
+	@Override
+	public ApptType loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L26">		ApptType apptType = new ApptType();</span>
+<span class="fc" id="L27">		apptType.setName(rs.getString(&quot;appt_type&quot;));</span>
+<span class="fc" id="L28">		apptType.setDuration(rs.getInt(&quot;duration&quot;));</span>
+<span class="fc" id="L29">		apptType.setID(rs.getLong(&quot;apptType_id&quot;));</span>
+<span class="fc" id="L30">		apptType.setPrice(rs.getInt(&quot;price&quot;));</span>
+<span class="fc" id="L31">		return apptType;</span>
+	}
+	
+	public Map&lt;Long, ApptType&gt; loadRefList(ResultSet rs) throws SQLException {
+<span class="nc" id="L35">		Map&lt;Long,ApptType&gt; map = new HashMap&lt;Long,ApptType&gt;();</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">		while (rs.next()) {</span>
+			long id; 
+<span class="nc" id="L38">			id= rs.getLong(&quot;apptType_id&quot;);</span>
+<span class="nc" id="L39">			map.put(id,loadSingle(rs));</span>
+<span class="nc" id="L40">		}</span>
+<span class="nc" id="L41">		return map;</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, ApptType at,
+			boolean newInstance) throws SQLException {
+		
+<span class="nc" id="L48">		String stmt = &quot;&quot;;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">		if (newInstance) {</span>
+<span class="nc" id="L50">			stmt = &quot;INSERT INTO appointmenttype(apptType_id, appt_type, duration, price) &quot;</span>
+					+ &quot;VALUES (? ,?, ?, ?);&quot;;
+
+		} else {
+<span class="nc" id="L54">			long id = at.getID();</span>
+<span class="nc" id="L55">			stmt = &quot;UPDATE officeVisit SET apptType_i=?, &quot;</span>
+					+ &quot;appt_type=?, &quot;
+					+ &quot;duration=?, &quot;
+					+ &quot;price=? &quot;
+					+ &quot;WHERE apptType_id=&quot; + id + &quot;;&quot;;
+		}
+<span class="nc" id="L61">		ps = conn.prepareStatement(stmt);</span>
+<span class="nc" id="L62">		ps.setLong(1, at.getID());</span>
+<span class="nc" id="L63">		ps.setString(2, at.getName());</span>
+<span class="nc" id="L64">		ps.setInt(3, at.getDuration());</span>
+<span class="nc" id="L65">		ps.setInt(4,at.getPrice());</span>
+<span class="nc" id="L66">		return ps;</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

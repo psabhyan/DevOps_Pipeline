@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HtmlEncoder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust</a> &gt; <span class="el_source">HtmlEncoder.java</span></div><h1>HtmlEncoder.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust;
+
+/**
+ * Escapes a few key HTML characters and does some other checking
+ * 
+ *  
+ * 
+ */
+<span class="nc" id="L9">public class HtmlEncoder {</span>
+	/**
+	 *  Escapes a few key HTML characters
+	 * @param input String to check and escape
+	 * @return
+	 */
+	public static String encode(String input) {
+<span class="fc bfc" id="L16" title="All 2 branches covered.">		if (input == null)</span>
+<span class="fc" id="L17">			return input;</span>
+<span class="fc" id="L18">		String str = input.replaceAll(&quot;&lt;&quot;, &quot;&amp;lt;&quot;);</span>
+<span class="fc" id="L19">		str = str.replaceAll(&quot;&gt;&quot;, &quot;&amp;gt;&quot;);</span>
+<span class="fc" id="L20">		str = str.replaceAll(&quot;\n&quot;, &quot;&lt;br /&gt;&quot;);</span>
+<span class="fc" id="L21">		return str;</span>
+	}
+
+	/**
+	 * Checks URL
+	 * 
+	 * @param input URL to check
+	 * @return false if the input contains http://, true otherwise
+	 */
+	public static boolean URLOnSite(String input) {
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">		return !(input.contains(&quot;http://&quot;));</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BillingDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">BillingDAO.java</span></div><h1>BillingDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.BillingBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.BillingBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * this class is used to interact with the datbaase to add, get, edit, or remove
+ * bills
+ */
+public class BillingDAO {
+
+	/** DAOfactory used to make a BillingDAO */
+	private transient final DAOFactory factory;
+	/** used to get load things into the database or from the database */
+	private transient final BillingBeanLoader bbloader;
+
+	/**
+	 * makes a new BillingDAO
+	 * 
+	 * @param factory
+	 *            the DAOfactory used to make a BillingDAO
+	 */
+<span class="fc" id="L34">	public BillingDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L35">		this.factory = factory;</span>
+<span class="fc" id="L36">		this.bbloader = new BillingBeanLoader();</span>
+<span class="fc" id="L37">	}</span>
+
+	/**
+	 * adds a bill to the database
+	 * 
+	 * @param bill
+	 *            the bill being added to the database
+	 * @return
+	 * @throws DBException
+	 */
+	public long addBill(final BillingBean bill) throws DBException {
+<span class="pc" id="L48">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L49">				PreparedStatement stmt = this.bbloader.loadParameters(</span>
+<span class="fc" id="L50">						conn.prepareStatement(</span>
+								&quot;INSERT INTO billing (appt_id, PatientID, HCPID, amt, status, ccHolderName, billingAddress, ccType, ccNumber, cvv, insHolderName, insID, insProviderName, insAddress1, insAddress2, insCity, insState, insZip, insPhone, submissions, billTimeS) &quot;
+										+ &quot;VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)&quot;),
+						bill)) {
+<span class="fc" id="L54">			stmt.setDate(21, new java.sql.Date(new Date().getTime()));</span>
+<span class="fc" id="L55">			stmt.executeUpdate();</span>
+<span class="fc" id="L56">			return DBUtil.getLastInsert(conn);</span>
+<span class="pc bpc" id="L57" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L58">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the bill with a specific billID.
+	 * 
+	 * @param billID
+	 *            The ID of the bill
+	 * @return The bill with the id.
+	 * @throws DBException
+	 */
+	public BillingBean getBillId(long billID) throws DBException {
+<span class="fc" id="L71">		BillingBean bill = null;</span>
+<span class="pc" id="L72">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L73">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM billing WHERE billID=?&quot;);) {</span>
+<span class="fc" id="L74">			stmt.setLong(1, billID);</span>
+<span class="fc" id="L75">			ResultSet rs = stmt.executeQuery();</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">			if (rs.next()) {</span>
+<span class="fc" id="L77">				bill = this.bbloader.loadSingle(rs);</span>
+			}
+<span class="fc" id="L79">			rs.close();</span>
+<span class="pc bpc" id="L80" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L81">			throw new DBException(e);</span>
+<span class="fc" id="L82">		}</span>
+<span class="fc" id="L83">		return bill;</span>
+	}
+
+	/**
+	 * Returns a bill for a specific office visit.
+	 * 
+	 * @param billID
+	 *            The office visit id that I am looking for.
+	 * @return The bill for that visit.
+	 * @throws DBException
+	 */
+	public BillingBean getBillWithOVId(long billID) throws DBException {
+<span class="fc" id="L95">		BillingBean bill = null;</span>
+<span class="pc" id="L96">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L97">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM billing WHERE appt_id=?&quot;)) {</span>
+<span class="fc" id="L98">			stmt.setLong(1, billID);</span>
+<span class="fc" id="L99">			ResultSet rs = stmt.executeQuery();</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">			if (rs.next()) {</span>
+<span class="fc" id="L101">				bill = this.bbloader.loadSingle(rs);</span>
+			}
+<span class="fc" id="L103">			rs.close();</span>
+<span class="pc bpc" id="L104" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L105">			throw new DBException(e);</span>
+<span class="fc" id="L106">		}</span>
+<span class="fc" id="L107">		return bill;</span>
+	}
+
+	/**
+	 * gets a list of billing beans of all the bills from the database for the
+	 * given patient id
+	 * 
+	 * @param mid
+	 *            the patient id
+	 * @return the list of bills for the given patient id
+	 * @throws DBException
+	 */
+	public List&lt;BillingBean&gt; getBills(long mid) throws DBException {
+<span class="pc" id="L120">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L121">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM billing WHERE patientID=?&quot;)) {</span>
+<span class="fc" id="L122">			stmt.setLong(1, mid);</span>
+
+<span class="fc" id="L124">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L125">			final List&lt;BillingBean&gt; bList = this.bbloader.loadList(results);</span>
+<span class="fc" id="L126">			results.close();</span>
+<span class="fc" id="L127">			return bList;</span>
+<span class="pc bpc" id="L128" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L129">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get a list of the patient's unpaid bills
+	 * 
+	 * @param mid
+	 * @return list of BillingBeans where status is Unsubmitted
+	 * @throws DBException
+	 */
+	public List&lt;BillingBean&gt; getUnpaidBills(long mid) throws DBException {
+<span class="pc" id="L141">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L142">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L143">						.prepareStatement(&quot;SELECT * FROM billing WHERE patientID=? and status='Unsubmitted'&quot;)) {</span>
+<span class="fc" id="L144">			stmt.setLong(1, mid);</span>
+
+<span class="fc" id="L146">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L147">			final List&lt;BillingBean&gt; bList = this.bbloader.loadList(results);</span>
+<span class="fc" id="L148">			results.close();</span>
+<span class="fc" id="L149">			return bList;</span>
+<span class="pc bpc" id="L150" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L151">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Get a list of the bills paid with insurance.
+	 * 
+	 * @param mid
+	 * @return list of BillingBeans where paid by insurance.
+	 * @throws DBException
+	 */
+	public List&lt;BillingBean&gt; getInsuranceBills() throws DBException {
+		final List&lt;BillingBean&gt; bList;
+<span class="pc" id="L164">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L165">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L166">						.prepareStatement(&quot;SELECT * FROM billing WHERE isInsurance=1 ORDER BY subTime DESC&quot;)) {</span>
+<span class="fc" id="L167">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L168">			bList = this.bbloader.loadList(results);</span>
+<span class="fc" id="L169">			results.close();</span>
+<span class="pc bpc" id="L170" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L171">			throw new DBException(e);</span>
+<span class="fc" id="L172">		}</span>
+<span class="fc" id="L173">		return bList;</span>
+	}
+
+	/**
+	 * Edits the bill giving as a parameter in the database
+	 * 
+	 * @param bill
+	 *            the bill that needs to be edited(already with the edit)
+	 * @throws DBException
+	 */
+	public void editBill(final BillingBean bill) throws DBException {
+<span class="pc" id="L184">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L185">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;UPDATE billing SET appt_id=?, patientID=?, HCPID=?, amt=?, status=?, ccHolderName=?, billingAddress=?, ccType=?, ccNumber=?, cvv=?, insHolderName=?, insID=?, insProviderName=?, insAddress1=?, insAddress2=?, insCity=?, insState=?, insZip=?, insPhone=?, submissions=?, isInsurance=?, subTime=? WHERE billID=?&quot;)) {
+<span class="fc" id="L187">			stmt.setInt(23, bill.getBillID());</span>
+<span class="fc" id="L188">			this.bbloader.loadParameters(stmt, bill);</span>
+<span class="fc" id="L189">			stmt.setString(22,</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">					bill.getSubTime() != null ? bill.getSubTime().toString() : new Timestamp(0).toString());</span>
+<span class="fc" id="L191">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L192" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L193">			throw new DBException(e);</span>
+<span class="fc" id="L194">		}</span>
+<span class="fc" id="L195">	}</span>
+
+	/**
+	 * Removes a bill from the database
+	 * 
+	 * @param bill
+	 *            the bill that needs to be deleted
+	 * @throws DBException
+	 */
+	public void removeBill(final BillingBean bill) throws DBException {
+<span class="pc" id="L205">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L206">				PreparedStatement stmt = conn.prepareStatement(&quot;DELETE FROM billing WHERE billID=?&quot;)) {</span>
+<span class="fc" id="L207">			stmt.setInt(1, bill.getBillID());</span>
+<span class="fc" id="L208">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L209" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L210">			throw new DBException(e);</span>
+<span class="fc" id="L211">		}</span>
+<span class="fc" id="L212">	}</span>
+
+	/**
+	 * getPendingNum gets the number of pending bills.
+	 * 
+	 * @return the nubmer of pending bills.
+	 * @throws DBException
+	 */
+	public int getPendingNum() throws DBException {
+<span class="fc" id="L221">		int result = 0;</span>
+<span class="pc" id="L222">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L223">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT COUNT(*) FROM billing WHERE status='Pending' ORDER BY subTime DESC&quot;)) {
+<span class="fc" id="L225">			final ResultSet results = stmt.executeQuery();</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">			if (results.next())</span>
+<span class="fc" id="L227">				result = results.getInt(1);</span>
+<span class="fc" id="L228">			results.close();</span>
+<span class="pc bpc" id="L229" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L230">			throw new DBException(e);</span>
+<span class="fc" id="L231">		}</span>
+<span class="fc" id="L232">		return result;</span>
+	}
+
+	/**
+	 * getDeniedNum gets the number of your denied bills.
+	 * 
+	 * @param mid
+	 *            Your Medical id.
+	 * @return the nubmer of your denied bills.
+	 * @throws DBException
+	 */
+	public int getDeniedNum(long mid) throws DBException {
+<span class="fc" id="L244">		int result = 0;</span>
+<span class="pc" id="L245">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L246">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT COUNT(*) FROM billing WHERE status='Denied' AND PatientID=? ORDER BY subTime DESC&quot;)) {
+<span class="fc" id="L248">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L249">			final ResultSet results = stmt.executeQuery();</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">			if (results.next()) {</span>
+<span class="fc" id="L251">				result = results.getInt(1);</span>
+			}
+<span class="fc" id="L253">			results.close();</span>
+<span class="pc bpc" id="L254" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L255">			throw new DBException(e);</span>
+<span class="fc" id="L256">		}</span>
+<span class="fc" id="L257">		return result;</span>
+	}
+
+	/**
+	 * getDeniedNum gets the number of your denied bills.
+	 * 
+	 * @param mid
+	 *            Your Medical id.
+	 * @return the nubmer of your denied bills.
+	 * @throws DBException
+	 */
+	public int getApprovedNum(long mid) throws DBException {
+<span class="fc" id="L269">		int result = 0;</span>
+<span class="pc" id="L270">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L271">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT COUNT(*) FROM billing WHERE status='Approved' AND PatientID=? ORDER BY subTime DESC&quot;)) {
+<span class="fc" id="L273">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L274">			final ResultSet results = stmt.executeQuery();</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">			if (results.next())</span>
+<span class="fc" id="L276">				result = results.getInt(1);</span>
+<span class="fc" id="L277">			results.close();</span>
+<span class="pc bpc" id="L278" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L279">			throw new DBException(e);</span>
+<span class="fc" id="L280">		}</span>
+<span class="fc" id="L281">		return result;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

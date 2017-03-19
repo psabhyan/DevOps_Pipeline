@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmunizationSQLLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.immunization</a> &gt; <span class="el_source">ImmunizationSQLLoader.java</span></div><h1>ImmunizationSQLLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.immunization;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.mysql.jdbc.Statement;
+
+import edu.ncsu.csc.itrust.model.SQLLoader;
+import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
+
+<span class="fc" id="L15">public class ImmunizationSQLLoader implements SQLLoader&lt;Immunization&gt; { </span>
+
+	@Override
+	public List&lt;Immunization&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L19">		List&lt;Immunization&gt; list = new LinkedList&lt;Immunization&gt;();</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L21">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L23">		return list;</span>
+	}
+
+	@Override
+	public Immunization loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L28">		long id = rs.getLong(&quot;id&quot;);</span>
+<span class="fc" id="L29">		long visitId = rs.getLong(&quot;visitId&quot;);</span>
+<span class="fc" id="L30">		String cptCode = rs.getString(&quot;cptCode&quot;);</span>
+<span class="fc" id="L31">		String name = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L32">		return new Immunization(id, visitId, new CPTCode(cptCode, name));</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Immunization insertObject,
+			boolean newInstance) throws SQLException {
+<span class="fc" id="L38">		String stmt = &quot;&quot;;</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if( newInstance ){ // IS NEW CODE</span>
+<span class="fc" id="L40">			stmt = &quot;INSERT INTO immunization(visitId, cptcode) &quot;</span>
+					+ &quot;VALUES (?, ?);&quot;;
+		} else { // NOT NEW
+<span class="fc" id="L43">			long id = insertObject.getId();</span>
+<span class="fc" id="L44">			stmt = &quot;UPDATE immunization SET  &quot;</span>
+					+ &quot;visitId=?, &quot;
+					+ &quot;cptcode=? &quot;
+					+ &quot;WHERE id=&quot; + id + &quot;;&quot;;
+		}
+		
+<span class="fc" id="L50">		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);</span>
+<span class="fc" id="L51">		ps.setLong( 1, insertObject.getVisitId() );</span>
+<span class="fc" id="L52">		ps.setString( 2,  insertObject.getCptCode().getCode() );</span>
+		
+<span class="fc" id="L54">		return ps;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

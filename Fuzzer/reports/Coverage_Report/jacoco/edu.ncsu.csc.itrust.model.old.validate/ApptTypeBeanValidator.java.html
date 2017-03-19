@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptTypeBeanValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.validate</a> &gt; <span class="el_source">ApptTypeBeanValidator.java</span></div><h1>ApptTypeBeanValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.validate;
+
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.ApptTypeBean;
+
+<span class="fc" id="L7">public class ApptTypeBeanValidator extends BeanValidator&lt;ApptTypeBean&gt; {</span>
+
+	@Override
+	public void validate(ApptTypeBean a) throws FormValidationException {
+<span class="fc" id="L11">		ErrorList errorList = new ErrorList();</span>
+<span class="fc" id="L12">		errorList.addIfNotNull(checkFormat(&quot;Appointment Type Name&quot;, a.getName(), ValidationFormat.APPT_TYPE_NAME, false));</span>
+<span class="fc" id="L13">		errorList.addIfNotNull(checkFormat(&quot;Appointment Type Duration&quot;, a.getDuration()+&quot;&quot;, ValidationFormat.APPT_TYPE_DURATION, false));</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">		if(a.getDuration()&lt;=0){</span>
+<span class="fc" id="L15">			errorList.addIfNotNull(&quot;Appointment duration must be greater than zero.&quot;);</span>
+		}
+<span class="fc bfc" id="L17" title="All 2 branches covered.">		if (errorList.hasErrors())</span>
+<span class="fc" id="L18">			throw new FormValidationException(errorList);</span>
+<span class="fc" id="L19">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

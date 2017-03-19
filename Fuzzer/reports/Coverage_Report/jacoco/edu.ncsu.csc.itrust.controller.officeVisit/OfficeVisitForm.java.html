@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OfficeVisitForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.officeVisit</a> &gt; <span class="el_source">OfficeVisitForm.java</span></div><h1>OfficeVisitForm.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.officeVisit;
+
+import java.time.LocalDateTime;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import edu.ncsu.csc.itrust.model.ValidationFormat;
+import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+@ManagedBean(name = &quot;office_visit_form&quot;)
+@ViewScoped
+public class OfficeVisitForm {
+	private OfficeVisitController controller;
+	private OfficeVisit ov;
+	private Long visitID;
+	private Long patientMID;
+	private LocalDateTime date;
+	private String locationID;
+	private Long apptTypeID;
+	private String notes;
+	private Boolean sendBill;
+	private Float height;
+	private Float length;
+	private Float weight;
+	private Float headCircumference;
+	private String bloodPressure;
+	private Integer hdl;
+	private Integer triglyceride;
+	private Integer ldl;
+	private Integer householdSmokingStatus;
+	private Integer patientSmokingStatus;
+
+	public Long getVisitID() {
+<span class="fc" id="L40">		return visitID;</span>
+	}
+
+	public void setVisitID(Long visitID) {
+<span class="fc" id="L44">		this.visitID = visitID;</span>
+<span class="fc" id="L45">	}</span>
+
+	public Long getPatientMID() {
+<span class="fc" id="L48">		return patientMID;</span>
+	}
+
+	public void setPatientMID(Long patientMID) {
+<span class="fc" id="L52">		this.patientMID = patientMID;</span>
+<span class="fc" id="L53">	}</span>
+
+	public LocalDateTime getDate() {
+<span class="fc" id="L56">		return date;</span>
+	}
+
+	public void setDate(LocalDateTime date) {
+<span class="fc" id="L60">		this.date = date;</span>
+<span class="fc" id="L61">	}</span>
+
+	public String getLocationID() {
+<span class="fc" id="L64">		return locationID;</span>
+	}
+
+	public void setLocationID(String locationID) {
+<span class="fc" id="L68">		this.locationID = locationID;</span>
+<span class="fc" id="L69">	}</span>
+
+	public Long getApptTypeID() {
+<span class="fc" id="L72">		return apptTypeID;</span>
+	}
+
+	public void setApptTypeID(Long apptTypeID) {
+<span class="fc" id="L76">		this.apptTypeID = apptTypeID;</span>
+<span class="fc" id="L77">	}</span>
+
+	public String getNotes() {
+<span class="fc" id="L80">		return notes;</span>
+	}
+
+	public void setNotes(String notes) {
+<span class="fc" id="L84">		this.notes = notes;</span>
+<span class="fc" id="L85">	}</span>
+
+	public Boolean getSendBill() {
+<span class="fc" id="L88">		return sendBill;</span>
+	}
+
+	public void setSendBill(Boolean sendBill) {
+<span class="fc" id="L92">		this.sendBill = sendBill;</span>
+<span class="fc" id="L93">	}</span>
+
+	/**
+	 * Returns the Height recorded at the office visit.
+	 * 
+	 * @return the Height recorded at the office visit.
+	 */
+	public Float getHeight() {
+<span class="fc" id="L101">		return height;</span>
+	}
+
+	/**
+	 * Sets the height recorded at the office visit.
+	 * 
+	 * @param height
+	 *            The height recorded at the office visit
+	 */
+	public void setHeight(Float height) {
+<span class="fc" id="L111">		this.height = height;</span>
+<span class="fc" id="L112">	}</span>
+
+	/**
+	 * Gets the length recorded at the office visit.
+	 * 
+	 * @param length
+	 *            The height recorded at the office visit
+	 */
+	public Float getLength() {
+<span class="fc" id="L121">		return length;</span>
+	}
+
+	/**
+	 * Sets the length recorded at the office visit.
+	 * 
+	 * @param length
+	 *            The height recorded at the office visit
+	 */
+	public void setLength(Float length) {
+<span class="fc" id="L131">		this.length = length;</span>
+<span class="fc" id="L132">	}</span>
+
+	/**
+	 * Returns the weight recorded at the office visit.
+	 * 
+	 * @return the weight recorded at the office visit.
+	 */
+	public Float getWeight() {
+<span class="fc" id="L140">		return weight;</span>
+	}
+
+	/**
+	 * @param weight
+	 *            the weight to set
+	 */
+	public void setWeight(Float weight) {
+<span class="fc" id="L148">		this.weight = weight;</span>
+<span class="fc" id="L149">	}</span>
+
+	/**
+	 * Returns the head circumference measured at the office visit.
+	 * 
+	 * @return the headCircumference
+	 */
+	public Float getHeadCircumference() {
+<span class="fc" id="L157">		return headCircumference;</span>
+	}
+
+	/**
+	 * @param headCircumference
+	 *            the headCircumference to set
+	 */
+	public void setHeadCircumference(Float headCircumference) {
+<span class="fc" id="L165">		this.headCircumference = headCircumference;</span>
+<span class="fc" id="L166">	}</span>
+
+	/**
+	 * Returns the blood pressure measured at the office visit.
+	 * 
+	 * @return the bloodPressure
+	 */
+	public String getBloodPressure() {
+<span class="fc" id="L174">		return bloodPressure;</span>
+	}
+
+	/**
+	 * @param bloodPressure
+	 *            the bloodPressure to set
+	 */
+	public void setBloodPressure(String bloodPressure) {
+<span class="fc" id="L182">		this.bloodPressure = bloodPressure;</span>
+<span class="fc" id="L183">	}</span>
+
+	/**
+	 * Returns the HDL cholesterol level measured at the office visit.
+	 * 
+	 * @return the hdl
+	 */
+	public Integer getHDL() {
+<span class="fc" id="L191">		return hdl;</span>
+	}
+
+	/**
+	 * @param hdl
+	 *            the hdl to set
+	 */
+	public void setHDL(Integer hdl) {
+<span class="fc" id="L199">		this.hdl = hdl;</span>
+<span class="fc" id="L200">	}</span>
+
+	/**
+	 * Returns the triglyceride cholesterol level measured at the office visit.
+	 * 
+	 * @return the triglyceride
+	 */
+	public Integer getTriglyceride() {
+<span class="fc" id="L208">		return triglyceride;</span>
+	}
+
+	/**
+	 * @param triglyceride
+	 *            the triglyceride to set
+	 */
+	public void setTriglyceride(Integer triglyceride) {
+<span class="fc" id="L216">		this.triglyceride = triglyceride;</span>
+<span class="fc" id="L217">	}</span>
+
+	/**
+	 * Returns the LDL cholesterol level measured at the office visit.
+	 * 
+	 * @return the ldl
+	 */
+	public Integer getLDL() {
+<span class="fc" id="L225">		return ldl;</span>
+	}
+
+	/**
+	 * @param ldl
+	 *            the ldl to set
+	 */
+	public void setLDL(Integer ldl) {
+<span class="fc" id="L233">		this.ldl = ldl;</span>
+<span class="fc" id="L234">	}</span>
+
+	/**
+	 * Returns the household smoking status indicated at the office visit.
+	 * 
+	 * @return the householdSmokingStatus
+	 */
+	public Integer getHouseholdSmokingStatus() {
+<span class="fc" id="L242">		return householdSmokingStatus;</span>
+	}
+
+	/**
+	 * @param householdSmokingStatus
+	 *            the householdSmokingStatus to set
+	 */
+	public void setHouseholdSmokingStatus(Integer householdSmokingStatus) {
+<span class="fc" id="L250">		this.householdSmokingStatus = householdSmokingStatus;</span>
+<span class="fc" id="L251">	}</span>
+
+	/**
+	 * Returns the patient smoking status indicated at the office visit.
+	 * 
+	 * @return the patientSmokingStatus
+	 */
+	public Integer getPatientSmokingStatus() {
+<span class="fc" id="L259">		return patientSmokingStatus;</span>
+	}
+
+	/**
+	 * @param patientSmokingStatus
+	 *            the patientSmokingStatus to set
+	 */
+	public void setPatientSmokingStatus(Integer patientSmokingStatus) {
+<span class="fc" id="L267">		this.patientSmokingStatus = patientSmokingStatus;</span>
+<span class="fc" id="L268">	}</span>
+
+	/**
+	 * Default constructor for OfficeVisitForm.
+	 */
+	public OfficeVisitForm() {
+<span class="nc" id="L274">		this(null);</span>
+<span class="nc" id="L275">	}</span>
+
+	/**
+	 * Constructor for OfficeVisitForm for testing purpses.
+	 */
+<span class="fc" id="L280">	public OfficeVisitForm(OfficeVisitController ovc) {</span>
+		try {
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">			controller = (ovc == null) ? new OfficeVisitController() : ovc;</span>
+<span class="fc" id="L283">			ov = controller.getSelectedVisit();</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">			if (ov == null) {</span>
+<span class="nc" id="L285">				ov = new OfficeVisit();</span>
+			}
+			try {
+<span class="nc" id="L288">				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(&quot;officeVisitId&quot;, ov.getVisitID());</span>
+<span class="fc" id="L289">			} catch (NullPointerException e) {</span>
+				// Do nothing
+<span class="nc" id="L291">			}</span>
+<span class="fc" id="L292">			visitID = ov.getVisitID();</span>
+<span class="fc" id="L293">			patientMID = ov.getPatientMID();</span>
+<span class="pc bpc" id="L294" title="1 of 2 branches missed.">			if (patientMID == null) {</span>
+<span class="nc" id="L295">				patientMID = Long.parseLong(</span>
+<span class="nc" id="L296">				(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(&quot;pid&quot;));</span>
+			}
+<span class="fc" id="L298">			date = ov.getDate();</span>
+<span class="fc" id="L299">			locationID = ov.getLocationID();</span>
+<span class="fc" id="L300">			apptTypeID = ov.getApptTypeID();</span>
+<span class="fc" id="L301">			sendBill = ov.getSendBill();</span>
+<span class="fc" id="L302">			notes = ov.getNotes();</span>
+			
+<span class="fc" id="L304">			height = ov.getHeight();</span>
+<span class="fc" id="L305">			length = ov.getLength();</span>
+<span class="fc" id="L306">			weight = ov.getWeight();</span>
+<span class="fc" id="L307">			headCircumference = ov.getHeadCircumference();</span>
+<span class="fc" id="L308">			bloodPressure = ov.getBloodPressure();</span>
+<span class="fc" id="L309">			hdl = ov.getHDL();</span>
+<span class="fc" id="L310">			triglyceride = ov.getTriglyceride();</span>
+<span class="fc" id="L311">			ldl = ov.getLDL();</span>
+<span class="fc" id="L312">			householdSmokingStatus = ov.getHouseholdSmokingStatus();</span>
+<span class="fc" id="L313">			patientSmokingStatus = ov.getPatientSmokingStatus();</span>
+
+<span class="nc" id="L315">		} catch (Exception e) {</span>
+<span class="nc" id="L316">			FacesMessage throwMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Office Visit Controller Error&quot;,</span>
+					&quot;Office Visit Controller Error&quot;);
+<span class="nc" id="L318">			FacesContext.getCurrentInstance().addMessage(null, throwMsg);</span>
+<span class="fc" id="L319">		}</span>
+<span class="fc" id="L320">	}</span>
+	
+	/**
+	 * Called when user clicks on the submit button in officeVisitInfo.xhtml. Takes data from form
+	 * and sends to OfficeVisitMySQLLoader.java for storage and validation
+	 */
+	public void submit() {
+<span class="fc" id="L327">		ov.setApptTypeID(apptTypeID);</span>
+<span class="fc" id="L328">		ov.setDate(date);</span>
+<span class="fc" id="L329">		ov.setLocationID(locationID);</span>
+<span class="fc" id="L330">		ov.setNotes(notes);</span>
+<span class="fc" id="L331">		ov.setSendBill(sendBill);</span>
+<span class="fc" id="L332">		ov.setPatientMID(patientMID);</span>
+		
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">		if (isOfficeVisitCreated()) {</span>
+<span class="fc" id="L335">			controller.edit(ov);</span>
+<span class="fc" id="L336">			controller.logTransaction(TransactionType.OFFICE_VISIT_EDIT, ov.getVisitID().toString());</span>
+		} else {
+<span class="nc" id="L338">			long pid = -1;</span>
+			
+<span class="nc" id="L340">			FacesContext ctx = FacesContext.getCurrentInstance();</span>
+
+<span class="nc" id="L342">			String patientID = &quot;&quot;;</span>
+			
+<span class="nc bnc" id="L344" title="All 2 branches missed.">			if (ctx.getExternalContext().getRequest() instanceof HttpServletRequest) {</span>
+<span class="nc" id="L345">				HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();</span>
+<span class="nc" id="L346">				HttpSession httpSession = req.getSession(false);</span>
+<span class="nc" id="L347">				patientID = (String) httpSession.getAttribute(&quot;pid&quot;);</span>
+			}
+<span class="nc bnc" id="L349" title="All 2 branches missed.">			if (ValidationFormat.NPMID.getRegex().matcher(patientID).matches()) {</span>
+<span class="nc" id="L350">				pid = Long.parseLong(patientID);</span>
+			}
+			
+<span class="nc" id="L353">			ov.setPatientMID(pid);</span>
+<span class="nc" id="L354">			ov.setVisitID(null);</span>
+<span class="nc" id="L355">			long generatedVisitId = controller.addReturnGeneratedId(ov);</span>
+<span class="nc" id="L356">			setVisitID(generatedVisitId);</span>
+<span class="nc" id="L357">			ov.setVisitID(generatedVisitId);</span>
+<span class="nc" id="L358">			controller.logTransaction(TransactionType.OFFICE_VISIT_CREATE, ov.getVisitID().toString());</span>
+<span class="nc" id="L359">			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(&quot;officeVisitId&quot;, generatedVisitId);</span>
+		}
+<span class="fc" id="L361">	}</span>
+	
+	/**
+	 * Called when user updates health metrics on officeVisitInfo.xhtml.
+	 */
+	public void submitHealthMetrics() {
+<span class="nc bnc" id="L367" title="All 4 branches missed.">        boolean isNew = ov.getHouseholdSmokingStatus() == null || ov.getHouseholdSmokingStatus() == 0;</span>
+		// Some error checking here?
+<span class="nc" id="L369">		ov.setHeight(height);</span>
+<span class="nc" id="L370">		ov.setLength(length);</span>
+<span class="nc" id="L371">		ov.setWeight(weight);</span>
+<span class="nc" id="L372">		ov.setHeadCircumference(headCircumference);</span>
+<span class="nc" id="L373">		ov.setBloodPressure(bloodPressure);</span>
+<span class="nc" id="L374">		ov.setHDL(hdl);</span>
+<span class="nc" id="L375">		ov.setTriglyceride(triglyceride);</span>
+<span class="nc" id="L376">		ov.setLDL(ldl);</span>
+<span class="nc" id="L377">		ov.setHouseholdSmokingStatus(householdSmokingStatus);</span>
+<span class="nc" id="L378">		ov.setPatientSmokingStatus(patientSmokingStatus);</span>
+<span class="nc" id="L379">		controller.edit(ov);</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (isNew){</span>
+<span class="nc" id="L381">		    controller.logTransaction(TransactionType.CREATE_BASIC_HEALTH_METRICS, &quot;Age: &quot; + controller.calculatePatientAge(patientMID, date).toString());</span>
+		} else {
+<span class="nc" id="L383">		    controller.logTransaction(TransactionType.EDIT_BASIC_HEALTH_METRICS, &quot;Age: &quot; + controller.calculatePatientAge(patientMID, date));</span>
+		}
+<span class="nc" id="L385">	}</span>
+	
+	/**
+	 * @return true if the Patient is a baby 
+	 */
+	public boolean isPatientABaby() {
+<span class="fc" id="L391">		return controller.isPatientABaby(getPatientMID(), getDate());</span>
+	}
+	
+	/**
+	 * @return true if the Patient is a child 
+	 */
+	public boolean isPatientAChild() {
+<span class="fc" id="L398">		return controller.isPatientAChild(getPatientMID(), getDate());</span>
+	}
+	
+	/**
+	 * @return true if the Patient is an adult 
+	 */
+	public boolean isPatientAnAdult() {
+<span class="fc" id="L405">		return controller.isPatientAnAdult(getPatientMID(), getDate());</span>
+	}
+	
+	public boolean isOfficeVisitCreated() {
+<span class="pc bpc" id="L409" title="2 of 4 branches missed.">		return (visitID != null) &amp;&amp; (visitID &gt; 0);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientBaseAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action.base</a> &gt; <span class="el_source">PatientBaseAction.java</span></div><h1>PatientBaseAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action.base;
+
+import edu.ncsu.csc.itrust.HtmlEncoder;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * An abstract class for dealing with actions that require an associated patient. The concrete functionality
+ * provided by this class allows for asserting the correctness and existence of patients' MIDs.
+ * 
+ * Use this class whenever your JSP requires a patient ID when it loads (e.g. editPatient.jsp). The patient
+ * string is passed to the constructor of this class and is checked for both format and existence. If the
+ * patient ID is wrong in any way, an exception is thrown, resulting in the user getting kicked out to the
+ * home page.
+ * 
+ * Very similar to {@link PersonnelBaseAction} and {@link OfficeVisitBaseAction}
+ * 
+ * Subclasses need not rewrite this functionality, and they are not held to any strict contract to extend this
+ * class.
+ */
+public class PatientBaseAction {
+
+	/**
+	 * The database access object factory to associate this with a runtime context.
+	 */
+	private DAOFactory factory;
+
+	/**
+	 * Stores the MID of the patient associated with this action.
+	 */
+	protected long pid;
+
+	/**
+	 * The default constructor.
+	 * 
+	 * @param factory
+	 *            A factory to create a database access object.
+	 * @param pidString
+	 *            The patient's ID to associate with this action.
+	 * @throws ITrustException
+	 *             If the patient's ID is incorrect or there is a DB problem.
+	 */
+<span class="fc" id="L43">	public PatientBaseAction(DAOFactory factory, String pidString) throws ITrustException {</span>
+<span class="fc" id="L44">		this.factory = factory;</span>
+<span class="fc" id="L45">		this.pid = checkPatientID(pidString);</span>
+<span class="fc" id="L46">	}</span>
+
+	/**
+	 * Asserts whether the input is a valid, existing patient's MID.
+	 * 
+	 * @param input
+	 *            The presumed MID
+	 * @return The existing patient's ID as a long.
+	 * @throws ITrustException
+	 *             If the patient does not exist or there is a DB Problem.
+	 */
+	private long checkPatientID(String input) throws ITrustException {
+		try {
+<span class="fc" id="L59">			long pid = Long.valueOf(input);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">			if (factory.getPatientDAO().checkPatientExists(pid))</span>
+<span class="fc" id="L61">				return pid;</span>
+			else
+<span class="fc" id="L63">				throw new ITrustException(&quot;Patient does not exist&quot;);</span>
+<span class="fc" id="L64">		} catch (NumberFormatException e) {</span>
+<span class="fc" id="L65">			throw new ITrustException(&quot;Patient ID is not a number: &quot; + HtmlEncoder.encode(input));</span>
+		}
+	}
+	
+	protected DAOFactory getFactory() {
+<span class="nc" id="L70">		return factory;</span>
+	}
+
+	/**
+	 * Retrieves the identifier of the patient as a long.
+	 * 
+	 * @return The patient's MID.
+	 */
+	public long getPid() {
+<span class="fc" id="L79">		return pid;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

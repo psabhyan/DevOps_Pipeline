@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GroupReportGeneratorServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.server</a> &gt; <span class="el_source">GroupReportGeneratorServlet.java</span></div><h1>GroupReportGeneratorServlet.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.server;
+
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Calendar;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import edu.ncsu.csc.itrust.XmlGenerator;
+import edu.ncsu.csc.itrust.action.GroupReportGeneratorAction;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * GroupReportGeneratorServlet is a generic servlet that serves a xml document
+ * 
+ *
+ */
+<span class="fc" id="L24">public class GroupReportGeneratorServlet extends HttpServlet{</span>
+
+	/**
+	 * GroupReportGeneratorAction to generate the report for download
+	 */
+	GroupReportGeneratorAction grga;
+	
+	/**
+	 * factor for the GroupReportGeneratorAction to use
+	 */
+<span class="fc" id="L34">	protected DAOFactory factory = DAOFactory.getProductionInstance();</span>
+	
+	/**
+	 * Document to be served to client
+	 */
+	Document doc;
+	
+	/**
+	 * Randomly generated servlet ID
+	 */
+	private static final long serialVersionUID = 4343961065799365553L;
+
+	/**
+	 * doPost method that takes a user request and serves them a downloadable xml based on their defined search criteria.
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response){
+		try {
+<span class="fc" id="L52">			grga = new GroupReportGeneratorAction(factory, request, 0l);</span>
+<span class="nc" id="L53">		} catch (DBException e1) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L55">			e1.printStackTrace();</span>
+<span class="fc" id="L56">		}</span>
+		
+		try{
+<span class="fc" id="L59">			grga.generateReport();</span>
+<span class="fc" id="L60">			doc = XmlGenerator.generateXml(grga.getReportHeaders(), grga.getReportData());</span>
+			
+			//Set the headers.
+<span class="fc" id="L63">			response.setContentType(&quot;application/x-download&quot;); </span>
+<span class="fc" id="L64">			response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment; filename=patientReport-&quot; + Calendar.getInstance().getTimeInMillis() + &quot;.xml&quot;);</span>
+<span class="fc" id="L65">			DOMSource source = new DOMSource(doc);</span>
+<span class="fc" id="L66">			Transformer transformer = TransformerFactory.newInstance().newTransformer();</span>
+<span class="fc" id="L67">			Writer writer = new OutputStreamWriter(response.getOutputStream(), &quot;UTF-8&quot;);</span>
+<span class="fc" id="L68">			StreamResult result = new StreamResult(writer);</span>
+<span class="fc" id="L69">			transformer.transform(source, result);</span>
+<span class="nc" id="L70">		}catch(Exception e){</span>
+<span class="nc" id="L71">			System.out.println(e);</span>
+<span class="fc" id="L72">		}			</span>
+<span class="fc" id="L73">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

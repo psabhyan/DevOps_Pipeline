@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LOINCCodeValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.loinccode</a> &gt; <span class="el_source">LOINCCodeValidator.java</span></div><h1>LOINCCodeValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.loinccode;
+
+import org.apache.commons.lang3.StringUtils;
+
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.POJOValidator;
+import edu.ncsu.csc.itrust.model.ValidationFormat;
+
+<span class="fc" id="L10">public class LOINCCodeValidator extends POJOValidator&lt;LOINCCode&gt; {</span>
+	@Override
+	public void validate(LOINCCode obj) throws FormValidationException {
+<span class="fc" id="L13">		ErrorList errorList = new ErrorList();</span>
+<span class="pc bpc" id="L14" title="1 of 2 branches missed.">		if (StringUtils.isEmpty(obj.getCode())) {</span>
+<span class="nc" id="L15">			errorList.addIfNotNull(&quot;Code cannot be empty&quot;);</span>
+		} else {
+<span class="fc" id="L17">			errorList.addIfNotNull(checkFormat(&quot;Code&quot;, obj.getCode(), ValidationFormat.LOINC, false));</span>
+		}
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">		if (StringUtils.isEmpty(obj.getComponent())) {</span>
+<span class="nc" id="L20">			errorList.addIfNotNull(&quot;Component cannot be empty&quot;);</span>
+		}
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">		if (StringUtils.isEmpty(obj.getKindOfProperty())) {</span>
+<span class="nc" id="L23">			errorList.addIfNotNull(&quot;Kind of Property cannot be empty&quot;);</span>
+		}
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		if (errorList.hasErrors()) {</span>
+<span class="fc" id="L26">			throw new FormValidationException(errorList);</span>
+		}
+<span class="fc" id="L28">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

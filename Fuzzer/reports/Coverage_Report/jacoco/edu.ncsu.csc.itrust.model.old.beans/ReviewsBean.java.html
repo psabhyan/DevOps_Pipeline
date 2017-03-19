@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReviewsBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">ReviewsBean.java</span></div><h1>ReviewsBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.util.Date;
+
+/**
+ * A bean for storing data about a review of a physician.
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters
+ * to create these easily)
+ */
+<span class="fc" id="L13">public class ReviewsBean </span>
+{
+	private long MID;
+	private Date dateOfReview;
+	private long PID;
+	private int rating;
+	private String descriptiveReview;
+	private String title;
+	
+	/**
+	 * Gets the MID of the reviewer.
+	 * @return MID
+	 */
+	public long getMID() 
+	{
+<span class="fc" id="L28">		return MID;</span>
+	}
+	
+	/**
+	 * Gets the title of the review.
+	 * @return title
+	 */
+	public String getTitle() 
+	{
+<span class="fc" id="L37">		return title;</span>
+	}
+
+	/**
+	 * Sets the title of the review.
+	 * @param title 
+	 */
+	public void setTitle(String title)
+	{
+<span class="fc" id="L46">		this.title = title;</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Set the MID of the reviewer
+	 * @param MID The MID of the reviwer.
+	 */
+	public void setMID(long mID) 
+	{
+<span class="fc" id="L55">		MID = mID;</span>
+<span class="fc" id="L56">	}</span>
+	
+	/**
+	 * Gets the date that the review was made.
+	 * @return Date
+	 */
+	public Date getDateOfReview() 
+	{
+<span class="fc" id="L64">		return new Date(dateOfReview.getTime());</span>
+	}
+	
+	/**
+	 * Sets the date that the review was made.
+	 * @param dateOfReview The date of the review.
+	 */
+	public void setDateOfReview(Date dateOfReview) 
+	{
+<span class="fc" id="L73">		this.dateOfReview = new Date(dateOfReview.getTime());</span>
+<span class="fc" id="L74">	}</span>
+	
+	/**
+	 * Gets the ID of the physician who is being reviewed. 
+	 * @return
+	 */
+	public long getPID() 
+	{
+<span class="fc" id="L82">		return PID;</span>
+	}
+	
+	/**
+	 * Sets the ID of the physician who is being reviewed. 
+	 * @param PID
+	 */
+	public void setPID(long pID) 
+	{
+<span class="fc" id="L91">		PID = pID;</span>
+<span class="fc" id="L92">	}</span>
+	
+	/**
+	 * Gets the number of stars that were given to the phyician.
+	 * @return Rating
+	 */
+	public int getRating() 
+	{
+<span class="fc" id="L100">		return rating;</span>
+	}
+	
+	/**
+	 * Sets the rating associated with a review.
+	 * @param rating String value 1-5.
+	 */
+	public void setRating(int rating) 
+	{
+<span class="fc" id="L109">		this.rating = rating;</span>
+<span class="fc" id="L110">	}</span>
+	
+	/**
+	 * Gets the descriptive review of the Physician.
+	 * @return Descriptive Review
+	 */
+	public String getDescriptiveReview() 
+	{
+<span class="fc" id="L118">		return descriptiveReview;</span>
+	}
+	
+	/**
+	 * Sets the descriptive review attribute.
+	 * @param descriptiveReview
+	 */
+	public void setDescriptiveReview(String descriptiveReview) 
+	{
+<span class="fc" id="L127">		this.descriptiveReview = descriptiveReview;</span>
+<span class="fc" id="L128">	}</span>
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

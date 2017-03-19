@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrescriptionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.prescription</a> &gt; <span class="el_source">PrescriptionController.java</span></div><h1>PrescriptionController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.prescription;
+
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.prescription.Prescription;
+import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
+
+@ManagedBean(name = &quot;prescription_controller&quot;)
+@SessionScoped
+public class PrescriptionController extends iTrustController {
+
+	private static final String INVALID_PRESCRIPTION = &quot;Invalid Prescription&quot;;
+	private PrescriptionMySQL sql;
+
+	public PrescriptionController() throws DBException {
+<span class="nc" id="L28">		super();</span>
+<span class="nc" id="L29">		sql = new PrescriptionMySQL();</span>
+<span class="nc" id="L30">	}</span>
+
+	/**
+	 * Constructor injection, intended only for unit testing purposes.
+	 * 
+	 * @param ds
+	 *            The injected DataSource dependency
+	 */
+	public PrescriptionController(DataSource ds) throws DBException {
+<span class="fc" id="L39">		super();</span>
+<span class="fc" id="L40">		this.sql = new PrescriptionMySQL(ds);</span>
+<span class="fc" id="L41">	}</span>
+	
+	public void setSql(PrescriptionMySQL sql){
+<span class="fc" id="L44">	    this.sql = sql;</span>
+<span class="fc" id="L45">	}</span>
+
+	public void add(Prescription prescription) {
+		try {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">			if (sql.add(prescription)) {</span>
+<span class="fc" id="L50">				printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Prescription is successfully created&quot;,</span>
+						&quot;Prescription is successfully created&quot;, null);
+<span class="fc" id="L52">				logTransaction(TransactionType.PRESCRIPTION_ADD, getSessionUtils().getCurrentOfficeVisitId().toString());</span>
+			} else {
+<span class="nc" id="L54">				throw new Exception();</span>
+			}
+<span class="fc" id="L56">		} catch (SQLException e) {</span>
+<span class="fc" id="L57">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, e.getMessage(), null);</span>
+<span class="fc" id="L58">		} catch (Exception e) {</span>
+<span class="fc" id="L59">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, INVALID_PRESCRIPTION, null);</span>
+<span class="fc" id="L60">		}</span>
+<span class="fc" id="L61">	}</span>
+
+	public void edit(Prescription prescription) {
+		try {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">			if (sql.update(prescription)) {</span>
+<span class="fc" id="L66">				printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Prescription is successfully updated&quot;,</span>
+						&quot;Prescription is successfully updated&quot;, null);
+<span class="nc" id="L68">				logTransaction(TransactionType.PRESCRIPTION_EDIT, getSessionUtils().getCurrentOfficeVisitId().toString());</span>
+			} else {
+<span class="nc" id="L70">				throw new Exception();</span>
+			}
+<span class="fc" id="L72">		} catch (SQLException e) {</span>
+<span class="fc" id="L73">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, e.getMessage(), null);</span>
+<span class="fc" id="L74">		} catch (Exception e) {</span>
+<span class="fc" id="L75">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, INVALID_PRESCRIPTION, null);</span>
+<span class="pc" id="L76">		}</span>
+<span class="fc" id="L77">	}</span>
+
+	public void remove(long prescriptionID) {
+        try {
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        	if (sql.remove(prescriptionID)) {</span>
+<span class="fc" id="L82">				printFacesMessage(FacesMessage.SEVERITY_INFO, &quot;Prescription is successfully deleted&quot;,</span>
+						&quot;Prescription is successfully deleted&quot;, null);
+<span class="nc" id="L84">				logTransaction(TransactionType.PRESCRIPTION_REMOVE, getSessionUtils().getCurrentOfficeVisitId().toString());</span>
+        	} else {
+<span class="nc" id="L86">        		throw new Exception();</span>
+        	}
+<span class="fc" id="L88">        } catch (SQLException e) {</span>
+<span class="fc" id="L89">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, e.getMessage(), null);</span>
+<span class="fc" id="L90">		} catch (Exception e) {</span>
+<span class="fc" id="L91">			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, INVALID_PRESCRIPTION, null);</span>
+<span class="pc" id="L92">		}</span>
+<span class="fc" id="L93">	}</span>
+	
+	public List&lt;Prescription&gt; getPrescriptionsByOfficeVisit(String officeVisitID) throws DBException {
+<span class="fc" id="L96">		List&lt;Prescription&gt; prescriptions = Collections.emptyList();</span>
+<span class="fc" id="L97">		long ovID = -1;</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">		if ( officeVisitID != null ) {</span>
+<span class="fc" id="L99">			ovID = Long.parseLong(officeVisitID);</span>
+			try {
+<span class="fc" id="L101">				prescriptions = sql.getPrescriptionsForOfficeVisit(ovID);</span>
+<span class="nc" id="L102">			} catch (Exception e) {</span>
+<span class="nc" id="L103">				printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Unable to Retrieve Prescriptions&quot;, &quot;Unable to Retrieve Prescriptions&quot;, null);</span>
+<span class="fc" id="L104">			}</span>
+		}
+<span class="fc" id="L106">		return prescriptions;</span>
+	}
+	
+	public Prescription getPrescriptionByID(String prescriptionID) throws SQLException {
+<span class="fc" id="L110">		Long id = null;</span>
+		try {
+<span class="fc" id="L112">			id = Long.parseLong(prescriptionID);</span>
+<span class="fc" id="L113">		} catch (NumberFormatException e) {</span>
+			// Do nothing
+<span class="fc" id="L115">		}</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		if (id == null) {</span>
+<span class="fc" id="L117">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Cannot get prescription&quot;, &quot;Invalid prescription ID&quot;, null);</span>
+<span class="fc" id="L118">			return null;</span>
+		} else {
+<span class="fc" id="L120">			return sql.get(id);</span>
+		}
+	}
+
+	public List&lt;Prescription&gt; getPrescriptionsForCurrentPatient() {
+<span class="fc" id="L125">		String pid = getSessionUtils().getCurrentPatientMID();</span>
+<span class="fc" id="L126">		return getPrescriptionsByPatientID(pid);</span>
+	}
+
+	public List&lt;Prescription&gt; getPrescriptionsByPatientID(String patientMID) {
+<span class="fc" id="L130">		Long mid = null;</span>
+<span class="fc" id="L131">		List&lt;Prescription&gt; prescriptions = Collections.emptyList();</span>
+		
+		try {
+<span class="fc" id="L134">			mid = Long.parseLong(patientMID);</span>
+<span class="fc" id="L135">		} catch (NumberFormatException e) {</span>
+			// Do nothing
+<span class="fc" id="L137">		}</span>
+		
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		if (mid == null) {</span>
+<span class="fc" id="L140">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Cannot get patient's prescriptions&quot;, &quot;Invalid patient MID&quot;, null);</span>
+<span class="fc" id="L141">			return prescriptions;</span>
+		}
+		
+		try {
+<span class="fc" id="L145">			prescriptions = sql.getPrescriptionsByMID(mid);</span>
+<span class="fc" id="L146">		} catch (SQLException e) {</span>
+<span class="fc" id="L147">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Cannot get patient's prescriptions&quot;, e.getMessage(), null);</span>
+<span class="fc" id="L148">		}</span>
+		
+<span class="fc" id="L150">		return prescriptions;</span>
+	}
+	
+	public String getCodeName(String codeString){
+<span class="fc" id="L154">		String codeName = &quot;&quot;;</span>
+		
+		try {
+<span class="fc" id="L157">			codeName = sql.getCodeName(codeString);</span>
+<span class="nc" id="L158">		}  catch (SQLException e) {</span>
+<span class="nc" id="L159">			printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Invalid Prescription&quot;, e.getMessage(), null);</span>
+<span class="fc" id="L160">		}</span>
+		
+<span class="fc" id="L162">		return codeName;</span>
+	}
+
+	/**
+	 * This should return to the logging in user a list of patients that they
+	 * represent
+	 * 
+	 * @param loggedInID
+	 *            mid of the person logged in
+	 */
+	public List&lt;PatientBean&gt; getListOfRepresentees() {
+<span class="fc" id="L173">		List&lt;PatientBean&gt; representees = getSessionUtils().getRepresenteeList();</span>
+		
+		// If there wasn't already a cached list make it and cache it for future use
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if( representees == null ){</span>
+			try {
+<span class="fc" id="L178">				Long userMID = this.getSessionUtils().getSessionLoggedInMIDLong();</span>
+<span class="fc" id="L179">				representees = sql.getListOfRepresentees(userMID);</span>
+<span class="fc" id="L180">				getSessionUtils().setRepresenteeList(representees);</span>
+<span class="nc" id="L181">			} catch (SQLException e) {</span>
+<span class="nc" id="L182">				printFacesMessage(FacesMessage.SEVERITY_ERROR, &quot;Cannot get representees&quot;, e.getMessage(), null);</span>
+<span class="fc" id="L183">			}</span>
+		}
+
+<span class="fc" id="L186">		return representees;</span>
+	}
+	
+	public String getRepParameter(){
+<span class="fc" id="L190">		return this.getSessionUtils().getRequestParameter(&quot;rep&quot;);</span>
+	}
+
+	public void logViewPrescriptionReport() {
+		// Only log if a patient has been selected to view the report for
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if(getSessionUtils().getCurrentPatientMID() != null) {</span>
+<span class="fc" id="L196">			logTransaction(TransactionType.PRESCRIPTION_REPORT_VIEW, null);</span>
+		}
+<span class="fc" id="L198">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

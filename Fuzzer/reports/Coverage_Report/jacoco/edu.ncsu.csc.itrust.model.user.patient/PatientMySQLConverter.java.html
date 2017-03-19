@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientMySQLConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.user.patient</a> &gt; <span class="el_source">PatientMySQLConverter.java</span></div><h1>PatientMySQLConverter.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.user.patient;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.DataBean;
+import edu.ncsu.csc.itrust.model.SQLLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+@ManagedBean
+@RequestScoped
+public class PatientMySQLConverter implements DataBean&lt;Patient&gt;, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8056934124263634466L;
+	@Resource(name=&quot;jdbc/itrust&quot;)
+	private static DAOFactory factory;
+	private SQLLoader&lt;Patient&gt; loader;
+	private DataSource ds;
+	//private transient final ProductionConnectionDriver driver = new ProductionConnectionDriver();
+
+
+	/**
+	 * @throws DBException
+	 */
+<span class="nc" id="L41">	public PatientMySQLConverter() throws DBException{</span>
+<span class="nc" id="L42">		loader = new PatientSQLConvLoader();</span>
+		try {
+<span class="nc" id="L44">			Context ctx = new InitialContext();</span>
+<span class="nc" id="L45">				ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="nc" id="L46">		} catch (NamingException e) {</span>
+<span class="nc" id="L47">			throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot;+e.getMessage()));</span>
+<span class="nc" id="L48">		}</span>
+
+
+<span class="nc" id="L51">	}</span>
+	
+	/**Constructor used for unit testing
+	 * @param ds
+	 * @throws DBException
+	 */
+<span class="fc" id="L57">	public PatientMySQLConverter(DataSource ds) throws DBException{</span>
+<span class="fc" id="L58">		this.ds = ds;</span>
+
+<span class="fc" id="L60">			loader = new PatientSQLConvLoader();</span>
+
+<span class="fc" id="L62">	}</span>
+	
+	@Override
+	public List&lt;Patient&gt; getAll() throws DBException {
+<span class="nc" id="L66">		List&lt;Patient&gt; list = new ArrayList&lt;Patient&gt;();</span>
+<span class="nc" id="L67">		Connection conn = null;</span>
+<span class="nc" id="L68">		PreparedStatement pstring = null;</span>
+<span class="nc" id="L69">		ResultSet results = null;</span>
+		try {
+<span class="nc" id="L71">			conn = ds.getConnection();</span>
+<span class="nc" id="L72">			pstring = conn.prepareStatement(&quot;SELECT users.MID AS MID, users.Role AS Role, patients.firstName AS firstName, patients.lastName AS lastName FROM users INNER JOIN patients ON users.MID = patients.MID&quot;);</span>
+		
+<span class="nc" id="L74">			results = pstring.executeQuery();</span>
+<span class="nc" id="L75">			list = loader.loadList(results);</span>
+<span class="nc" id="L76">			return list;</span>
+<span class="nc" id="L77">		} catch (SQLException e) {</span>
+<span class="nc" id="L78">			throw new DBException(e);</span>
+		} finally {
+<span class="nc" id="L80">			try{</span>
+<span class="nc bnc" id="L81" title="All 4 branches missed.">				if(results !=null){</span>
+<span class="nc" id="L82">					results.close();</span>
+				}
+<span class="nc" id="L84">			} catch (SQLException e) {</span>
+<span class="nc" id="L85">				throw new DBException(e);</span>
+			} finally {
+<span class="nc" id="L87">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="nc" id="L88">			}</span>
+		}
+
+	}
+	@Override
+	public Patient getByID(long id) throws DBException {
+<span class="fc" id="L94">		Patient ret = null;</span>
+<span class="fc" id="L95">		Connection conn = null;</span>
+<span class="fc" id="L96">		PreparedStatement pstring = null;</span>
+<span class="fc" id="L97">		ResultSet results = null;</span>
+<span class="fc" id="L98">		String stmt = &quot;&quot;;</span>
+<span class="fc" id="L99">		stmt = &quot;SELECT users.MID AS MID, users.Role AS Role, patients.firstName AS firstName, patients.lastName AS lastName FROM users INNER JOIN patients ON users.MID = patients.MID WHERE users.MID=?;&quot;;</span>
+		try {
+<span class="fc" id="L101">			List&lt;Patient&gt; list = null;</span>
+<span class="fc" id="L102">			conn=ds.getConnection();</span>
+<span class="fc" id="L103">			pstring = conn.prepareStatement(stmt);</span>
+<span class="fc" id="L104">			pstring.setString(1, Long.toString(id));</span>
+<span class="fc" id="L105">			results = pstring.executeQuery();</span>
+<span class="fc" id="L106">			list = loader.loadList(results);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">			if(!list.isEmpty()){</span>
+<span class="fc" id="L108">				ret = list.get(0);</span>
+			}
+<span class="fc" id="L110">			return ret;</span>
+<span class="nc" id="L111">		} catch (SQLException e) {</span>
+<span class="nc" id="L112">			throw new DBException(e);</span>
+		} 
+		finally {
+		
+<span class="nc" id="L116">			try{</span>
+<span class="pc bpc" id="L117" title="3 of 4 branches missed.">				if(results !=null){</span>
+<span class="pc" id="L118">					results.close();</span>
+				}
+<span class="nc" id="L120">			} catch (SQLException e) {</span>
+<span class="nc" id="L121">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L123">				DBUtil.closeConnection(conn, pstring);</span>
+<span class="pc" id="L124">			}</span>
+		}
+
+	}
+	@Override
+	public boolean add(Patient addObj) throws DBException {
+<span class="nc" id="L130">		throw new IllegalStateException(&quot;unimplemented&quot;);</span>
+		// TODO implement as needed
+
+	}
+	@Override
+	public boolean update(Patient updateObj) throws DBException {
+		// TODO Implement as needed
+<span class="nc" id="L137">		throw new IllegalStateException(&quot;unimplemented&quot;);</span>
+	}
+	
+
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

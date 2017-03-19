@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OfficeVisitValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.officeVisit</a> &gt; <span class="el_source">OfficeVisitValidator.java</span></div><h1>OfficeVisitValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.officeVisit;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.POJOValidator;
+import edu.ncsu.csc.itrust.model.ValidationFormat;
+import edu.ncsu.csc.itrust.model.apptType.ApptTypeData;
+import edu.ncsu.csc.itrust.model.apptType.ApptTypeMySQLConverter;
+import edu.ncsu.csc.itrust.model.hospital.Hospital;
+import edu.ncsu.csc.itrust.model.hospital.HospitalData;
+import edu.ncsu.csc.itrust.model.hospital.HospitalMySQLConverter;
+
+public class OfficeVisitValidator extends POJOValidator&lt;OfficeVisit&gt; {
+	
+	private DataSource ds;
+
+	/**
+	 * Default constructor for OfficeVisitValidator. 
+	 */
+<span class="fc" id="L28">	public OfficeVisitValidator(DataSource ds) {</span>
+<span class="fc" id="L29">		this.ds = ds;</span>
+<span class="fc" id="L30">	}</span>
+
+	/**
+	 * Used to Validate an office visit object. If the validation does not
+	 * succeed, a {@link FormValidationException} is thrown. only performs
+	 * checks on the values stored in the object (e.g. Patient MID) Does NOT
+	 * validate the format of the visit date and other attributes that are NOT
+	 * stored in the object itself
+	 * 
+	 * @param obj
+	 *            the Office Visit to be validated
+	 */
+	@Override
+	public void validate(OfficeVisit obj) throws FormValidationException {
+<span class="fc" id="L44">		OfficeVisitController ovc = new OfficeVisitController(ds);</span>
+<span class="fc" id="L45">		ErrorList errorList = new ErrorList();</span>
+		
+<span class="fc" id="L47">		LocalDateTime date = obj.getDate();</span>
+<span class="fc" id="L48">		Long patientMID = obj.getPatientMID();</span>
+		
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (patientMID == null) {</span>
+<span class="fc" id="L51">			errorList.addIfNotNull(&quot;Cannot add office visit information: invalid patient MID&quot;);</span>
+<span class="fc" id="L52">			throw new FormValidationException(errorList);</span>
+		}
+		
+<span class="fc" id="L55">		LocalDate patientDOB = ovc.getPatientDOB(patientMID);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if (patientDOB == null) {</span>
+<span class="fc" id="L57">			errorList.addIfNotNull(&quot;Cannot add office visit information: patient does not have a birthday&quot;);</span>
+<span class="fc" id="L58">			throw new FormValidationException(errorList);</span>
+		}
+		
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		if (date.toLocalDate().isBefore(patientDOB)) {</span>
+<span class="fc" id="L62">			errorList.addIfNotNull(&quot;Date: date cannot be earlier than patient's birthday at &quot; + patientDOB.format(DateTimeFormatter.ISO_DATE));</span>
+		}
+		
+<span class="fc" id="L65">		errorList.addIfNotNull(checkFormat(&quot;Patient MID&quot;, patientMID, ValidationFormat.NPMID, false));</span>
+		
+<span class="fc" id="L67">		errorList.addIfNotNull(checkFormat(&quot;Location ID&quot;, obj.getLocationID(), ValidationFormat.HOSPITAL_ID, false));</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">		if (obj.getVisitID() != null) {</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">			if (obj.getVisitID() &lt;= 0) {</span>
+<span class="nc" id="L70">				errorList.addIfNotNull(&quot;Visit ID: Invalid Visit ID&quot;);</span>
+			}
+		}
+<span class="fc" id="L73">		Long apptTypeID = obj.getApptTypeID();</span>
+<span class="fc" id="L74">		ApptTypeData atData = new ApptTypeMySQLConverter(ds);</span>
+<span class="fc" id="L75">		String apptTypeName = &quot;&quot;;</span>
+		try {
+<span class="fc" id="L77">			apptTypeName = atData.getApptTypeName(apptTypeID);</span>
+<span class="fc" id="L78">		} catch (DBException e) {</span>
+			// Do nothing
+<span class="fc" id="L80">		}</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		if (apptTypeName.isEmpty()) {</span>
+<span class="fc" id="L82">			errorList.addIfNotNull(&quot;Appointment Type: Invalid ApptType ID&quot;);</span>
+		}
+		
+<span class="fc" id="L85">		HospitalData hData = new HospitalMySQLConverter(ds);</span>
+<span class="fc" id="L86">		Hospital temp = null;</span>
+		try {
+<span class="fc" id="L88">			temp = hData.getHospitalByID(obj.getLocationID());</span>
+<span class="fc" id="L89">		} catch (DBException e) {</span>
+			// Do nothing
+<span class="fc" id="L91">		}</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		if (temp == null) {</span>
+<span class="fc" id="L93">			errorList.addIfNotNull(&quot;Location: Invalid Hospital ID&quot;);</span>
+		}
+
+<span class="fc" id="L96">		errorList.addIfNotNull(checkFormat(&quot;Weight&quot;, obj.getWeight(), ValidationFormat.WEIGHT_OV, true));</span>
+<span class="fc" id="L97">		errorList.addIfNotNull(checkFormat(&quot;Household Smoking Status&quot;, obj.getHouseholdSmokingStatus(), ValidationFormat.HSS_OV, true));</span>
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">		if (ovc.isPatientABaby(patientMID, date)) {</span>
+<span class="fc" id="L100">			errorList.addIfNotNull(checkFormat(&quot;Length&quot;, obj.getLength(), ValidationFormat.LENGTH_OV, true));</span>
+<span class="fc" id="L101">			errorList.addIfNotNull(checkFormat(&quot;Head Circumference&quot;, obj.getHeadCircumference(), ValidationFormat.HEAD_CIRCUMFERENCE_OV, true));</span>
+			
+		}
+		
+<span class="fc bfc" id="L105" title="All 4 branches covered.">		if (ovc.isPatientAnAdult(patientMID, date) || ovc.isPatientAChild(patientMID, date)) {</span>
+<span class="fc" id="L106">			errorList.addIfNotNull(checkFormat(&quot;Height&quot;, obj.getHeight(), ValidationFormat.HEIGHT_OV, true));</span>
+<span class="fc" id="L107">			errorList.addIfNotNull(checkFormat(&quot;Blood Pressure&quot;, obj.getBloodPressure(), ValidationFormat.BLOOD_PRESSURE_OV, true));</span>
+			
+		}
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		if (ovc.isPatientAnAdult(patientMID, date)) {</span>
+<span class="fc" id="L112">			errorList.addIfNotNull(checkFormat(&quot;Patient Smoking Status&quot;, obj.getPatientSmokingStatus(), ValidationFormat.PSS_OV, true));</span>
+<span class="fc" id="L113">			errorList.addIfNotNull(checkFormat(&quot;HDL&quot;, obj.getHDL(), ValidationFormat.HDL_OV, true));</span>
+<span class="fc" id="L114">			errorList.addIfNotNull(checkFormat(&quot;Triglyceride&quot;, obj.getTriglyceride(), ValidationFormat.TRIGLYCERIDE_OV, true));</span>
+<span class="fc" id="L115">			errorList.addIfNotNull(checkFormat(&quot;LDL&quot;, obj.getLDL(), ValidationFormat.LDL_OV, true));</span>
+		}
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		if (errorList.hasErrors()) {</span>
+<span class="fc" id="L119">			throw new FormValidationException(errorList);</span>
+		}
+<span class="fc" id="L121">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

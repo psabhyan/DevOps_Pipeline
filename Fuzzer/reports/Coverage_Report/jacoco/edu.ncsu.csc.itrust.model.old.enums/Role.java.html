@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Role.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.enums</a> &gt; <span class="el_source">Role.java</span></div><h1>Role.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.enums;
+
+/**
+ * The iTrust user roles: Patient, ER, HCP, UAP, LT, PHA, Administrator and Tester.
+ * Consult the requirements for the contextual meanings of these individual choices.
+ */
+<span class="pc" id="L7">public enum Role {</span>
+	/**PATIENT*/
+<span class="fc" id="L9">	PATIENT(&quot;patient&quot;, &quot;Patients&quot;, 0L), </span>
+	/**ER*/
+<span class="fc" id="L11">	ER(&quot;er&quot;, &quot;Personnel&quot;, 9L), </span>
+	/**HCP*/
+<span class="fc" id="L13">	HCP(&quot;hcp&quot;, &quot;Personnel&quot;, 9L), </span>
+	/**UAP*/
+<span class="fc" id="L15">	UAP(&quot;uap&quot;, &quot;Personnel&quot;, 8L),</span>
+	/**LT*/
+<span class="fc" id="L17">	LT(&quot;lt&quot;, &quot;Personnel&quot;, 5L),</span>
+	/**ADMIN*/
+<span class="fc" id="L19">	ADMIN(&quot;admin&quot;, &quot;Personnel&quot;, 0L),</span>
+	/**PHA*/
+<span class="fc" id="L21">	PHA(&quot;pha&quot;, &quot;Personnel&quot;, 7L),</span>
+	/**TESTER*/
+<span class="fc" id="L23">	TESTER(&quot;tester&quot;, &quot;&quot;, 0L);</span>
+	
+	private String userRolesString;
+	private String dbTable;
+	private long midFirstDigit;
+
+	/**
+	 * Role
+	 * @param userRolesString userRolesString
+	 * @param dbTable dbTable
+	 * @param midFirstDigit midFirstDigit
+	 */
+<span class="fc" id="L35">	Role(String userRolesString, String dbTable, long midFirstDigit) {</span>
+<span class="fc" id="L36">		this.userRolesString = userRolesString;</span>
+<span class="fc" id="L37">		this.dbTable = dbTable;</span>
+<span class="fc" id="L38">		this.midFirstDigit = midFirstDigit;</span>
+<span class="fc" id="L39">	}</span>
+
+	/**
+	 * getDBTable
+	 * @return dbTable
+	 */
+	public String getDBTable() {
+<span class="nc" id="L46">		return dbTable;</span>
+	}
+
+	/**
+	 * getUserRolesString
+	 * @return userRolesString
+	 */
+	public String getUserRolesString() {
+<span class="fc" id="L54">		return userRolesString;</span>
+	}
+
+	/**
+	 * getMidFirstDigit
+	 * @return midFirstDigit
+	 */
+	public long getMidFirstDigit() {
+<span class="fc" id="L62">		return midFirstDigit;</span>
+	}
+
+	/**
+	 * parse
+	 * @param str str
+	 * @return role
+	 */
+	public static Role parse(String str) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		for (Role role : values()) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">			if (role.userRolesString.toLowerCase().equals(str.toLowerCase()))</span>
+<span class="fc" id="L73">				return role;</span>
+		}
+<span class="fc" id="L75">		throw new IllegalArgumentException(&quot;Role &quot; + str + &quot; does not exist&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiagnosisSQLLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.diagnosis</a> &gt; <span class="el_source">DiagnosisSQLLoader.java</span></div><h1>DiagnosisSQLLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.diagnosis;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.SQLLoader;
+import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
+
+<span class="fc" id="L13">public class DiagnosisSQLLoader implements SQLLoader&lt;Diagnosis&gt; {</span>
+
+	@Override
+	public List&lt;Diagnosis&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L17">		List&lt;Diagnosis&gt; list = new LinkedList&lt;Diagnosis&gt;();</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L19">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L21">		return list;</span>
+	}
+
+	@Override
+	public Diagnosis loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L26">		long id = rs.getLong(&quot;id&quot;);</span>
+<span class="fc" id="L27">		long visitId = rs.getLong(&quot;visitId&quot;);</span>
+<span class="fc" id="L28">		String icdCode = rs.getString(&quot;icdCode&quot;);</span>
+<span class="fc" id="L29">		String name = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L30">		boolean isChronic = rs.getBoolean(&quot;is_chronic&quot;);</span>
+<span class="fc" id="L31">		return new Diagnosis(id, visitId, new ICDCode(icdCode, name, isChronic));</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Diagnosis insertObject,
+			boolean newInstance) throws SQLException {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">		if (newInstance) {</span>
+<span class="fc" id="L38">			ps = conn.prepareStatement(&quot;INSERT INTO diagnosis (visitId, icdCode) values (?, ?)&quot;);</span>
+<span class="fc" id="L39">			ps.setLong(1, insertObject.getVisitId());</span>
+<span class="fc" id="L40">			ps.setString(2, insertObject.getCode());</span>
+		} else {
+<span class="fc" id="L42">			ps = conn.prepareStatement(&quot;UPDATE diagnosis SET icdCode = ?, visitId = ? WHERE id = ?&quot;);</span>
+<span class="fc" id="L43">			ps.setString(1, insertObject.getCode());</span>
+<span class="fc" id="L44">			ps.setLong(2, insertObject.getVisitId());</span>
+<span class="fc" id="L45">			ps.setLong(3, insertObject.getId());</span>
+		}
+<span class="fc" id="L47">		return ps;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

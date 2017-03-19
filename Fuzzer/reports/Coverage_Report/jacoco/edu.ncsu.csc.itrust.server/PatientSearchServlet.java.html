@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientSearchServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.server</a> &gt; <span class="el_source">PatientSearchServlet.java</span></div><h1>PatientSearchServlet.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringEscapeUtils;
+
+import edu.ncsu.csc.itrust.action.SearchUsersAction;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Servlet implementation class PateintSearchServlet
+ */
+public class PatientSearchServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private SearchUsersAction sua;
+	
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PatientSearchServlet() {
+<span class="nc" id="L29">        super();</span>
+        //We don't ever use the second parameter, so we don't need to give it meaning.
+<span class="nc" id="L31">        sua = new SearchUsersAction(DAOFactory.getProductionInstance(), -1);</span>
+<span class="nc" id="L32">    }</span>
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    protected PatientSearchServlet(DAOFactory factory) {
+<span class="fc" id="L37">        super();</span>
+        //We don't ever use the second parameter, so we don't need to give it meaning.
+<span class="fc" id="L39">        sua = new SearchUsersAction(factory, -1);</span>
+<span class="fc" id="L40">    }</span>
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<span class="fc" id="L47">		String query = request.getParameter(&quot;q&quot;);</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">		if(query == null ){</span>
+<span class="nc" id="L49">			return;</span>
+		}
+<span class="pc bpc" id="L51" title="1 of 4 branches missed.">		boolean isAudit = request.getParameter(&quot;isAudit&quot;) != null &amp;&amp; request.getParameter(&quot;isAudit&quot;).equals(&quot;true&quot;);</span>
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">		boolean deactivated = request.getParameter(&quot;allowDeactivated&quot;) != null &amp;&amp; request.getParameter(&quot;allowDeactivated&quot;).equals(&quot;checked&quot;);</span>
+<span class="fc" id="L53">		String forward = request.getParameter(&quot;forward&quot;);</span>
+<span class="fc" id="L54">		List&lt;PatientBean&gt; search = null;</span>
+<span class="pc bpc" id="L55" title="1 of 4 branches missed.">		if(query.isEmpty() &amp;&amp; deactivated){</span>
+<span class="fc" id="L56">			search = sua.getDeactivated();</span>
+		} else {
+<span class="fc" id="L58">			search = sua.fuzzySearchForPatients(query, deactivated);</span>
+		}
+<span class="fc" id="L60">		StringBuffer result = new StringBuffer(&quot;&lt;span class=\&quot;searchResults\&quot;&gt;Found &quot; + search.size() + &quot; Records&lt;/span&gt;&quot;);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		if(isAudit){</span>
+<span class="fc" id="L62">			result.append(&quot;&lt;table class='fTable' width=80%&gt;&lt;tr&gt;&lt;th width=10%&gt;MID&lt;/th&gt;&lt;th width=20%&gt;First Name&lt;/th&gt;&lt;th width=20%&gt;Last Name&lt;/th&gt;&lt;th width=30%&gt;Status&lt;/th&gt;&lt;th width=20%&gt;Action&lt;/th&gt;&lt;/tr&gt;&quot;);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">			for(PatientBean p : search){</span>
+<span class="pc bpc" id="L64" title="1 of 4 branches missed.">				boolean isActivated = p.getDateOfDeactivationStr() == null || p.getDateOfDeactivationStr().isEmpty();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">				String change = isActivated ? &quot;Deactivate&quot; : &quot;Activate&quot;;</span>
+<span class="fc" id="L66">				result.append(&quot;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L67">				result.append(&quot;&lt;td&gt;&quot; + p.getMID() + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L68">				result.append(&quot;&lt;td&gt;&quot; + p.getFirstName() + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L69">				result.append(&quot;&lt;td&gt;&quot; + p.getLastName() + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">				if(isActivated){</span>
+<span class="fc" id="L71">					result.append(&quot;&lt;td&gt;&quot; + p.getFirstName() + &quot; &quot; + p.getLastName() + &quot; is activated.&lt;/td&gt;&quot;);</span>
+				} else {
+<span class="fc" id="L73">					result.append(&quot;&lt;td&gt;&quot; + p.getFirstName() + &quot; &quot; + p.getLastName() + &quot; deactivated on: &quot; + p.getDateOfDeactivationStr() + &quot;&lt;/td&gt;&quot;);</span>
+				}
+<span class="fc" id="L75">				result.append(&quot;&lt;td&gt;&quot;);</span>
+<span class="fc" id="L76">				result.append(&quot;&lt;input type='button' style='width:100px;' onclick=\&quot;parent.location.href='getPatientID.jsp?UID_PATIENTID=&quot; + StringEscapeUtils.escapeHtml(&quot;&quot; + p.getMID()) + &quot;&amp;forward=&quot; + StringEscapeUtils.escapeHtml(&quot;&quot; + forward ) + &quot;';\&quot; value=&quot; + StringEscapeUtils.escapeHtml(&quot;&quot; + change) + &quot; /&gt;&quot;);</span>
+<span class="fc" id="L77">				result.append(&quot;&lt;/td&gt;&lt;/tr&gt;&quot;);</span>
+<span class="fc" id="L78">			}</span>
+<span class="fc" id="L79">			result.append(&quot;&lt;table&gt;&quot;);</span>
+		} else {
+<span class="fc" id="L81">			result.append(&quot;&lt;table class='fTable' width=80%&gt;&lt;tr&gt;&lt;th width=20%&gt;MID&lt;/th&gt;&lt;th width=40%&gt;First Name&lt;/th&gt;&lt;th width=40%&gt;Last Name&lt;/th&gt;&lt;/tr&gt;&quot;);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">			for(PatientBean p : search){</span>
+<span class="fc" id="L83">				result.append(&quot;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L84">				result.append(&quot;&lt;td&gt;&quot;);</span>
+<span class="fc" id="L85">				result.append(&quot;&lt;input type='button' style='width:100px;' onclick=\&quot;parent.location.href='getPatientID.jsp?UID_PATIENTID=&quot; + StringEscapeUtils.escapeHtml(&quot;&quot; + p.getMID()) + &quot;&amp;forward=&quot; + StringEscapeUtils.escapeHtml(&quot;&quot; + forward ) +&quot;';\&quot; value=&quot; + StringEscapeUtils.escapeHtml(&quot;&quot; + p.getMID()) + &quot; /&gt;&quot;);</span>
+<span class="fc" id="L86">				result.append(&quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L87">				result.append(&quot;&lt;td&gt;&quot; + p.getFirstName() + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L88">				result.append(&quot;&lt;td&gt;&quot; + p.getLastName() + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L89">				result.append(&quot;&lt;/tr&gt;&quot;);</span>
+<span class="fc" id="L90">			}</span>
+<span class="fc" id="L91">			result.append(&quot;&lt;/table&gt;&quot;);</span>
+		}
+<span class="fc" id="L93">		response.setContentType(&quot;text/plain&quot;);</span>
+<span class="fc" id="L94">		PrintWriter resp = response.getWriter();</span>
+<span class="fc" id="L95">		resp.write(result.toString());</span>
+<span class="fc" id="L96">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

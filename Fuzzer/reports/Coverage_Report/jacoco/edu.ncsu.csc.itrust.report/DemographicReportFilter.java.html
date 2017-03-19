@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DemographicReportFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.report</a> &gt; <span class="el_source">DemographicReportFilter.java</span></div><h1>DemographicReportFilter.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.report;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.FamilyMemberBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.FamilyDAO;
+
+/**
+ * 
+ *
+ */
+public class DemographicReportFilter extends ReportFilter {
+
+	/**
+	 * 
+	 *
+	 */
+<span class="pc" id="L21">	public enum DemographicReportFilterType {</span>
+<span class="fc" id="L22">		MID(&quot;MID&quot;),</span>
+<span class="fc" id="L23">		GENDER(&quot;GENDER&quot;),</span>
+<span class="fc" id="L24">		LAST_NAME(&quot;LAST NAME&quot;),</span>
+<span class="fc" id="L25">		FIRST_NAME(&quot;FIRST NAME&quot;),</span>
+<span class="fc" id="L26">		CONTACT_EMAIL(&quot;CONTACT EMAIL&quot;),</span>
+<span class="fc" id="L27">		STREET_ADDR(&quot;STREET ADDRESS&quot;),</span>
+<span class="fc" id="L28">		CITY(&quot;CITY&quot;),</span>
+<span class="fc" id="L29">		STATE(&quot;STATE&quot;),</span>
+<span class="fc" id="L30">		ZIP(&quot;ZIPCODE&quot;),</span>
+<span class="fc" id="L31">		PHONE(&quot;PHONE #&quot;),</span>
+<span class="fc" id="L32">		EMER_CONTACT_NAME(&quot;EMERGENCY CONTACT NAME&quot;),</span>
+<span class="fc" id="L33">		EMER_CONTACT_PHONE(&quot;EMERGENCY CONTACT PHONE #&quot;),</span>
+<span class="fc" id="L34">		INSURE_NAME(&quot;INSURANCE COMPANY NAME&quot;),</span>
+<span class="fc" id="L35">		INSURE_ADDR(&quot;INSURANCE COMPANY ADDRESS&quot;),</span>
+<span class="fc" id="L36">		INSURE_CITY(&quot;INSURANCE COMPANY CITY&quot;),</span>
+<span class="fc" id="L37">		INSURE_STATE(&quot;INSURANCE COMPANY STATE&quot;),</span>
+<span class="fc" id="L38">		INSURE_ZIP(&quot;INSURANCE COMPANY ZIPCODE&quot;),</span>
+<span class="fc" id="L39">		INSURE_PHONE(&quot;INSURANCE COMPANY PHONE #&quot;),</span>
+<span class="fc" id="L40">		INSURE_ID(&quot;INSURANCE COMPANY ID&quot;),</span>
+<span class="fc" id="L41">		PARENT_FIRST_NAME(&quot;PARENT'S FIRST NAME&quot;),</span>
+<span class="fc" id="L42">		PARENT_LAST_NAME(&quot;PARENT'S LAST NAME&quot;),</span>
+<span class="fc" id="L43">		CHILD_FIRST_NAME(&quot;CHILD'S FIRST NAME&quot;),</span>
+<span class="fc" id="L44">		CHILD_LAST_NAME(&quot;CHILD'S LAST NAME&quot;),</span>
+<span class="fc" id="L45">		SIBLING_FIRST_NAME(&quot;SIBLING'S FIRST NAME&quot;),</span>
+<span class="fc" id="L46">		SIBLING_LAST_NAME(&quot;SIBLING'S LAST NAME&quot;),</span>
+<span class="fc" id="L47">		LOWER_AGE_LIMIT(&quot;LOWER AGE LIMIT&quot;),</span>
+<span class="fc" id="L48">		UPPER_AGE_LIMIT(&quot;UPPER AGE LIMIT&quot;),</span>
+<span class="fc" id="L49">		DEACTIVATED(&quot;DEACTIVATED&quot;);</span>
+
+		private final String name;
+
+		/**
+		 * 
+		 * @param name
+		 */
+<span class="fc" id="L57">		private DemographicReportFilterType(String name) {</span>
+<span class="fc" id="L58">			this.name = name;</span>
+<span class="fc" id="L59">		}</span>
+
+		/**
+		 * 
+		 */
+		@Override
+		public String toString() {
+<span class="fc" id="L66">			return this.name;</span>
+		}
+	}
+
+	private DemographicReportFilterType filterType;
+	private String filterValue;
+	private FamilyDAO fDAO;
+
+	/**
+	 * 
+	 * @param filterType
+	 * @param filterValue
+	 */
+	public DemographicReportFilter(DemographicReportFilterType filterType, String filterValue,
+<span class="fc" id="L80">			DAOFactory factory) {</span>
+<span class="fc" id="L81">		this.filterType = filterType;</span>
+<span class="fc" id="L82">		this.filterValue = filterValue;</span>
+<span class="fc" id="L83">		fDAO = factory.getFamilyDAO();</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static DemographicReportFilterType filterTypeFromString(String name) {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		for (DemographicReportFilterType type : DemographicReportFilterType.values()) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">			if (type.name().equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L94">				return type;</span>
+			}
+		}
+<span class="nc" id="L97">		return null;</span>
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public List&lt;PatientBean&gt; filter(List&lt;PatientBean&gt; patients) {
+<span class="fc" id="L105">		List&lt;PatientBean&gt; prunedList = new ArrayList&lt;PatientBean&gt;();</span>
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">		boolean add = filterValue != null &amp;&amp; !filterValue.isEmpty();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		if (add) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			for (PatientBean patient : patients) {</span>
+<span class="fc" id="L109">				add = false;</span>
+<span class="pc bpc" id="L110" title="1 of 29 branches missed.">				switch (filterType) {</span>
+				case MID:
+<span class="fc" id="L112">					add = filterValue.equalsIgnoreCase(Long.toString(patient.getMID()));</span>
+<span class="fc" id="L113">					break;</span>
+				case GENDER:
+<span class="fc" id="L115">					add = filterValue.equalsIgnoreCase(patient.getGender().toString());</span>
+<span class="fc" id="L116">					break;</span>
+				case LAST_NAME:
+<span class="fc" id="L118">					add = patient.getLastName().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L119">					break;</span>
+				case FIRST_NAME:
+<span class="fc" id="L121">					add = patient.getFirstName().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L122">					break;</span>
+				case CONTACT_EMAIL:
+<span class="fc" id="L124">					add = patient.getEmail().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L125">					break;</span>
+				case STREET_ADDR:
+<span class="fc bfc" id="L127" title="All 2 branches covered.">					add = patient.getStreetAddress1().equalsIgnoreCase(filterValue)</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">							|| patient.getStreetAddress2().equalsIgnoreCase(filterValue)</span>
+<span class="fc" id="L129">							|| (patient.getStreetAddress1() + &quot; &quot; + patient.getStreetAddress2())</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">									.equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L131">					break;</span>
+				case CITY:
+<span class="fc" id="L133">					add = patient.getCity().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L134">					break;</span>
+				case STATE:
+<span class="fc" id="L136">					add = patient.getState().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L137">					break;</span>
+				case ZIP:
+<span class="fc" id="L139">					add = patient.getZip().contains(filterValue);</span>
+<span class="fc" id="L140">					break;</span>
+				case PHONE:
+<span class="fc" id="L142">					add = patient.getPhone().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L143">					break;</span>
+				case EMER_CONTACT_NAME:
+<span class="fc" id="L145">					add = patient.getEmergencyName().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L146">					break;</span>
+				case EMER_CONTACT_PHONE:
+<span class="fc" id="L148">					add = patient.getEmergencyPhone().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L149">					break;</span>
+				case INSURE_NAME:
+<span class="fc" id="L151">					add = patient.getIcName().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L152">					break;</span>
+				case INSURE_ADDR:
+<span class="fc bfc" id="L154" title="All 2 branches covered.">					add = patient.getIcAddress1().equalsIgnoreCase(filterValue)</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">							|| patient.getIcAddress2().equalsIgnoreCase(filterValue)</span>
+<span class="fc" id="L156">							|| (patient.getIcAddress1() + &quot; &quot; + patient.getIcAddress2())</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">									.equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L158">					break;</span>
+				case INSURE_CITY:
+<span class="fc" id="L160">					add = patient.getIcCity().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L161">					break;</span>
+				case INSURE_STATE:
+<span class="fc" id="L163">					add = patient.getIcState().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L164">					break;</span>
+				case INSURE_ZIP:
+<span class="fc" id="L166">					add = patient.getIcZip().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L167">					break;</span>
+				case INSURE_PHONE:
+<span class="fc" id="L169">					add = patient.getIcPhone().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L170">					break;</span>
+				case INSURE_ID:
+<span class="fc" id="L172">					add = patient.getIcID().equalsIgnoreCase(filterValue);</span>
+<span class="fc" id="L173">					break;</span>
+				case PARENT_FIRST_NAME:
+					try {
+<span class="fc" id="L176">						List&lt;FamilyMemberBean&gt; parents = fDAO.getParents(patient.getMID());</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">						for (FamilyMemberBean parent : parents) {</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">							if (filterValue.equalsIgnoreCase(parent.getFirstName())) {</span>
+<span class="fc" id="L179">								add = true;</span>
+<span class="fc" id="L180">								break;</span>
+							}
+<span class="fc" id="L182">						}</span>
+<span class="nc" id="L183">					} catch (Exception e) {</span>
+<span class="nc" id="L184">						break;</span>
+<span class="fc" id="L185">					}</span>
+					break;
+				case PARENT_LAST_NAME:
+					try {
+<span class="fc" id="L189">						List&lt;FamilyMemberBean&gt; parents = fDAO.getParents(patient.getMID());</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">						for (FamilyMemberBean parent : parents) {</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">							if (parent.getLastName().equals(filterValue)) {</span>
+<span class="fc" id="L192">								add = true;</span>
+<span class="fc" id="L193">								break;</span>
+							}
+<span class="fc" id="L195">						}</span>
+<span class="nc" id="L196">					} catch (Exception e) {</span>
+<span class="nc" id="L197">						break;</span>
+<span class="fc" id="L198">					}</span>
+					break;
+				case CHILD_FIRST_NAME:
+					try {
+<span class="fc" id="L202">						List&lt;FamilyMemberBean&gt; children = fDAO.getChildren(patient.getMID());</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">						for (FamilyMemberBean child : children) {</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">							if (child.getFirstName().equals(filterValue)) {</span>
+<span class="fc" id="L205">								add = true;</span>
+<span class="fc" id="L206">								break;</span>
+							}
+<span class="fc" id="L208">						}</span>
+<span class="nc" id="L209">					} catch (Exception e) {</span>
+<span class="nc" id="L210">						break;</span>
+<span class="fc" id="L211">					}</span>
+					break;
+				case CHILD_LAST_NAME:
+					try {
+<span class="fc" id="L215">						List&lt;FamilyMemberBean&gt; children = fDAO.getChildren(patient.getMID());</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">						for (FamilyMemberBean child : children) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">							if (child.getLastName().equals(filterValue)) {</span>
+<span class="fc" id="L218">								add = true;</span>
+<span class="fc" id="L219">								break;</span>
+							}
+<span class="fc" id="L221">						}</span>
+<span class="nc" id="L222">					} catch (Exception e) {</span>
+<span class="nc" id="L223">						break;</span>
+<span class="fc" id="L224">					}</span>
+					break;
+				case SIBLING_FIRST_NAME:
+					try {
+<span class="fc" id="L228">						List&lt;FamilyMemberBean&gt; siblings = fDAO.getSiblings(patient.getMID());</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">						for (FamilyMemberBean sibling : siblings) {</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">							if (sibling.getFirstName().equals(filterValue)) {</span>
+<span class="fc" id="L231">								add = true;</span>
+<span class="fc" id="L232">								break;</span>
+							}
+<span class="fc" id="L234">						}</span>
+<span class="nc" id="L235">					} catch (Exception e) {</span>
+<span class="nc" id="L236">						break;</span>
+<span class="fc" id="L237">					}</span>
+					break;
+				case SIBLING_LAST_NAME:
+					try {
+<span class="fc" id="L241">						List&lt;FamilyMemberBean&gt; siblings = fDAO.getSiblings(patient.getMID());</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">						for (FamilyMemberBean sibling : siblings) {</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">							if (sibling.getLastName().equals(filterValue)) {</span>
+<span class="fc" id="L244">								add = true;</span>
+<span class="fc" id="L245">								break;</span>
+							}
+<span class="fc" id="L247">						}</span>
+<span class="nc" id="L248">					} catch (Exception e) {</span>
+<span class="nc" id="L249">						break;</span>
+<span class="fc" id="L250">					}</span>
+					break;
+				case LOWER_AGE_LIMIT:
+<span class="fc" id="L253">					int lalval = Integer.parseInt(filterValue);</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">					if(lalval&lt;0){</span>
+<span class="fc" id="L255">						throw new NumberFormatException(&quot;Age must be GTE 0!&quot;);</span>
+					}
+<span class="fc bfc" id="L257" title="All 2 branches covered.">					add = lalval &lt;= patient.getAge();</span>
+<span class="fc" id="L258">					break;</span>
+				case UPPER_AGE_LIMIT:
+<span class="fc" id="L260">					int ualval = Integer.parseInt(filterValue);</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">					if(ualval&lt;0){</span>
+<span class="fc" id="L262">						throw new NumberFormatException(&quot;Age must be GTE 0!&quot;);</span>
+					}
+<span class="nc bnc" id="L264" title="All 4 branches missed.">					add = patient.getAge() &gt; 0 &amp;&amp; ualval &gt;= patient.getAge();</span>
+<span class="nc" id="L265">					break;</span>
+				case DEACTIVATED:
+<span class="fc bfc" id="L267" title="All 2 branches covered.">					if(filterValue.equals(&quot;exclude&quot;)){</span>
+<span class="fc" id="L268">						add = patient.getDateOfDeactivationStr().equals(&quot;&quot;);</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">					}else if(filterValue.equals(&quot;only&quot;)){</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">						add = !patient.getDateOfDeactivationStr().equals(&quot;&quot;);</span>
+					}else{
+<span class="nc" id="L272">						add=true;</span>
+					}
+<span class="nc" id="L274">					break;</span>
+				default:
+					break;
+				}
+
+<span class="fc bfc" id="L279" title="All 2 branches covered.">				if (add) {</span>
+<span class="fc" id="L280">					prunedList.add(patient);</span>
+				}
+<span class="fc" id="L282">			}</span>
+		}
+<span class="fc" id="L284">		return prunedList;</span>
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public DemographicReportFilterType getFilterType() {
+<span class="fc" id="L292">		return filterType;</span>
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public String getFilterTypeString() {
+<span class="fc" id="L301">		return filterType.toString();</span>
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public String getFilterValue() {
+<span class="fc" id="L310">		return filterValue;</span>
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L318">		String out = &quot;Filter by &quot; + filterType.toString() + &quot; with value &quot; + filterValue;</span>
+<span class="fc" id="L319">		return out;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

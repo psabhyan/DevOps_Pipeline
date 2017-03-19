@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewApptRequestsAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewApptRequestsAction.java</span></div><h1>ViewApptRequestsAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.beans.ApptRequestBean;
+import edu.ncsu.csc.itrust.model.old.beans.MessageBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptRequestDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * ViewApptRequestsAction
+ */
+public class ViewApptRequestsAction {
+	private ApptRequestDAO arDAO;
+	private ApptDAO aDAO;
+	private long hcpid;
+	private SendMessageAction msgAction;
+	private PersonnelDAO pnDAO;
+
+	/**
+	 * ViewApptRequestsAction
+	 * @param hcpid hcpid
+	 * @param factory factory
+	 */
+<span class="fc" id="L35">	public ViewApptRequestsAction(long hcpid, DAOFactory factory) {</span>
+<span class="fc" id="L36">		arDAO = factory.getApptRequestDAO();</span>
+<span class="fc" id="L37">		aDAO = factory.getApptDAO();</span>
+<span class="fc" id="L38">		pnDAO = factory.getPersonnelDAO();</span>
+<span class="fc" id="L39">		this.hcpid = hcpid;</span>
+<span class="fc" id="L40">		msgAction = new SendMessageAction(factory, hcpid);</span>
+<span class="fc" id="L41">		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_VIEW, hcpid, 0L, &quot;&quot;);</span>
+<span class="fc" id="L42">	}</span>
+
+	/**
+	 * getApptRequests
+	 * @return reqs
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public List&lt;ApptRequestBean&gt; getApptRequests() throws SQLException, DBException {
+<span class="fc" id="L51">		List&lt;ApptRequestBean&gt; reqs = arDAO.getApptRequestsFor(hcpid);</span>
+<span class="fc" id="L52">		return reqs;</span>
+	}
+	/**
+	 * getNumRequests
+	 * @param reqs reqs
+	 * @return int 
+	 * 
+	 * Returns the number of times in the appointment request list
+	 */
+	public int getNumRequests(List&lt;ApptRequestBean&gt; reqs){
+<span class="fc" id="L62">		int numOfPendingAppointments = 0;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		for(int i = 0; i &lt; reqs.size(); i++){</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">			if(reqs.get(i).isPending() == true){</span>
+<span class="fc" id="L65">				numOfPendingAppointments++;</span>
+			}
+		}
+<span class="fc" id="L68">		return numOfPendingAppointments;</span>
+	}
+
+	/**
+	 * acceptApptRequest
+	 * @param reqID reqID
+	 * @return message
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public String acceptApptRequest(int reqID) throws SQLException, DBException {
+<span class="fc" id="L79">		return acceptApptRequest(reqID, 0L, 0L);</span>
+	}
+
+	public String acceptApptRequest(int reqID, long loggedInMID, long patientMID) throws SQLException, DBException {
+<span class="fc" id="L83">		ApptRequestBean req = arDAO.getApptRequest(reqID);</span>
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">		if (req.isPending() &amp;&amp; !req.isAccepted()) {</span>
+<span class="fc" id="L85">			req.setPending(false);</span>
+<span class="fc" id="L86">			req.setAccepted(true);</span>
+<span class="fc" id="L87">			arDAO.updateApptRequest(req);</span>
+<span class="fc" id="L88">			aDAO.scheduleAppt(req.getRequestedAppt());</span>
+			try {
+<span class="fc" id="L90">				MessageBean msg = constructMessage(req.getRequestedAppt(), req.isAccepted());</span>
+<span class="fc" id="L91">				msgAction.sendMessage(msg);</span>
+<span class="nc" id="L92">			} catch (Exception e) {</span>
+				//TODO
+<span class="fc" id="L94">			}</span>
+<span class="fc" id="L95">			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_APPROVED, loggedInMID, patientMID, &quot;&quot;);</span>
+<span class="fc" id="L96">			return &quot;The appointment request you selected has been accepted and scheduled.&quot;;</span>
+		} else {
+<span class="nc" id="L98">			return &quot;The appointment request you selected has already been acted upon.&quot;;</span>
+		}
+	}
+
+	/**
+	 * rejectApptRequest
+	 * @param reqID reqID
+	 * @return message
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public String rejectApptRequest(int reqID) throws SQLException, DBException {
+<span class="fc" id="L110">		return rejectApptRequest(reqID, 0L, 0L);</span>
+	}
+
+	public String rejectApptRequest(int reqID, long loggedInMID, long patientMID) throws SQLException, DBException {
+<span class="fc" id="L114">		ApptRequestBean req = arDAO.getApptRequest(reqID);</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		if (req.isPending() &amp;&amp; !req.isAccepted()) {</span>
+<span class="fc" id="L116">			req.setPending(false);</span>
+<span class="fc" id="L117">			req.setAccepted(false);</span>
+<span class="fc" id="L118">			arDAO.updateApptRequest(req);</span>
+			try {
+<span class="fc" id="L120">				MessageBean msg = constructMessage(req.getRequestedAppt(), req.isAccepted());</span>
+<span class="fc" id="L121">				msgAction.sendMessage(msg);</span>
+<span class="nc" id="L122">			} catch (Exception e) {</span>
+				//TODO
+<span class="fc" id="L124">			}</span>
+<span class="fc" id="L125">			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_REJECTED,</span>
+<span class="fc" id="L126">					loggedInMID, patientMID, &quot;&quot;);</span>
+<span class="fc" id="L127">			return &quot;The appointment request you selected has been rejected.&quot;;</span>
+		} else {
+<span class="nc" id="L129">			return &quot;The appointment request you selected has already been acted upon.&quot;;</span>
+		}
+	}
+
+	/**
+	 * constructMessage
+	 * @param appt appt
+	 * @param accepted accepted
+	 * @return msg
+	 * @throws ITrustException
+	 * @throws SQLException
+	 * @throws FormValidationException
+	 */
+	private MessageBean constructMessage(ApptBean appt, boolean accepted) throws ITrustException, SQLException, FormValidationException {
+<span class="fc" id="L143">		MessageBean msg = new MessageBean();</span>
+<span class="fc" id="L144">		msg.setFrom(appt.getHcp());</span>
+<span class="fc" id="L145">		msg.setTo(appt.getPatient());</span>
+<span class="fc" id="L146">		msg.setSubject(&quot;Your appointment request&quot;);</span>
+<span class="fc" id="L147">		msg.setSentDate(new Timestamp(System.currentTimeMillis()));</span>
+<span class="fc" id="L148">		String body = &quot;Your appointment request with &quot; + pnDAO.getName(appt.getHcp()) + &quot; on &quot;</span>
+<span class="fc" id="L149">				+ appt.getDate() + &quot; has been &quot;;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (accepted)</span>
+<span class="fc" id="L151">			body += &quot;accepted.&quot;;</span>
+		else
+<span class="fc" id="L153">			body += &quot;rejected.&quot;;</span>
+<span class="fc" id="L154">		msg.setBody(body);</span>
+<span class="fc" id="L155">		return msg;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

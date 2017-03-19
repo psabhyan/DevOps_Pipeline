@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NDCCodeMySQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.ndcode</a> &gt; <span class="el_source">NDCCodeMySQL.java</span></div><h1>NDCCodeMySQL.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.ndcode;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+
+public class NDCCodeMySQL {
+    private DataSource ds;
+    NDCCodeValidator validator;
+    
+    /**
+     * Standard constructor for use in deployment
+     * @throws DBException
+     */
+<span class="fc" id="L28">    public NDCCodeMySQL() throws DBException {</span>
+<span class="fc" id="L29">        validator = new NDCCodeValidator();</span>
+        try {
+<span class="nc" id="L31">            this.ds = getDataSource();</span>
+<span class="fc" id="L32">        } catch (NamingException e) {</span>
+<span class="fc" id="L33">            throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+<span class="nc" id="L34">        }</span>
+<span class="nc" id="L35">    }</span>
+    
+    protected DataSource getDataSource() throws NamingException {
+<span class="fc" id="L38">        Context ctx = new InitialContext();</span>
+<span class="nc" id="L39">        return ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+    }
+    
+    /**
+     * Constructor for testing purposes
+     * @param ds The DataSource to use
+     */
+<span class="fc" id="L46">    public NDCCodeMySQL(DataSource ds) {</span>
+<span class="fc" id="L47">        validator = new NDCCodeValidator();</span>
+<span class="fc" id="L48">        this.ds = ds;</span>
+<span class="fc" id="L49">    }</span>
+    
+    /**
+     * Adds an NDCode to the database
+     * 
+     * @param nd The NDCCode to add
+     * @return True if the NDCCode was successfully added
+     * @throws FormValidationException
+     * @throws SQLException
+     */
+    public boolean add(NDCCode nd) throws FormValidationException, SQLException{
+<span class="fc" id="L60">        validator.validate(nd);</span>
+<span class="fc" id="L61">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L62">                PreparedStatement pstring = createAddPreparedStatement(conn, nd);){</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L64" title="8 of 16 branches missed.">        } catch (MySQLIntegrityConstraintViolationException e){</span>
+<span class="fc" id="L65">            return false;</span>
+        }
+    }
+
+    /**
+     * A utility method used to create a PreparedStatement for the add() method
+     * 
+     * @param conn The Connection to use
+     * @param nd The NDCCode that we're adding
+     * @return The new PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createAddPreparedStatement(Connection conn, NDCCode nd) throws SQLException {
+<span class="fc" id="L78">        PreparedStatement pstring = conn.prepareStatement(&quot;INSERT INTO ndcodes(Code, Description) &quot;</span>
+                + &quot;VALUES(?, ?)&quot;);
+<span class="fc" id="L80">        pstring.setString(1, nd.getCode());</span>
+<span class="fc" id="L81">        pstring.setString(2, nd.getDescription());</span>
+<span class="fc" id="L82">        return pstring;</span>
+    }
+    
+    /**
+     * Deletes an NDCCode from the database
+     * @param nd The NDCCode to delete
+     * @return True if the record was successfully deleted
+     * @throws SQLException
+     */
+    public boolean delete(NDCCode nd) throws SQLException{
+<span class="pc" id="L92">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L93">                PreparedStatement pstring = createDeletePreparedStatement(conn, nd);){</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L95" title="12 of 16 branches missed.">        }</span>
+    }
+    
+    /**
+     * A utility method used to create a PreparedStatement for the delete() method
+     * 
+     * @param conn The Connection to use
+     * @param nd The NDCCode that we're deleting
+     * @return The new PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createDeletePreparedStatement(Connection conn, NDCCode nd) throws SQLException {
+<span class="fc" id="L107">        PreparedStatement pstring = conn.prepareStatement(&quot;DELETE FROM ndcodes WHERE Code=?&quot;);</span>
+<span class="fc" id="L108">        pstring.setString(1, nd.getCode());</span>
+<span class="fc" id="L109">        return pstring;</span>
+    }
+    
+    /**
+     * Gets all NDCCode in the database
+     * @return A List&lt;NDCCode&gt; containing all NDCCode in the database
+     * @throws SQLException
+     */
+    public List&lt;NDCCode&gt; getAll() throws SQLException{
+<span class="pc" id="L118">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L119">                PreparedStatement pstring = createGetAllPreparedStatement(conn);</span>
+<span class="fc" id="L120">                ResultSet rs = pstring.executeQuery()){</span>
+<span class="fc" id="L121">            return loadResults(rs);</span>
+<span class="pc bpc" id="L122" title="18 of 24 branches missed.">        }</span>
+    }
+
+    /**
+     * A utility method used to create a PreparedStatement for the getAll() method
+     * 
+     * @param conn The Connection to use
+     * @return The new PreparedStatement
+     * @throws SQLException
+     */
+    private PreparedStatement createGetAllPreparedStatement(Connection conn) throws SQLException {
+<span class="fc" id="L133">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM ndcodes&quot;);</span>
+<span class="fc" id="L134">        return pstring;</span>
+    }
+
+    /**
+     * A utility method that loads all NDCCodes in a ResultSet
+     * 
+     * @param rs The ResultSet to load from
+     * @return A List&lt;NDCCode&gt; of all NDCCodes from the ResultSet
+     * @throws SQLException
+     */
+    private List&lt;NDCCode&gt; loadResults(ResultSet rs) throws SQLException {
+<span class="fc" id="L145">        List&lt;NDCCode&gt; codes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        while (rs.next()){</span>
+<span class="fc" id="L147">            NDCCode newNDCode = new NDCCode();</span>
+<span class="fc" id="L148">            newNDCode.setCode(rs.getString(&quot;Code&quot;));</span>
+<span class="fc" id="L149">            newNDCode.setDescription(rs.getString(&quot;Description&quot;));</span>
+<span class="fc" id="L150">            codes.add(newNDCode);</span>
+<span class="fc" id="L151">        }</span>
+<span class="fc" id="L152">        return codes;</span>
+    }
+    
+    public NDCCode getByCode(String code) throws SQLException{
+<span class="pc" id="L156">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L157">                PreparedStatement pstring = createGetByCodePreparedStatement(conn, code);</span>
+<span class="fc" id="L158">                ResultSet rs = pstring.executeQuery()){</span>
+<span class="fc" id="L159">            return loadOneResult(rs);</span>
+<span class="pc bpc" id="L160" title="18 of 24 branches missed.">        }</span>
+    }
+
+    private PreparedStatement createGetByCodePreparedStatement(Connection conn, String code) throws SQLException {
+<span class="fc" id="L164">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM ndcodes WHERE Code=?&quot;);</span>
+<span class="fc" id="L165">        pstring.setString(1, code);</span>
+<span class="fc" id="L166">        return pstring;</span>
+    }
+
+    private NDCCode loadOneResult(ResultSet rs) throws SQLException {
+<span class="fc" id="L170">        NDCCode code = null;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (rs.next()){</span>
+<span class="fc" id="L172">            code = new NDCCode();</span>
+<span class="fc" id="L173">            code.setCode(rs.getString(&quot;Code&quot;));</span>
+<span class="fc" id="L174">            code.setDescription(rs.getString(&quot;Description&quot;));</span>
+        }
+<span class="fc" id="L176">        return code;</span>
+    }
+    
+    public boolean update(NDCCode toChange) throws FormValidationException, SQLException{
+<span class="fc" id="L180">        validator.validate(toChange);</span>
+<span class="pc" id="L181">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L182">                PreparedStatement pstring = createUpdatePreparedStatement(conn, toChange);){</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">            return pstring.executeUpdate() &gt; 0;</span>
+<span class="pc bpc" id="L184" title="12 of 16 branches missed.">        }</span>
+    }
+
+    private PreparedStatement createUpdatePreparedStatement(Connection conn, NDCCode toChange) throws SQLException {
+<span class="fc" id="L188">        PreparedStatement pstring = conn.prepareStatement(&quot;UPDATE ndcodes SET Description=? WHERE Code=?&quot;);</span>
+<span class="fc" id="L189">        pstring.setString(1, toChange.getDescription());</span>
+<span class="fc" id="L190">        pstring.setString(2, toChange.getCode());</span>
+<span class="fc" id="L191">        return pstring;</span>
+    }
+
+    public List&lt;NDCCode&gt; getCodesWithFilter(String filter) throws SQLException {
+<span class="pc" id="L195">        try (Connection conn = ds.getConnection();</span>
+<span class="fc" id="L196">                PreparedStatement pstring = creategetCodesWithFilterPreparedStatement(conn, filter);</span>
+<span class="fc" id="L197">                ResultSet rs = pstring.executeQuery()){</span>
+<span class="fc" id="L198">            return loadResults(rs);</span>
+<span class="pc bpc" id="L199" title="18 of 24 branches missed.">        }</span>
+    }
+
+    private PreparedStatement creategetCodesWithFilterPreparedStatement(Connection conn, String filter) throws SQLException {
+<span class="fc" id="L203">        PreparedStatement pstring = conn.prepareStatement(&quot;SELECT * FROM ndcodes WHERE Code LIKE ?&quot;);</span>
+<span class="fc" id="L204">        pstring.setString(1, &quot;%&quot; + filter + &quot;%&quot;);</span>
+<span class="fc" id="L205">        return pstring;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">PatientDAO.java</span></div><h1>PatientDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Vector;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PatientLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Used for managing all static information related to a patient. For other
+ * information related to all aspects of patient care, see the other DAOs.
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class PatientDAO {
+	private DAOFactory factory;
+	private PatientLoader patientLoader;
+	private PersonnelLoader personnelLoader;
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L45">	public PatientDAO(DAOFactory factory) {</span>
+<span class="fc" id="L46">		this.factory = factory;</span>
+<span class="fc" id="L47">		this.patientLoader = new PatientLoader();</span>
+<span class="fc" id="L48">		this.personnelLoader = new PersonnelLoader();</span>
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * Returns the name for the given MID
+	 * 
+	 * @param mid
+	 *            The MID of the patient in question.
+	 * @return A String representing the patient's first name and last name.
+	 * @throws ITrustException
+	 * @throws DBException
+	 */
+	public String getName(long mid) throws ITrustException, DBException {
+<span class="fc" id="L61">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L62">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT firstName, lastName FROM patients WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L63">			ps.setLong(1, mid);</span>
+			ResultSet rs;
+<span class="fc" id="L65">			rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">			if (rs.next()) {</span>
+<span class="fc" id="L67">				String result = rs.getString(&quot;firstName&quot;) + &quot; &quot; + rs.getString(&quot;lastName&quot;);</span>
+<span class="fc" id="L68">				rs.close();</span>
+<span class="fc" id="L69">				return result;</span>
+			} else {
+<span class="fc" id="L71">				rs.close();</span>
+<span class="fc" id="L72">				throw new ITrustException(&quot;User does not exist&quot;);</span>
+			}
+<span class="pc bpc" id="L74" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L75">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the role of a particular patient - why is this in PatientDAO? It
+	 * should be in AuthDAO
+	 * 
+	 * @param mid
+	 *            The MID of the patient in question.
+	 * @param role
+	 *            A String representing the role of the patient.
+	 * @return A String representing the patient's role.
+	 * @throws ITrustException
+	 * @throws DBException
+	 */
+	public String getRole(long mid, String role) throws ITrustException, DBException {
+<span class="fc" id="L92">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L93">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT role FROM users WHERE MID=? AND Role=?&quot;)) {</span>
+<span class="fc" id="L94">			ps.setLong(1, mid);</span>
+<span class="fc" id="L95">			ps.setString(2, role);</span>
+			ResultSet rs;
+<span class="fc" id="L97">			rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">			if (rs.next()) {</span>
+<span class="fc" id="L99">				String result = rs.getString(&quot;role&quot;);</span>
+<span class="fc" id="L100">				rs.close();</span>
+<span class="fc" id="L101">				return result;</span>
+			} else {
+<span class="fc" id="L103">				rs.close();</span>
+<span class="fc" id="L104">				throw new ITrustException(&quot;User does not exist with the designated role&quot;);</span>
+			}
+<span class="pc bpc" id="L106" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L107">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Adds an empty patient to the table, returns the new MID
+	 * 
+	 * @return The MID of the patient as a long.
+	 * @throws DBException
+	 */
+	public long addEmptyPatient() throws DBException {
+<span class="pc" id="L118">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L119">				PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO patients(MID) VALUES(NULL)&quot;)) {</span>
+<span class="fc" id="L120">			ps.executeUpdate();</span>
+<span class="fc" id="L121">			return DBUtil.getLastInsert(conn);</span>
+<span class="pc bpc" id="L122" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L123">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the patient's information for a given ID
+	 * 
+	 * @param mid
+	 *            The MID of the patient to retrieve.
+	 * @return A PatientBean representing the patient.
+	 * @throws DBException
+	 */
+	public PatientBean getPatient(long mid) throws DBException {
+<span class="pc" id="L136">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L137">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM patients WHERE MID = ?&quot;)) {</span>
+<span class="fc" id="L138">			ps.setLong(1, mid);</span>
+<span class="fc" id="L139">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			PatientBean patient = rs.next() ? patientLoader.loadSingle(rs) : null;</span>
+<span class="fc" id="L141">			rs.close();</span>
+<span class="fc" id="L142">			return patient;</span>
+<span class="pc bpc" id="L143" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L144">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Updates a patient's information for the given MID
+	 * 
+	 * @param p
+	 *            The patient bean representing the new information for the
+	 *            patient.
+	 * @throws DBException
+	 */
+	public void editPatient(PatientBean p, long hcpid) throws DBException {
+<span class="pc" id="L157">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L158">				PreparedStatement ps = patientLoader</span>
+<span class="fc" id="L159">						.loadParameters(conn.prepareStatement(&quot;UPDATE patients SET firstName=?,lastName=?,email=?,&quot;</span>
+								+ &quot;address1=?,address2=?,city=?,state=?,zip=?,phone=?,&quot;
+								+ &quot;eName=?,ePhone=?,iCName=?,iCAddress1=?,iCAddress2=?,iCCity=?,&quot;
+								+ &quot;ICState=?,iCZip=?,iCPhone=?,iCID=?,DateOfBirth=?,&quot;
+								+ &quot;DateOfDeath=?,CauseOfDeath=?,MotherMID=?,FatherMID=?,&quot;
+								+ &quot;BloodType=?,Ethnicity=?,Gender=?,TopicalNotes=?, CreditCardType=?, CreditCardNumber=?, &quot;
+								+ &quot;DirectionsToHome=?, Religion=?, Language=?, SpiritualPractices=?, &quot;
+								+ &quot;AlternateName=?, DateOfDeactivation=? WHERE MID=?&quot;), p)) {
+<span class="fc" id="L167">			ps.setLong(37, p.getMID());</span>
+<span class="fc" id="L168">			ps.executeUpdate();</span>
+<span class="pc bpc" id="L169" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L170">			throw new DBException(e);</span>
+<span class="fc" id="L171">		}</span>
+<span class="fc" id="L172">	}</span>
+
+	/**
+	 * Returns whether or not the patient exists
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @return A boolean indicating whether the patient exists.
+	 * @throws DBException
+	 */
+	public boolean checkPatientExists(long pid) throws DBException {
+<span class="pc" id="L183">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L184">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM patients WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L185">			ps.setLong(1, pid);</span>
+<span class="fc" id="L186">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L187">			boolean exists = rs.next();</span>
+<span class="fc" id="L188">			rs.close();</span>
+<span class="fc" id="L189">			return exists;</span>
+<span class="pc bpc" id="L190" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L191">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns a list of HCPs who are declared by the given patient
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @return A java.util.List of Personnel Beans.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getDeclaredHCPs(long pid) throws DBException {
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		if (pid == 0L) {</span>
+<span class="fc" id="L205">			throw new DBException(new SQLException(&quot;pid cannot be 0&quot;));</span>
+		}
+<span class="pc" id="L207">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L208">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM declaredhcp, personnel &quot;</span>
+						+ &quot;WHERE PatientID=? AND personnel.MID=declaredhcp.HCPID&quot;)) {
+<span class="fc" id="L210">			ps.setLong(1, pid);</span>
+<span class="fc" id="L211">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L212">			List&lt;PersonnelBean&gt; loadlist = personnelLoader.loadList(rs);</span>
+<span class="fc" id="L213">			rs.close();</span>
+<span class="fc" id="L214">			return loadlist;</span>
+<span class="pc bpc" id="L215" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L216">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Declares an HCP for a particular patient
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @param hcpID
+	 *            The HCP's MID.
+	 * @return A boolean as to whether the insertion was successful.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean declareHCP(long pid, long hcpID) throws DBException, ITrustException {
+<span class="fc" id="L232">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L233">				PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO declaredhcp(PatientID, HCPID) VALUES(?,?)&quot;)) {</span>
+<span class="fc" id="L234">			ps.setLong(1, pid);</span>
+<span class="fc" id="L235">			ps.setLong(2, hcpID);</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">			boolean successfullyAdded = ps.executeUpdate() == 1;</span>
+<span class="fc" id="L237">			return successfullyAdded;</span>
+<span class="pc bpc" id="L238" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">			if (e.getErrorCode() == 1062) {</span>
+<span class="fc" id="L240">				throw new ITrustException(&quot;HCP &quot; + hcpID + &quot; has already been declared for patient &quot; + pid);</span>
+			} else {
+<span class="fc" id="L242">				throw new DBException(e);</span>
+			}
+		}
+	}
+
+	/**
+	 * Undeclare an HCP for a given patient
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @param hcpID
+	 *            The MID of the HCP in question.
+	 * @return A boolean indicating whether the action was successful.
+	 * @throws DBException
+	 */
+	public boolean undeclareHCP(long pid, long hcpID) throws DBException {
+<span class="pc" id="L258">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L259">				PreparedStatement ps = conn.prepareStatement(&quot;DELETE FROM declaredhcp WHERE PatientID=? AND HCPID=?&quot;)) {</span>
+<span class="fc" id="L260">			ps.setLong(1, pid);</span>
+<span class="fc" id="L261">			ps.setLong(2, hcpID);</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			boolean successfullyDeleted = ps.executeUpdate() == 1;</span>
+<span class="fc" id="L263">			return successfullyDeleted;</span>
+<span class="pc bpc" id="L264" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L265">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Check if a patient has declared the given HCP
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question as a long.
+	 * @param hcpid
+	 *            The MID of the HCP in question as a long.
+	 * @return
+	 * @throws DBException
+	 */
+	public boolean checkDeclaredHCP(long pid, long hcpid) throws DBException {
+<span class="pc" id="L280">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L281">				PreparedStatement ps = conn</span>
+<span class="fc" id="L282">						.prepareStatement(&quot;SELECT * FROM declaredhcp WHERE PatientID=? AND HCPID=?&quot;)) {</span>
+<span class="fc" id="L283">			ps.setLong(1, pid);</span>
+<span class="fc" id="L284">			ps.setLong(2, hcpid);</span>
+<span class="fc" id="L285">			boolean patientHasDeclaredHCP = (ps.executeQuery().next());</span>
+<span class="fc" id="L286">			return patientHasDeclaredHCP;</span>
+<span class="pc bpc" id="L287" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L288">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return a list of patients that the given patient represents
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @return A java.util.List of PatientBeans
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; getRepresented(long pid) throws DBException {
+<span class="pc" id="L301">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L302">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT patients.* FROM representatives, patients &quot;</span>
+						+ &quot;WHERE RepresenterMID=? AND RepresenteeMID=patients.MID&quot;)) {
+<span class="fc" id="L304">			ps.setLong(1, pid);</span>
+<span class="fc" id="L305">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L306">			List&lt;PatientBean&gt; loadlist = patientLoader.loadList(rs);</span>
+<span class="fc" id="L307">			rs.close();</span>
+<span class="fc" id="L308">			return loadlist;</span>
+<span class="pc bpc" id="L309" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L310">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return a list of patients that the given patient represents
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @return A java.util.List of PatientBeans
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; getDependents(long pid) throws DBException {
+<span class="pc" id="L323">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L324">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT patients.* FROM representatives, patients, users &quot;</span>
+						+ &quot;WHERE RepresenterMID=? AND RepresenteeMID=patients.MID AND users.MID=patients.MID AND users.isDependent=1&quot;)) {
+<span class="fc" id="L326">			ps.setLong(1, pid);</span>
+<span class="fc" id="L327">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L328">			List&lt;PatientBean&gt; dependentsList = patientLoader.loadList(rs);</span>
+<span class="fc" id="L329">			rs.close();</span>
+<span class="fc" id="L330">			return dependentsList;</span>
+<span class="pc bpc" id="L331" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L332">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return a list of patients that the given patient is represented by
+	 * 
+	 * @param pid
+	 *            The MID of the patient in question.
+	 * @return A java.util.List of PatientBeans.
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; getRepresenting(long pid) throws DBException {
+<span class="pc" id="L345">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L346">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT patients.* FROM representatives, patients &quot;</span>
+						+ &quot;WHERE RepresenteeMID=? AND RepresenterMID=patients.MID&quot;)) {
+<span class="fc" id="L348">			ps.setLong(1, pid);</span>
+<span class="fc" id="L349">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L350">			List&lt;PatientBean&gt; representingList = patientLoader.loadList(rs);</span>
+<span class="fc" id="L351">			rs.close();</span>
+<span class="fc" id="L352">			return representingList;</span>
+<span class="pc bpc" id="L353" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L354">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Check if the given representer represents the representee
+	 * 
+	 * @param representer
+	 *            The MID of the representer in question.
+	 * @param representee
+	 *            The MID of the representee in question.
+	 * @return A boolean indicating whether represenation is in place.
+	 * @throws DBException
+	 */
+	public boolean represents(long representer, long representee) throws DBException {
+<span class="pc" id="L369">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L370">				PreparedStatement ps = conn.prepareStatement(</span>
+						&quot;SELECT * FROM representatives WHERE RepresenterMID=? AND RepresenteeMID=?&quot;)) {
+<span class="fc" id="L372">			ps.setLong(1, representer);</span>
+<span class="fc" id="L373">			ps.setLong(2, representee);</span>
+<span class="fc" id="L374">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L375">			boolean doesRepresent = rs.next();</span>
+<span class="fc" id="L376">			rs.close();</span>
+<span class="fc" id="L377">			return doesRepresent;</span>
+<span class="pc bpc" id="L378" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L379">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Assign a representer to the representee
+	 * 
+	 * @param representer
+	 *            The MID of the representer as a long.
+	 * @param representee
+	 *            The MID of the representee as a long.
+	 * @return A boolean as to whether the insertion was correct.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public boolean addRepresentative(long representer, long representee) throws DBException, ITrustException {
+<span class="fc" id="L395">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L396">				PreparedStatement ps = conn</span>
+<span class="fc" id="L397">						.prepareStatement(&quot;INSERT INTO representatives(RepresenterMID,RepresenteeMID) VALUES (?,?)&quot;)) {</span>
+<span class="fc" id="L398">			ps.setLong(1, representer);</span>
+<span class="fc" id="L399">			ps.setLong(2, representee);</span>
+
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">			boolean successfullyAdded = ps.executeUpdate() == 1;</span>
+<span class="fc" id="L402">			return successfullyAdded;</span>
+<span class="pc bpc" id="L403" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">			if (e.getErrorCode() == 1062) {</span>
+<span class="fc" id="L405">				throw new ITrustException(&quot;Patient &quot; + representer + &quot; already represents patient &quot; + representee);</span>
+			} else {
+<span class="fc" id="L407">				throw new DBException(e);</span>
+			}
+		}
+	}
+
+	public boolean checkIfRepresenteeIsActive(long representee) throws DBException {
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">		if (representee == 0L) {</span>
+<span class="nc" id="L414">			throw new DBException(new SQLException(&quot;PID cannot be 0&quot;));</span>
+		}
+<span class="pc" id="L416">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L417">				PreparedStatement ps = conn</span>
+<span class="fc" id="L418">						.prepareStatement(&quot;SELECT * FROM patients WHERE MID=? AND DateOfDeactivation IS NULL&quot;)) {</span>
+<span class="fc" id="L419">			ps.setLong(1, representee);</span>
+<span class="fc" id="L420">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L421">			PatientBean bean = new PatientBean();</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">			if (rs.next())</span>
+<span class="fc" id="L423">				bean = patientLoader.loadSingle(rs);</span>
+<span class="fc" id="L424">			rs.close();</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">			return bean.getMID() == representee;</span>
+<span class="pc bpc" id="L426" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L427">			throw new DBException(e);</span>
+		}
+	}
+
+	public boolean checkIfPatientIsActive(long pid) throws ITrustException {
+<span class="fc bfc" id="L432" title="All 2 branches covered.">		if (pid == 0L)</span>
+<span class="fc" id="L433">			throw new DBException(new SQLException(&quot;PID cannot be 0&quot;));</span>
+<span class="pc" id="L434">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L435">				PreparedStatement ps = conn</span>
+<span class="fc" id="L436">						.prepareStatement(&quot;SELECT * FROM patients WHERE MID=? AND DateOfDeactivation IS NULL&quot;)) {</span>
+<span class="fc" id="L437">			ps.setLong(1, pid);</span>
+<span class="fc" id="L438">			ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">			PatientBean bean = rs.next() ? patientLoader.loadSingle(rs) : new PatientBean();</span>
+<span class="fc" id="L440">			rs.close();</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">			return bean.getMID() == pid;</span>
+<span class="pc bpc" id="L442" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L443">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Unassign the representation
+	 * 
+	 * @param representer
+	 *            The MID of the representer in question.
+	 * @param representee
+	 *            The MID of the representee in question.
+	 * @return A boolean indicating whether the unassignment was sucessful.
+	 * @throws DBException
+	 */
+	public boolean removeRepresentative(long representer, long representee) throws DBException {
+<span class="pc" id="L458">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L459">				PreparedStatement ps = conn</span>
+<span class="fc" id="L460">						.prepareStatement(&quot;DELETE FROM representatives WHERE RepresenterMID=? AND RepresenteeMID=?&quot;)) {</span>
+<span class="fc" id="L461">			ps.setLong(1, representer);</span>
+<span class="fc" id="L462">			ps.setLong(2, representee);</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">			boolean successfullyDeleted = ps.executeUpdate() == 1;</span>
+<span class="fc" id="L464">			return successfullyDeleted;</span>
+<span class="pc bpc" id="L465" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L466">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Removes all dependencies represented by the patient passed in the
+	 * parameter
+	 * 
+	 * @param representerMID
+	 *            the mid for the patient to remove all representees for
+	 * @throws DBException
+	 */
+	public void removeAllRepresented(long representerMID) throws DBException {
+<span class="pc" id="L479">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L480">				PreparedStatement updateStatement = conn.prepareStatement(</span>
+						&quot;UPDATE users U, representatives R SET U.isDependent=0 WHERE R.representerMID=? AND &quot;
+								+ &quot;R.representeeMID=U.MID AND R.representeeMID NOT IN &quot;
+								+ &quot;(SELECT representeeMID FROM representatives WHERE representerMID&lt;&gt;?)&quot;);
+<span class="fc" id="L484">				PreparedStatement deleteStatement = conn.prepareStatement(&quot;DELETE FROM representatives WHERE representerMID=?&quot;)) {</span>
+<span class="fc" id="L485">			updateStatement.setLong(1, representerMID);</span>
+<span class="fc" id="L486">			updateStatement.setLong(2, representerMID);</span>
+<span class="fc" id="L487">			updateStatement.executeUpdate();</span>
+			
+<span class="fc" id="L489">			deleteStatement.setLong(1, representerMID);</span>
+<span class="fc" id="L490">			deleteStatement.executeUpdate();</span>
+<span class="pc bpc" id="L491" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L492">			throw new DBException(e);</span>
+<span class="fc" id="L493">		}</span>
+<span class="fc" id="L494">	}</span>
+
+	/**
+	 * Removes all dependencies participated by the patient passed in the
+	 * parameter
+	 * 
+	 * @param representerMID
+	 *            the mid for the patient to remove all representees for
+	 * @throws DBException
+	 */
+	public void removeAllRepresentee(long representeeMID) throws DBException {
+<span class="pc" id="L505">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L506">				PreparedStatement deleteStatement = conn.prepareStatement(&quot;DELETE FROM representatives WHERE representeeMID=?&quot;);</span>
+<span class="fc" id="L507">				PreparedStatement updateStatement = conn.prepareStatement(&quot;UPDATE users SET isDependent=0 WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L508">			deleteStatement.setLong(1, representeeMID);</span>
+<span class="fc" id="L509">			deleteStatement.executeUpdate();</span>
+
+<span class="fc" id="L511">			updateStatement.setLong(1, representeeMID);</span>
+<span class="fc" id="L512">			updateStatement.executeUpdate();</span>
+<span class="pc bpc" id="L513" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L514">			throw new DBException(e);</span>
+<span class="fc" id="L515">		}</span>
+<span class="fc" id="L516">	}</span>
+
+	/**
+	 * Lists every patient in the database.
+	 * 
+	 * @return A java.util.List of PatientBeans representing the patients.
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; getAllPatients() throws DBException {
+<span class="pc" id="L525">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L526">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM patients &quot;);</span>
+<span class="fc" id="L527">				ResultSet rs = ps.executeQuery()) {</span>
+<span class="fc" id="L528">			return patientLoader.loadList(rs);</span>
+<span class="pc bpc" id="L529" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L530">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return a list of patients with a special-diagnosis-history who have the
+	 * logged in HCP as a DHCP and whose medications are going to expire within
+	 * seven days.
+	 * 
+	 * @param hcpMID
+	 *            The MID of the logged in HCP
+	 * @return A list of patients satisfying the conditions.
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; getRenewalNeedsPatients(long hcpMID) throws DBException {
+<span class="nc" id="L545">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L546">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM ( &quot; +</span>
+					&quot;SELECT DISTINCT patients.* FROM patients, declaredhcp, ovdiagnosis, officevisits, ovmedication&quot;
+					+ &quot; WHERE&quot;
+					+ &quot; declaredhcp.HCPID = ?&quot;
+					+ &quot; AND patients.MID = declaredhcp.PatientID&quot;
+					+ &quot; AND (ovdiagnosis.VisitID = officevisits.ID&quot;
+					+ &quot; AND officevisits.PatientID = declaredhcp.PatientID&quot;
+					+ &quot; AND ((ovdiagnosis.ICDCode &gt;= ? AND ovdiagnosis.ICDCode &lt; ?)&quot;
+					+ &quot; OR (ovdiagnosis.ICDCode &gt;= ? AND ovdiagnosis.ICDCode &lt; ?)&quot;
+					+ &quot; OR (ovdiagnosis.ICDCode &gt;= ? AND ovdiagnosis.ICDCode &lt; ?)))&quot;
+					+ &quot; UNION ALL&quot;
+					+ &quot; SELECT DISTINCT patients.* From patients, declaredhcp, ovdiagnosis, officevisits, ovmedication &quot;
+					+ &quot; WHERE&quot;
+					+ &quot; declaredhcp.HCPID = ?&quot;
+					+ &quot; AND patients.MID = declaredhcp.PatientID&quot;
+					+ &quot; AND (declaredhcp.PatientID = officevisits.PatientID&quot;
+					+ &quot; AND officevisits.ID = ovmedication.VisitID&quot;
+					+ &quot; AND ovmedication.EndDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)))&quot;
+					+ &quot; AS final&quot;
+					+ &quot; GROUP BY final.MID HAVING COUNT(*) = 2&quot;
+					+ &quot; ORDER BY final.lastname ASC, final.firstname ASC&quot;)) {
+<span class="nc" id="L567">			ps.setLong(1, hcpMID);</span>
+
+<span class="nc" id="L569">			ps.setFloat(2, 250.0f);</span>
+<span class="nc" id="L570">			ps.setFloat(3, 251.0f);</span>
+
+<span class="nc" id="L572">			ps.setFloat(4, 493.0f);</span>
+<span class="nc" id="L573">			ps.setFloat(5, 494.0f);</span>
+
+<span class="nc" id="L575">			ps.setFloat(6, 390.0f);</span>
+<span class="nc" id="L576">			ps.setFloat(7, 460.99f);</span>
+
+<span class="nc" id="L578">			ps.setLong(8, hcpMID);</span>
+
+<span class="nc" id="L580">			ResultSet rs = ps.executeQuery();</span>
+<span class="nc" id="L581">			List&lt;PatientBean&gt; loadlist = patientLoader.loadList(rs);</span>
+<span class="nc" id="L582">			rs.close();</span>
+<span class="nc" id="L583">			return loadlist;</span>
+<span class="nc bnc" id="L584" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L585">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all patients with names &quot;LIKE&quot; (as in SQL) the passed in
+	 * parameters.
+	 * 
+	 * @param first
+	 *            The patient's first name.
+	 * @param last
+	 *            The patient's last name.
+	 * @return A java.util.List of PatientBeans.
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; searchForPatientsWithName(String first, String last) throws DBException {
+<span class="pc bpc" id="L601" title="1 of 4 branches missed.">		if (first.equals(&quot;%&quot;) &amp;&amp; last.equals(&quot;%&quot;)) {</span>
+<span class="fc" id="L602">			return new Vector&lt;PatientBean&gt;();</span>
+		}
+		
+<span class="pc" id="L605">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L606">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM patients WHERE firstName LIKE ? AND lastName LIKE ?&quot;)) {</span>
+<span class="fc" id="L607">			ps.setString(1, first);</span>
+<span class="fc" id="L608">			ps.setString(2, last);</span>
+<span class="fc" id="L609">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L610">			List&lt;PatientBean&gt; patientsList = patientLoader.loadList(rs);</span>
+<span class="fc" id="L611">			rs.close();</span>
+<span class="fc" id="L612">			return patientsList;</span>
+<span class="pc bpc" id="L613" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L614">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all patients with names &quot;LIKE&quot; with wildcards (as in SQL) the
+	 * passed in parameters.
+	 * 
+	 * @param first
+	 *            The patient's first name.
+	 * @param last
+	 *            The patient's last name.
+	 * @return A java.util.List of PatientBeans.
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; fuzzySearchForPatientsWithName(String first, String last) throws DBException {
+<span class="pc bpc" id="L630" title="3 of 4 branches missed.">		if (first.equals(&quot;%&quot;) &amp;&amp; last.equals(&quot;%&quot;)) {</span>
+<span class="nc" id="L631">			return new Vector&lt;PatientBean&gt;();</span>
+		}
+
+<span class="pc" id="L634">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L635">				PreparedStatement ps = conn</span>
+<span class="fc" id="L636">						.prepareStatement(&quot;SELECT * FROM patients WHERE firstName LIKE ? AND lastName LIKE ?&quot;)) {</span>
+<span class="fc" id="L637">			ps.setString(1, &quot;%&quot; + first + &quot;%&quot;);</span>
+<span class="fc" id="L638">			ps.setString(2, &quot;%&quot; + last + &quot;%&quot;);</span>
+
+<span class="fc" id="L640">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L641">			List&lt;PatientBean&gt; loadlist = patientLoader.loadList(rs);</span>
+<span class="fc" id="L642">			rs.close();</span>
+<span class="fc" id="L643">			return loadlist;</span>
+<span class="pc bpc" id="L644" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L645">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all patients with the given MID as a substring in their MID
+	 * 
+	 * @param MID
+	 *            the patients MID
+	 * @return list of patients with that MID as a substring
+	 * @throws DBException
+	 */
+	public List&lt;PatientBean&gt; fuzzySearchForPatientsWithMID(long MID) throws DBException {
+<span class="pc" id="L658">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L659">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM patients WHERE MID LIKE ? ORDER BY MID&quot;)) {</span>
+<span class="fc" id="L660">			ps.setString(1, &quot;%&quot; + MID + &quot;%&quot;);</span>
+
+<span class="fc" id="L662">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L663">			List&lt;PatientBean&gt; loadlist = patientLoader.loadList(rs);</span>
+<span class="fc" id="L664">			rs.close();</span>
+<span class="fc" id="L665">			return loadlist;</span>
+<span class="pc bpc" id="L666" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L667">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Allows a patient to add a designated nutritionist. Only the designated
+	 * nutritionist will be able to view the patient's nutritional information.
+	 */
+	public int addDesignatedNutritionist(long patientMID, long HCPID) throws DBException {
+<span class="nc" id="L676">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L677">				PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO &quot; + &quot;designatedNutritionist(PatientID, HCPID) VALUES(?,?);&quot;)) {</span>
+<span class="nc" id="L678">			ps.setLong(1, patientMID);</span>
+<span class="nc" id="L679">			ps.setLong(2, HCPID);</span>
+<span class="nc" id="L680">			int updated = ps.executeUpdate();</span>
+<span class="nc" id="L681">			return updated;</span>
+<span class="nc bnc" id="L682" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L683">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the ID of the designated nutritionist for the patient returns -1
+	 * if the patient does not have a designated nutritionist
+	 */
+	public long getDesignatedNutritionist(long patientMID) throws DBException {
+<span class="nc" id="L692">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L693">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT HCPID FROM &quot; + &quot;designatedNutritionist WHERE PatientID = ?;&quot;)) {</span>
+<span class="nc" id="L694">			ps.setLong(1, patientMID);</span>
+<span class="nc" id="L695">			ResultSet results = ps.executeQuery();</span>
+<span class="nc bnc" id="L696" title="All 2 branches missed.">			long nutritionistMID = results.next() ? results.getLong(1) : -1;</span>
+<span class="nc" id="L697">			results.close();</span>
+<span class="nc" id="L698">			return nutritionistMID;</span>
+<span class="nc bnc" id="L699" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L700">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Updates the designated nutritionist for this patient. Assumes that the
+	 * patient already has a designated nutritionist.
+	 */
+	public int updateDesignatedNutritionist(long patientMID, long HCPID) throws DBException {
+<span class="nc" id="L709">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L710">				PreparedStatement ps = conn.prepareStatement(&quot;UPDATE designatedNutritionist &quot; + &quot;SET HCPID = ? WHERE PatientID = ?;&quot;)) {</span>
+<span class="nc" id="L711">			ps.setLong(1, HCPID);</span>
+<span class="nc" id="L712">			ps.setLong(2, patientMID);</span>
+<span class="nc" id="L713">			int numUpdated = ps.executeUpdate();</span>
+<span class="nc" id="L714">			return numUpdated;</span>
+<span class="nc bnc" id="L715" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L716">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Deletes the designated nutritionist for this patient. Assumes that the
+	 * patient already has a designated nutritionist
+	 */
+	public int deleteDesignatedNutritionist(long patientMID) throws DBException {
+<span class="nc" id="L725">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L726">				PreparedStatement ps = conn.prepareStatement(&quot;DELETE FROM designatedNutritionist &quot; + &quot;WHERE PatientID = ?;&quot;)) {</span>
+<span class="nc" id="L727">			ps.setLong(1, patientMID);</span>
+<span class="nc" id="L728">			int numDeleted = ps.executeUpdate();</span>
+<span class="nc" id="L729">			return numDeleted;</span>
+<span class="nc bnc" id="L730" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L731">			throw new DBException(e);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

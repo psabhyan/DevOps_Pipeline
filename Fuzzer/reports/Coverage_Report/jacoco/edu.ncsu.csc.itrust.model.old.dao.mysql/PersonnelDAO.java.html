@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonnelDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">PersonnelDAO.java</span></div><h1>PersonnelDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Vector;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.HospitalBean;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.HospitalBeanLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.Role;
+
+/**
+ * Used for managing information related to personnel: HCPs, UAPs, Admins
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class PersonnelDAO {
+
+	private transient final DAOFactory factory;
+	private transient final PersonnelLoader personnelLoader;
+	private transient final HospitalBeanLoader hospBeanLoader;
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L45">	public PersonnelDAO(final DAOFactory factory) {</span>
+<span class="fc" id="L46">		this.factory = factory;</span>
+<span class="fc" id="L47">		personnelLoader = new PersonnelLoader();</span>
+<span class="fc" id="L48">		hospBeanLoader = new HospitalBeanLoader();</span>
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * Returns the name for a given MID
+	 * 
+	 * @param mid
+	 *            The MID of the personnel in question.
+	 * @return A String representing the name of the personnel.
+	 * @throws ITrustException
+	 * @throws DBException
+	 */
+	public String getName(final long mid) throws ITrustException, DBException {
+<span class="fc" id="L61">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L62">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L63">						.prepareStatement(&quot;SELECT firstName, lastName FROM personnel WHERE MID=?&quot;);) {</span>
+<span class="fc" id="L64">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L65">			ResultSet results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">			if (!results.next()) {</span>
+<span class="fc" id="L67">				throw new ITrustException(&quot;User does not exist&quot;);</span>
+			}
+<span class="fc" id="L69">			final String result = results.getString(&quot;firstName&quot;) + &quot; &quot; + results.getString(&quot;lastName&quot;);</span>
+<span class="fc" id="L70">			results.close();</span>
+<span class="fc" id="L71">			return result;</span>
+<span class="pc bpc" id="L72" title="8 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L73">			throw new DBException(e);</span>
+		}
+	}
+
+	public long getNextID(final Role role) throws DBException, ITrustException {
+<span class="fc" id="L78">		long minID = role.getMidFirstDigit() * 1000000000L;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">		minID = minID == 0 ? 1 : minID; // Do not use 0 as an ID.</span>
+<span class="fc" id="L80">		final long maxID = minID + 999999998L;</span>
+<span class="fc" id="L81">		long nextID = minID;</span>
+
+<span class="pc" id="L83">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L84">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L85">						.prepareStatement(&quot;SELECT MAX(users.mid) FROM users WHERE mid BETWEEN ? AND ?&quot;)) {</span>
+<span class="fc" id="L86">			stmt.setLong(1, minID);</span>
+<span class="fc" id="L87">			stmt.setLong(2, maxID);</span>
+<span class="fc" id="L88">			final ResultSet results = stmt.executeQuery();</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">			if (results.next()) {</span>
+<span class="fc" id="L90">				nextID = results.getLong(1) + 1;</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">				if (nextID &lt; minID) {</span>
+<span class="fc" id="L92">					nextID = minID;</span>
+				}
+			}
+<span class="fc" id="L95">			results.close();</span>
+<span class="fc" id="L96">			return nextID;</span>
+<span class="pc bpc" id="L97" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L98">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Adds an empty personnel, and returns the MID.
+	 * 
+	 * @return A long indicating the new MID.
+	 * @param role
+	 *            A {@link Role} enum indicating the personnel's specific role.
+	 * @throws DBException
+	 * @throws ITrustException
+	 */
+	public long addEmptyPersonnel(final Role role) throws DBException, ITrustException {
+<span class="fc" id="L112">		final long nextID = getNextID(role);</span>
+
+<span class="pc" id="L114">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L115">				PreparedStatement stmt = conn.prepareStatement(&quot;INSERT INTO personnel(MID, Role) VALUES(?,?)&quot;)) {</span>
+<span class="fc" id="L116">			stmt.setString(1, Long.valueOf(nextID).toString());</span>
+<span class="fc" id="L117">			stmt.setString(2, role.name());</span>
+<span class="fc" id="L118">			stmt.executeUpdate();</span>
+<span class="fc" id="L119">			return nextID;</span>
+<span class="pc bpc" id="L120" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L121">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Retrieves a PersonnelBean with all of the specific information for a
+	 * given employee.
+	 * 
+	 * @param mid
+	 *            The MID of the personnel in question.
+	 * @return A PersonnelBean representing the employee.
+	 * @throws DBException
+	 */
+	public PersonnelBean getPersonnel(final long mid) throws DBException {
+<span class="fc" id="L135">		PersonnelBean bean = null;</span>
+
+<span class="pc" id="L137">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L138">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM personnel WHERE MID = ?&quot;)) {</span>
+<span class="fc" id="L139">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L140">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">			if (results.next()) {</span>
+<span class="fc" id="L142">				bean = personnelLoader.loadSingle(results);</span>
+			}
+<span class="fc" id="L144">			results.close();</span>
+<span class="pc bpc" id="L145" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L146">			throw new DBException(e);</span>
+<span class="fc" id="L147">		}</span>
+<span class="fc" id="L148">		return bean;</span>
+	}
+
+	/**
+	 * Updates the demographics for a personnel.
+	 * 
+	 * @param p
+	 *            The personnel bean with the updated information.
+	 * @throws DBException
+	 */
+	public void editPersonnel(final PersonnelBean pBean) throws DBException {
+<span class="pc" id="L159">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L160">				PreparedStatement stmt = personnelLoader</span>
+<span class="fc" id="L161">						.loadParameters(conn.prepareStatement(&quot;UPDATE personnel SET AMID=?,firstName=?,lastName=?,&quot;</span>
+								+ &quot;phone=?, address1=?,address2=?,city=?, state=?, zip=?, specialty=?, email=?&quot;
+								+ &quot; WHERE MID=?&quot;), pBean)) {
+<span class="fc" id="L164">			stmt.setLong(12, pBean.getMID());</span>
+<span class="fc" id="L165">			stmt.executeUpdate();</span>
+<span class="pc bpc" id="L166" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L167">			throw new DBException(e);</span>
+<span class="fc" id="L168">		}</span>
+<span class="fc" id="L169">	}</span>
+
+	/**
+	 * Indicates whether a certain personnel is in the database.
+	 * 
+	 * @param pid
+	 *            The MID of the personnel in question.
+	 * @return A boolean indicating whether this personnel exists.
+	 * @throws DBException
+	 */
+	public boolean checkPersonnelExists(final long pid) throws DBException {
+<span class="pc" id="L180">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L181">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM personnel WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L182">			stmt.setLong(1, pid);</span>
+<span class="fc" id="L183">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L184">			final boolean exists = results.next();</span>
+<span class="fc" id="L185">			results.close();</span>
+<span class="fc" id="L186">			return exists;</span>
+<span class="pc bpc" id="L187" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L188">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all of the hospitals this LHCP is associated with.
+	 * 
+	 * @param mid
+	 *            The MID of the personnel in question.
+	 * @return A java.util.List of HospitalBeans.
+	 * @throws DBException
+	 */
+	public List&lt;HospitalBean&gt; getHospitals(final long mid) throws DBException {
+<span class="pc" id="L201">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L202">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM hcpassignedhos hah,hospitals h &quot;</span>
+						+ &quot;WHERE hah.HCPID=? AND hah.HosID=h.HospitalID ORDER BY HospitalName ASC&quot;)) {
+<span class="fc" id="L204">			stmt.setLong(1, mid);</span>
+<span class="fc" id="L205">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L206">			final List&lt;HospitalBean&gt; hospitals = hospBeanLoader.loadList(results);</span>
+<span class="fc" id="L207">			results.close();</span>
+<span class="fc" id="L208">			return hospitals;</span>
+<span class="pc bpc" id="L209" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L210">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all of the hospitals this uap's associated hcp is associated
+	 * with.
+	 * 
+	 * @param mid
+	 *            The MID of the personnel in question.
+	 * @return A java.util.List of HospitalBeans.
+	 * @throws DBException
+	 */
+	public List&lt;HospitalBean&gt; getUAPHospitals(final long mid) throws DBException {
+<span class="nc" id="L224">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L225">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT DISTINCT hospitals.* FROM hcpassignedhos hah &quot;</span>
+						+ &quot;INNER JOIN hcprelations ON hah.HCPID = hcprelations.HCP &quot;
+						+ &quot;INNER JOIN hospitals ON hah.hosID = hospitals.HospitalID &quot;
+						+ &quot;WHERE hcprelations.UAP=? ORDER BY HospitalName ASC&quot;)) {
+<span class="nc" id="L229">			stmt.setLong(1, mid);</span>
+<span class="nc" id="L230">			final ResultSet results = stmt.executeQuery();</span>
+<span class="nc" id="L231">			final List&lt;HospitalBean&gt; hospitals = hospBeanLoader.loadList(results);</span>
+<span class="nc" id="L232">			results.close();</span>
+<span class="nc" id="L233">			return hospitals;</span>
+<span class="pc bnc" id="L234" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L235">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all personnel of specified specialty from the specified hospital.
+	 * 
+	 * @param hosid,
+	 *            the ID of the Hospital to get personnel from
+	 * @param specialty,
+	 *            the type of specialty to search for
+	 * @return A java.util.List of PersonnelBeans.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getPersonnelFromHospital(final String hosid, final String specialty) throws DBException {
+<span class="pc" id="L250">		try (Connection conn = factory.getConnection();</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">				PreparedStatement stmt = specialty.equalsIgnoreCase(&quot;all&quot;)</span>
+<span class="pc" id="L252">						? conn.prepareStatement(</span>
+								&quot;SELECT * FROM hcpassignedhos hah inner join personnel p where hah.hosID = ? and hah.HCPID = p.MID and p.role = 'hcp'&quot;)
+<span class="fc" id="L254">						: conn.prepareStatement(</span>
+								&quot;SELECT * FROM hcpassignedhos hah inner join personnel p where hah.hosID = ? and hah.HCPID = p.MID and p.specialty = ? and p.role = 'hcp'&quot;);) {
+<span class="fc" id="L256">			stmt.setString(1, hosid);</span>
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">			if (!specialty.equalsIgnoreCase(&quot;all&quot;)) {</span>
+<span class="fc" id="L258">				stmt.setString(2, specialty);</span>
+			}
+
+			// NOTE: There is a possible NullPointerException Threat here!
+<span class="fc" id="L262">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L263">			final List&lt;PersonnelBean&gt; loadlist = personnelLoader.loadList(results);</span>
+<span class="fc" id="L264">			results.close();</span>
+<span class="fc" id="L265">			return loadlist;</span>
+<span class="pc bpc" id="L266" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L267">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all personnel of specified specialty from the specified hospital.
+	 * 
+	 * @param hosid,
+	 *            the ID of the Hospital to get personnel from
+	 * @param specialty,
+	 *            the type of specialty to search for
+	 * @return A java.util.List of PersonnelBeans.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getPersonnelFromHospital(final String hosid) throws DBException {
+<span class="nc" id="L282">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L283">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT * FROM hcpassignedhos hah inner join personnel p where hah.hosID = ? and hah.HCPID = p.MID and p.role = 'hcp'&quot;)) {
+<span class="nc" id="L285">			stmt.setString(1, hosid);</span>
+
+<span class="nc" id="L287">			final ResultSet results = stmt.executeQuery();</span>
+<span class="nc" id="L288">			final List&lt;PersonnelBean&gt; personnelFromHospital = personnelLoader.loadList(results);</span>
+<span class="nc" id="L289">			results.close();</span>
+<span class="nc" id="L290">			return personnelFromHospital;</span>
+<span class="nc bnc" id="L291" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L292">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all personnel in the database.
+	 * 
+	 * @return A java.util.List of personnel.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getAllPersonnel() throws DBException {
+<span class="pc" id="L303">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L304">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L305">						.prepareStatement(&quot;SELECT * FROM personnel where role in ('hcp','uap','er') &quot;)) {</span>
+<span class="fc" id="L306">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L307">			final List&lt;PersonnelBean&gt; allPersonnel = personnelLoader.loadList(results);</span>
+<span class="fc" id="L308">			results.close();</span>
+<span class="fc" id="L309">			return allPersonnel;</span>
+<span class="pc bpc" id="L310" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L311">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns a list of UAPs who work for this LHCP.
+	 * 
+	 * @param hcpid
+	 *            The MID of the personnel in question.
+	 * @return A java.util.List of UAPs.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getUAPsForHCP(final long hcpid) throws DBException {
+<span class="nc" id="L324">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L325">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT * FROM personnel WHERE MID IN (SELECT UAP FROM hcprelations WHERE HCP=?)&quot;)) {
+<span class="nc" id="L327">			stmt.setLong(1, hcpid);</span>
+<span class="nc" id="L328">			final ResultSet results = stmt.executeQuery();</span>
+<span class="nc" id="L329">			final List&lt;PersonnelBean&gt; uaps = personnelLoader.loadList(results);</span>
+<span class="nc" id="L330">			results.close();</span>
+<span class="nc" id="L331">			return uaps;</span>
+<span class="nc bnc" id="L332" title="All 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L333">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Matches all personnel who have names LIKE (as in SQL) the first and last
+	 * names passed in.
+	 * 
+	 * @param first
+	 *            The first name to be searched for.
+	 * @param last
+	 *            The last name to be searched for.
+	 * @return A java.util.List of personnel who match these names.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; searchForPersonnelWithName(final String first, final String last) throws DBException {
+<span class="pc bpc" id="L349" title="1 of 4 branches missed.">		if (&quot;%&quot;.equals(first) &amp;&amp; &quot;%&quot;.equals(last)) {</span>
+<span class="fc" id="L350">			return new Vector&lt;PersonnelBean&gt;();</span>
+		}
+
+<span class="pc" id="L353">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L354">				PreparedStatement stmt = conn</span>
+<span class="fc" id="L355">						.prepareStatement(&quot;SELECT * FROM personnel WHERE firstName LIKE ? AND lastName LIKE ?&quot;)) {</span>
+<span class="fc" id="L356">			stmt.setString(1, first);</span>
+<span class="fc" id="L357">			stmt.setString(2, last);</span>
+<span class="fc" id="L358">			final ResultSet results = stmt.executeQuery();</span>
+<span class="fc" id="L359">			final List&lt;PersonnelBean&gt; matchingPersonnel = personnelLoader.loadList(results);</span>
+<span class="fc" id="L360">			results.close();</span>
+<span class="fc" id="L361">			return matchingPersonnel;</span>
+<span class="pc bpc" id="L362" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L363">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns list of personnel who are Lab Techs.
+	 * 
+	 * @return List of personnel beans.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getLabTechs() throws DBException {
+<span class="pc" id="L374">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L375">				PreparedStatement stmt = conn.prepareStatement(&quot;SELECT * FROM personnel WHERE role = 'lt' &quot;);</span>
+<span class="fc" id="L376">				final ResultSet results = stmt.executeQuery()) {</span>
+<span class="fc" id="L377">			final List&lt;PersonnelBean&gt; labTechnicians = personnelLoader.loadList(results);</span>
+<span class="fc" id="L378">			return labTechnicians;</span>
+<span class="pc bpc" id="L379" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L380">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all experts with names &quot;LIKE&quot; with wildcards (as in SQL) the
+	 * passed in parameters.
+	 * 
+	 * @param first
+	 *            The expert's first name.
+	 * @param last
+	 *            The expert's last name.
+	 * @return A java.util.List of ExpertBeans.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; fuzzySearchForExpertsWithName(String first, String last) throws DBException {
+<span class="pc bpc" id="L396" title="3 of 4 branches missed.">		if (first.equals(&quot;%&quot;) &amp;&amp; last.equals(&quot;%&quot;)) {</span>
+<span class="nc" id="L397">			return new Vector&lt;PersonnelBean&gt;();</span>
+		}
+<span class="pc" id="L399">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L400">				PreparedStatement stmt = conn.prepareStatement(</span>
+						&quot;SELECT * FROM personnel WHERE firstName LIKE ? AND lastName LIKE ? AND role='hcp'&quot;);) {
+<span class="fc" id="L402">			stmt.setString(1, &quot;%&quot; + first + &quot;%&quot;);</span>
+<span class="fc" id="L403">			stmt.setString(2, &quot;%&quot; + last + &quot;%&quot;);</span>
+
+<span class="fc" id="L405">			ResultSet rs = stmt.executeQuery();</span>
+<span class="fc" id="L406">			List&lt;PersonnelBean&gt; expertsList = personnelLoader.loadList(rs);</span>
+<span class="fc" id="L407">			rs.close();</span>
+<span class="fc" id="L408">			return expertsList;</span>
+<span class="pc bpc" id="L409" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L410">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all of the personnel who have a specialty of nutritionist
+	 */
+	public List&lt;PersonnelBean&gt; getAllNutritionists() throws DBException {
+<span class="nc" id="L418">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L419">				PreparedStatement ps = conn</span>
+<span class="nc" id="L420">						.prepareStatement(&quot;SELECT * FROM personnel WHERE UPPER(specialty) = 'NUTRITIONIST'; &quot;);</span>
+<span class="nc" id="L421">				ResultSet rs = ps.executeQuery()) {</span>
+<span class="nc" id="L422">			List&lt;PersonnelBean&gt; loadList = personnelLoader.loadList(rs);</span>
+<span class="nc" id="L423">			return loadList;</span>
+<span class="nc bnc" id="L424" title="All 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L425">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns all of the personnel who have a specialty of ophthalmologist or
+	 * optometrist
+	 * 
+	 * @return List of all personnel who have a specialty of ophthalmologist or
+	 *         optometrist.
+	 * @throws DBException
+	 */
+	public List&lt;PersonnelBean&gt; getAllOphthalmologyPersonnel() throws DBException {
+<span class="nc" id="L438">		try (Connection conn = factory.getConnection();</span>
+<span class="nc" id="L439">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM personnel &quot;</span>
+						+ &quot;WHERE specialty = 'Optometrist' or specialty = 'Ophthalmologist'; &quot;);
+<span class="nc" id="L441">				ResultSet rs = ps.executeQuery()) {</span>
+<span class="nc" id="L442">			List&lt;PersonnelBean&gt; allOpthamologyPersonnel = personnelLoader.loadList(rs);</span>
+<span class="nc" id="L443">			return allOpthamologyPersonnel;</span>
+<span class="nc bnc" id="L444" title="All 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L445">			throw new DBException(e);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

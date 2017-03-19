@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HospitalMySQLLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.hospital</a> &gt; <span class="el_source">HospitalMySQLLoader.java</span></div><h1>HospitalMySQLLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.hospital;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import edu.ncsu.csc.itrust.model.SQLLoader;
+
+<span class="fc" id="L11">public class HospitalMySQLLoader implements SQLLoader&lt;Hospital&gt; {</span>
+
+	@Override
+	public List&lt;Hospital&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L15">		List&lt;Hospital&gt; list = new ArrayList&lt;Hospital&gt;();</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">		while (rs.next())</span>
+<span class="fc" id="L17">			list.add(loadSingle(rs));</span>
+<span class="fc" id="L18">		return list;</span>
+	}
+
+	@Override
+	public Hospital loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L23">		Hospital hospital = new Hospital();</span>
+<span class="fc" id="L24">		hospital.setHospitalID(rs.getString(&quot;HospitalID&quot;));</span>
+<span class="fc" id="L25">		hospital.setHospitalName(rs.getString(&quot;HospitalName&quot;));</span>
+<span class="fc" id="L26">		hospital.setHospitalAddress(rs.getString(&quot;Address&quot;));</span>
+<span class="fc" id="L27">		hospital.setHospitalCity(rs.getString(&quot;City&quot;));</span>
+<span class="fc" id="L28">		hospital.setHospitalState(rs.getString(&quot;State&quot;));</span>
+<span class="fc" id="L29">		hospital.setHospitalZip(rs.getString(&quot;Zip&quot;));</span>
+<span class="fc" id="L30">		return hospital;</span>
+	}
+	
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Hospital hospital,
+			boolean newInstance) throws SQLException {
+		
+<span class="nc" id="L37">		String stmt = &quot;&quot;;</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		if (newInstance) {</span>
+<span class="nc" id="L39">			stmt = &quot;INSERT INTO hospitals(HospitalID, HospitalName, Address, City, State, Zip) &quot;</span>
+					+ &quot;VALUES (? ,?, ?, ?, ?, ?);&quot;;
+
+		} else {
+<span class="nc" id="L43">			String id = hospital.getHospitalID();</span>
+<span class="nc" id="L44">			stmt = &quot;UPDATE officeVisit SET HospitalID=?, &quot;</span>
+					+ &quot;HospitalName=?, &quot;
+					+ &quot;Address=?, &quot;
+					+ &quot;City=?, &quot;
+					+ &quot;State=?, &quot;
+					+ &quot;Zip=?&quot;
+					+ &quot;WHERE HospitalID=&quot; + id + &quot;;&quot;;
+		}
+<span class="nc" id="L52">		ps = conn.prepareStatement(stmt);</span>
+<span class="nc" id="L53">		ps.setString(1, hospital.getHospitalID());</span>
+<span class="nc" id="L54">		ps.setString(2, hospital.getHospitalName());</span>
+<span class="nc" id="L55">		ps.setString(3, hospital.getHospitalAddress());</span>
+<span class="nc" id="L56">		ps.setString(4, hospital.getHospitalCity());</span>
+<span class="nc" id="L57">		ps.setString(5,hospital.getHospitalState());</span>
+<span class="nc" id="L58">		ps.setString(6, hospital.getHospitalZip());</span>
+<span class="nc" id="L59">		return ps;</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

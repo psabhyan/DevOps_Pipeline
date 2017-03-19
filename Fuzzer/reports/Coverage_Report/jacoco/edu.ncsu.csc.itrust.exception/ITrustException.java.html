@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ITrustException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.exception</a> &gt; <span class="el_source">ITrustException.java</span></div><h1>ITrustException.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.exception;
+
+/**
+ * A specialized exception class for displaying iTrust error messages.
+ * This exception is handled by the default iTrust exception handler.
+ */
+public class ITrustException extends Exception {
+	private static final long serialVersionUID = 1L;
+<span class="fc" id="L9">	String message = null;</span>
+
+	/**
+	 * The typical constructor.
+	 * @param message A message to be displayed to the screen.
+	 */
+<span class="fc" id="L15">	public ITrustException(String message) {</span>
+<span class="fc" id="L16">		this.message = message;</span>
+<span class="fc" id="L17">	}</span>
+
+	/**
+	 * For messages which are displayed to the user. Usually, this is a very general message for security
+	 * reasons.
+	 */
+	@Override
+	public String getMessage() {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		if (message == null)</span>
+<span class="fc" id="L26">			return &quot;An error has occurred. Please see log for details.&quot;;</span>
+<span class="fc" id="L27">		return message;</span>
+	}
+
+	
+	/**
+	 * For exceptions which show a lot of technical detail, usually delegated to a subclass
+	 * 
+	 * @return
+	 */
+	public String getExtendedMessage() {
+<span class="fc" id="L37">		return &quot;No extended information.&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

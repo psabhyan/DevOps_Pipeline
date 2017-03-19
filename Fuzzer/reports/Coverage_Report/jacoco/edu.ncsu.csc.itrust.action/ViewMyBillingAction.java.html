@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ViewMyBillingAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ViewMyBillingAction.java</span></div><h1>ViewMyBillingAction.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.BillingBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.BillingDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/** This class is responsible for retrieving bills for a patient 
+ */
+public class ViewMyBillingAction  {
+	private BillingDAO billingDAO;
+	private long loggedInMID;
+	
+	/**
+	 * @param factory The DAOFactory used to create the DAOs used in this action
+	 * @param loggedInMID MID of the patient who is viewing their bills
+	 */
+<span class="fc" id="L26">	public ViewMyBillingAction(DAOFactory factory, long loggedInMID) {</span>
+<span class="fc" id="L27">		this.billingDAO = factory.getBillingDAO();</span>
+<span class="fc" id="L28">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L29">	}</span>
+	
+	/**
+	 * Gets all the unpaid bills for a logged in patient
+	 * 
+	 * @return a list of all unpaid bills
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public List&lt;BillingBean&gt; getMyUnpaidBills() throws SQLException, DBException {
+<span class="fc" id="L39">		return billingDAO.getUnpaidBills(loggedInMID);</span>
+	}
+	
+	/**
+	 * Gets all the bills for a logged in patient. 
+	 * 
+	 * @return a list of all bills
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public List&lt;BillingBean&gt; getAllMyBills() throws SQLException, DBException {
+<span class="fc" id="L50">	    TransactionLogger.getInstance().logTransaction(TransactionType.PATIENT_BILLS_VIEW_ALL, loggedInMID, 0L, &quot;&quot;);</span>
+<span class="fc" id="L51">		return billingDAO.getBills(loggedInMID);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

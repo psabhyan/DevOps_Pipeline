@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LabProcedureMySQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.labProcedure</a> &gt; <span class="el_source">LabProcedureMySQL.java</span></div><h1>LabProcedureMySQL.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.labProcedure;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.DBUtil;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+
+public class LabProcedureMySQL implements LabProcedureData {
+
+	@Resource(name = &quot;jdbc/itrust2&quot;)
+	private LabProcedureSQLLoader loader;
+	private DataSource ds;
+	private LabProcedureValidator validator;
+
+<span class="fc" id="L28">	public LabProcedureMySQL() throws DBException {</span>
+<span class="fc" id="L29">		loader = new LabProcedureSQLLoader();</span>
+		try {
+<span class="fc" id="L31">			Context ctx = new InitialContext();</span>
+<span class="nc" id="L32">			ds = ((DataSource) (((Context) ctx.lookup(&quot;java:comp/env&quot;))).lookup(&quot;jdbc/itrust&quot;));</span>
+<span class="fc" id="L33">		} catch (NamingException e) {</span>
+<span class="fc" id="L34">			throw new DBException(new SQLException(&quot;Context Lookup Naming Exception: &quot; + e.getMessage()));</span>
+<span class="nc" id="L35">		}</span>
+<span class="nc" id="L36">		validator = new LabProcedureValidator(ds);</span>
+<span class="nc" id="L37">	}</span>
+
+	/**
+	 * Constructor injection, intended only for unit testing purposes.
+	 * 
+	 * @param ds
+	 *            The injected DataSource dependency
+	 */
+<span class="fc" id="L45">	public LabProcedureMySQL(DataSource ds) {</span>
+<span class="fc" id="L46">		loader = new LabProcedureSQLLoader();</span>
+<span class="fc" id="L47">		this.ds = ds;</span>
+<span class="fc" id="L48">		validator = new LabProcedureValidator(this.ds);</span>
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public LabProcedure getByID(long id) throws DBException {
+<span class="fc" id="L56">		LabProcedure labProcedure = null;</span>
+<span class="fc" id="L57">		Connection conn = null;</span>
+<span class="fc" id="L58">		PreparedStatement query = null;</span>
+<span class="fc" id="L59">		ResultSet results = null;</span>
+<span class="fc" id="L60">		List&lt;LabProcedure&gt; procedureList = null;</span>
+		try {
+<span class="fc" id="L62">			conn = ds.getConnection();</span>
+<span class="fc" id="L63">			query = conn.prepareStatement(LabProcedureSQLLoader.SELECT_BY_LAB_PROCEDURE);</span>
+<span class="fc" id="L64">			query.setLong(1, id);</span>
+<span class="fc" id="L65">			results = query.executeQuery();</span>
+
+<span class="fc" id="L67">			procedureList = loader.loadList(results);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			if (procedureList.size() &gt; 0) {</span>
+<span class="fc" id="L69">				labProcedure = procedureList.get(0);</span>
+			}
+<span class="fc" id="L71">		} catch (SQLException e) {</span>
+<span class="fc" id="L72">			throw new DBException(e);</span>
+		} finally {
+<span class="fc" id="L74">			try {</span>
+<span class="pc bpc" id="L75" title="2 of 4 branches missed.">				if (results != null) {</span>
+<span class="pc" id="L76">					results.close();</span>
+				}
+<span class="nc" id="L78">			} catch (SQLException e) {</span>
+<span class="nc" id="L79">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L81">				DBUtil.closeConnection(conn, query);</span>
+<span class="fc" id="L82">			}</span>
+<span class="fc" id="L83">		}</span>
+<span class="fc" id="L84">		return labProcedure;</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;LabProcedure&gt; getAll() throws DBException {
+<span class="fc" id="L92">		Connection conn = null;</span>
+<span class="fc" id="L93">		PreparedStatement query = null;</span>
+<span class="fc" id="L94">		ResultSet results = null;</span>
+		try {
+<span class="fc" id="L96">			conn = ds.getConnection();</span>
+<span class="fc" id="L97">			query = conn.prepareStatement(LabProcedureSQLLoader.SELECT_ALL);</span>
+<span class="fc" id="L98">			results = query.executeQuery();</span>
+
+<span class="fc" id="L100">			return loader.loadList(results);</span>
+<span class="fc" id="L101">		} catch (SQLException e) {</span>
+<span class="fc" id="L102">			throw new DBException(e);</span>
+		} finally {
+<span class="fc" id="L104">			try {</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">				if (results != null) {</span>
+<span class="pc" id="L106">					results.close();</span>
+				}
+<span class="nc" id="L108">			} catch (SQLException e) {</span>
+<span class="nc" id="L109">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L111">				DBUtil.closeConnection(conn, query);</span>
+<span class="fc" id="L112">			}</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean add(LabProcedure procedure) throws DBException {
+<span class="fc" id="L121">		boolean successfullyAdded = false;</span>
+<span class="fc" id="L122">		Connection conn = null;</span>
+<span class="fc" id="L123">		PreparedStatement addStatement = null;</span>
+<span class="fc" id="L124">		procedure.setUpdatedDate(new Timestamp(new Date().getTime()));</span>
+		try {
+<span class="fc" id="L126">			validator.validate(procedure);</span>
+<span class="fc" id="L127">		} catch (FormValidationException e1) {</span>
+<span class="fc" id="L128">			throw new DBException(new SQLException(e1.getMessage()));</span>
+<span class="fc" id="L129">		}</span>
+		try {
+<span class="fc" id="L131">			conn = ds.getConnection();</span>
+<span class="fc" id="L132">			addStatement = loader.loadParameters(conn, addStatement, procedure, true);</span>
+<span class="fc" id="L133">			int exitStatus = addStatement.executeUpdate();</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			successfullyAdded = (exitStatus &gt; 0);</span>
+<span class="nc" id="L135">		} catch (SQLException e) {</span>
+<span class="nc" id="L136">			throw new DBException(e);</span>
+		} finally {
+<span class="pc" id="L138">			DBUtil.closeConnection(conn, addStatement);</span>
+<span class="fc" id="L139">		}</span>
+<span class="fc" id="L140">		return successfullyAdded;</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean update(LabProcedure procedure) throws DBException {
+<span class="fc" id="L148">		boolean successfullyUpdated = false;</span>
+<span class="fc" id="L149">		Connection conn = null;</span>
+<span class="fc" id="L150">		PreparedStatement updateStatement = null;</span>
+<span class="fc" id="L151">		procedure.setUpdatedDate(new Timestamp(new Date().getTime()));</span>
+		try {
+<span class="fc" id="L153">			validator.validate(procedure);</span>
+<span class="fc" id="L154">		} catch (FormValidationException e1) {</span>
+<span class="fc" id="L155">			throw new DBException(new SQLException(e1.getMessage()));</span>
+<span class="fc" id="L156">		}</span>
+		try {
+<span class="fc" id="L158">			conn = ds.getConnection();</span>
+<span class="fc" id="L159">			updateStatement = loader.loadParameters(conn, updateStatement, procedure, false);</span>
+<span class="fc" id="L160">			int exitStatus = updateStatement.executeUpdate();</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">			successfullyUpdated = (exitStatus &gt; 0);</span>
+<span class="nc" id="L162">		} catch (SQLException e) {</span>
+<span class="nc" id="L163">			throw new DBException(e);</span>
+		} finally {
+<span class="pc" id="L165">			DBUtil.closeConnection(conn, updateStatement);</span>
+<span class="fc" id="L166">		}</span>
+<span class="fc" id="L167">		return successfullyUpdated;</span>
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean removeLabProcedure(Long labProcedureID) throws DBException {
+<span class="fc" id="L175">		Connection conn = null;</span>
+<span class="fc" id="L176">		PreparedStatement removeStatement = null;</span>
+		try {
+<span class="fc" id="L178">			conn = ds.getConnection();</span>
+<span class="fc" id="L179">			removeStatement = conn.prepareStatement(LabProcedureSQLLoader.REMOVE_BY_LAB_PROCEDURE);</span>
+<span class="fc" id="L180">			removeStatement.setLong(1, labProcedureID);</span>
+<span class="fc" id="L181">			int exitCode = removeStatement.executeUpdate();</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			return exitCode &gt; 0;</span>
+<span class="nc" id="L183">		} catch (SQLException e) {</span>
+<span class="nc" id="L184">			throw new DBException(e);</span>
+		} finally {
+<span class="pc" id="L186">			DBUtil.closeConnection(conn, removeStatement);</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;LabProcedure&gt; getLabProceduresForLabTechnician(Long technicianID) throws DBException {
+<span class="fc" id="L195">		Connection conn = null;</span>
+<span class="fc" id="L196">		PreparedStatement query = null;</span>
+<span class="fc" id="L197">		ResultSet procedures = null;</span>
+		try {
+<span class="fc" id="L199">			conn = ds.getConnection();</span>
+<span class="fc" id="L200">			query = conn.prepareStatement(LabProcedureSQLLoader.SELECT_BY_LAB_TECHNICIAN);</span>
+<span class="fc" id="L201">			query.setLong(1, technicianID);</span>
+<span class="fc" id="L202">			procedures = query.executeQuery();</span>
+
+<span class="fc" id="L204">			return loader.loadList(procedures);</span>
+<span class="nc" id="L205">		} catch (SQLException e) {</span>
+<span class="nc" id="L206">			throw new DBException(e);</span>
+		} finally {
+<span class="nc" id="L208">			try {</span>
+<span class="pc bpc" id="L209" title="3 of 4 branches missed.">				if (procedures != null) {</span>
+<span class="pc" id="L210">					procedures.close();</span>
+				}
+<span class="nc" id="L212">			} catch (SQLException e) {</span>
+<span class="nc" id="L213">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L215">				DBUtil.closeConnection(conn, query);</span>
+<span class="pc" id="L216">			}</span>
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List&lt;LabProcedure&gt; getLabProceduresByOfficeVisit(Long officeVisitID) throws DBException {
+<span class="fc" id="L225">		Connection conn = null;</span>
+<span class="fc" id="L226">		PreparedStatement query = null;</span>
+<span class="fc" id="L227">		ResultSet procedures = null;</span>
+		try {
+<span class="fc" id="L229">			conn = ds.getConnection();</span>
+<span class="fc" id="L230">			query = conn.prepareStatement(LabProcedureSQLLoader.SELECT_BY_OFFICE_VISIT);</span>
+<span class="fc" id="L231">			query.setLong(1, officeVisitID);</span>
+<span class="fc" id="L232">			procedures = query.executeQuery();</span>
+
+<span class="fc" id="L234">			return loader.loadList(procedures);</span>
+<span class="fc" id="L235">		} catch (SQLException e) {</span>
+<span class="fc" id="L236">			throw new DBException(e);</span>
+		} finally {
+<span class="fc" id="L238">			try {</span>
+<span class="pc bpc" id="L239" title="2 of 4 branches missed.">				if (procedures != null) {</span>
+<span class="pc" id="L240">					procedures.close();</span>
+				}
+<span class="nc" id="L242">			} catch (SQLException e) {</span>
+<span class="nc" id="L243">				throw new DBException(e);</span>
+			} finally {
+<span class="pc" id="L245">				DBUtil.closeConnection(conn, query);</span>
+<span class="fc" id="L246">			}</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao.mysql</a> &gt; <span class="el_source">TransactionDAO.java</span></div><h1>TransactionDAO.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao.mysql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.OperationalProfile;
+import edu.ncsu.csc.itrust.model.old.beans.TransactionBean;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.OperationalProfileLoader;
+import edu.ncsu.csc.itrust.model.old.beans.loaders.TransactionBeanLoader;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Used for the logging mechanism.
+ * 
+ * DAO stands for Database Access Object. All DAOs are intended to be
+ * reflections of the database, that is, one DAO per table in the database (most
+ * of the time). For more complex sets of queries, extra DAOs are added. DAOs
+ * can assume that all data has been validated and is correct.
+ * 
+ * DAOs should never have setters or any other parameter to the constructor than
+ * a factory. All DAOs should be accessed by DAOFactory (@see
+ * {@link DAOFactory}) and every DAO should have a factory - for obtaining JDBC
+ * connections and/or accessing other DAOs.
+ */
+public class TransactionDAO {
+
+	private DAOFactory factory;
+<span class="fc" id="L35">	private TransactionBeanLoader loader = new TransactionBeanLoader();</span>
+<span class="fc" id="L36">	private OperationalProfileLoader operationalProfileLoader = new OperationalProfileLoader();</span>
+
+	/**
+	 * The typical constructor.
+	 * 
+	 * @param factory
+	 *            The {@link DAOFactory} associated with this DAO, which is used
+	 *            for obtaining SQL connections, etc.
+	 */
+<span class="fc" id="L45">	public TransactionDAO(DAOFactory factory) {</span>
+<span class="fc" id="L46">		this.factory = factory;</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Returns the whole transaction log
+	 * 
+	 * @return
+	 * @throws DBException
+	 */
+	public List&lt;TransactionBean&gt; getAllTransactions() throws DBException {
+<span class="pc" id="L56">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L57">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM transactionlog ORDER BY timeLogged DESC&quot;);</span>
+<span class="fc" id="L58">				ResultSet rs = ps.executeQuery()) {</span>
+<span class="fc" id="L59">			List&lt;TransactionBean&gt; loadlist = loader.loadList(rs);</span>
+<span class="fc" id="L60">			return loadlist;</span>
+<span class="pc bpc" id="L61" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L62">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Log a transaction, with all of the info. The meaning of secondaryMID and
+	 * addedInfo changes depending on the transaction type.
+	 * 
+	 * @param type
+	 *            The {@link TransactionType} enum representing the type this
+	 *            transaction is.
+	 * @param loggedInMID
+	 *            The MID of the user who is logged in.
+	 * @param secondaryMID
+	 *            Typically, the MID of the user who is being acted upon.
+	 * @param addedInfo
+	 *            A note about a subtransaction, or specifics of this
+	 *            transaction (for posterity).
+	 * @throws DBException
+	 */
+	public void logTransaction(TransactionType type, Long loggedInMID, Long secondaryMID, String addedInfo)
+			throws DBException {
+
+		// Use 0 as the default secondaryMID
+<span class="fc bfc" id="L86" title="All 2 branches covered.">		if (secondaryMID == null) {</span>
+<span class="fc" id="L87">			secondaryMID = 0L;</span>
+		}
+
+<span class="pc" id="L90">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L91">				PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO transactionlog(loggedInMID, secondaryMID, &quot;</span>
+						+ &quot;transactionCode, addedInfo) VALUES(?,?,?,?)&quot;)) {
+<span class="fc" id="L93">			ps.setLong(1, loggedInMID);</span>
+<span class="fc" id="L94">			ps.setLong(2, secondaryMID);</span>
+<span class="fc" id="L95">			ps.setInt(3, type.getCode());</span>
+<span class="fc" id="L96">			ps.setString(4, addedInfo);</span>
+<span class="fc" id="L97">			ps.executeUpdate();</span>
+<span class="pc bpc" id="L98" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L99">			throw new DBException(e);</span>
+<span class="fc" id="L100">		}</span>
+<span class="fc" id="L101">	}</span>
+
+	/**
+	 * Return a list of all transactions in which an HCP accessed the given
+	 * patient's record
+	 * 
+	 * @param patientID
+	 *            The MID of the patient in question.
+	 * @return A java.util.List of transactions.
+	 * @throws DBException
+	 */
+	public List&lt;TransactionBean&gt; getAllRecordAccesses(long patientID, long dlhcpID, boolean getByRole)
+			throws DBException {
+<span class="pc" id="L114">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L115">				PreparedStatement ps = conn</span>
+<span class="fc" id="L116">						.prepareStatement(&quot;SELECT * FROM transactionlog WHERE secondaryMID=? AND transactionCode &quot;</span>
+								+ &quot;IN(&quot; + TransactionType.patientViewableStr
+								+ &quot;) AND loggedInMID!=? ORDER BY timeLogged DESC&quot;)) {
+<span class="fc" id="L119">			ps.setLong(1, patientID);</span>
+<span class="fc" id="L120">			ps.setLong(2, dlhcpID);</span>
+<span class="fc" id="L121">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L122">			List&lt;TransactionBean&gt; transactionList = loader.loadList(rs);</span>
+
+<span class="fc" id="L124">			transactionList = addAndSortRoles(transactionList, patientID, getByRole);</span>
+
+<span class="fc" id="L126">			rs.close();</span>
+<span class="fc" id="L127">			return transactionList;</span>
+<span class="pc bpc" id="L128" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L129">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * The Most Thorough Fetch
+	 * 
+	 * @param mid
+	 *            MID of the logged in user
+	 * @param dlhcpID
+	 *            MID of the user's DLHCP
+	 * @param start
+	 *            Index to start pulling entries from
+	 * @param range
+	 *            Number of entries to retrieve
+	 * @return List of &lt;range&gt; TransactionBeans affecting the user starting from
+	 *         the &lt;start&gt;th entry
+	 * @throws DBException
+	 */
+	public List&lt;TransactionBean&gt; getTransactionsAffecting(long mid, long dlhcpID, java.util.Date start, int range)
+			throws DBException {
+<span class="pc" id="L150">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L151">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT * FROM transactionlog WHERE ((timeLogged &lt;= ?) &quot;</span>
+						+ &quot;AND  (secondaryMID=? AND transactionCode &quot; + &quot;IN (&quot; + TransactionType.patientViewableStr
+						+ &quot;)) &quot; + &quot;OR (loggedInMID=? AND transactionCode=?) ) &quot;
+						+ &quot;AND NOT (loggedInMID=? AND transactionCode IN (&quot; + // exclude
+																				// if
+																				// DLHCP
+																				// as
+																				// specified
+																				// in
+																				// UC43
+						TransactionType.dlhcpHiddenStr + &quot;)) &quot; + &quot;ORDER BY timeLogged DESC LIMIT 0,?&quot;)) {
+<span class="fc" id="L162">			ps.setString(2, mid + &quot;&quot;);</span>
+<span class="fc" id="L163">			ps.setString(3, mid + &quot;&quot;);</span>
+<span class="fc" id="L164">			ps.setInt(4, TransactionType.LOGIN_SUCCESS.getCode());</span>
+<span class="fc" id="L165">			ps.setTimestamp(1, new Timestamp(start.getTime()));</span>
+<span class="fc" id="L166">			ps.setLong(5, dlhcpID);</span>
+<span class="fc" id="L167">			ps.setInt(6, range);</span>
+<span class="fc" id="L168">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L169">			List&lt;TransactionBean&gt; transactionList = loader.loadList(rs);</span>
+<span class="fc" id="L170">			rs.close();</span>
+<span class="fc" id="L171">			return transactionList;</span>
+<span class="pc bpc" id="L172" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L173">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Return a list of all transactions in which an HCP accessed the given
+	 * patient's record, within the dates
+	 * 
+	 * @param patientID
+	 *            The MID of the patient in question.
+	 * @param lower
+	 *            The starting date as a java.util.Date
+	 * @param upper
+	 *            The ending date as a java.util.Date
+	 * @return A java.util.List of transactions.
+	 * @throws DBException
+	 */
+	public List&lt;TransactionBean&gt; getRecordAccesses(long patientID, long dlhcpID, java.util.Date lower,
+			java.util.Date upper, boolean getByRole) throws DBException {
+<span class="pc" id="L192">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L193">				PreparedStatement ps = conn</span>
+<span class="fc" id="L194">						.prepareStatement(&quot;SELECT * FROM transactionlog WHERE secondaryMID=? AND transactionCode IN (&quot;</span>
+								+ TransactionType.patientViewableStr + &quot;) &quot; + &quot;AND timeLogged &gt;= ? AND timeLogged &lt;= ? &quot;
+								+ &quot;AND loggedInMID!=? &quot; + &quot;ORDER BY timeLogged DESC&quot;)) {
+<span class="fc" id="L197">			ps.setLong(1, patientID);</span>
+<span class="fc" id="L198">			ps.setTimestamp(2, new Timestamp(lower.getTime()));</span>
+			// add 1 day's worth to include the upper
+<span class="fc" id="L200">			ps.setTimestamp(3, new Timestamp(upper.getTime() + 1000L * 60L * 60 * 24L));</span>
+<span class="fc" id="L201">			ps.setLong(4, dlhcpID);</span>
+<span class="fc" id="L202">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L203">			List&lt;TransactionBean&gt; transactionList = loader.loadList(rs);</span>
+
+<span class="fc" id="L205">			transactionList = addAndSortRoles(transactionList, patientID, getByRole);</span>
+<span class="fc" id="L206">			rs.close();</span>
+<span class="fc" id="L207">			return transactionList;</span>
+<span class="pc bpc" id="L208" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="fc" id="L209">			throw new DBException(e);</span>
+		}
+	}
+	
+	/**
+	 * Returns the operation profile
+	 * 
+	 * @return The OperationalProfile as a bean.
+	 * @throws DBException
+	 */
+	public OperationalProfile getOperationalProfile() throws DBException {
+<span class="fc" id="L220">		return getOperationalProfile(0L);</span>
+	}
+
+	/**
+	 * Returns the operation profile
+	 * 
+	 * @return The OperationalProfile as a bean.
+	 * @throws DBException
+	 */
+	public OperationalProfile getOperationalProfile(long loggedInMID) throws DBException {
+<span class="pc" id="L230">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L231">				PreparedStatement ps = conn</span>
+<span class="fc" id="L232">						.prepareStatement(&quot;SELECT TransactionCode, count(transactionID) as TotalCount, &quot;</span>
+								+ &quot;count(if(loggedInMID&lt;9000000000, transactionID, null)) as PatientCount, &quot;
+								+ &quot;count(if(loggedInMID&gt;=9000000000, transactionID, null)) as PersonnelCount &quot;
+								+ &quot;FROM transactionlog GROUP BY transactionCode ORDER BY transactionCode ASC&quot;);
+<span class="fc" id="L236">				ResultSet rs = ps.executeQuery()) {</span>
+<span class="fc" id="L237">			TransactionLogger.getInstance().logTransaction(TransactionType.OPERATIONAL_PROFILE_VIEW, loggedInMID, 0L, &quot;&quot;);</span>
+<span class="fc" id="L238">			OperationalProfile result = operationalProfileLoader.loadSingle(rs);</span>
+<span class="fc" id="L239">			return result;</span>
+<span class="pc bpc" id="L240" title="18 of 24 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L241">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * 
+	 * @param transactionList
+	 * @param patientID
+	 * @param sortByRole
+	 * @return
+	 * @throws DBException
+	 */
+	private List&lt;TransactionBean&gt; addAndSortRoles(List&lt;TransactionBean&gt; transactionList, long patientID,
+			boolean sortByRole) throws DBException {
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		for (TransactionBean t : transactionList) {</span>
+<span class="fc" id="L256">			String rawRole = getRoleStringForMID(t.getLoggedInMID());</span>
+			String formattedRole;
+<span class="pc bpc" id="L258" title="4 of 18 branches missed.">			switch (rawRole) {</span>
+			case &quot;er&quot;:
+<span class="fc" id="L260">				formattedRole = &quot;Emergency Responder&quot;;</span>
+<span class="fc" id="L261">				break;</span>
+			case &quot;uap&quot;:
+<span class="fc" id="L263">				formattedRole = &quot;UAP&quot;;</span>
+<span class="fc" id="L264">				break;</span>
+			case &quot;hcp&quot;:
+<span class="fc" id="L266">				formattedRole = getHCPRole(patientID, t.getLoggedInMID());</span>
+<span class="fc" id="L267">				break;</span>
+			case &quot;patient&quot;:
+<span class="fc" id="L269">				formattedRole = getPatientRole(patientID, t.getLoggedInMID());</span>
+<span class="fc" id="L270">				break;</span>
+			default:
+<span class="fc" id="L272">				formattedRole = &quot;&quot;;</span>
+				break;
+			}
+<span class="fc" id="L275">			t.setRole(formattedRole);</span>
+<span class="fc" id="L276">		}</span>
+
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		if (sortByRole) {</span>
+<span class="fc" id="L279">			TransactionBean[] array = new TransactionBean[transactionList.size()];</span>
+<span class="fc" id="L280">			array[0] = transactionList.get(0);</span>
+			TransactionBean t;
+<span class="fc bfc" id="L282" title="All 2 branches covered.">			for (int i = 1; i &lt; transactionList.size(); i++) {</span>
+<span class="fc" id="L283">				t = transactionList.get(i);</span>
+<span class="fc" id="L284">				String role = t.getRole();</span>
+<span class="fc" id="L285">				int j = 0;</span>
+<span class="fc bfc" id="L286" title="All 4 branches covered.">				while (array[j] != null &amp;&amp; role.compareToIgnoreCase(array[j].getRole()) &gt;= 0)</span>
+<span class="fc" id="L287">					j++;</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">				for (int k = i; k &gt; j; k--) {</span>
+<span class="fc" id="L289">					array[k] = array[k - 1];</span>
+				}
+<span class="fc" id="L291">				array[j] = t;</span>
+			}
+<span class="fc" id="L293">			int size = transactionList.size();</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">			for (int i = 0; i &lt; size; i++)</span>
+<span class="fc" id="L295">				transactionList.set(i, array[i]);</span>
+		}
+
+<span class="fc" id="L298">		return transactionList;</span>
+	}
+
+	/**
+	 * Returns the role for the given MID, or empty string if no user exists for
+	 * the given MID.
+	 */
+	private String getRoleStringForMID(Long mid) throws DBException {
+<span class="pc" id="L306">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L307">				PreparedStatement roleQuery = conn.prepareStatement(&quot;SELECT Role FROM users WHERE MID=?&quot;)) {</span>
+<span class="fc" id="L308">			roleQuery.setLong(1, mid);</span>
+<span class="fc" id="L309">			ResultSet rs = roleQuery.executeQuery();</span>
+
+<span class="fc bfc" id="L311" title="All 2 branches covered.">			String role = rs.next() ? rs.getString(&quot;Role&quot;) : &quot;&quot;;</span>
+<span class="fc" id="L312">			rs.close();</span>
+<span class="fc" id="L313">			return role;</span>
+<span class="pc bpc" id="L314" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L315">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the HCP role (LHCP or DLHCP) for the given patient and HCP MIDs.
+	 */
+	private String getHCPRole(Long patientID, Long hcpID) throws DBException {
+<span class="pc" id="L323">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L324">				PreparedStatement ps = conn.prepareStatement(&quot;SELECT PatientID FROM declaredhcp WHERE HCPID=?&quot;)) {</span>
+<span class="fc" id="L325">			ps.setLong(1, hcpID);</span>
+<span class="fc" id="L326">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L327">			String role = &quot;LHCP&quot;;</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">			while (rs.next()) {</span>
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">				if (rs.getLong(&quot;PatientID&quot;) == patientID) {</span>
+<span class="nc" id="L330">					role = &quot;DLHCP&quot;;</span>
+<span class="nc" id="L331">					break;</span>
+				}
+			}
+<span class="fc" id="L334">			rs.close();</span>
+<span class="fc" id="L335">			return role;</span>
+<span class="pc bpc" id="L336" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L337">			throw new DBException(e);</span>
+		}
+	}
+
+	/**
+	 * Returns the patient role (Patient or Personal Health Representative) for
+	 * the given patient and HCP MIDs.
+	 */
+	private String getPatientRole(Long patientID, Long mid) throws DBException {
+<span class="pc" id="L346">		try (Connection conn = factory.getConnection();</span>
+<span class="fc" id="L347">				PreparedStatement ps = conn</span>
+<span class="fc" id="L348">						.prepareStatement(&quot;SELECT representeeMID FROM representatives WHERE representerMID=?&quot;)) {</span>
+<span class="fc" id="L349">			ps.setLong(1, mid);</span>
+<span class="fc" id="L350">			ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L351">			String role = &quot;Patient&quot;;</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">			while (rs.next()) {</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">				if (rs.getLong(&quot;representeeMID&quot;) == patientID) {</span>
+<span class="fc" id="L354">					role = &quot;Personal Health Representative&quot;;</span>
+<span class="fc" id="L355">					break;</span>
+				}
+			}
+<span class="fc" id="L358">			rs.close();</span>
+<span class="fc" id="L359">			return role;</span>
+<span class="pc bpc" id="L360" title="12 of 16 branches missed.">		} catch (SQLException e) {</span>
+<span class="nc" id="L361">			throw new DBException(e);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

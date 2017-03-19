@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmailUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust</a> &gt; <span class="el_source">EmailUtil.java</span></div><h1>EmailUtil.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.Email;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+
+/**
+ * Sends email to users. Since we don't want to train spammers in 326, this just inserts into a database. If
+ * we put this into an actual system, we would replace this class with stuff from javax.mail
+ *  
+ * 
+ */
+public class EmailUtil {
+	private DAOFactory factory;
+
+<span class="fc" id="L16">	public EmailUtil(DAOFactory factory) {</span>
+<span class="fc" id="L17">		this.factory = factory;</span>
+<span class="fc" id="L18">	}</span>
+
+	// DO NOT SEND REAL EMAILS!!!!!
+	// Sending emails - even to a throwaway account, is a waste of bandwidth and looks very suspicious.
+	// If you want to know how to send emails from Java, just Google it on your own time.
+	public void sendEmail(Email email) throws DBException {
+<span class="fc" id="L24">		factory.getFakeEmailDAO().sendEmailRecord(email);</span>
+<span class="fc" id="L25">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

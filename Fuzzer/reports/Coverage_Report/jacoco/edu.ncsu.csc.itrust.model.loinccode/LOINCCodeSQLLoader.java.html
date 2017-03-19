@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LOINCCodeSQLLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.loinccode</a> &gt; <span class="el_source">LOINCCodeSQLLoader.java</span></div><h1>LOINCCodeSQLLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.loinccode;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.SQLLoader;
+
+<span class="fc" id="L13">public class LOINCCodeSQLLoader implements SQLLoader&lt;LOINCCode&gt; {</span>
+
+	@Override
+	public List&lt;LOINCCode&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L17">		ArrayList&lt;LOINCCode&gt; list = new ArrayList&lt;LOINCCode&gt;();</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L19">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L21">		return list;</span>
+	}
+
+	@Override
+	public LOINCCode loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L26">		String code = rs.getString(&quot;code&quot;);</span>
+<span class="fc" id="L27">		String component = rs.getString(&quot;component&quot;);</span>
+<span class="fc" id="L28">		String kindOfProperty = rs.getString(&quot;kind_of_property&quot;);</span>
+<span class="fc" id="L29">		String timeAspect = rs.getString(&quot;time_aspect&quot;);</span>
+<span class="fc" id="L30">		String system = rs.getString(&quot;system&quot;);</span>
+<span class="fc" id="L31">		String scaleType = rs.getString(&quot;scale_type&quot;);</span>
+<span class="fc" id="L32">		String methodType = rs.getString(&quot;method_type&quot;);</span>
+<span class="fc" id="L33">		return new LOINCCode(code, component, kindOfProperty, timeAspect, system, scaleType, methodType);</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, LOINCCode insertObject,
+			boolean newInstance) throws SQLException {
+<span class="fc" id="L39">		String stmt = &quot;&quot;;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">		if (newInstance) {</span>
+<span class="fc" id="L41">			stmt = &quot;INSERT INTO loinccode (code, component, kind_of_property, time_aspect, system, scale_type, method_type) &quot;</span>
+					+ &quot;values (?, ?, ?, ?, ?, ?, ?);&quot;;
+		} else {
+<span class="fc" id="L44">			stmt = &quot;UPDATE loinccode SET &quot;</span>
+					+ &quot;code=?, &quot;
+					+ &quot;component=?, &quot;
+					+ &quot;kind_of_property=?, &quot;
+					+ &quot;time_aspect=?, &quot;
+					+ &quot;system=?, &quot;
+					+ &quot;scale_type=?, &quot;
+					+ &quot;method_type=? &quot;
+<span class="fc" id="L52">					+ &quot;WHERE code='&quot; + insertObject.getCode() + &quot;';&quot;;</span>
+		}
+<span class="fc" id="L54">		ps = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);</span>
+<span class="fc" id="L55">		ps.setString(1, insertObject.getCode());</span>
+<span class="fc" id="L56">		ps.setString(2, insertObject.getComponent());</span>
+<span class="fc" id="L57">		ps.setString(3, insertObject.getKindOfProperty());</span>
+<span class="fc" id="L58">		ps.setString(4, insertObject.getTimeAspect());</span>
+<span class="fc" id="L59">		ps.setString(5, insertObject.getSystem());</span>
+<span class="fc" id="L60">		ps.setString(6, insertObject.getScaleType());</span>
+<span class="fc" id="L61">		ps.setString(7, insertObject.getMethodType());</span>
+		
+<span class="fc" id="L63">		return ps;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

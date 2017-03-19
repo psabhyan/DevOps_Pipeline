@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientNavigation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.tags</a> &gt; <span class="el_source">PatientNavigation.java</span></div><h1>PatientNavigation.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.tags;
+
+import java.io.IOException;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.Tag;
+
+/**
+ * JSP tag that is used as the patient navigation bar at the bottom of the screen.
+ * 
+ * To add a new page, add to the two arrays, and make sure that the page accepts PID
+ */
+public class PatientNavigation implements Tag {
+	private PageContext pageContext;
+	private Tag parent;
+	// A more elegant solution here would be to use enums and have a displayName, a name, and url
+<span class="fc" id="L18">	private String pageTitles[] = { &quot;Demographics&quot;, &quot;Office Visit&quot;};</span>
+<span class="fc" id="L19">	private String pageURLs[] = {  </span>
+			&quot;editPatient.jsp&quot;,&quot;viewOfficeVisit.xhtml&quot;};
+	private String thisTitle;
+
+	/**
+	 * PatientNavigation
+	 */
+<span class="fc" id="L26">	public PatientNavigation() {</span>
+<span class="fc" id="L27">	}</span>
+
+	/**
+	 * doStartTag
+	 * @throws JspException
+	 */
+	@Override
+	public int doStartTag() throws JspException {
+		try {
+<span class="fc" id="L36">			JspWriter out = pageContext.getOut();</span>
+<span class="fc" id="L37">			out.write(&quot;&lt;center&gt;&lt;span class=\&quot;patient-navigation\&quot;&gt;&quot;);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">			for (int i = 0; i &lt; pageTitles.length; i++) {</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">				if (pageTitles[i].equals(thisTitle)) {</span>
+<span class="nc" id="L40">					out.write(&quot;&lt;span class=\&quot;patient-nav-selected\&quot;&gt;&quot; + pageTitles[i] + &quot;&lt;/span&gt;&quot;);</span>
+				} else
+<span class="fc" id="L42">					out.write(&quot;&lt;a href=\&quot;/iTrust/auth/hcp-uap/&quot; + pageURLs[i] + &quot;\&quot;&gt;&quot;</span>
+							+ pageTitles[i] + &quot;&lt;/a&gt;&quot;);
+			}
+<span class="fc" id="L45">			out.write(&quot;&lt;br /&gt;&lt;/span&gt;&lt;/center&gt;&quot;);</span>
+<span class="fc" id="L46">		} catch (IOException e) {</span>
+			//TODO
+<span class="fc" id="L48">		}</span>
+<span class="fc" id="L49">		return SKIP_BODY;</span>
+	}
+
+	/**
+	 * doEndTag
+	 * @throws JspException
+	 */
+	@Override
+	public int doEndTag() throws JspException {
+<span class="fc" id="L58">		return SKIP_BODY;</span>
+	}
+
+	/**
+	 * release
+	 */
+	@Override
+	public void release() {
+<span class="fc" id="L66">	}</span>
+
+	/**
+	 * setPageContext
+	 * @param pageContext pageContext
+	 */
+	@Override
+	public void setPageContext(PageContext pageContext) {
+<span class="fc" id="L74">		this.pageContext = pageContext;</span>
+<span class="fc" id="L75">	}</span>
+
+	/**
+	 * setParent
+	 * @param parent parent
+	 */
+	@Override
+	public void setParent(Tag parent) {
+<span class="fc" id="L83">		this.parent = parent;</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * getParent
+	 * @return parent
+	 */
+	@Override
+	public Tag getParent() {
+<span class="fc" id="L92">		return parent;</span>
+	}
+
+	/**
+	 * getThisTitle
+	 * @return this title
+	 */
+	public String getThisTitle() {
+<span class="fc" id="L100">		return thisTitle;</span>
+	}
+
+	/**
+	 * setThisTitle
+	 * @param thisPage thisPage
+	 */
+	public void setThisTitle(String thisPage) {
+<span class="fc" id="L108">		this.thisTitle = thisPage;</span>
+<span class="fc" id="L109">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

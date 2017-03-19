@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApptBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">ApptBean.java</span></div><h1>ApptBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+
+<span class="fc" id="L7">public class ApptBean implements Serializable {</span>
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1965704529780021183L;
+	private String apptType;
+	private int apptID;
+	private long patient;
+	private long hcp;
+	private Timestamp date;
+	private String comment;
+	private int price;
+	
+	/**
+	 * @return the price
+	 */
+	public int getPrice() {
+<span class="nc" id="L24">		return price;</span>
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(int price) {
+<span class="nc" id="L31">		this.price = price;</span>
+<span class="nc" id="L32">	}</span>
+
+	/**
+	 * @return the apptType
+	 */
+	public String getApptType() {
+<span class="fc" id="L38">		return apptType;</span>
+	}
+	
+	/**
+	 * @param apptID the apptID to set
+	 */
+	public void setApptID(int apptID) {
+<span class="fc" id="L45">		this.apptID = apptID;</span>
+<span class="fc" id="L46">	}</span>
+	
+	public int getApptID() {
+<span class="fc" id="L49">		return apptID;</span>
+	}
+	
+	/**
+	 * @param apptType the apptType to set
+	 */
+	public void setApptType(String apptType) {
+<span class="fc" id="L56">		this.apptType = apptType;</span>
+<span class="fc" id="L57">	}</span>
+	/**
+	 * @return the patient
+	 */
+	public long getPatient() {
+<span class="fc" id="L62">		return patient;</span>
+	}
+	/**
+	 * @param patient the patient to set
+	 */
+	public void setPatient(long patient) {
+<span class="fc" id="L68">		this.patient = patient;</span>
+<span class="fc" id="L69">	}</span>
+	/**
+	 * @return the hcp
+	 */
+	public long getHcp() {
+<span class="fc" id="L74">		return hcp;</span>
+	}
+	/**
+	 * @param hcp the hcp to set
+	 */
+	public void setHcp(long hcp) {
+<span class="fc" id="L80">		this.hcp = hcp;</span>
+<span class="fc" id="L81">	}</span>
+	/**
+	 * @return the date
+	 */
+	public Timestamp getDate() {
+<span class="fc" id="L86">		return (Timestamp) date.clone();</span>
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Timestamp date) {
+<span class="fc" id="L92">		this.date = (Timestamp) date.clone();</span>
+<span class="fc" id="L93">	}</span>
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+<span class="fc" id="L98">		return comment;</span>
+	}
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+<span class="fc" id="L104">		this.comment = comment;</span>
+<span class="fc" id="L105">	}</span>
+	
+	@Override
+	public int hashCode() {
+<span class="nc" id="L109">		return apptID; // any arbitrary constant will do</span>
+	}
+	
+	/**
+	 * Returns true if both id's are equal. Probably needs more advance field by field checking.
+	 */
+	@Override public boolean equals(Object other) {
+	   
+<span class="fc bfc" id="L117" title="All 2 branches covered.">	    if ( this == other ){</span>
+<span class="fc" id="L118">	    	return true;</span>
+	    }
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">	    if ( !(other instanceof ApptBean) ){</span>
+<span class="nc" id="L122">	    	return false;</span>
+	    }
+	    
+<span class="fc" id="L125">	    ApptBean otherAppt = (ApptBean)other;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		return otherAppt.getApptID() == getApptID();</span>
+	    
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SleepType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.enums</a> &gt; <span class="el_source">SleepType.java</span></div><h1>SleepType.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.enums;
+
+/**
+ * SleepType.java Version 1 4/6/2015 Copyright notice: none
+ * 
+ * The types of sleep a patient can log.
+ */
+<span class="nc" id="L8">public enum SleepType {</span>
+
+<span class="nc" id="L10">	Nightly(&quot;Nightly&quot;),</span>
+<span class="nc" id="L11">	Nap(&quot;Nap&quot;);</span>
+
+	private String name;
+
+	/**
+	 * Sets the name of the sleep
+	 * 
+	 * @param name
+	 *            the name of the sleep
+	 */
+<span class="nc" id="L21">	private SleepType(String name) {</span>
+<span class="nc" id="L22">		this.name = name;</span>
+<span class="nc" id="L23">	}</span>
+
+	/**
+	 * Returns the name of the sleep
+	 * 
+	 * @return the name of the sleep
+	 */
+	public String getName() {
+<span class="nc" id="L31">		return name;</span>
+	}
+
+	/**
+	 * Returns the name of the sleep
+	 * 
+	 * @return the name of the sleep
+	 */
+	@Override
+	public String toString() {
+<span class="nc" id="L41">		return getName();</span>
+	}
+
+	/**
+	 * Tries to parse a string into one of the 2 valid sleep types. Throws an
+	 * IllegalArgumentException if the string is not one of the given sleep
+	 * types
+	 * 
+	 * @param str
+	 *            the name of the sleep
+	 * @return a SleepType with the appropriate name
+	 */
+	public static SleepType parse(String str) {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">		for (SleepType xt : SleepType.values()) {</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">			if (xt.name.equals(str)) {</span>
+<span class="nc" id="L56">				return xt;</span>
+			}
+		}
+<span class="nc" id="L59">		throw new IllegalArgumentException(&quot;Sleep Type &quot; + str</span>
+				+ &quot; does not exist&quot;);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

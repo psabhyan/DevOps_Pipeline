@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddApptRequestAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">AddApptRequestAction.java</span></div><h1>AddApptRequestAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.beans.ApptRequestBean;
+import edu.ncsu.csc.itrust.model.old.beans.ApptTypeBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptRequestDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptTypeDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * 
+ *
+ */
+public class AddApptRequestAction {
+
+	private ApptDAO aDAO;
+	private ApptRequestDAO arDAO;
+	private ApptTypeDAO atDAO;
+	
+<span class="fc" id="L29">	public AddApptRequestAction(DAOFactory factory) {</span>
+<span class="fc" id="L30">		aDAO = factory.getApptDAO();</span>
+<span class="fc" id="L31">		arDAO = factory.getApptRequestDAO();</span>
+<span class="fc" id="L32">		atDAO = factory.getApptTypeDAO();</span>
+<span class="fc" id="L33">	}</span>
+
+	public String addApptRequest(ApptRequestBean bean) throws SQLException, DBException {
+<span class="fc" id="L36">		return addApptRequest(bean, 0L, 0L);</span>
+	}
+	
+	public String addApptRequest(ApptRequestBean bean, long loggedInMID, long hcpid) throws SQLException, DBException {
+
+<span class="fc" id="L41">		List&lt;ApptBean&gt; conflicts = aDAO.getAllHCPConflictsForAppt(bean.getRequestedAppt().getHcp(),</span>
+<span class="fc" id="L42">				bean.getRequestedAppt());</span>
+
+<span class="pc bpc" id="L44" title="1 of 4 branches missed.">		if (conflicts != null &amp;&amp; !conflicts.isEmpty()) {</span>
+<span class="fc" id="L45">			return &quot;The appointment you requested conflicts with other existing appointments.&quot;;</span>
+		}
+
+<span class="fc" id="L48">		arDAO.addApptRequest(bean);</span>
+		
+<span class="fc" id="L50">		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_SUBMITTED, loggedInMID, hcpid, &quot;&quot;);</span>
+
+<span class="fc" id="L52">		return &quot;Your appointment request has been saved and is pending.&quot;;</span>
+	}
+
+	public List&lt;ApptBean&gt; getNextAvailableAppts(int num, ApptBean bean) throws SQLException, DBException {
+<span class="fc" id="L56">		List&lt;ApptBean&gt; appts = new ArrayList&lt;ApptBean&gt;(num);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		for (int i = 0; i &lt; num; i++) {</span>
+<span class="fc" id="L58">			ApptBean b = new ApptBean();</span>
+<span class="fc" id="L59">			b.setApptType(bean.getApptType());</span>
+<span class="fc" id="L60">			b.setHcp(bean.getHcp());</span>
+<span class="fc" id="L61">			b.setPatient(bean.getPatient());</span>
+<span class="fc" id="L62">			b.setDate(new Timestamp(bean.getDate().getTime()));</span>
+			
+<span class="fc" id="L64">			List&lt;ApptBean&gt; conflicts = null;</span>
+			do {
+<span class="fc" id="L66">				conflicts = aDAO.getAllHCPConflictsForAppt(b.getHcp(), b);</span>
+<span class="pc bpc" id="L67" title="1 of 4 branches missed.">				if (conflicts != null &amp;&amp; !conflicts.isEmpty()) {</span>
+<span class="fc" id="L68">					ApptBean lastConflict = conflicts.get(conflicts.size() - 1);</span>
+<span class="fc" id="L69">					Timestamp afterConflict = endTime(lastConflict);</span>
+<span class="fc" id="L70">					b.setDate(afterConflict);</span>
+				}
+<span class="fc bfc" id="L72" title="All 2 branches covered.">			} while (!conflicts.isEmpty());</span>
+<span class="fc" id="L73">			appts.add(b);</span>
+<span class="fc" id="L74">			Timestamp nextTime = endTime(b);</span>
+<span class="fc" id="L75">			bean.setDate(nextTime);</span>
+		}
+<span class="fc" id="L77">		return appts;</span>
+	}
+
+	private Timestamp endTime(ApptBean bean) throws SQLException, DBException {
+<span class="fc" id="L81">		Timestamp d = new Timestamp(bean.getDate().getTime());</span>
+<span class="fc" id="L82">		ApptTypeBean type = atDAO.getApptType(bean.getApptType());</span>
+<span class="fc" id="L83">		d.setTime(d.getTime() + type.getDuration() * 60L * 1000);</span>
+<span class="fc" id="L84">		return d;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

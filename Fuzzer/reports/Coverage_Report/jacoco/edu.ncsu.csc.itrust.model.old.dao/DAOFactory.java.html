@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.dao</a> &gt; <span class="el_source">DAOFactory.java</span></div><h1>DAOFactory.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.dao;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
+
+/**
+ * The central mediator for all Database Access Objects. The production instance uses the database connection
+ * pool provided by Tomcat (so use the production instance when doing stuff from JSPs in the &quot;real code&quot;).
+ * Both the production and the test instance parses the context.xml file to get the JDBC connection.
+ * 
+ * Also, @see {@link EvilDAOFactory} and @see {@link TestDAOFactory}.
+ * 
+ * Any DAO that is added to the system should be added in this class, in the same way that all other DAOs are.
+ * 
+ *  
+ * 
+ */
+public class DAOFactory {
+<span class="fc" id="L21">	private static DAOFactory productionInstance = null;</span>
+	private IConnectionDriver driver;
+
+	/**
+	 * 
+	 * @return A production instance of the DAOFactory, to be used in deployment (by Tomcat).
+	 */
+	public static DAOFactory getProductionInstance() {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">		if(productionInstance == null){</span>
+<span class="fc" id="L30">			productionInstance = new DAOFactory();</span>
+		}
+<span class="fc" id="L32">		return productionInstance;</span>
+	}
+
+	/**
+	 * Protected constructor. Call getProductionInstance to get an instance of the DAOFactory
+	 */
+<span class="fc" id="L38">	protected DAOFactory() {</span>
+<span class="fc" id="L39">		this.driver = new ProductionConnectionDriver();</span>
+<span class="fc" id="L40">	}</span>
+
+	/**
+	 * 
+	 * @return this DAOFactory's Connection
+	 * @throws SQLException
+	 */
+	public Connection getConnection() throws SQLException {
+<span class="nc" id="L48">		return driver.getConnection();</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's AccessDAO
+	 */
+	public AccessDAO getAccessDAO() {
+<span class="fc" id="L56">		return new AccessDAO(this);</span>
+	}
+	
+	/**
+	 *
+	 * @return this DAOFactory's ZipCodeDAO
+	 */
+	public ZipCodeDAO getZipCodeDAO()
+	{
+<span class="fc" id="L65">		return new ZipCodeDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's AllergyDAO
+	 */
+	public AllergyDAO getAllergyDAO() {
+<span class="fc" id="L73">		return new AllergyDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's ApptDAO
+	 */
+	public ApptDAO getApptDAO() {
+<span class="fc" id="L81">		return new ApptDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's ApptRequestDAO
+	 */
+	public ApptRequestDAO getApptRequestDAO() {
+<span class="fc" id="L89">		return new ApptRequestDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's ApptTypeDAO
+	 */
+	public ApptTypeDAO getApptTypeDAO() {
+<span class="fc" id="L97">		return new ApptTypeDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's AuthDAO
+	 */
+	public AuthDAO getAuthDAO() {
+<span class="fc" id="L105">		return new AuthDAO(this);</span>
+	}
+	
+	/**
+	 * 
+	 * @return this DAOFactory's BillingDAO
+	 */
+	public BillingDAO getBillingDAO() {
+<span class="fc" id="L113">		return new BillingDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's DrugInteractionDAO
+	 */
+	public DrugInteractionDAO getDrugInteractionDAO() {
+<span class="fc" id="L121">		return new DrugInteractionDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's FamilyDAO
+	 */
+	public FamilyDAO getFamilyDAO() {
+<span class="fc" id="L129">		return new FamilyDAO(this);</span>
+	}
+
+
+	/**
+	 * 
+	 * @return this DAOFactory's HospitalsDAO
+	 */
+	public HospitalsDAO getHospitalsDAO() {
+<span class="fc" id="L138">		return new HospitalsDAO(this);</span>
+	}
+
+
+	/**
+	 * 
+	 * @return this DAOFactory's NDCodesDAO
+	 */
+	public NDCodesDAO getNDCodesDAO() {
+<span class="fc" id="L147">		return new NDCodesDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's OfficeVisitDAO
+	 */
+//	public OfficeVisitDAO getOfficeVisitDAO() {
+//		return new OfficeVisitDAO(this);
+//	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's PatientDAO
+	 */
+	public PatientDAO getPatientDAO() {
+<span class="fc" id="L163">		return new PatientDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's PersonnelDAO
+	 */
+	public PersonnelDAO getPersonnelDAO() {
+<span class="fc" id="L171">		return new PersonnelDAO(this);</span>
+	}
+
+
+	/**
+	 * 
+	 * @return this DAOFactory's TransactionDAO
+	 */
+	public TransactionDAO getTransactionDAO() {
+<span class="fc" id="L180">		return new TransactionDAO(this);</span>
+	}
+
+
+	/**
+	 * 
+	 * @return this DAOFactory's FakeEmailDAO
+	 */
+	public FakeEmailDAO getFakeEmailDAO() {
+<span class="fc" id="L189">		return new FakeEmailDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's ReportRequestDAO
+	 */
+	public ReportRequestDAO getReportRequestDAO() {
+<span class="fc" id="L197">		return new ReportRequestDAO(this);</span>
+	}
+
+	/**
+	 * 
+	 * @return this DAOFactory's MessageDAO
+	 */
+	public MessageDAO getMessageDAO() {
+<span class="fc" id="L205">		return new MessageDAO(this);</span>
+	}
+
+
+	/**
+	 * 
+	 * @return this DAOFactory's RemoteMonitoringDAO
+	 */
+	public RemoteMonitoringDAO getRemoteMonitoringDAO() {
+<span class="fc" id="L214">		return new RemoteMonitoringDAO(this);</span>
+	}
+
+
+	/**
+	 * 
+	 * @return this DAOFactory's DrugReactionOverrideCodesDAO
+	 */
+	public DrugReactionOverrideCodesDAO getORCodesDAO() {
+<span class="fc" id="L223">		return new DrugReactionOverrideCodesDAO(this);</span>
+	}
+
+
+	/**
+	 * Gets the DAO for reviews with the DB table reviews.
+	 * @return this DAOFactory's ReviewsDAO
+	 */
+	public ReviewsDAO getReviewsDAO() {
+<span class="fc" id="L232">		return new ReviewsDAO(this);</span>
+	}
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

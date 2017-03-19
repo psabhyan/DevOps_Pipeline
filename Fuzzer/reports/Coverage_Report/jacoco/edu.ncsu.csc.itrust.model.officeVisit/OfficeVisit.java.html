@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OfficeVisit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.officeVisit</a> &gt; <span class="el_source">OfficeVisit.java</span></div><h1>OfficeVisit.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package edu.ncsu.csc.itrust.model.officeVisit;
+
+import java.time.LocalDateTime;
+
+import javax.faces.bean.ManagedBean;
+
+/**
+ * @author seelder
+ *
+ */
+@ManagedBean(name=&quot;office_visit&quot;)
+public class OfficeVisit {
+	private Long visitID;
+	private Long patientMID;
+	private LocalDateTime date;
+	private String locationID;
+	private Long apptTypeID;
+	private String notes;
+	private Boolean sendBill;
+	
+	private Float height;
+	private Float length;
+	private Float weight;
+	private Float headCircumference;
+	private String bloodPressure;
+	private Integer hdl;
+	private Integer triglyceride;
+	private Integer ldl;
+	private Integer householdSmokingStatus;
+	private Integer patientSmokingStatus;
+	
+	/**
+	 * Enum for household smoking status in basic health metrics
+	 */
+<span class="fc" id="L38">	public enum HouseholdSmokingStatus {</span>
+<span class="fc" id="L39">		NON_SMOKING_HOUSEHOLD(1, &quot;Non-Smoking Household&quot;),</span>
+<span class="fc" id="L40">		OUTDOOR_SMOKERS(2, &quot;Outdoor Smokers&quot;),</span>
+<span class="fc" id="L41">		INDOOR_SMOKERS(3, &quot;Indoor Smokers&quot;),</span>
+<span class="fc" id="L42">		UNSELECTED(0, &quot;Unselected&quot;);</span>
+		
+		private int id;
+		private String description;
+<span class="fc" id="L46">		HouseholdSmokingStatus(int id, String description) {</span>
+<span class="fc" id="L47">			this.id = id;</span>
+<span class="fc" id="L48">			this.description = description;</span>
+<span class="fc" id="L49">		}</span>
+		
+		public static String getDesriptionById(int id) {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">			for(HouseholdSmokingStatus status: values()) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">				if (status.id == id) {</span>
+<span class="fc" id="L54">					return status.description;</span>
+				}
+			}
+<span class="fc" id="L57">			return null;</span>
+		}
+	}
+	
+	/**
+	 * Enum for patient smoking status in basic health metrics
+	 */
+<span class="fc" id="L64">	public enum PatientSmokingStatus {</span>
+<span class="fc" id="L65">		CURRENT_EVERY_DAY_SMOKER(1, &quot;Current Every Day Smoker&quot;),</span>
+<span class="fc" id="L66">		CURRENT_SOME_DAY_SMOKER(2, &quot;Current Some Day Smoker&quot;),</span>
+<span class="fc" id="L67">		FORMER_SMOKER(3, &quot;Former Smoker&quot;),</span>
+<span class="fc" id="L68">		NEVER_SMOKER(4, &quot;Never Smoker&quot;),</span>
+<span class="fc" id="L69">		SMOKER_CURRENT_STATUS_UNKNOWN(5, &quot;Smoker, current status unknown&quot;),</span>
+<span class="fc" id="L70">		UNKNOWN_IF_EVER_SMOKED(9, &quot;Unknown if ever smoked&quot;),</span>
+<span class="fc" id="L71">		UNSELECTED(0, &quot;Unselected&quot;);</span>
+		
+		private int id;
+		private String description;
+<span class="fc" id="L75">		PatientSmokingStatus(int id, String description) {</span>
+<span class="fc" id="L76">			this.id = id;</span>
+<span class="fc" id="L77">			this.description = description;</span>
+<span class="fc" id="L78">		}</span>
+		
+		public static String getDesriptionById(int id) {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">			for(PatientSmokingStatus status: values()) {</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">				if (status.id == id) {</span>
+<span class="fc" id="L83">					return status.description;</span>
+				}
+			}
+<span class="fc" id="L86">			return null;</span>
+		}
+	}
+	
+	/**
+	 * Default constructor for OfficeVisit
+	 */
+<span class="fc" id="L93">	public OfficeVisit(){</span>
+<span class="fc" id="L94">		sendBill = true;</span>
+<span class="fc" id="L95">	}</span>
+	
+	
+	/**
+	 * @return the patientMID
+	 */
+	public Long getPatientMID() {
+<span class="fc" id="L102">		return patientMID;</span>
+	}
+
+	/**
+	 * @param patientID the patient MID to set
+	 */
+	public void setPatientMID(Long patientID) {
+<span class="fc" id="L109">		this.patientMID = patientID;</span>
+<span class="fc" id="L110">	}</span>
+
+	/**
+	 * @return the date
+	 */
+	public LocalDateTime getDate() {
+<span class="fc" id="L116">		return date;</span>
+	}
+
+	/**
+	 * @param date the date of the office visit
+	 */
+	public void setDate(LocalDateTime date) {
+<span class="fc" id="L123">		this.date = date;</span>
+<span class="fc" id="L124">	}</span>
+
+	/**
+	 * @return the locationID
+	 */
+	public String getLocationID() {
+<span class="fc" id="L130">		return locationID;</span>
+	}
+
+	/**
+	 * @param locationID the locationID to set
+	 */
+	public void setLocationID(String location) {
+<span class="fc" id="L137">		this.locationID = location;</span>
+<span class="fc" id="L138">	}</span>
+
+	/**
+	 * @return the apptTypeID
+	 */
+	public Long getApptTypeID() {
+<span class="fc" id="L144">		return apptTypeID;</span>
+	}
+
+	/**
+	 * @param apptTypeID the apptTypeID to set
+	 */
+	public void setApptTypeID(Long apptType) {
+<span class="fc" id="L151">		this.apptTypeID = apptType;</span>
+<span class="fc" id="L152">	}</span>
+
+	public Long getVisitID() {
+<span class="fc" id="L155">		return visitID;</span>
+	}
+
+	public void setVisitID(Long visitID) {
+<span class="fc" id="L159">		this.visitID = visitID;</span>
+<span class="fc" id="L160">	}</span>
+
+	public String getNotes() {
+<span class="fc" id="L163">		return notes;</span>
+	}
+
+	public void setNotes(String notes) {
+<span class="fc" id="L167">		this.notes = notes;</span>
+<span class="fc" id="L168">	}</span>
+
+	public Boolean getSendBill() {
+<span class="fc" id="L171">		return sendBill;</span>
+	}
+
+	public void setSendBill(Boolean sendBill) {
+<span class="fc" id="L175">		this.sendBill = sendBill;</span>
+<span class="fc" id="L176">	}</span>
+
+	/**
+	 * Returns the Height recorded at the office visit.
+	 * 
+	 * @return the Height recorded at the office visit.
+	 */
+	public Float getHeight() {
+<span class="fc" id="L184">		return height;</span>
+	}
+
+	/**
+	 * Sets the height recorded at the office visit.
+	 * 
+	 * @param height
+	 *            The height recorded at the office visit
+	 */
+	public void setHeight(Float height) {
+<span class="fc" id="L194">		this.height = height;</span>
+<span class="fc" id="L195">	}</span>
+
+	/**
+	 * Gets the length recorded at the office visit.
+	 * 
+	 * @param length
+	 *            The height recorded at the office visit
+	 */
+	public Float getLength() {
+<span class="fc" id="L204">		return length;</span>
+	}
+
+	/**
+	 * Sets the length recorded at the office visit.
+	 * 
+	 * @param length
+	 *            The height recorded at the office visit
+	 */
+	public void setLength(Float length) {
+<span class="fc" id="L214">		this.length = length;</span>
+<span class="fc" id="L215">	}</span>
+
+	/**
+	 * Returns the weight recorded at the office visit.
+	 * 
+	 * @return the weight recorded at the office visit.
+	 */
+	public Float getWeight() {
+<span class="fc" id="L223">		return weight;</span>
+	}
+
+	/**
+	 * @param weight
+	 *            the weight to set
+	 */
+	public void setWeight(Float weight) {
+<span class="fc" id="L231">		this.weight = weight;</span>
+<span class="fc" id="L232">	}</span>
+
+	/**
+	 * Returns the head circumference measured at the office visit.
+	 * 
+	 * @return the headCircumference
+	 */
+	public Float getHeadCircumference() {
+<span class="fc" id="L240">		return headCircumference;</span>
+	}
+
+	/**
+	 * @param headCircumference
+	 *            the headCircumference to set
+	 */
+	public void setHeadCircumference(Float headCircumference) {
+<span class="fc" id="L248">		this.headCircumference = headCircumference;</span>
+<span class="fc" id="L249">	}</span>
+
+	/**
+	 * Returns the blood pressure measured at the office visit.
+	 * 
+	 * @return the bloodPressure
+	 */
+	public String getBloodPressure() {
+<span class="fc" id="L257">		return bloodPressure;</span>
+	}
+
+	/**
+	 * @param bloodPressure
+	 *            the bloodPressure to set
+	 */
+	public void setBloodPressure(String bloodPressure) {
+<span class="fc" id="L265">		this.bloodPressure = bloodPressure;</span>
+<span class="fc" id="L266">	}</span>
+
+	/**
+	 * Returns the HDL cholesterol level measured at the office visit.
+	 * 
+	 * @return the hdl
+	 */
+	public Integer getHDL() {
+<span class="fc" id="L274">		return hdl;</span>
+	}
+
+	/**
+	 * @param hdl
+	 *            the hdl to set
+	 */
+	public void setHDL(Integer hdl) {
+<span class="fc" id="L282">		this.hdl = hdl;</span>
+<span class="fc" id="L283">	}</span>
+
+	/**
+	 * Returns the triglyceride cholesterol level measured at the office visit.
+	 * 
+	 * @return the triglyceride
+	 */
+	public Integer getTriglyceride() {
+<span class="fc" id="L291">		return triglyceride;</span>
+	}
+
+	/**
+	 * @param triglyceride
+	 *            the triglyceride to set
+	 */
+	public void setTriglyceride(Integer triglyceride) {
+<span class="fc" id="L299">		this.triglyceride = triglyceride;</span>
+<span class="fc" id="L300">	}</span>
+
+	/**
+	 * Returns the LDL cholesterol level measured at the office visit.
+	 * 
+	 * @return the ldl
+	 */
+	public Integer getLDL() {
+<span class="fc" id="L308">		return ldl;</span>
+	}
+
+	/**
+	 * @param ldl
+	 *            the ldl to set
+	 */
+	public void setLDL(Integer ldl) {
+<span class="fc" id="L316">		this.ldl = ldl;</span>
+<span class="fc" id="L317">	}</span>
+
+	/**
+	 * Returns the household smoking status indicated at the office visit.
+	 * 
+	 * @return the householdSmokingStatus
+	 */
+	public Integer getHouseholdSmokingStatus() {
+<span class="fc" id="L325">		return householdSmokingStatus;</span>
+	}
+
+	/**
+	 * @param householdSmokingStatus
+	 *            the householdSmokingStatus to set
+	 */
+	public void setHouseholdSmokingStatus(Integer householdSmokingStatus) {
+<span class="fc" id="L333">		this.householdSmokingStatus = householdSmokingStatus;</span>
+<span class="fc" id="L334">	}</span>
+
+	/**
+	 * Returns the patient smoking status indicated at the office visit.
+	 * 
+	 * @return the patientSmokingStatus
+	 */
+	public Integer getPatientSmokingStatus() {
+<span class="fc" id="L342">		return patientSmokingStatus;</span>
+	}
+	
+	/**
+	 * @return string representation of patient smoking status in the format of:
+	 * 			&quot;id - description&quot;
+	 */
+	public String getPatientSmokingStatusDescription() {
+<span class="fc" id="L350">		String description = PatientSmokingStatus.getDesriptionById(patientSmokingStatus);</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">		if (description == null) {</span>
+<span class="fc" id="L352">			return &quot;&quot;;</span>
+		}
+<span class="fc" id="L354">		return String.format(&quot;%d - %s&quot;, patientSmokingStatus, description);</span>
+	}
+
+	/**
+	 * @param patientSmokingStatus
+	 *            the patientSmokingStatus to set
+	 */
+	public void setPatientSmokingStatus(Integer patientSmokingStatus) {
+<span class="fc" id="L362">		this.patientSmokingStatus = patientSmokingStatus;</span>
+<span class="fc" id="L363">	}</span>
+	
+	/**
+	 * @return string representation of household smoking status in the format of:
+	 * 			&quot;id - description&quot;
+	 */
+	public String getHouseholdSmokingStatusDescription() {
+<span class="fc" id="L370">		String description = HouseholdSmokingStatus.getDesriptionById(householdSmokingStatus);</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">		if (description == null) {</span>
+<span class="fc" id="L372">			return &quot;&quot;;</span>
+		}
+<span class="fc" id="L374">		return String.format(&quot;%d - %s&quot;, householdSmokingStatus, description);</span>
+	}
+	
+	/**
+	 * Calculates adult/child patient's BMI according to patient's height and weight.
+	 * 
+	 * @see http://extoxnet.orst.edu/faqs/dietcancer/web2/twohowto.html
+	 * @return patient's BMI in 2 decimal places, &quot;N/A&quot; if patient's height or weight 
+	 * 			is uninitialized or invalid
+	 */
+	public String getAdultBMI() {
+<span class="nc" id="L385">		return getBMI(weight, height);</span>
+	}
+	
+	/**
+	 * Calculates baby patient's BMI according to patient's height and length.
+	 * 
+	 * @see http://extoxnet.orst.edu/faqs/dietcancer/web2/twohowto.html
+	 * @return patient's BMI in 2 decimal places, &quot;N/A&quot; if patient's height or weight 
+	 * 			is uninitialized or invalid
+	 */
+	public String getBabyBMI() {
+<span class="nc" id="L396">		return getBMI(weight, length);</span>
+	}
+	
+	/**
+	 * Calculates BMI according to provided height and weight.
+	 * 
+	 * @see http://extoxnet.orst.edu/faqs/dietcancer/web2/twohowto.html
+	 * @return BMI in 2 decimal places, &quot;N/A&quot; if given height or weight 
+	 * 			is uninitialized or invalid
+	 */
+	public static String getBMI(Float weight, Float height) {
+<span class="nc bnc" id="L407" title="All 8 branches missed.">		if (weight == null || height == null || weight &lt;= 0 || height &lt;= 0) {</span>
+<span class="nc" id="L408">			return &quot;N/A&quot;;</span>
+		}
+<span class="nc" id="L410">		return String.format(&quot;%.2f&quot;, weight * 0.45 / Math.pow(height * 0.025, 2));</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

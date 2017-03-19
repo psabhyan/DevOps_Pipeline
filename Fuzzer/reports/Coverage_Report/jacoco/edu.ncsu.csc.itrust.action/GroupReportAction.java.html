@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GroupReportAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">GroupReportAction.java</span></div><h1>GroupReportAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;
+import edu.ncsu.csc.itrust.model.old.beans.FamilyMemberBean;
+import edu.ncsu.csc.itrust.model.old.beans.GroupReportBean;
+import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.FamilyDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.report.DemographicReportFilter.DemographicReportFilterType;
+import edu.ncsu.csc.itrust.report.MedicalReportFilter.MedicalReportFilterType;
+import edu.ncsu.csc.itrust.report.PersonnelReportFilter.PersonnelReportFilterType;
+import edu.ncsu.csc.itrust.report.ReportFilter;
+
+/**
+ * 
+ *
+ */
+public class GroupReportAction {
+
+	private PatientDAO pDAO;
+	private AllergyDAO aDAO;
+	private FamilyDAO fDAO;
+
+	/**
+	 * 
+	 * @param factory
+	 * @throws DBException 
+	 */
+<span class="fc" id="L37">	public GroupReportAction(DAOFactory factory, long mid) throws DBException {</span>
+<span class="fc" id="L38">		pDAO = factory.getPatientDAO();</span>
+<span class="fc" id="L39">		aDAO = factory.getAllergyDAO();</span>
+<span class="fc" id="L40">		fDAO = factory.getFamilyDAO();</span>
+<span class="fc" id="L41">		TransactionLogger.getInstance().logTransaction(TransactionType.GROUP_REPORT_VIEW, mid, 0L , &quot;&quot;);</span>
+<span class="fc" id="L42">	}</span>
+
+	/**
+	 * 
+	 * @param filters
+	 * @return
+	 */
+	public GroupReportBean generateReport(List&lt;ReportFilter&gt; filters) {
+		List&lt;PatientBean&gt; patients;
+
+		try {
+<span class="fc" id="L53">			patients = getAllPatients();</span>
+<span class="nc" id="L54">		} catch (DBException e) {</span>
+<span class="nc" id="L55">			return null;</span>
+<span class="fc" id="L56">		}</span>
+
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		for (ReportFilter filter : filters) {</span>
+<span class="fc" id="L59">			patients = filter.filter(patients);</span>
+<span class="fc" id="L60">		}</span>
+
+<span class="fc" id="L62">		return new GroupReportBean(patients, filters);</span>
+	}
+
+	/**
+	 * 
+	 * @param patient
+	 * @param filterType
+	 * @return
+	 */
+	public String getComprehensiveDemographicInfo(PatientBean patient, DemographicReportFilterType filterType) {
+<span class="pc bfc" id="L72" title="All 27 branches covered.">		switch (filterType) {</span>
+		case GENDER:
+<span class="fc" id="L74">			return patient.getGender().toString();</span>
+		case LAST_NAME:
+<span class="fc" id="L76">			return patient.getLastName();</span>
+		case FIRST_NAME:
+<span class="fc" id="L78">			return patient.getFirstName();</span>
+		case CONTACT_EMAIL:
+<span class="fc" id="L80">			return patient.getEmail();</span>
+		case STREET_ADDR:
+<span class="fc" id="L82">			return patient.getStreetAddress1() + &quot; &quot; + patient.getStreetAddress2();</span>
+		case CITY:
+<span class="fc" id="L84">			return patient.getCity();</span>
+		case STATE:
+<span class="fc" id="L86">			return patient.getState();</span>
+		case ZIP:
+<span class="fc" id="L88">			return patient.getZip();</span>
+		case PHONE:
+<span class="fc" id="L90">			return patient.getPhone();</span>
+		case EMER_CONTACT_NAME:
+<span class="fc" id="L92">			return patient.getEmergencyName();</span>
+		case EMER_CONTACT_PHONE:
+<span class="fc" id="L94">			return patient.getEmergencyPhone();</span>
+		case INSURE_NAME:
+<span class="fc" id="L96">			return patient.getIcName();</span>
+		case INSURE_ADDR:
+<span class="fc" id="L98">			return patient.getIcAddress1() + &quot; &quot; + patient.getIcAddress2();</span>
+		case INSURE_CITY:
+<span class="fc" id="L100">			return patient.getIcCity();</span>
+		case INSURE_STATE:
+<span class="fc" id="L102">			return patient.getIcState();</span>
+		case INSURE_ZIP:
+<span class="fc" id="L104">			return patient.getIcZip();</span>
+		case INSURE_PHONE:
+<span class="fc" id="L106">			return patient.getIcPhone();</span>
+		case MID:
+<span class="fc" id="L108">			return Long.toString(patient.getMID());</span>
+		case INSURE_ID:
+<span class="fc" id="L110">			return patient.getIcID();</span>
+		case PARENT_FIRST_NAME:
+			try {
+<span class="fc" id="L113">				List&lt;FamilyMemberBean&gt; parents = fDAO.getParents(patient.getMID());</span>
+<span class="fc" id="L114">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">				for (FamilyMemberBean parent : parents) {</span>
+<span class="fc" id="L116">					buff.append(parent.getFirstName());</span>
+<span class="fc" id="L117">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L118">				}</span>
+<span class="fc" id="L119">				String out = buff.toString();</span>
+<span class="fc" id="L120">				return out;</span>
+<span class="nc" id="L121">			} catch (Exception e) {</span>
+<span class="nc" id="L122">				break;</span>
+			}
+		case PARENT_LAST_NAME:
+			try {
+<span class="fc" id="L126">				List&lt;FamilyMemberBean&gt; parents = fDAO.getParents(patient.getMID());</span>
+<span class="fc" id="L127">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">				for (FamilyMemberBean parent : parents) {</span>
+<span class="fc" id="L129">					buff.append(parent.getLastName());</span>
+<span class="fc" id="L130">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L131">				}</span>
+<span class="fc" id="L132">				String out = buff.toString();</span>
+<span class="fc" id="L133">				return out;</span>
+<span class="nc" id="L134">			} catch (Exception e) {</span>
+<span class="nc" id="L135">				break;</span>
+			}
+		case CHILD_FIRST_NAME:
+			try {
+<span class="fc" id="L139">				List&lt;FamilyMemberBean&gt; children = fDAO.getChildren(patient.getMID());</span>
+<span class="fc" id="L140">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">				for (FamilyMemberBean child : children) {</span>
+<span class="fc" id="L142">					buff.append(child.getFirstName());</span>
+<span class="fc" id="L143">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L144">				}</span>
+<span class="fc" id="L145">				String out = buff.toString();</span>
+<span class="fc" id="L146">				return out;</span>
+<span class="nc" id="L147">			} catch (Exception e) {</span>
+<span class="nc" id="L148">				break;</span>
+			}
+		case CHILD_LAST_NAME:
+			try {
+<span class="fc" id="L152">				List&lt;FamilyMemberBean&gt; children = fDAO.getChildren(patient.getMID());</span>
+<span class="fc" id="L153">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">				for (FamilyMemberBean child : children) {</span>
+<span class="fc" id="L155">					buff.append(child.getLastName());</span>
+<span class="fc" id="L156">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L157">				}</span>
+<span class="fc" id="L158">				String out = buff.toString();</span>
+<span class="fc" id="L159">				return out;</span>
+<span class="nc" id="L160">			} catch (Exception e) {</span>
+<span class="nc" id="L161">				break;</span>
+			}
+		case SIBLING_FIRST_NAME:
+			try {
+<span class="fc" id="L165">				List&lt;FamilyMemberBean&gt; siblings = fDAO.getSiblings(patient.getMID());</span>
+<span class="fc" id="L166">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">				for (FamilyMemberBean sibling : siblings) {</span>
+<span class="fc" id="L168">					buff.append(sibling.getFirstName());</span>
+<span class="fc" id="L169">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L170">				}</span>
+<span class="fc" id="L171">				String out = buff.toString();</span>
+<span class="fc" id="L172">				return out;</span>
+<span class="nc" id="L173">			} catch (Exception e) {</span>
+<span class="nc" id="L174">				break;</span>
+			}
+		case SIBLING_LAST_NAME:
+			try {
+<span class="fc" id="L178">				List&lt;FamilyMemberBean&gt; siblings = fDAO.getSiblings(patient.getMID());</span>
+<span class="fc" id="L179">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">				for (FamilyMemberBean sibling : siblings) {</span>
+<span class="fc" id="L181">					buff.append(sibling.getLastName());</span>
+<span class="fc" id="L182">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L183">				}</span>
+<span class="fc" id="L184">				String out = buff.toString();</span>
+<span class="fc" id="L185">				return out;</span>
+<span class="nc" id="L186">			} catch (Exception e) {</span>
+<span class="nc" id="L187">				break;</span>
+			}
+		case DEACTIVATED:
+<span class="fc" id="L190">			return patient.getDateOfDeactivationStr();</span>
+		default:
+			break;
+		}
+<span class="fc" id="L194">		return null;</span>
+	}
+
+	/**
+	 * 
+	 * @param patient
+	 * @param filterType
+	 * @return
+	 */
+	public String getComprehensiveMedicalInfo(PatientBean patient, MedicalReportFilterType filterType) {
+		try {
+			String out;
+<span class="fc" id="L206">			StringBuffer buff = new StringBuffer();</span>
+<span class="pc bfc" id="L207" title="All 2 branches covered.">			switch (filterType) {</span>
+			case ALLERGY:
+<span class="fc" id="L209">				List&lt;AllergyBean&gt; allergies = aDAO.getAllergies(patient.getMID());</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">				for (AllergyBean allergy : allergies) {</span>
+<span class="fc" id="L211">					buff.append(allergy.getNDCode());</span>
+<span class="fc" id="L212">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L213">				}</span>
+<span class="fc" id="L214">				out = buff.toString();</span>
+<span class="fc" id="L215">				return out;</span>
+			
+			default:
+				break;
+			}
+<span class="nc" id="L220">		} catch(Exception e) {</span>
+<span class="nc" id="L221">			return null;</span>
+<span class="fc" id="L222">		}</span>
+<span class="fc" id="L223">		return null;</span>
+	}
+
+	/**
+	 * 
+	 * @param patient
+	 * @param filterType
+	 * @return
+	 */
+	public String getComprehensivePersonnelInfo(PatientBean patient, PersonnelReportFilterType filterType) {
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">		switch (filterType) {</span>
+		case DLHCP:
+			try {
+<span class="fc" id="L236">				List&lt;PersonnelBean&gt; dlhcps = pDAO.getDeclaredHCPs(patient.getMID());</span>
+<span class="fc" id="L237">				StringBuffer buff = new StringBuffer();</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">				for (PersonnelBean dlhcp : dlhcps) {</span>
+<span class="fc" id="L239">					buff.append(dlhcp.getFullName());</span>
+<span class="fc" id="L240">					buff.append(&quot;\n&quot;);</span>
+<span class="fc" id="L241">				}</span>
+<span class="fc" id="L242">				String out = buff.toString();</span>
+<span class="fc" id="L243">				return out;</span>
+<span class="nc" id="L244">			} catch (Exception e) {</span>
+<span class="nc" id="L245">				break;</span>
+			}
+		default:
+			break;
+		}
+<span class="nc" id="L250">		return null;</span>
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws DBException
+	 */
+	private List&lt;PatientBean&gt; getAllPatients() throws DBException {
+<span class="fc" id="L259">		return pDAO.getAllPatients();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

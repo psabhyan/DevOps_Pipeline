@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HospitalBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">HospitalBean.java</span></div><h1>HospitalBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+/**
+ * A bean for storing data about a hospital.
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters.
+ * to create these easily)
+ */
+public class HospitalBean {
+<span class="fc" id="L12">	String hospitalID = &quot;&quot;;</span>
+<span class="fc" id="L13">	String hospitalName = &quot;&quot;;</span>
+<span class="fc" id="L14">	String hospitalAddress = &quot;&quot;;</span>
+<span class="fc" id="L15">	String hospitalCity = &quot;&quot;;</span>
+<span class="fc" id="L16">	String hospitalState = &quot;&quot;;</span>
+<span class="fc" id="L17">	String hospitalZip = &quot;&quot;;</span>
+
+<span class="fc" id="L19">	public HospitalBean() {</span>
+<span class="fc" id="L20">	}</span>
+
+<span class="fc" id="L22">	public HospitalBean(String hospitalID) {</span>
+<span class="fc" id="L23">		this.hospitalID = hospitalID;</span>
+<span class="fc" id="L24">	}</span>
+
+<span class="fc" id="L26">	public HospitalBean(String hospitalID, String hospitalName) {</span>
+<span class="fc" id="L27">		this.hospitalID = hospitalID;</span>
+<span class="fc" id="L28">		this.hospitalName = hospitalName;</span>
+<span class="fc" id="L29">	}</span>
+	
+<span class="fc" id="L31">	public HospitalBean(String hospitalID, String hospitalName, String hospitalAddress, String hospitalCity, String hospitalState, String hospitalZip) {</span>
+<span class="fc" id="L32">		this.hospitalID = hospitalID;</span>
+<span class="fc" id="L33">		this.hospitalName = hospitalName;</span>
+<span class="fc" id="L34">		this.hospitalAddress = hospitalAddress;</span>
+<span class="fc" id="L35">		this.hospitalCity = hospitalCity;</span>
+<span class="fc" id="L36">		this.hospitalState = hospitalState;</span>
+<span class="fc" id="L37">		this.hospitalZip = hospitalZip;</span>
+<span class="fc" id="L38">	}</span>
+
+	public String getHospitalID() {
+<span class="fc" id="L41">		return hospitalID;</span>
+	}
+
+	public void setHospitalID(String hospitalID) {
+<span class="fc" id="L45">		this.hospitalID = hospitalID;</span>
+<span class="fc" id="L46">	}</span>
+	
+	public String getHospitalName() {
+<span class="fc" id="L49">		return hospitalName;</span>
+	}
+
+	public void setHospitalName(String hospitalName) {
+<span class="fc" id="L53">		this.hospitalName = hospitalName;</span>
+<span class="fc" id="L54">	}</span>
+
+	public String getHospitalAddress() {
+<span class="fc" id="L57">		return hospitalAddress;</span>
+	}
+
+	public void setHospitalAddress(String hospitalAddress) {
+<span class="fc" id="L61">		this.hospitalAddress = hospitalAddress;</span>
+<span class="fc" id="L62">	}</span>
+	
+	public String getHospitalCity() {
+<span class="fc" id="L65">		return hospitalCity;</span>
+	}
+
+	public void setHospitalCity(String hospitalCity) {
+<span class="fc" id="L69">		this.hospitalCity = hospitalCity;</span>
+<span class="fc" id="L70">	}</span>
+	
+	public String getHospitalState() {
+<span class="fc" id="L73">		return hospitalState;</span>
+	}
+
+	public void setHospitalState(String hospitalState) {
+<span class="fc" id="L77">		this.hospitalState = hospitalState;</span>
+<span class="fc" id="L78">	}</span>
+	
+	public String getHospitalZip() {
+<span class="fc" id="L81">		return hospitalZip;</span>
+	}
+
+	public void setHospitalZip(String hospitalZip) {
+<span class="fc" id="L85">		this.hospitalZip = hospitalZip;</span>
+<span class="fc" id="L86">	}</span>
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="pc bpc" id="L90" title="3 of 6 branches missed.">		return obj != null &amp;&amp; obj.getClass().equals(this.getClass()) &amp;&amp; this.equals((HospitalBean) obj);</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="fc" id="L95">		return 42; // any arbitrary constant will do</span>
+	}
+
+	private boolean equals(HospitalBean other) {
+<span class="pc bpc" id="L99" title="2 of 4 branches missed.">		return hospitalID.equals(other.hospitalID) &amp;&amp; hospitalName.equals(other.hospitalName);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

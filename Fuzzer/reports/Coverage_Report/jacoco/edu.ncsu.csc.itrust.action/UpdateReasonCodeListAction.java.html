@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateReasonCodeListAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">UpdateReasonCodeListAction.java</span></div><h1>UpdateReasonCodeListAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.OverrideReasonBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.DrugReactionOverrideCodesDAO;
+import edu.ncsu.csc.itrust.model.old.validate.OverrideReasonBeanValidator;
+
+/**
+ * Handles updating the Reason Codes List Used by editReasonCodes.jsp
+ * 
+ * The National Drug Code (NDC) is a universal product identifier used in the
+ * United States for drugs intended for human use.
+ * 
+ * @see http://archinte.ama-assn.org/cgi/content/full/163/21/2625/TABLEIOI20692T4
+ */
+public class UpdateReasonCodeListAction {
+	private DrugReactionOverrideCodesDAO orcDAO;
+<span class="fc" id="L21">	private OverrideReasonBeanValidator validator = new OverrideReasonBeanValidator();</span>
+
+	/**
+	 * Set up defaults.
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param performerID The MID of the user updating the ND lists.
+	 */
+<span class="fc" id="L29">	public UpdateReasonCodeListAction(DAOFactory factory, long performerID) {</span>
+<span class="fc" id="L30">		orcDAO = factory.getORCodesDAO();</span>
+<span class="fc" id="L31">	}</span>
+
+	/**
+	 * Adds a new ND Code (prescription) to the list
+	 * 
+	 * @param orc
+	 *            The new ND Code to be added
+	 * @return Status message
+	 * @throws FormValidationException
+	 */
+	public String addORCode(OverrideReasonBean orc) throws FormValidationException {
+<span class="fc" id="L42">		validator.validate(orc);</span>
+		try {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">			if (orcDAO.addORCode(orc)) {</span>
+<span class="fc" id="L45">				return &quot;Success: &quot; + orc.getORCode() + &quot; - &quot; + orc.getDescription() + &quot; added&quot;;</span>
+			} else
+<span class="nc" id="L47">				return &quot;The database has become corrupt. Please contact the system administrator for assistance.&quot;;</span>
+<span class="fc" id="L48">		} catch (DBException e) {</span>
+			
+<span class="fc" id="L50">			return e.getMessage();</span>
+<span class="fc" id="L51">		} catch (ITrustException e) {</span>
+<span class="fc" id="L52">			return e.getMessage();</span>
+		}
+	}
+
+	/**
+	 * Updates the ND Code with new information from the OverrideReasonBean
+	 * 
+	 * @param orc
+	 *            the OverrideReasonBean that holds new information but the same code
+	 * @return status message
+	 * @throws FormValidationException
+	 */
+	public String updateInformation(OverrideReasonBean orc) throws FormValidationException {
+<span class="fc" id="L65">		validator.validate(orc);</span>
+		try {
+<span class="fc" id="L67">			int rows = updateCode(orc);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			if (0 == rows) {</span>
+<span class="fc" id="L69">				return &quot;Error: Code not found.&quot;;</span>
+			} else {
+<span class="fc" id="L71">				return &quot;Success: &quot; + rows + &quot; row(s) updated&quot;;</span>
+			}
+<span class="fc" id="L73">		} catch (DBException e) {</span>
+			
+<span class="fc" id="L75">			return e.getMessage();</span>
+		}
+	}
+
+	/**
+	 * Override Reason information should already be validated
+	 * 
+	 * @param orc
+	 * @return
+	 * @throws DBException
+	 */
+	private int updateCode(OverrideReasonBean orc) throws DBException {
+<span class="fc" id="L87">		return orcDAO.updateCode(orc);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

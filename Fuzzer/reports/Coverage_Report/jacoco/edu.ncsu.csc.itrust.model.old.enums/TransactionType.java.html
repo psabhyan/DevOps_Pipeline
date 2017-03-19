@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.enums</a> &gt; <span class="el_source">TransactionType.java</span></div><h1>TransactionType.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.enums;
+
+
+/**
+ * All of the possible transaction types, in no particular order, used in producing the operational profile.
+ * TransactionCode -- identification code
+ * Description -- basic description of the event
+ * ActionPhrase -- a patient-centered English sentence describing the action (used in activity feeds)
+ * PatientViewable -- boolean for if the action will be displayed in the patient activity feed
+ */
+<span class="pc" id="L11">public enum TransactionType {</span>
+	/**LOGIN_FAILURE*/
+<span class="fc" id="L13">	LOGIN_FAILURE(1, &quot;Failed login&quot;, &quot;tried to authenticate unsuccessfully&quot;, true),</span>
+	/**HOME_VIEW*/
+<span class="fc" id="L15">	HOME_VIEW(10, &quot;User views homepage&quot;, &quot;has viewed the iTrust user homepage&quot;, false),</span>
+	/**UNCAUGHT_EXCEPTION*/
+<span class="fc" id="L17">	UNCAUGHT_EXCEPTION(20, &quot;Exception occured and was not caught&quot;, &quot;caused an unhandled exception&quot;, false),</span>
+	/**GLOBAL_PREFERENCES_VIEW*/
+<span class="fc" id="L19">	GLOBAL_PREFERENCES_VIEW(30, &quot;View global preferences&quot;, &quot;viewed global preferences for iTrust&quot;, false),</span>
+	/**GLOBAL_PREFERENCES_EDIT*/
+<span class="fc" id="L21">	GLOBAL_PREFERENCES_EDIT(31, &quot;Edit global preferences&quot;, &quot;edited global preferences for iTrust&quot;, false),</span>
+	/**USER_PREFERENCES_VIEW*/
+<span class="fc" id="L23">	USER_PREFERENCES_VIEW(32, &quot;View preferences&quot;, &quot;viewed user preferences&quot;, false),</span>
+	/**USER_PREFERENCES_EDIT*/
+<span class="fc" id="L25">	USER_PREFERENCES_EDIT(33, &quot;Edit peferences&quot;, &quot;edited user preferences&quot;, false),</span>
+	/**PATIENT_CREATE*/
+<span class="fc" id="L27">	PATIENT_CREATE(100, &quot;Create a patient&quot;, &quot;created your account&quot;, true),</span>
+	/**PATIENT_DISABLE*/
+<span class="fc" id="L29">	PATIENT_DISABLE(101, &quot;Disable a patient&quot;, &quot;disabled your account&quot;, true),</span>
+	/**PATIENT_DEACTIVATE*/
+<span class="fc" id="L31">	PATIENT_DEACTIVATE(102, &quot;Deactivate a patient&quot;, &quot;deactivated your account&quot;, true),</span>
+	/**PATIENT_ACTIVATE*/
+<span class="fc" id="L33">	PATIENT_ACTIVATE(103, &quot;Activate a patient&quot;, &quot;activated your account&quot;, true),</span>
+	/**LHCP_CREATE*/
+<span class="fc" id="L35">	LHCP_CREATE(200, &quot;Create a LHCP&quot;, &quot;created an LHCP&quot;, false),</span>
+	/**LHCP_EDIT*/
+<span class="fc" id="L37">	LHCP_EDIT(201, &quot;Edit LHCP information&quot;, &quot;edited LHCP information&quot;, false),</span>
+	/**LHCP_DISABLE*/
+<span class="fc" id="L39">	LHCP_DISABLE(202, &quot;Disable a LHCP&quot;, &quot;disbaled an LHCP&quot;, false),</span>
+	/**ER_CREATE*/
+<span class="fc" id="L41">	ER_CREATE(210, &quot;Create an ER&quot;, &quot;created an ER&quot;, false),</span>
+	/**ER_EDIT*/
+<span class="fc" id="L43">	ER_EDIT(211, &quot;Edit ER information&quot;, &quot;edited ER information&quot;, false),</span>
+	/**ER_DISABLE*/
+<span class="fc" id="L45">	ER_DISABLE(212, &quot;Disable an ER&quot;, &quot;disabled an ER&quot;, false),</span>
+	/**PHA_CREATE*/
+<span class="fc" id="L47">	PHA_CREATE(220, &quot;Create a PHA&quot;, &quot;created a PHA&quot;, false),</span>
+	/**PHA_EDIT*/
+<span class="fc" id="L49">	PHA_EDIT(221, &quot;Edit PHA information&quot;, &quot;edited PHA information&quot;, false),</span>
+	/**PHA_DISABLE*/
+<span class="fc" id="L51">	PHA_DISABLE(222, &quot;Disable a PHA&quot;, &quot;disabled a PHA&quot;, false),</span>
+	/**LHCP_ASSIGN_HOSPITAL*/
+<span class="fc" id="L53">	LHCP_ASSIGN_HOSPITAL(230, &quot;Assign LHCP to a hospital&quot;, &quot;assigned an LHCP to a hospital&quot;, false),</span>
+	/**LHCP_REMOVE_HOSPITAL*/
+<span class="fc" id="L55">	LHCP_REMOVE_HOSPITAL(231, &quot;Unassign LHCP from a hospital&quot;, &quot;unassigned an LHCP from a hospital&quot;, false),</span>
+	/**LT_ASSIGN_HOSPITAL*/
+<span class="fc" id="L57">	LT_ASSIGN_HOSPITAL(232, &quot;Assign LT to a hospital&quot;, &quot;assigned an LT to a hospital&quot;, false),</span>
+	/**LT_REMOVE_HOSPITAL*/
+<span class="fc" id="L59">	LT_REMOVE_HOSPITAL(233, &quot;Unassign LT from a hospital&quot;, &quot;unassigned an LT from a hospital&quot;, false),</span>
+	/**UAP_CREATE*/
+<span class="fc" id="L61">	UAP_CREATE(240, &quot;Create a UAP&quot;, &quot;created a UAP&quot;, false),</span>
+	/**UAP_EDIT*/
+<span class="fc" id="L63">	UAP_EDIT(241, &quot;Edit a UAP&quot;, &quot;edited a UAP&quot;, false),</span>
+	/**UAP_DISABLE*/
+<span class="fc" id="L65">	UAP_DISABLE(242, &quot;Disable a UAP&quot;, &quot;disabled a UAP&quot;, false),</span>
+	/**PERSONNEL_VIEW*/
+<span class="fc" id="L67">	PERSONNEL_VIEW(250, &quot;View a personnel's information&quot;, &quot;viewed a personnel member's information&quot;, false),</span>
+	/**LT_CREATE*/
+<span class="fc" id="L69">	LT_CREATE(260, &quot;Create a LT&quot;, &quot;created an LT&quot;, false),</span>
+	/**LT_EDIT*/
+<span class="fc" id="L71">	LT_EDIT(261, &quot;Edit LT information&quot;, &quot;edited LT information&quot;, false),</span>
+	/**LT_DISABLE*/
+<span class="fc" id="L73">	LT_DISABLE(262, &quot;Disable a LT&quot;, &quot;disabled an LT&quot;, false),</span>
+	/**LOGIN_SUCCESS*/
+<span class="fc" id="L75">	LOGIN_SUCCESS(300, &quot;Login Succeded&quot;, &quot;successfully authenticated&quot;, true),</span>
+	/**LOGOUT*/
+<span class="fc" id="L77">	LOGOUT(301, &quot;Logged out&quot;, &quot;logged out of iTrust&quot;, true),</span>
+	/**LOGOUT_INACTIVE*/
+<span class="fc" id="L79">	LOGOUT_INACTIVE(302, &quot;Logged out from inactivity&quot;, &quot;logged out due to inactivity&quot;, true),</span>
+	/**PASSWORD_RESET*/
+<span class="fc" id="L81">	PASSWORD_RESET(310, &quot;Password changed&quot;, &quot;changed your iTrust password&quot;, true),</span>
+	/**DEMOGRAPHICS_VIEW*/
+<span class="fc" id="L83">	DEMOGRAPHICS_VIEW(400, &quot;View patient demographics&quot;, &quot;viewed your demographics&quot;, true),</span>
+	/**DEMOGRAPHICS_EDIT*/
+	//Set to false as per the requirements page for UC43 as it is not supposed to be shown for LHCP or DLHCP
+<span class="fc" id="L86">	DEMOGRAPHICS_EDIT(410, &quot;Edit patient demographics&quot;, &quot;edited your demographics&quot;, false),</span>
+	/**PATIENT_PHOTO_UPLOAD*/
+<span class="fc" id="L88">	PATIENT_PHOTO_UPLOAD(411, &quot;Upload patient photo&quot;, &quot;uploaded a photo of you to your record&quot;, false),</span>
+	/**PATIENT_PHOTO_REMOVE*/
+<span class="fc" id="L90">	PATIENT_PHOTO_REMOVE(412, &quot;Remove patient photo&quot;, &quot;removed your photograph from your record&quot;, false),</span>
+	/**DEPEND_DEMOGRAPHICS_EDIT*/
+<span class="fc" id="L92">	DEPEND_DEMOGRAPHICS_EDIT(421, &quot;Edit dependent demographics&quot;, &quot;edited dependent's demographics&quot;, true),</span>
+	/**LHCP_VIEW*/
+<span class="fc" id="L94">	LHCP_VIEW(600, &quot;View LHCP information&quot;, &quot;viewed LHCP information&quot;, false),</span>
+	/**LHCP_DECLARE_DLHCP*/
+<span class="fc" id="L96">	LHCP_DECLARE_DLHCP(601, &quot;Declare LHCP as DLHCP&quot;, &quot;declared a LHCP&quot;, true),</span>
+	/**LHCP_UNDECLARE_DLHCP*/
+<span class="fc" id="L98">	LHCP_UNDECLARE_DLHCP(602, &quot;Undeclare LHCP as DLHCP&quot;, &quot;undeclared an LHCP&quot;, true),</span>
+	/**ACCESS_LOG_VIEW*/
+<span class="fc" id="L100">	ACCESS_LOG_VIEW(800, &quot;View access log&quot;, &quot;viewed your access log&quot;, false),</span>
+	/**MEDICAL_RECORD_VIEW*/
+<span class="fc" id="L102">	MEDICAL_RECORD_VIEW(900, &quot;View medical records&quot;, &quot;viewed your medical records&quot;, true),</span>
+	/**PATIENT_HEALTH_INFORMATION_VIEW*/
+<span class="fc" id="L104">	PATIENT_HEALTH_INFORMATION_VIEW(1000, &quot;View personal health information&quot;, &quot;viewed your basic health information&quot;, true),</span>
+	/**PATIENT_HEALTH_INFORMATION_EDIT*/
+<span class="fc" id="L106">	PATIENT_HEALTH_INFORMATION_EDIT(1001, &quot;Enter/edit personal health information&quot;, &quot;edited your basic health information&quot;, true),</span>
+	/**BASIC_HEALTH_CHARTS_VIEW*/
+<span class="fc" id="L108">	BASIC_HEALTH_CHARTS_VIEW(1002, &quot;View Basic Health Charts&quot;, &quot;viewed you basic health information charts&quot;, true),</span>
+	/**OFFICE_VISIT_CREATE*/
+<span class="fc" id="L110">	OFFICE_VISIT_CREATE(1100, &quot;Create Office Visits&quot;, &quot;created an office visit&quot;, true),</span>
+	/**OFFICE_VISIT_VIEW*/
+<span class="fc" id="L112">	OFFICE_VISIT_VIEW(1101, &quot;View Office Visits&quot;, &quot;viewed your office visit&quot;, true),</span>
+	/**OFFICE_VISIT_EDIT*/
+<span class="fc" id="L114">	OFFICE_VISIT_EDIT(1102, &quot;Edit Office Visits&quot;, &quot;edited your office visit&quot;, true),</span>
+	/**PRESCRIPTION_ADD*/
+<span class="fc" id="L116">	PRESCRIPTION_ADD(1110, &quot;Add Prescription&quot;, &quot;Added a prescription to your office visit&quot;, true),</span>
+	/**PRESCRIPTION_EDIT*/
+<span class="fc" id="L118">	PRESCRIPTION_EDIT(1111, &quot;Edit Prescription&quot;, &quot;Edited a prescription in your office visit&quot;, true),</span>
+	/**PRESCRIPTION_REMOVE*/
+<span class="fc" id="L120">	PRESCRIPTION_REMOVE(1112, &quot;Remove Prescription&quot;, &quot;Removed a prescription from your office visit&quot;, true),</span>
+	/**LAB_PROCEDURE_ADD*/
+<span class="fc" id="L122">	LAB_PROCEDURE_ADD(1120, &quot;Add Lab Procedure&quot;, &quot;Added a lab procedure to your office visit&quot;, true),</span>
+	/**LAB_PROCEDURE_EDIT*/
+<span class="fc" id="L124">	LAB_PROCEDURE_EDIT(1121, &quot;Edit Lab Procedure&quot;, &quot;Edited a lab procedure in your office visit&quot;, true),</span>
+	/**LAB_PROCEDURE_REMOVE*/
+<span class="fc" id="L126">	LAB_PROCEDURE_REMOVE(1122, &quot;Remove Lab Procedure&quot;, &quot;Removed a lab procedure from your office visit&quot;, true),</span>
+	/**DIAGNOSIS_ADD*/
+<span class="fc" id="L128">	DIAGNOSIS_ADD(1130, &quot;Add Diagnosis&quot;, &quot;Added a diagnosis to your office visit&quot;, true),</span>
+	/**DIAGNOSIS_REMOVE*/
+<span class="fc" id="L130">	DIAGNOSIS_REMOVE(1132, &quot;Remove Diagnosis&quot;, &quot;Removed a diagnosis from your office visit&quot;, true),</span>
+	/**DIAGNOSIS_URL_EDIT*/
+<span class="fc" id="L132">	DIAGNOSIS_URL_EDIT(1133, &quot;Edit Diagnosis URL&quot;, &quot;Diagnosis URL was edited&quot;, true),</span>
+	/**PROCEDURE_ADD*/
+<span class="fc" id="L134">	PROCEDURE_ADD(1140, &quot;Add Procedure&quot;, &quot;Added a procedure to your office visit&quot;, true),</span>
+	/**PROCEDURE_EDIT*/
+<span class="fc" id="L136">	PROCEDURE_EDIT(1141, &quot;Edit Procedure&quot;, &quot;Edited a procedure in your office visit&quot;, true),</span>
+	/**PROCEDURE_REMOVE*/
+<span class="fc" id="L138">	PROCEDURE_REMOVE(1142, &quot;Remove Procedure&quot;, &quot;Removed a procedure from your office visit&quot;, true),</span>
+	/**IMMUNIZATION_ADD*/
+<span class="fc" id="L140">	IMMUNIZATION_ADD(1150, &quot;Add Immunization&quot;, &quot;Added an immunization to your office visit&quot;, true),</span>
+	/**IMMUNIZATION_REMOVE*/
+<span class="fc" id="L142">	IMMUNIZATION_REMOVE(1152, &quot;Remove Immunization&quot;, &quot;Removed an immunization from your office visit&quot;, true),</span>
+	/**OFFICE_VISIT_BILLED*/
+<span class="fc" id="L144">	OFFICE_VISIT_BILLED(1160, &quot;Office Visit Billed&quot;, &quot;Billed an office visit&quot;, false),</span>
+	/**OPERATIONAL_PROFILE_VIEW*/
+<span class="fc" id="L146">    OPERATIONAL_PROFILE_VIEW(1200, &quot;View Operational Profile&quot;, &quot;viewed the operational profile&quot;, false),</span>
+    /**HEALTH_REPRESENTATIVE_DECLARE*/
+<span class="fc" id="L148">    HEALTH_REPRESENTATIVE_DECLARE(1300, &quot;Declare personal health representative&quot;, &quot;declared a personal health representative&quot;, true),</span>
+    /**HEALTH_REPRESENTATIVE_UNDECLARE*/
+<span class="fc" id="L150">    HEALTH_REPRESENTATIVE_UNDECLARE(1301, &quot;Undeclare personal health representative&quot;, &quot;undeclared a personal health representative&quot;, true),</span>
+    /**MEDICAL_PROCEDURE_CODE_ADD*/
+<span class="fc" id="L152">    MEDICAL_PROCEDURE_CODE_ADD(1500, &quot;Add Medical procedure code&quot;, &quot;added a medical procedure code&quot;, false),</span>
+    /**MEDICAL_PROCEDURE_CODE_VIEW*/
+<span class="fc" id="L154">    MEDICAL_PROCEDURE_CODE_VIEW(1501, &quot;View Medical procedure code&quot;, &quot;viewed a medical procedure code&quot;, false),</span>
+    /**MEDICAL_PROCEDURE_CODE_EDIT*/
+<span class="fc" id="L156">    MEDICAL_PROCEDURE_CODE_EDIT(1502, &quot;Edit Medical procedure code&quot;, &quot;edited a medical procedure code&quot;, false),</span>
+    /**IMMUNIZATION_CODE_ADD*/
+<span class="fc" id="L158">    IMMUNIZATION_CODE_ADD(1510, &quot;Add Immunization code&quot;, &quot;added an immunization code&quot;, false),</span>
+    /**IMMUNIZATION_CODE_VIEW*/
+<span class="fc" id="L160">    IMMUNIZATION_CODE_VIEW(1511, &quot;View Immunization code&quot;, &quot;viewed an immunization code&quot;, false),</span>
+    /**IMMUNIZATION_CODE_EDIT*/
+<span class="fc" id="L162">    IMMUNIZATION_CODE_EDIT(1512, &quot;Edit Immunization code&quot;, &quot;edited an immunization code&quot;, false),</span>
+    /**DIAGNOSIS_CODE_ADD*/
+<span class="fc" id="L164">    DIAGNOSIS_CODE_ADD(1520, &quot;Add Diagnosis code&quot;, &quot;added a diagnosis code&quot;, false),</span>
+    /**DIAGNOSIS_CODE_VIEW*/
+<span class="fc" id="L166">    DIAGNOSIS_CODE_VIEW(1521, &quot;View Diagnosis code&quot;, &quot;viewed a diagnosis code&quot;, false),</span>
+    /**DIAGNOSIS_CODE_EDIT*/
+<span class="fc" id="L168">    DIAGNOSIS_CODE_EDIT(1522, &quot;Edit Diagnosis code&quot;, &quot;edited a diagnosis code&quot;, false),</span>
+    /**DRUG_CODE_ADD*/
+<span class="fc" id="L170">    DRUG_CODE_ADD(1530, &quot;Add Drug code&quot;, &quot;added a drug code&quot;, false),</span>
+    /**DRUG_CODE_VIEW*/
+<span class="fc" id="L172">    DRUG_CODE_VIEW(1531, &quot;View Drug code&quot;, &quot;viewed a drug code&quot;, false),</span>
+    /**DRUG_CODE_EDIT*/
+<span class="fc" id="L174">    DRUG_CODE_EDIT(1532, &quot;Edit Drug code&quot;, &quot;edited a drug code&quot;, false),</span>
+    /**DRUG_CODE_REMOVE*/
+<span class="fc" id="L176">    DRUG_CODE_REMOVE(1533, &quot;Remove Drug code&quot;, &quot;removed a drug code&quot;, false),</span>
+    /**LOINC_CODE_ADD*/
+<span class="fc" id="L178">    LOINC_CODE_ADD(1540, &quot;Add Physical Services code&quot;, &quot;added a physical service code&quot;, false),</span>
+    /**LOINC_CODE_VIEW*/
+<span class="fc" id="L180">    LOINC_CODE_VIEW(1541, &quot;View Physical Services code&quot;, &quot;viewed a physical service code&quot;, false),</span>
+    /**LOINC_CODE_EDIT*/
+<span class="fc" id="L182">    LOINC_CODE_EDIT(1542, &quot;Edit Physical Services code&quot;, &quot;edited a physical service code&quot;, false),</span>
+    /**LOINC_CODE_FILE_ADD*/
+<span class="fc" id="L184">    LOINC_CODE_FILE_ADD(1549, &quot;Upload Physical Services file&quot;, &quot;uploaded a LOINC file&quot;, false),</span>
+    /**RISK_FACTOR_VIEW*/
+<span class="fc" id="L186">    RISK_FACTOR_VIEW(1600, &quot;View risk factors&quot;, &quot;viewed your risk factors&quot;, true),</span>
+    /**PATIENT_REMINDERS_VIEW*/
+<span class="fc" id="L188">    PATIENT_REMINDERS_VIEW(1700, &quot;Proactively determine necessary patient care&quot;, &quot;proactively determined your necessary patient care&quot;, true),</span>
+    /**HOSPITAL_LISTING_ADD*/
+<span class="fc" id="L190">    HOSPITAL_LISTING_ADD(1800, &quot;Add a hospital listing&quot;, &quot;added a hospital listing&quot;, false),</span>
+    /**HOSPITAL_LISTING_VIEW*/
+<span class="fc" id="L192">    HOSPITAL_LISTING_VIEW(1801, &quot;View a hospital listing&quot;, &quot;viewed a hospital listing&quot;, false),</span>
+    /**HOSPITAL_LISTING_EDIT*/
+<span class="fc" id="L194">    HOSPITAL_LISTING_EDIT(1802, &quot;Edit a hospital listing&quot;, &quot;edited a hospital listing&quot;, false),</span>
+    /**PRESCRIPTION_REPORT_VIEW*/
+<span class="fc" id="L196">    PRESCRIPTION_REPORT_VIEW(1900, &quot;View prescription report&quot;, &quot;viewed your prescription report&quot;, true),</span>
+    /**DEATH_TRENDS_VIEW*/
+<span class="fc" id="L198">    DEATH_TRENDS_VIEW(2000, &quot;View Cause of Death Trends&quot;, &quot;viewed cause of death trends&quot;, false),</span>
+    /**EMERGENCY_REPORT_CREATE*/
+<span class="fc" id="L200">    EMERGENCY_REPORT_CREATE(2100, &quot;Create emergency report&quot;, &quot;created an emergency report for you&quot;, true),</span>
+    /**EMERGENCY_REPORT_VIEW*/
+<span class="fc" id="L202">    EMERGENCY_REPORT_VIEW(2101, &quot;View emergency report&quot;, &quot;viewed your emergency report&quot;, true),</span>
+    /**APPOINTMENT_TYPE_ADD*/
+<span class="fc" id="L204">    APPOINTMENT_TYPE_ADD(2200, &quot;Add appointment type listing&quot;, &quot;added an appointment type&quot;, false),</span>
+    /**APPOINTMENT_TYPE_VIEW*/
+<span class="fc" id="L206">    APPOINTMENT_TYPE_VIEW(2201, &quot;View appointment type listing&quot;, &quot;viewed an appointment type&quot;, false),</span>
+    /**APPOINTMENT_TYPE_EDIT*/
+<span class="fc" id="L208">    APPOINTMENT_TYPE_EDIT(2202, &quot;Edit appointment type listing&quot;, &quot;edited an appointment type&quot;, false),</span>
+    /**APPOINTMENT_ADD*/
+<span class="fc" id="L210">    APPOINTMENT_ADD(2210, &quot;Schedule Appointments&quot;, &quot;scheduled an appointment with you&quot;, true),</span>
+    /**APPOINTMENT_VIEW*/
+<span class="fc" id="L212">    APPOINTMENT_VIEW(2211, &quot;View Scheduled Appointment&quot;, &quot;viewed your scheduled appointment&quot;, true),</span>
+    /**APPOINTMENT_EDIT*/
+<span class="fc" id="L214">    APPOINTMENT_EDIT(2212, &quot;Edit Scheduled Appointment&quot;, &quot;edited your scheduled appointment&quot;, true),</span>
+    /**APPOINTMENT_REMOVE*/
+<span class="fc" id="L216">    APPOINTMENT_REMOVE(2213, &quot;Delete Scheduled Appointment&quot;, &quot;canceled your scheduled appointment&quot;, true),</span>
+    /**APPOINTMENT_ALL_VIEW*/
+<span class="fc" id="L218">    APPOINTMENT_ALL_VIEW(2220, &quot;View All Scheduled Appointments&quot;, &quot;viewed all scheduled appointments&quot;, true),</span>
+    /**APPOINTMENT_CONFLICT_OVERRIDE*/
+<span class="fc" id="L220">    APPOINTMENT_CONFLICT_OVERRIDE(2230, &quot;Schedule conflict override&quot;, &quot;overrided a schedule conflict&quot;, true),</span>
+    /**APPOINTMENT_REQUEST_SUBMITTED*/
+<span class="fc" id="L222">    APPOINTMENT_REQUEST_SUBMITTED(2240, &quot;Appointment request submitted&quot;, &quot;requested an appointment&quot;, true),</span>
+    /**APPOINTMENT_REQUEST_APPROVED*/
+<span class="fc" id="L224">    APPOINTMENT_REQUEST_APPROVED(2250, &quot;Appointment request approved&quot;, &quot;approved an appointment request&quot;, true),</span>
+    /**APPOINTMENT_REQUEST_REJECTED*/
+<span class="fc" id="L226">    APPOINTMENT_REQUEST_REJECTED(2251, &quot;Appointment request rejected&quot;, &quot;rejected an appointment request&quot;, true),</span>
+    /**APPOINTMENT_REQUEST_VIEW*/
+<span class="fc" id="L228">    APPOINTMENT_REQUEST_VIEW(2260, &quot;View All Appointment Requests&quot;, &quot;viewed all appointment requests&quot;, true),</span>
+    /**COMPREHENSIVE_REPORT_VIEW*/
+<span class="fc" id="L230">    COMPREHENSIVE_REPORT_VIEW(2300, &quot;Comprehensive Report&quot;, &quot;viewed your comprehensive report&quot;, true),</span>
+    /**COMPREHENSIVE_REPORT_ADD*/
+<span class="fc" id="L232">    COMPREHENSIVE_REPORT_ADD(2301, &quot;Request Comprehensive Report&quot;, &quot;requested a comprehensive report for you&quot;, true),</span>
+    /**SATISFACTION_SURVEY_TAKE*/
+<span class="fc" id="L234">    SATISFACTION_SURVEY_TAKE(2400, &quot;Take Satisfaction Survey&quot;, &quot;completed a satisfaction survey&quot;, true),</span>
+    /**SATISFACTION_SURVEY_VIEW*/
+<span class="fc" id="L236">    SATISFACTION_SURVEY_VIEW(2500, &quot;View physician satisfaction results&quot;, &quot;viewed physician satisfaction survey results&quot;, false),</span>
+    /**LAB_RESULTS_UNASSIGNED*/
+<span class="fc" id="L238">    LAB_RESULTS_UNASSIGNED(2600, &quot;Unassigned lab results log value&quot;, &quot;&quot;, false),</span>
+    /**LAB_RESULTS_CREATE*/
+<span class="fc" id="L240">    LAB_RESULTS_CREATE(2601, &quot;Create laboratory procedure&quot;, &quot;created your lab procedure&quot;, true),</span>
+    /**LAB_RESULTS_VIEW*/
+<span class="fc" id="L242">    LAB_RESULTS_VIEW(2602, &quot;View laboratory procedure results&quot;, &quot;viewed your lab procedure results&quot;, true),</span>
+    /**LAB_RESULTS_REASSIGN*/
+<span class="fc" id="L244">    LAB_RESULTS_REASSIGN(2603, &quot;Reassign laboratory test to a new lab technician&quot;, &quot;assigned your laboratory test to a new lab tech&quot;, false),</span>
+    /**LAB_RESULTS_REMOVE*/
+<span class="fc" id="L246">    LAB_RESULTS_REMOVE(2604, &quot;Remove a laboratory procedure&quot;, &quot;removed your lab procedure&quot;, true),</span>
+    /**LAB_RESULTS_ADD_COMMENTARY*/
+<span class="fc" id="L248">    LAB_RESULTS_ADD_COMMENTARY(2605, &quot;Add commentary to a laboratory procedure&quot;, &quot;marked a lab procedure as completed&quot;, true),</span>
+    /**LAB_RESULTS_VIEW_QUEUE*/
+<span class="fc" id="L250">    LAB_RESULTS_VIEW_QUEUE(2606, &quot;View laboratory procedure queue&quot;, &quot;viewed your lab procedure queue&quot;, false),</span>
+    /**LAB_RESULTS_RECORD*/
+<span class="fc" id="L252">    LAB_RESULTS_RECORD(2607, &quot;Record laboratory test results&quot;, &quot;recorded your lab procedure results&quot;, false),</span>
+    /**LAB_RESULTS_RECEIVED*/
+<span class="fc" id="L254">    LAB_RESULTS_RECEIVED(2608, &quot;Laboratory procedure received by lab technician&quot;, &quot;the lab tech received your lab procedure&quot;, false),</span>
+    /**EMAIL_SEND*/
+<span class="fc" id="L256">    EMAIL_SEND(2700, &quot;Send an email&quot;, &quot;sent an email&quot;, false),</span>
+    /**EMAIL_HISTORY_VIEW*/
+<span class="fc" id="L258">    EMAIL_HISTORY_VIEW(2710, &quot;View email history&quot;, &quot;viewed email history&quot;, false),</span>
+    /**PATIENT_LIST_VIEW*/
+<span class="fc" id="L260">    PATIENT_LIST_VIEW(2800, &quot;View patient list&quot;, &quot;viewed his/her patient list&quot;, false),</span>
+    /**EXPERIENCED_LHCP_FIND*/
+<span class="fc" id="L262">    EXPERIENCED_LHCP_FIND(2900, &quot;Find LHCPs with experience with a diagnosis&quot;, &quot;found LHCPs with experience with a diagnosis&quot;, false),</span>
+    /**MESSAGE_SEND*/
+<span class="fc" id="L264">    MESSAGE_SEND(3000, &quot;Send messages&quot;, &quot;sent a message&quot;, false),</span>
+    /**MESSAGE_VIEW*/
+<span class="fc" id="L266">    MESSAGE_VIEW(3001, &quot;View messages&quot;, &quot;viewed a message&quot;, false),</span>
+    /**INBOX_VIEW*/
+<span class="fc" id="L268">    INBOX_VIEW(3010, &quot;View inbox&quot;, &quot;viewed message inbox&quot;, false),</span>
+    /**OUTBOX_VIEW*/
+<span class="fc" id="L270">    OUTBOX_VIEW(3011, &quot;View outbox&quot;, &quot;viewed message outbox&quot;, false),</span>
+    /**PATIENT_FIND_LHCP_FOR_RENEWAL*/
+<span class="fc" id="L272">    PATIENT_FIND_LHCP_FOR_RENEWAL(3100, &quot;Find LHCPs for prescription renewal&quot;, &quot;found LHCPs for prescription renewal&quot;, true),</span>
+    /**EXPIRED_PRESCRIPTION_VIEW*/
+<span class="fc" id="L274">    EXPIRED_PRESCRIPTION_VIEW(3110, &quot;View expired prescriptions&quot;, &quot;viewed your expired prescriptions&quot;, true),</span>
+    /**PRECONFIRM_PRESCRIPTION_RENEWAL*/
+<span class="fc" id="L276">    PRECONFIRM_PRESCRIPTION_RENEWAL(3200, &quot;Proactively confirm prescription-renewal needs&quot;, &quot;proactively confirmed your prescription renewal needs&quot;, true),</span>
+    /**DIAGNOSES_LIST_VIEW*/
+<span class="fc" id="L278">    DIAGNOSES_LIST_VIEW(3210, &quot;View list of diagnoses&quot;, &quot;viewed a list of diagnosis&quot;, false),</span>
+    /**CONSULTATION_REFERRAL_CREATE*/
+<span class="fc" id="L280">    CONSULTATION_REFERRAL_CREATE(3300, &quot;Refer a patient for consultations&quot;, &quot;referred you to another HCP&quot;, true),</span>
+    /**CONSULTATION_REFERRAL_VIEW*/
+<span class="fc" id="L282">    CONSULTATION_REFERRAL_VIEW(3310, &quot;View referral for consultation&quot;, &quot;viewed your consultation referral&quot;, true),</span>
+    /**CONSULTATION_REFERRAL_EDIT*/
+<span class="fc" id="L284">    CONSULTATION_REFERRAL_EDIT(3311, &quot;Modify referral for consultation&quot;, &quot;modified your consultation referral&quot;, true),</span>
+    /**CONSULTATION_REFERRAL_CANCEL*/
+<span class="fc" id="L286">    CONSULTATION_REFERRAL_CANCEL(3312, &quot;Cancel referral for consultation&quot;, &quot;canceled your consultation referral&quot;, true),</span>
+    /**PATIENT_LIST_ADD*/
+<span class="fc" id="L288">    PATIENT_LIST_ADD(3400, &quot;Patient added to monitoring list&quot;, &quot;added you to the telemedicine monitoring list&quot;, true),</span>
+    /**PATIENT_LIST_EDIT*/
+<span class="fc" id="L290">    PATIENT_LIST_EDIT(3401, &quot;Patient telemedicine permissions changed&quot;, &quot;changed the data you report for telemedicine monitoring&quot;, true),</span>
+    /**PATIENT_LIST_REMOVE*/
+<span class="fc" id="L292">    PATIENT_LIST_REMOVE(3402, &quot;Patient removed from monitoring list&quot;, &quot;removed you from the telemedicine monitoring list&quot;, true),</span>
+    /**TELEMEDICINE_DATA_REPORT*/
+<span class="fc" id="L294">    TELEMEDICINE_DATA_REPORT(3410, &quot;Remote monitoring levels are reported&quot;, &quot;reported your telemedicine data&quot;, true),</span>
+    /**TELEMEDICINE_DATA_VIEW*/
+<span class="fc" id="L296">    TELEMEDICINE_DATA_VIEW(3420, &quot;Remote monitoring levels are viewed&quot;, &quot;viewed your telemedicine data reports&quot;, true),</span>
+    /**ADVERSE_EVENT_REPORT*/
+<span class="fc" id="L298">    ADVERSE_EVENT_REPORT(3500, &quot;Adverse event reporting&quot;, &quot;reported an adverse event&quot;, true),</span>
+    /**ADVERSE_EVENT_VIEW*/
+<span class="fc" id="L300">    ADVERSE_EVENT_VIEW(3600, &quot;Adverse event monitoring&quot;, &quot;reviewed an adverse event report&quot;, false),</span>
+    /**ADVERSE_EVENT_REMOVE*/
+<span class="fc" id="L302">    ADVERSE_EVENT_REMOVE(3601, &quot;Remove adverse event&quot;, &quot;removed an adverse event report&quot;, false),</span>
+    /**ADVERSE_EVENT_REQUEST_MORE*/
+<span class="fc" id="L304">    ADVERSE_EVENT_REQUEST_MORE(3602, &quot;Request More Adverse Event Details&quot;, &quot;requested more adverse event details&quot;, false),</span>
+    /**ADVERSE_EVENT_CHART_VIEW*/
+<span class="fc" id="L306">    ADVERSE_EVENT_CHART_VIEW(3603, &quot;View Adverse Event Chart&quot;, &quot;viewed adverse event chart&quot;, false),</span>
+    /**OVERRIDE_INTERACTION_WARNING*/
+<span class="fc" id="L308">    OVERRIDE_INTERACTION_WARNING(3700, &quot;Override interaction warning&quot;, &quot;Overrode an interaction warning&quot;, true),</span>
+    /**OVERRIDE_CODE_ADD*/
+<span class="fc" id="L310">    OVERRIDE_CODE_ADD(3710, &quot;Add overriding reason listing&quot;, &quot;added a medication override reason&quot;, false),</span>
+    /**OVERRIDE_CODE_EDIT*/
+<span class="fc" id="L312">    OVERRIDE_CODE_EDIT(3711, &quot;Edit overriding reason listing&quot;, &quot;edited a medication override reason&quot;, false),</span>
+    /**DRUG_INTERACTION_ADD*/
+<span class="fc" id="L314">    DRUG_INTERACTION_ADD(3800, &quot;Add Drug Interactions Code&quot;, &quot;added a drug interaction code&quot;, false),</span>
+    /**DRUG_INTERACTION_EDIT*/
+<span class="fc" id="L316">    DRUG_INTERACTION_EDIT(3801, &quot;Edit Drug Interactions Code&quot;, &quot;edited a drug interaction code&quot;, false),</span>
+    /**DRUG_INTERACTION_DELETE*/
+<span class="fc" id="L318">    DRUG_INTERACTION_DELETE(3802, &quot;Delete Drug Interactions Code&quot;, &quot;deleted a drug interaction code&quot;, false),</span>
+    /**CALENDAR_VIEW*/
+<span class="fc" id="L320">    CALENDAR_VIEW(4000, &quot;View calendar&quot;, &quot;viewed your calendar&quot;, false),</span>
+    /**UPCOMING_APPOINTMENTS_VIEW*/
+<span class="fc" id="L322">    UPCOMING_APPOINTMENTS_VIEW(4010, &quot;View Upcoming Appointments&quot;, &quot;viewed upcoming appointments&quot;, false),</span>
+    /**NOTIFICATIONS_VIEW*/
+<span class="fc" id="L324">    NOTIFICATIONS_VIEW(4200, &quot;View Notifications&quot;, &quot;viewed your notification center&quot;, false),</span>
+    /**ACTIVITY_FEED_VIEW*/
+<span class="fc" id="L326">    ACTIVITY_FEED_VIEW(4300, &quot;View activity feed&quot;, &quot;viewed your activity feed&quot;, false),</span>
+    /**PATIENT_INSTRUCTIONS_ADD*/
+<span class="fc" id="L328">    PATIENT_INSTRUCTIONS_ADD(4400, &quot;Add Patient Specific Instructions for Office Visit&quot;, &quot;added a patient-specific instruction&quot;, true),</span>
+    /**PATIENT_INSTRUCTIONS_EDIT*/
+<span class="fc" id="L330">    PATIENT_INSTRUCTIONS_EDIT(4401, &quot;Edit Patient Specific Instructions for Office Visit&quot;, &quot;edited a patient-specific instruction&quot;, true),</span>
+    /**PATIENT_INSTRUCTIONS_DELETE*/
+<span class="fc" id="L332">    PATIENT_INSTRUCTIONS_DELETE(4402, &quot;	Delete Patient Specific Instructions for Office Visit&quot;, &quot;deleted a patient-specific instruction&quot;, true),</span>
+    /**PATIENT_INSTRUCTIONS_VIEW*/
+<span class="fc" id="L334">    PATIENT_INSTRUCTIONS_VIEW(4403, &quot;	View Patient Specific Instructions&quot;, &quot;viewed your patient-specific instructions&quot;, true),</span>
+    /**DIAGNOSIS_TRENDS_VIEW*/
+<span class="fc" id="L336">	DIAGNOSIS_TRENDS_VIEW(4500, &quot;View diagnosis statistics&quot;, &quot;viewed your diagnosis count&quot;, false),</span>
+	/**DIAGNOSIS_EPIDEMICS_VIEW*/
+<span class="fc" id="L338">	DIAGNOSIS_EPIDEMICS_VIEW(4600, &quot;View Epidemic Detection&quot;, &quot;viewed epidemic detection&quot;, false),</span>
+	/**GROUP_REPORT_VIEW*/
+<span class="fc" id="L340">	GROUP_REPORT_VIEW(4601, &quot;View Group Report&quot;, &quot;viewed group report&quot;, false),</span>
+	/**FIND_EXPERT*/
+<span class="fc" id="L342">	FIND_EXPERT(4700, &quot;Find an Expert&quot;, &quot;searched for experts&quot;, true),</span>
+	/**FIND_EXPERT_ZIP_ERROR*/
+<span class="fc" id="L344">	FIND_EXPERT_ZIP_ERROR(4701, &quot;Find an Expert - Zip Code Error&quot;, &quot;entered an incorrect ZIP code for Find an Expert&quot;, true),</span>
+	/**PATIENT_ASSIGNED_TO_ROOM*/
+<span class="fc" id="L346">	PATIENT_ASSIGNED_TO_ROOM(4800, &quot;Patient Assigned&quot;, &quot;Patient assigned to room&quot;, false),</span>
+	/**PATIENT_REMOVED_FROM_ROOM*/
+<span class="fc" id="L348">	PATIENT_REMOVED_FROM_ROOM(4801, &quot;Patient Removed&quot;, &quot;Patient removed from room&quot;, false),</span>
+	/**ROOMS_FULL*/
+<span class="fc" id="L350">	ROOMS_FULL(4802, &quot;Rooms Full&quot;, &quot;Patients cannot be assigned to any room meeting that criteria&quot;, false),</span>
+	/**CREATE_BASIC_HEALTH_METRICS*/
+<span class="fc" id="L352">	CREATE_BASIC_HEALTH_METRICS(5100, &quot;Create Basic Health Metrics&quot;, &quot;created a basic health metrics record for you&quot;, true),</span>
+	/**VIEW_BASIC_HEALTH_METRICS*/
+<span class="fc" id="L354">	VIEW_BASIC_HEALTH_METRICS(5101, &quot;View Basic Health Metrics&quot;, &quot;viewed your basic health metrics&quot;, true),</span>
+	/**EDIT_BASIC_HEALTH_METRICS*/
+<span class="fc" id="L356">	EDIT_BASIC_HEALTH_METRICS(5102, &quot;Edit Basic Health Metrics&quot;, &quot;editted your basic health metrics&quot;, true),</span>
+	/**REMOVE_BASIC_HEALTH_METRICS*/
+<span class="fc" id="L358">	REMOVE_BASIC_HEALTH_METRICS(5103, &quot;Remove Basic Health Metrics&quot;, &quot;removed a basic health metrics record from your office visit&quot;, true),</span>
+	/**PATIENT_VIEW_BASIC_HEALTH_METRICS*/
+<span class="fc" id="L360">	PATIENT_VIEW_BASIC_HEALTH_METRICS(5200, &quot;Patient View of Basic Health Metrics&quot;, &quot;viewed your health records history&quot;, true),</span>
+	/**HCP_VIEW_BASIC_HEALTH_METRICSc*/
+<span class="fc" id="L362">	HCP_VIEW_BASIC_HEALTH_METRICS(5201, &quot;HCP View of Basic Health Metrics&quot;, &quot;viewed your health records history&quot;, true),	</span>
+	/**HCP_VIEW_PERCENTILES_CHART*/
+<span class="fc" id="L364">	HCP_VIEW_PERCENTILES_CHART(5301, &quot;HCP View of Basic Health Metric Percentiles&quot;, &quot;viewed your percentile data.&quot;, true),</span>
+    /**PATIENT_VIEW_PERCENTILES_CHART*/
+<span class="fc" id="L366">    PATIENT_VIEW_PERCENTILES_CHART(5300, &quot;Pateint View of Basic Health Metric Percentiles&quot;, &quot;viewed your percentile data.&quot;, true),</span>
+    /**ADMIN_UPLOAD_CDCMETRICS*/
+<span class="fc" id="L368">    ADMIN_UPLOAD_CDCMETRICS(5302, &quot;Admin upload of CDC Metrics&quot;, &quot;Uploaded CDC Metrics Successfully&quot;, false),</span>
+    /**PASSWORD_CHANGE*/
+<span class="fc" id="L370">	PASSWORD_CHANGE(5700, &quot;User Successful Password Change&quot;, &quot; changed password&quot;, false),</span>
+	/**PASSWORD_CHANGE_FAILED*/
+<span class="fc" id="L372">	PASSWORD_CHANGE_FAILED(5701, &quot;User Failed Password Change&quot;, &quot; failed to change password&quot;, false),</span>
+	/**IMMUNIZATION_REPORT_PATIENT_VIEW*/
+<span class="fc" id="L374">	IMMUNIZATION_REPORT_PATIENT_VIEW(5500, &quot;Patient View of Immunization Report&quot;, &quot; viewed their immunization report&quot;, true), </span>
+	/**IMMUNIZATION_REPORT_HCP_VIEW*/
+<span class="fc" id="L376">	IMMUNIZATION_REPORT_HCP_VIEW(5501, &quot;HCP View of Immunization Report&quot;, &quot; viewed patient's immunization report&quot;, true),</span>
+	/**PATIENT_RELEASE_HEALTH_RECORDS*/
+<span class="fc" id="L378">	PATIENT_RELEASE_HEALTH_RECORDS(5600, &quot;Patient Release of Health Records&quot;, &quot;requested the release of your health records&quot;, true),</span>
+	/**PATIENT_VIEW_RELEASE_REQUEST*/
+<span class="fc" id="L380">	PATIENT_VIEW_RELEASE_REQUEST(5601, &quot;Patient View of Health Records Release&quot;, &quot;viewed a records release request&quot;, true),</span>
+	/**HCP_RELEASE_APPROVAL*/
+<span class="fc" id="L382">	HCP_RELEASE_APPROVAL(5602, &quot;HCP Approval of Health Records Release&quot;, &quot;approved your health records release request&quot;, true),</span>
+	/**HCP_RELEASE_DENIAL*/
+<span class="fc" id="L384">	HCP_RELEASE_DENIAL(5603, &quot;HCP Denial of Health Records Release&quot;, &quot;denied your health records release request&quot;, true),</span>
+	/**UAP_RELEASE_APPROVAL*/
+<span class="fc" id="L386">	UAP_RELEASE_APPROVAL(5604, &quot;UAP Approval of Health Records Release&quot;, &quot;approved your health records release request&quot;, true),</span>
+	/**UAP_RELEASE_DENIAL*/
+<span class="fc" id="L388">	UAP_RELEASE_DENIAL(5605, &quot;UAP Denial of Health Records Release&quot;, &quot;denied your health records release request&quot;, true),</span>
+	/**HCP_CREATED_DEPENDENT_PATIENT*/
+<span class="fc" id="L390">	HCP_CREATED_DEPENDENT_PATIENT(5800, &quot;HCP Create Dependent Patient&quot;, &quot;created your account as a dependent user&quot;, true),</span>
+	/**HCP_CHANGE_PATIENT_DEPENDENCY*/
+<span class="fc" id="L392">	HCP_CHANGE_PATIENT_DEPENDENCY(5801, &quot;HCP Change Patient Dependency Status&quot;, &quot;changed your dependency status&quot;, true),</span>
+	/**PATIENT_VIEW_DEPENDENT_REQUESTS*/
+<span class="fc" id="L394">	PATIENT_VIEW_DEPENDENT_REQUESTS(5900, &quot;Patient View of Dependent's Release Requests&quot;, &quot;viewed a dependent's records release request&quot;, true),</span>
+	/**PATIENT_REQUEST_DEPEDENT_RECORDS*/
+<span class="fc" id="L396">	PATIENT_REQUEST_DEPEDENT_RECORDS(5901, &quot;Patient Requests Dependent's Records Release&quot;, &quot;requested a dependent's records release&quot;, true),</span>
+	/**PATIENT_VIEWS_BILLS*/
+<span class="fc" id="L398">	PATIENT_BILLS_VIEW_ALL(6000, &quot;Patient has viewed their list of bills&quot;, &quot;viewed list of bills&quot;, true),</span>
+	/**PATIENT_VIEWS_BILL*/
+<span class="fc" id="L400">	PATIENT_VIEWS_BILL(6001, &quot;Patient has view a single bill&quot;, &quot;viewed single bill&quot;, true),</span>
+	/**PATIENT_PAYS_BILL*/
+<span class="fc" id="L402">	PATIENT_PAYS_BILL(6002, &quot;Patient has paid a bill&quot;, &quot;paid a bill&quot;, true),</span>
+	/**PATIENT_SUBMITS_INSURANCE*/
+<span class="fc" id="L404">	PATIENT_SUBMITS_INSURANCE(6003, &quot;Patient has sumbitted an insurance claim&quot;, &quot;submitted insurance claim&quot;, true),</span>
+	/**UAP_INITIAL_APPROVAL*/
+<span class="fc" id="L406">	UAP_INITIAL_APPROVAL(6004, &quot;UAP approves the patient's first insurance claim&quot;, &quot;approved initial claim&quot;, true),</span>
+	/**UAP_INITIAL_DENIAL*/
+<span class="fc" id="L408">	UAP_INITIAL_DENIAL(6005, &quot;UAP denies the patient's first insurance claim&quot;, &quot;denied initial claim&quot;, true),</span>
+	/**UAP_SECOND_APPORVAL*/
+<span class="fc" id="L410">	UAP_SECOND_APPROVAL(6006, &quot;UAP approves the patient's second insurance claim&quot;, &quot;approved second claim&quot;, true),</span>
+	/**UAP_SECOND_DENIAL*/
+<span class="fc" id="L412">	UAP_SECOND_DENIAL(6007, &quot;UAP denies the patient's second insurance claim&quot;, &quot;denied second claim&quot;, true),</span>
+	/**PATIENT_RESUBITS_INSURANCE*/
+<span class="fc" id="L414">	PATIENT_RESUBMITS_INSURANCE(6008, &quot;Patient submits a second insurance claim&quot;, &quot;submitted second insurnace claim&quot;, true),</span>
+	/**VIEW_EXPERT_SEARCH*/
+<span class="fc" id="L416">	VIEW_EXPERT_SEARCH_NAME(6100, &quot;Pateint viewed the search expert by name page.&quot;, &quot;searched for an expert by name&quot;, false),</span>
+	/**VIEW_REVIEWS*/
+<span class="fc" id="L418">	VIEW_REVIEWS(6101, &quot;Patient viewed reviews for an HCP.&quot;, &quot;viewed reviews&quot;, false),</span>
+	/**SUBMIT_REVIEW*/
+<span class="fc" id="L420">	SUBMIT_REVIEW(6102, &quot;Patient submitted a review for an HCP.&quot;, &quot;submitted review&quot;, true),</span>
+	/**CREATE_INITIAL_OBSTETRICS_RECORD**/
+<span class="fc" id="L422">	CREATE_INITIAL_OBSTETRICS_RECORD(6300, &quot;Create Initial Obstetric Record&quot;, &quot;Create Initial Obstetric Record&quot;, true),</span>
+	/**VIEW_INITIAL_OBSTETRICS_RECORD**/
+<span class="fc" id="L424">	VIEW_INITIAL_OBSTETRICS_RECORD(6301, &quot;View Initial Obstetric Record&quot;, &quot;View Initial Obstetric Record&quot;, true),</span>
+	/**CREATE_INITIAL_OBSTETRICS_RECORD**/
+<span class="fc" id="L426">	CREATE_OBSTETRICS_OV(6400, &quot;Create Obstetric Office Visit&quot;, &quot;Create Obstetric Office Visit&quot;, true),</span>
+	/**VIEW_INITIAL_OBSTETRICS_RECORD**/
+<span class="fc" id="L428">	VIEW_OBSTETRICS_OV(6401, &quot;View Obstetric Office Visit&quot;, &quot;View Obstetric Office Visit&quot;, true),</span>
+	/**VIEW_INITIAL_OBSTETRICS_RECORD**/
+<span class="fc" id="L430">	EDIT_OBSTETRICS_OV(6402, &quot;Edit Obstetric Office Visit&quot;, &quot;Edit Obstetric Office Visit&quot;, true),</span>
+	/**ADD_ALLERGY**/
+<span class="fc" id="L432">	ADD_ALLERGY(6700, &quot;Add Allergy&quot;, &quot;Add Allergy&quot;, true),</span>
+	
+	/**Added to the Food Diary **/
+<span class="fc" id="L435">	FOOD_DIARY_ADD(6800, &quot;Add Food Entry&quot;, &quot;added an entry to your Food Diary&quot;, true),</span>
+	/**Patient viewed food diary**/
+<span class="fc" id="L437">	PATIENT_VIEW_FOOD_DIARY(6801, &quot;Patient Viewed Food Diary&quot;, &quot;viewed your Food Diary&quot;, true),</span>
+	/**Nutritionist viewed food diary **/
+<span class="fc" id="L439">	NUTRITIONIST_VIEW_FOOD_DIARY(6900, &quot;Nutritionist viewed Food Diary&quot;, &quot;viewed your Food Diary&quot;, true),</span>
+	/** Patient edited an entry from their food diary */
+<span class="fc" id="L441">	PATIENT_EDIT_FOOD_ENTRY(7000, &quot;Patient edited Food Diary entry&quot;, &quot;edited an entry in your Food Diary&quot;, true),</span>
+	/** Patient deleted an entry from their food diary */
+<span class="fc" id="L443">	DELETE_FOOD_ENTRY(7001, &quot;Patient deleted Food Diary entry&quot;, &quot;deleted an entry from your Food Diary&quot;, true),</span>
+		
+	/** Patient changed their designated Nutritionist */
+<span class="fc" id="L446">	EDIT_DESIGNATED_NUTRITIONIST(7300, &quot;Patient edited designated Nutritionist&quot;, &quot;edited your designated Nutritionist&quot;, true),</span>
+	
+	/**Added to the Sleep Diary **/
+<span class="fc" id="L449">	SLEEP_DIARY_ADD(7700, &quot;Add Sleep Entry&quot;, &quot;added an entry to your Sleep Diary&quot;, true),</span>
+	/**Patient viewed Sleep diary**/
+<span class="fc" id="L451">	PATIENT_VIEW_SLEEP_DIARY(7801, &quot;Patient Viewed Sleep Diary&quot;, &quot;viewed your Sleep Diary&quot;, true),</span>
+	/**HCP viewed Sleep diary **/
+<span class="fc" id="L453">	HCP_VIEW_SLEEP_DIARY(7802, &quot;HCP viewed Sleep Diary&quot;, &quot;viewed your Sleep Diary&quot;, true),</span>
+	/** Patient edited an entry from their Sleep diary */
+<span class="fc" id="L455">	PATIENT_EDIT_SLEEP_ENTRY(7901, &quot;Patient edited Sleep Diary entry&quot;, &quot;edited an entry in your Sleep Diary&quot;, true),</span>
+	/** Patient deleted an entry from their Sleep diary */
+<span class="fc" id="L457">	DELETE_SLEEP_ENTRY(7902, &quot;Patient deleted Sleep Diary entry&quot;, &quot;deleted an entry from your Sleep Diary&quot;, true),</span>
+	
+	/**Added to the Exercise Diary **/
+<span class="fc" id="L460">	EXERCISE_DIARY_ADD(8000, &quot;Add Exercise Entry&quot;, &quot;added an entry to your Exercise Diary&quot;, true),</span>
+	/**Patient viewed Exercise diary**/
+<span class="fc" id="L462">	PATIENT_VIEW_EXERCISE_DIARY(8101, &quot;Patient Viewed Exercise Diary&quot;, &quot;viewed your Exercise Diary&quot;, true),</span>
+	/**Trainer viewed Exercise diary **/
+<span class="fc" id="L464">	TRAINER_VIEW_EXERCISE_DIARY(8102, &quot;Trainer viewed Exercise Diary&quot;, &quot;viewed your Exercise Diary&quot;, true),</span>
+	/** Patient edited an entry from their Exercise diary */
+<span class="fc" id="L466">	PATIENT_EDIT_EXERCISE_ENTRY(8201, &quot;Patient edited Exercise Diary entry&quot;, &quot;edited an entry in your Exercise Diary&quot;, true),</span>
+	/** Patient deleted an entry from their Exercise diary */
+<span class="fc" id="L468">	DELETE_EXERCISE_ENTRY(8202, &quot;Patient deleted Exercise Diary entry&quot;, &quot;deleted an entry from your Exercise Diary&quot;, true),</span>
+	
+	/**Added to Labels **/
+<span class="fc" id="L471">	LABEL_ADD(7400, &quot;Add Label&quot;, &quot;added a new Label&quot;, true),</span>
+	/**Patient edited a Label**/
+<span class="fc" id="L473">	EDIT_LABEL(7401, &quot;Patient edited a Label&quot;, &quot;edited a Label&quot;, true),</span>
+	/**Patient deleted a Label **/
+<span class="fc" id="L475">	DELETE_LABEL(7402, &quot;Patient deleted a Label&quot;, &quot;deleted a Label&quot;, true),</span>
+	/**Patient edited a Label**/
+<span class="fc" id="L477">	HCP_VIEW_MACRONUTRIENTS(7200, &quot;HCP viewed macronutrients&quot;, &quot;viewed macronutrients&quot;, true),</span>
+	/**Patient edited a Label**/
+<span class="fc" id="L479">	VIEW_MACRONUTRIENTS_GRAPH(7100, &quot;Patient generated graph&quot;, &quot;generated a graph&quot;, true),</span>
+	/**Patient edited a Label**/
+<span class="fc" id="L481">	CALCULATE_MACRONUTRIENTS(7101, &quot;Patient calculated macronutrients&quot;, &quot;calculated macronutrients&quot;, true),</span>
+	
+	/**CREATE_OPHTHALMOLOGY_OV**/
+<span class="fc" id="L484">	CREATE_OPHTHALMOLOGY_OV(8300, &quot;Create Ophthalmology Office Visit&quot;, &quot;Ophthalmology Office Visit&quot;, true),</span>
+	/**VIEW_OPHTHALMOLOGY_OV**/
+<span class="fc" id="L486">	VIEW_OPHTHALMOLOGY_OV(8301, &quot;View Ophthalmology Office Visit&quot;, &quot;View Ophthalmology Office Visit&quot;, true),</span>
+	/**EDIT_OPHTHALMOLOGY_OV**/
+<span class="fc" id="L488">	EDIT_OPHTHALMOLOGY_OV(8302, &quot;Edit Ophthalmology Office Visit&quot;, &quot;Edit Ophthalmology Office Visit&quot;, true),</span>
+	/**PATIENT_VIEW_OPHTHALMOLOGY_OV**/
+<span class="fc" id="L490">	PATIENT_VIEW_OPHTHALMOLOGY_OV(8400, &quot;View Patient Ophthalmology Office Visit&quot;, &quot;View Patient Ophthalmology Office Visit&quot;, true),</span>
+	/**PATIENT_VIEW_DEPENDENT_OPHTHALMOLOGY_OV**/
+<span class="fc" id="L492">	PATIENT_VIEW_DEPENDENT_OPHTHALMOLOGY_OV(8401, &quot;View Dependent Ophthalmology Office Visit&quot;, &quot;View Dependent Ophthalmology Office Visit&quot;, true),</span>
+	
+	/**CREATE_OPHTHALMOLOGY_SURGERY**/
+<span class="fc" id="L495">	CREATE_OPHTHALMOLOGY_SURGERY(8600, &quot;Create Ophthalmology Surgery&quot;, &quot;Ophthalmology Surgery&quot;, true),</span>
+	/**VIEW_OPHTHALMOLOGY_SURGERY**/
+<span class="fc" id="L497">	VIEW_OPHTHALMOLOGY_SURGERY(8601, &quot;View Ophthalmology Surgery&quot;, &quot;View Ophthalmology Surgery&quot;, true),</span>
+	/**EDIT_OPHTHALMOLOGY_SURGERY**/
+<span class="fc" id="L499">	EDIT_OPHTHALMOLOGY_SURGERY(8602, &quot;Edit Ophthalmology Surgery&quot;, &quot;Edit Ophthalmology Surgery&quot;, true),</span>
+	/**PATIENT_VIEW_OPHTHALMOLOGY_SURGERY**/
+	;
+	/**
+	 * This string is used in the SQL statement associated with pulling events for
+	 * display in a patient's Access Log
+	 */
+	public static String patientViewableStr;
+	
+	static {
+<span class="fc bfc" id="L509" title="All 2 branches covered.">		for(TransactionType t : TransactionType.values())</span>
+		{
+<span class="fc bfc" id="L511" title="All 2 branches covered.">			if(t.isPatientViewable())</span>
+			{
+<span class="fc" id="L513">				patientViewableStr += &quot;,&quot; + t.code;</span>
+			}
+		}
+<span class="fc" id="L516">	}</span>
+	/**
+	 * This string is used in the SQL statement associated with excluding events as specified in UC43
+	 */
+	
+	
+	public static final String dlhcpHiddenStr = &quot;400, 900, 1000, 1001, 1100, 1101, 1102, 1110, 1111, 1112, 1120, 1121, 1122, 1130, 1131, 1132, 1140, 1141, 1142, 1150, 1152, 1600, 1700, 1900, 2101, 2300, 2601, 2602, 3200,5201&quot;;
+	
+<span class="fc" id="L524">	private TransactionType(int code, String description, String actionPhrase, boolean patientViewable) {</span>
+<span class="fc" id="L525">		this.code = code;</span>
+<span class="fc" id="L526">		this.description = description;</span>
+<span class="fc" id="L527">		this.actionPhrase = actionPhrase;</span>
+<span class="fc" id="L528">		this.patientView = patientViewable;</span>
+<span class="fc" id="L529">	}</span>
+
+	private int code;
+	private String description;
+	private String actionPhrase;
+	private boolean patientView;
+
+	/**
+	 * getCode
+	 * @return code
+	 */
+	public int getCode() {
+<span class="fc" id="L541">		return code;</span>
+	}
+
+	/**
+	 * getDescription
+	 * @return description
+	 */
+	public String getDescription() {
+<span class="fc" id="L549">		return description;</span>
+	}
+	
+	/**
+	 * getActionPhrase
+	 * @return actionPhrase
+	 */
+	public String getActionPhrase() {
+<span class="fc" id="L557">		return actionPhrase;</span>
+	}
+	
+	/**
+	 * isPatientViewable
+	 * @return patientView
+	 */
+	public boolean isPatientViewable(){
+<span class="fc" id="L565">		return patientView;</span>
+	}
+	
+	/**
+	 * parse
+	 * @param code code
+	 * @return type
+	 */
+	public static TransactionType parse(int code) {
+<span class="fc bfc" id="L574" title="All 2 branches covered.">		for (TransactionType type : TransactionType.values()) {</span>
+<span class="fc bfc" id="L575" title="All 2 branches covered.">			if (type.code == code)</span>
+<span class="fc" id="L576">				return type;</span>
+		}
+<span class="fc" id="L578">		throw new IllegalArgumentException(&quot;No transaction type exists for code &quot; + code);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

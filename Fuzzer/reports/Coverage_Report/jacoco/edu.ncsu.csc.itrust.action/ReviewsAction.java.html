@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReviewsAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ReviewsAction.java</span></div><h1>ReviewsAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.ReviewsBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ReviewsDAO;
+
+/**
+ * This class forms the action for the HCP Reviewing system, each category 
+ * rated on a scale from 1 (lowest) to 5 (highest), and providing an overall rating 
+ * for the HCP.  
+ */
+public class ReviewsAction {
+  private ReviewsDAO dao;
+  private PersonnelDAO personnelDAO;
+  private long loggedInMID;
+  
+<span class="fc" id="L22">  public ReviewsAction(DAOFactory factory, long mid){</span>
+<span class="fc" id="L23">       	  this.dao = factory.getReviewsDAO();</span>
+<span class="fc" id="L24">       	  this.personnelDAO = factory.getPersonnelDAO();</span>
+<span class="fc" id="L25">       	  this.loggedInMID = mid;</span>
+<span class="fc" id="L26">  }</span>
+  
+  /**
+   * Add a review based on the input params for input of a bean.  
+   * @return true if added and false otherwise
+   */
+  public boolean addReview(ReviewsBean b) throws DBException{
+<span class="fc" id="L33">        return dao.addReview(b);</span>
+  }
+  
+  /**
+   * Method that returns physician based on a mid.
+   * @param mid of physician
+   * @return
+   * @throws DBException
+   */
+  public PersonnelBean getPhysician(long mid) throws DBException
+  {
+<span class="fc" id="L44">	  return personnelDAO.getPersonnel(mid);</span>
+  }
+  
+  /**
+   * Get all reviews for a given HCP (ie pid input param), 
+   * return as a Java ArrayList
+   * @param pid HCP under review's ID
+   * @return java.utils.ArrayList of all reviews for the HCP
+   * @throws DBException 
+   */
+  public List&lt;ReviewsBean&gt; getReviews(long pid) throws DBException{
+<span class="fc" id="L55">	return dao.getReviews(pid);</span>
+  }
+  
+  /**
+   * Checks whether a patient can post a review for a physician.
+   * @param pid
+   * @return
+   * @throws DBException 
+   */
+  public boolean isAbleToRate(long pid) throws DBException
+  {
+	  
+<span class="fc" id="L67">	 return dao.isRateable(loggedInMID, pid);</span>
+  }
+  
+  /**
+   * Get total average rating for a given HCP.
+   * @param pid Long ID of the HCP under review
+   * @return average int &quot;rating&quot; for the information 
+   * @throws DBException 
+   */
+  public double getAverageRating(long pid) throws DBException{
+<span class="fc" id="L77">	return dao.getTotalAverageRating(pid);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

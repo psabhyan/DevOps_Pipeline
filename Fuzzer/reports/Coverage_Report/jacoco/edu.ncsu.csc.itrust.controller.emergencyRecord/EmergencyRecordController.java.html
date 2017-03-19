@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmergencyRecordController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.controller.emergencyRecord</a> &gt; <span class="el_source">EmergencyRecordController.java</span></div><h1>EmergencyRecordController.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.controller.emergencyRecord;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.controller.iTrustController;
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecord;
+import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecordMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * A controller class for EmergencyRecord
+ * @author nmiles
+ *
+ */
+@ManagedBean(name=&quot;emergency_record_controller&quot;)
+@SessionScoped
+public class EmergencyRecordController extends iTrustController {
+    private EmergencyRecordMySQL sql;
+    
+    /**
+     * Constructs a new EmergencyRecordController
+     * @throws DBException 
+     */
+<span class="fc" id="L28">    public EmergencyRecordController() throws DBException{</span>
+<span class="nc" id="L29">        sql = new EmergencyRecordMySQL();</span>
+<span class="nc" id="L30">    }</span>
+    /**
+     * Constructor for testing purposes.
+     * 
+     * @param ds The DataSource to use
+     * @param allergyData the AllergyDAO to use
+     */
+<span class="fc" id="L37">    public EmergencyRecordController(DataSource ds, AllergyDAO allergyData) throws DBException{</span>
+    	EmergencyRecordMySQL sql;
+<span class="fc" id="L39">    	sql = new EmergencyRecordMySQL(ds, allergyData);</span>
+<span class="fc" id="L40">    	this.sql = sql;</span>
+<span class="fc" id="L41">    }</span>
+    
+    /**
+     * Loads the appropriate data for an EmergencyRecord for the given MID.
+     * The loaded record is returned, but it is also stored for later retrieval
+     * with getRecord(). This method MUST be called before calling getRecord().
+     * 
+     * @param mid The mid of the patient to load the record for
+     * @return The loaded EmergencyRecord if loaded successfully, null if
+     *         loading failed
+     */
+    public EmergencyRecord loadRecord(String midString){
+    	long mid;
+    	EmergencyRecord record;
+        try {
+<span class="fc" id="L56">        	mid = Long.parseLong(midString);</span>
+<span class="fc" id="L57">        	record = sql.getEmergencyRecordForPatient(mid);</span>
+<span class="fc" id="L58">        } catch (Exception e) {</span>
+<span class="fc" id="L59">            return null;</span>
+<span class="fc" id="L60">        }</span>
+<span class="fc" id="L61">        return record;</span>
+    }
+    
+    /**
+	 * Logs that the emergency record has been viewed by the logged in MID for
+	 * the current patient MID. This method should be invoked once per page
+	 * view.
+	 */
+	public void logViewEmergencyRecord() {
+		// If the current patient MID is null, then no patient has been
+		// selected, and there's no ER to display.
+<span class="fc bfc" id="L72" title="All 2 branches covered.">		if (getSessionUtils().getCurrentPatientMID() != null) {</span>
+<span class="fc" id="L73">			logTransaction(TransactionType.EMERGENCY_REPORT_VIEW, null);</span>
+		}
+<span class="fc" id="L75">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

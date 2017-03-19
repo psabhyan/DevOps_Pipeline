@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EditPersonnelAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">EditPersonnelAction.java</span></div><h1>EditPersonnelAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import edu.ncsu.csc.itrust.action.base.PersonnelBaseAction;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
+import edu.ncsu.csc.itrust.model.old.enums.Role;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.model.old.validate.PersonnelValidator;
+
+/**
+ * Edits the designated personnel Used by admin/editPersonnel.jsp, staff/editMyDemographics.jsp,
+ * editPersonnel.jsp
+ * 
+ * 
+ */
+public class EditPersonnelAction extends PersonnelBaseAction {
+	private PersonnelDAO personnelDAO;
+	private AuthDAO authDAO;
+<span class="fc" id="L24">	private PersonnelValidator validator = new PersonnelValidator();;</span>
+
+	/**
+	 * Super class validates the patient id
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs for this action.
+	 * @param loggedInMID The MID of the user editing this personnel.
+	 * @param pidString The ID of the user being edited.
+	 * @throws ITrustException
+	 */
+	public EditPersonnelAction(DAOFactory factory, long loggedInMID, String pidString) throws ITrustException {
+<span class="fc" id="L35">		super(factory, pidString);</span>
+
+<span class="fc" id="L37">		this.authDAO = factory.getAuthDAO();</span>
+<span class="fc" id="L38">		long pidlong = Long.parseLong(pidString);</span>
+<span class="fc" id="L39">		Role editor = authDAO.getUserRole(loggedInMID);</span>
+<span class="fc" id="L40">		Role editing = authDAO.getUserRole(pidlong);</span>
+
+<span class="fc bfc" id="L42" title="All 4 branches covered.">		if (editor == editing &amp;&amp; pidlong != loggedInMID){</span>
+<span class="fc" id="L43">			throw new ITrustException(&quot;You can only edit your own demographics!&quot;);</span>
+<span class="pc bpc" id="L44" title="6 of 12 branches missed.">		}else if (editor == Role.HCP &amp;&amp; editing == Role.ADMIN || editor == Role.UAP &amp;&amp; editing == Role.HCP</span>
+				|| editor == Role.ADMIN &amp;&amp; editing == Role.UAP){
+<span class="fc" id="L46">			throw new ITrustException(&quot;You are not authorized to edit this record!&quot;);</span>
+		}
+<span class="fc" id="L48">		this.personnelDAO = factory.getPersonnelDAO();</span>
+<span class="fc" id="L49">		TransactionLogger.getInstance().logTransaction(TransactionType.PERSONNEL_VIEW, loggedInMID , pidlong, editing.getUserRolesString());</span>
+<span class="fc" id="L50">	}</span>
+
+	/**
+	 * Takes information from the personnelForm param and updates the patient
+	 * 
+	 * @param personnelForm
+	 *            PersonnelBean with new information
+	 * @throws ITrustException
+	 * @throws FormValidationException
+	 */
+	public void updateInformation(PersonnelBean personnelForm, long loggedInMID) throws ITrustException,
+			FormValidationException {
+<span class="fc" id="L62">		personnelForm.setMID(pid);</span>
+<span class="fc" id="L63">		validator.validate(personnelForm);</span>
+<span class="fc" id="L64">		personnelDAO.editPersonnel(personnelForm);</span>
+		
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">		if(personnelForm.getRole() == Role.HCP) // If pid belongs to an HCP</span>
+<span class="nc" id="L67">		    TransactionLogger.getInstance().logTransaction(TransactionType.LHCP_EDIT, loggedInMID , personnelForm.getMID(), &quot;&quot;);</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">		else if(personnelForm.getRole() == Role.UAP) // If pid belongs to a UAP</span>
+<span class="nc" id="L69">            TransactionLogger.getInstance().logTransaction(TransactionType.UAP_EDIT, loggedInMID, personnelForm.getMID(), &quot;&quot;);</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        else if(personnelForm.getRole() == Role.ER) // If pid belongs to a ER</span>
+<span class="nc" id="L71">            TransactionLogger.getInstance().logTransaction(TransactionType.ER_EDIT, loggedInMID, personnelForm.getMID(), &quot;&quot;);</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        else if(personnelForm.getRole() == Role.PHA) // If pid belongs to a PHA</span>
+<span class="nc" id="L73">            TransactionLogger.getInstance().logTransaction(TransactionType.PHA_EDIT, loggedInMID, personnelForm.getMID(), &quot;&quot;);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        else if(personnelForm.getRole() == Role.LT) // If pid belongs to a LT</span>
+<span class="nc" id="L75">            TransactionLogger.getInstance().logTransaction(TransactionType.LT_EDIT, loggedInMID, personnelForm.getMID(), &quot;&quot;);</span>
+		
+<span class="fc" id="L77">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

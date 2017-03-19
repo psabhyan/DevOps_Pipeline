@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HospitalBeanValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.validate</a> &gt; <span class="el_source">HospitalBeanValidator.java</span></div><h1>HospitalBeanValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.validate;
+
+import edu.ncsu.csc.itrust.action.UpdateHospitalListAction;
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.HospitalBean;
+
+/**
+ * Validates the input for hospital beans, {@link UpdateHospitalListAction}
+ * 
+ *  
+ * 
+ */
+public class HospitalBeanValidator extends BeanValidator&lt;HospitalBean&gt; {
+	/**
+	 * The default constructor.
+	 */
+<span class="fc" id="L18">	public HospitalBeanValidator() {</span>
+		
+<span class="fc" id="L20">	}</span>
+
+	/**
+	 * Performs the act of validating the bean in question, which varies depending on the
+	 * type of validator.  If the validation does not succeed, a {@link FormValidationException} is thrown.
+	 * 
+	 * @param p A bean of the type to be validated.
+	 */
+	@Override
+	public void validate(HospitalBean h) throws FormValidationException {
+<span class="fc" id="L30">		ErrorList errorList = new ErrorList();</span>
+<span class="fc" id="L31">		errorList.addIfNotNull(checkFormat(&quot;Hospital ID&quot;, h.getHospitalID(), ValidationFormat.HOSPITAL_ID, false));</span>
+<span class="fc" id="L32">		errorList.addIfNotNull(checkFormat(&quot;Hospital Name&quot;, h.getHospitalName(), ValidationFormat.HOSPITAL_NAME, false));</span>
+		
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		if(!h.getHospitalAddress().isEmpty()){</span>
+<span class="fc" id="L35">			errorList.addIfNotNull(checkFormat(&quot;Hospital Address&quot;, h.getHospitalAddress(), ValidationFormat.ADDRESS, false));</span>
+		}
+		
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if(!h.getHospitalCity().isEmpty()){</span>
+<span class="fc" id="L39">			errorList.addIfNotNull(checkFormat(&quot;Hospital City&quot;, h.getHospitalCity(), ValidationFormat.CITY, false));</span>
+		}
+		
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		if(!h.getHospitalState().isEmpty()){</span>
+<span class="fc" id="L43">			errorList.addIfNotNull(checkFormat(&quot;Hospital State&quot;, h.getHospitalState(), ValidationFormat.STATE, false));</span>
+		}
+		
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		if(!h.getHospitalZip().isEmpty()){</span>
+<span class="fc" id="L47">			errorList.addIfNotNull(checkFormat(&quot;Hospital Zip&quot;, h.getHospitalZip(), ValidationFormat.ZIPCODE, false));</span>
+		}
+		
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (errorList.hasErrors()) {</span>
+<span class="fc" id="L51">			throw new FormValidationException(errorList);</span>
+		}
+<span class="fc" id="L53">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

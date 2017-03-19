@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SetSecurityQuestionAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">SetSecurityQuestionAction.java</span></div><h1>SetSecurityQuestionAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import edu.ncsu.csc.itrust.exception.ITrustException;
+import edu.ncsu.csc.itrust.model.old.beans.SecurityQA;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
+import edu.ncsu.csc.itrust.model.old.validate.SecurityQAValidator;
+
+/**
+ * Handles setting and retrieving the security questions/answers for users Used by
+ * patient/editMyDemographics.jsp, staff/editMyDemographics.jsp, staff/editPersonnell.jsp
+ * 
+ * 
+ */
+public class SetSecurityQuestionAction {
+
+	private AuthDAO authDAO;
+	private long loggedInMID;
+
+	/**
+	 * Sets up defaults
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param rLoggedInMID The MID of the user who is setting their security question.
+	 * @throws ITrustException
+	 */
+<span class="fc" id="L27">	public SetSecurityQuestionAction(DAOFactory factory, long rLoggedInMID) throws ITrustException {</span>
+<span class="fc" id="L28">		this.authDAO = factory.getAuthDAO();</span>
+<span class="fc" id="L29">		loggedInMID = checkMID(rLoggedInMID);</span>
+<span class="fc" id="L30">	}</span>
+
+	/**
+	 * Updates information in the database from the information held in the SecurityQA bean passed as a param
+	 * 
+	 * @param a
+	 *            SecurityQuestionBean that holds new information
+	 * @throws Exception
+	 */
+	public void updateInformation(SecurityQA a) throws Exception {
+<span class="fc" id="L40">		SecurityQAValidator sqav = new SecurityQAValidator();</span>
+<span class="fc" id="L41">		sqav.validate(a);</span>
+<span class="fc" id="L42">		authDAO.setSecurityQuestionAnswer(a.getQuestion(), a.getAnswer(), loggedInMID);</span>
+<span class="fc" id="L43">	}</span>
+
+	/**
+	 * Returns a SecurityQA bean holding the security info for the currently logged in user
+	 * 
+	 * @return SecurityQA for loggedInMid
+	 * @throws ITrustException
+	 */
+	public SecurityQA retrieveInformation() throws ITrustException {
+<span class="fc" id="L52">		SecurityQA toRet = new SecurityQA();</span>
+<span class="fc" id="L53">		toRet.setAnswer(authDAO.getSecurityAnswer(loggedInMID));</span>
+<span class="fc" id="L54">		toRet.setQuestion(authDAO.getSecurityQuestion(loggedInMID));</span>
+<span class="fc" id="L55">		return toRet;</span>
+	}
+	/**
+	 * Checks to make sure the MID exists in iTrust
+	 * 
+	 * @param mid MID to check
+	 * @return returns the MID if the user is valid, otherwise, throws an exception
+	 * @throws ITrustException
+	 */
+
+	private long checkMID(long mid) throws ITrustException {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		if (!authDAO.checkUserExists(mid))</span>
+<span class="fc" id="L67">			throw new ITrustException(&quot;MID &quot; + mid + &quot; is not a user!&quot;);</span>
+<span class="fc" id="L68">		return mid;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

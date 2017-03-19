@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.validate</a> &gt; <span class="el_source">MessageValidator.java</span></div><h1>MessageValidator.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.validate;
+
+import edu.ncsu.csc.itrust.exception.ErrorList;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.MessageBean;
+
+/**
+ * Used to validate updating an office visit, by {@link EditOfficeVisitAction}
+ * 
+ *  
+ * 
+ */
+public class MessageValidator extends BeanValidator&lt;MessageBean&gt; {
+
+<span class="fc" id="L15">	public MessageValidator() {</span>
+<span class="fc" id="L16">	}</span>
+	
+	@Override
+	public void validate(MessageBean mBean) throws FormValidationException {
+<span class="fc" id="L20">		ErrorList errorList = new ErrorList();</span>
+<span class="fc" id="L21">		errorList.addIfNotNull(checkFormat(&quot;body&quot;, mBean.getBody(), ValidationFormat.MESSAGES_BODY, false));</span>
+<span class="fc" id="L22">		errorList.addIfNotNull(checkFormat(&quot;subject&quot;, mBean.getSubject(), ValidationFormat.MESSAGES_SUBJECT, false));</span>
+		
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">		if (errorList.hasErrors())</span>
+<span class="nc" id="L25">			throw new FormValidationException(errorList);</span>
+<span class="fc" id="L26">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

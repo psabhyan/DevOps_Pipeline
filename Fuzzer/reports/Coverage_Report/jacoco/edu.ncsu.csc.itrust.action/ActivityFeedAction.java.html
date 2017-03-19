@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActivityFeedAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.action</a> &gt; <span class="el_source">ActivityFeedAction.java</span></div><h1>ActivityFeedAction.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.action;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+import edu.ncsu.csc.itrust.model.old.beans.TransactionBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.TransactionDAO;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+
+/**
+ * Handles retrieving the log of record accesses for a given user Used by viewAccessLog.jsp
+ */
+public class ActivityFeedAction {
+	private TransactionDAO transDAO;
+	private PatientDAO patientDAO;
+	private AuthDAO authDAO;
+	private long loggedInMID;
+
+	/**
+	 * Set up
+	 * 
+	 * @param factory The DAOFactory used to create the DAOs used in this action.
+	 * @param loggedInMID The MID of the person retrieving the logs.
+	 */
+<span class="fc" id="L34">	public ActivityFeedAction(DAOFactory factory, long loggedInMID) {</span>
+<span class="fc" id="L35">		this.loggedInMID = loggedInMID;</span>
+<span class="fc" id="L36">		this.transDAO = factory.getTransactionDAO();</span>
+<span class="fc" id="L37">		this.authDAO = factory.getAuthDAO();</span>
+<span class="fc" id="L38">		this.patientDAO = factory.getPatientDAO();</span>
+<span class="fc" id="L39">	}</span>
+
+	/**
+	 * Returns a list of TransactionBeans between the two dates passed as params
+	 * @param time time
+	 * @param n Number of &quot;pages&quot; of 20 log entries to retrieve.
+	 * @return list of 20*n TransactionBeans
+	 * @throws DBException
+	 * @throws FormValidationException
+	 */
+	public List&lt;TransactionBean&gt; getTransactions(Date time, int n) throws DBException,
+			FormValidationException {
+
+<span class="fc" id="L52">		List&lt;PersonnelBean&gt; dlhcps =  patientDAO.getDeclaredHCPs(loggedInMID);</span>
+		
+		//user has either 0 or 1 DLHCP's. Get one if exists so it can be filtered from results
+<span class="fc" id="L55">		long dlhcpID = -1;</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">		if(!dlhcps.isEmpty())</span>
+<span class="fc" id="L57">			dlhcpID = dlhcps.get(0).getMID();</span>
+		
+<span class="fc" id="L59">		List&lt;TransactionBean&gt; fullList = transDAO.getTransactionsAffecting(loggedInMID, dlhcpID, time, 20*n+1);</span>
+		
+<span class="fc" id="L61">		return fullList;</span>
+	}
+	
+	/**
+	 * Returns an indicator of the number of days between the current date and the date passed
+	 * as a parameter. Returns 0 if the dates are on the same day, 1 if the date passed in is
+	 * &quot;yesterday&quot;, 2 otherwise.
+	 * 
+	 * @param d date
+	 * @return 0, 1, or 2, depending on the difference in the dates.
+	 */
+	public static int recent(Date d) {
+<span class="fc" id="L73">		int oneDay = 24 * 60 * 60 * 1000;</span>
+<span class="fc" id="L74">		DateFormat sdf = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L75">		Date rightNow = new Date();</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (sdf.format(rightNow).equals(sdf.format(d)))</span>
+<span class="fc" id="L77">			return 0;</span>
+<span class="fc" id="L78">		d.setTime(d.getTime() + oneDay);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">		if (sdf.format(rightNow).equals(sdf.format(d)))</span>
+<span class="fc" id="L80">			return 1;</span>
+<span class="fc" id="L81">		return 2;</span>
+	}
+	
+	/**
+	 * Pulls Action Phrase from the associated TransactionType Enum
+	 * Forms an English sentence with actor, action, and timestamp.
+	 * @param actor actor
+	 * @param timestamp timestamp
+	 * @param code code
+	 * @return
+	 */
+	public String getMessageAsSentence(String actor, Timestamp timestamp, TransactionType code) {
+<span class="fc" id="L93">		String result = actor + &quot; &quot;;</span>
+<span class="fc" id="L94">		StringBuffer buf = new StringBuffer();</span>
+	
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		for (TransactionType type : TransactionType.values()) {</span>
+<span class="pc bpc" id="L97" title="1 of 4 branches missed.">			if (code.getCode() == type.getCode() &amp;&amp; type.isPatientViewable())</span>
+<span class="fc" id="L98">				buf.append(type.getActionPhrase());</span>
+		}
+<span class="fc" id="L100">		result += buf.toString();</span>
+		
+<span class="fc" id="L102">		SimpleDateFormat formatter = new SimpleDateFormat(&quot;h:mma.&quot;);</span>
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">		switch(recent(new Date(timestamp.getTime()))) {</span>
+		case 0:
+<span class="fc" id="L105">			result += &quot; today&quot;;</span>
+<span class="fc" id="L106">			break;</span>
+		case 1:
+<span class="fc" id="L108">			result += &quot; yesterday&quot;;</span>
+<span class="fc" id="L109">			break;</span>
+		case 2:
+<span class="fc" id="L111">			DateFormat sdf = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;);</span>
+<span class="fc" id="L112">			result += &quot; on &quot; + sdf.format(new Date(timestamp.getTime()));</span>
+<span class="fc" id="L113">			break;</span>
+		default:
+			break;
+		}
+		
+<span class="fc" id="L118">		result += &quot; at &quot; + formatter.format(timestamp);</span>
+		
+		
+		
+<span class="fc" id="L122">		return replaceNameWithYou(result);</span>
+	}
+	
+	private String replaceNameWithYou(String activity)
+	{
+		try{
+<span class="fc" id="L128">			return activity.replace(authDAO.getUserName(loggedInMID), &quot;You&quot;);</span>
+<span class="nc" id="L129">		} catch(Exception e)</span>
+		{
+<span class="nc" id="L131">			return activity;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

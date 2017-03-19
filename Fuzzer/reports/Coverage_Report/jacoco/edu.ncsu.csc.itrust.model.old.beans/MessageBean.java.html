@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageBean.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans</a> &gt; <span class="el_source">MessageBean.java</span></div><h1>MessageBean.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans;
+
+import java.sql.Timestamp;
+
+/**
+ * A bean for storing data about a message from one user to another.
+ * 
+ * A bean's purpose is to store data. Period. Little or no functionality is to be added to a bean 
+ * (with the exception of minor formatting such as concatenating phone numbers together). 
+ * A bean must only have Getters and Setters (Eclipse Hint: Use Source &gt; Generate Getters and Setters
+ * to create these easily)
+ */
+<span class="fc" id="L13">public class MessageBean {</span>
+	private long to;
+	private long from;
+	private long id;
+	private long parentMsgId;
+	private String subject;
+	private String body;
+	private Timestamp timestamp;
+	private int read;
+	private long originalMsgId; //NEW
+	
+	/**
+	 * Gets the MIDs of the recipients for this Message
+	 * @return
+	 */
+	public long getTo() {
+<span class="fc" id="L29">		return to;</span>
+	}
+	
+	/**
+	 * Sets the MIDs of the recipients for this Message
+	 * @param to
+	 */
+	public void setTo(long to) {
+<span class="fc" id="L37">		this.to = to;</span>
+<span class="fc" id="L38">	}</span>
+	
+	public long getMessageId()
+	{
+<span class="fc" id="L42">		return id;</span>
+	}
+	
+	public void setMessageId(long id) {
+<span class="fc" id="L46">		this.id = id;</span>
+<span class="fc" id="L47">	}</span>
+
+	public long getParentMessageId() {
+<span class="fc" id="L50">		return this.parentMsgId;</span>
+	}
+	
+	public void setParentMessageId(long parentMsgId) {
+<span class="fc" id="L54">		this.parentMsgId = parentMsgId;</span>
+<span class="fc" id="L55">	}</span>
+
+
+	/**
+	 * Gets the MID of the sender for this message
+	 * @return
+	 */
+	public long getFrom() {
+<span class="fc" id="L63">		return from;</span>
+	}
+
+	/**
+	 * Sets the MID of the sender for this message
+	 * @param from
+	 */
+	public void setFrom(long from) {
+<span class="fc" id="L71">		this.from = from;</span>
+<span class="fc" id="L72">	}</span>
+	
+	/**
+	 * Gets the subject of this message
+	 * @return
+	 */
+	public String getSubject() {
+<span class="fc" id="L79">		return subject;</span>
+	}
+	
+	/**
+	 * Sets the subject of this message
+	 * @param subject
+	 */
+	public void setSubject(String subject) {
+<span class="fc" id="L87">		this.subject = subject;</span>
+<span class="fc" id="L88">	}</span>
+
+	/**
+	 * Gets the body of this message
+	 * @return
+	 */
+	public String getBody() {
+<span class="fc" id="L95">		return body;</span>
+	}
+	
+	/**
+	 * Sets the body of this message
+	 * @param body
+	 */
+	public void setBody(String body) {
+<span class="fc" id="L103">		this.body = body;</span>
+<span class="fc" id="L104">	}</span>
+
+	/**
+	 * Gets the time for this message
+	 * @return
+	 */
+	public Timestamp getSentDate() {
+<span class="fc" id="L111">		return (Timestamp) this.timestamp.clone();</span>
+	}
+
+	/**
+	 * Sets the time for this message
+	 * @param timestamp
+	 */
+	public void setSentDate(Timestamp timestamp) {
+<span class="fc" id="L119">		this.timestamp = (Timestamp) timestamp.clone();</span>
+<span class="fc" id="L120">	}</span>
+	
+	/**
+	 * Gets read for this message
+	 * @return
+	 */
+	public int getRead() {
+<span class="fc" id="L127">		return this.read;</span>
+	}
+
+	/**
+	 * Sets read for this message
+	 * @param read
+	 */
+	public void setRead(int read) {
+<span class="fc" id="L135">		this.read = read;</span>
+<span class="fc" id="L136">	}</span>
+
+	public long getOriginalMessageId() { //NEW
+<span class="fc" id="L139">		return this.originalMsgId;</span>
+	}
+	
+	public void setOriginalMessageId(long originalMsgId) { //NEW
+<span class="fc" id="L143">		this.originalMsgId = originalMsgId;</span>
+<span class="fc" id="L144">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

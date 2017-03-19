@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteMonitoringListsBeanLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">iTrust</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc.itrust.model.old.beans.loaders</a> &gt; <span class="el_source">RemoteMonitoringListsBeanLoader.java</span></div><h1>RemoteMonitoringListsBeanLoader.java</h1><pre class="source lang-java linenums">package edu.ncsu.csc.itrust.model.old.beans.loaders;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.old.beans.TelemedicineBean;
+
+/**
+ * A loader for RemoteMonitoringDataBeans.
+ * 
+ * Loads in information to/from beans using ResultSets and PreparedStatements. Use the superclass to enforce consistency. 
+ * For details on the paradigm for a loader (and what its methods do), see {@link BeanLoader}
+ */
+<span class="fc" id="L17">public class RemoteMonitoringListsBeanLoader implements BeanLoader&lt;TelemedicineBean&gt; {</span>
+
+	@Override
+	public List&lt;TelemedicineBean&gt; loadList(ResultSet rs) throws SQLException {
+<span class="fc" id="L21">		List&lt;TelemedicineBean&gt; list = new ArrayList&lt;TelemedicineBean&gt;();</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L23">			list.add(loadSingle(rs));</span>
+		}
+<span class="fc" id="L25">		return list;</span>
+	}
+
+	@Override
+	public PreparedStatement loadParameters(PreparedStatement ps, TelemedicineBean bean) throws SQLException {
+<span class="fc" id="L30">		throw new IllegalStateException(&quot;unimplemented!&quot;);</span>
+	}
+
+	@Override
+	public TelemedicineBean loadSingle(ResultSet rs) throws SQLException {
+<span class="fc" id="L35">		TelemedicineBean d = new TelemedicineBean();</span>
+<span class="fc" id="L36">		d.setSystolicBloodPressureAllowed(rs.getBoolean(&quot;SystolicBloodPressure&quot;));</span>
+<span class="fc" id="L37">		d.setDiastolicBloodPressureAllowed(rs.getBoolean(&quot;DiastolicBloodPressure&quot;));</span>
+<span class="fc" id="L38">		d.setGlucoseLevelAllowed(rs.getBoolean(&quot;GlucoseLevel&quot;));</span>
+<span class="fc" id="L39">		d.setHeightAllowed(rs.getBoolean(&quot;Height&quot;));</span>
+<span class="fc" id="L40">		d.setWeightAllowed(rs.getBoolean(&quot;Weight&quot;));</span>
+<span class="fc" id="L41">		d.setPedometerReadingAllowed(rs.getBoolean(&quot;PedometerReading&quot;));</span>
+<span class="fc" id="L42">		return d;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

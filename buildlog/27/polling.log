@@ -1,0 +1,8 @@
+Started on Mar 18, 2017 9:07:45 PM
+Using strategy: Default
+[poll] Last Built Revision: Revision 2ae5d1f7e979c4bdfacd1e4ec24db3676d324b23 (refs/remotes/origin/master)
+ > git ls-remote -h file:///home/vagrant/iTrust # timeout=10
+Found 1 remote heads on file:///home/vagrant/iTrust
+[poll] Latest remote head revision on refs/heads/master is: ce9e7f41eb12bd5b3673d68c3ce6ded4b535056a
+Done. Took 19 ms
+Changes found

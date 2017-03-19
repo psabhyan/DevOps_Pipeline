@@ -1,0 +1,1422 @@
+Started by an SCM change
+Building in workspace /var/lib/jenkins/jobs/iTrust/workspace
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url file:///home/vagrant/iTrust # timeout=10
+Fetching upstream changes from file:///home/vagrant/iTrust
+ > git --version # timeout=10
+ > git fetch --tags --progress file:///home/vagrant/iTrust +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+Checking out Revision e3dd7b20b59cabeb6e867cab906017b8c765027a (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e3dd7b20b59cabeb6e867cab906017b8c765027a
+ > git rev-list 1e17136db08b53506d4992e0a12d9bfb28614e66 # timeout=10
+[workspace] $ mvn clean package
+[INFO] Scanning for projects...
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] 
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] Some problems were encountered while building the effective model for iTrust:iTrust:war:23.0.0
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] 'dependencies.dependency.systemPath' for org.cewolf:cewolf:jar should not point at files within the project directory, ${project.basedir}/WebRoot/WEB-INF/lib/cewolf-1.1.jar will be unresolvable by dependent projects @ line 408, column 18
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] 
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] 
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building iTrust 23.0.0
+[INFO] ------------------------------------------------------------------------
+[8mha:////4Clw3ddmIvNBks2+9XX+iAXpfU8DrmTjzbtI6uTNTqPFAAAAYx+LCAAAAAAAAP9b85aBtbiIQSWjNKU4P0+vJLE4u1gvPjexLDVPzxdEhicW5WXmpfvll6S2fNly5fzGzauYGBgqihikoFqS8/OK83NS9ZwhNEghAwQwghQWAACwxA+XYgAAAA==[0m[WARNING] The POM for milyn:sac:jar:1.3 is missing, no dependency information available
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ iTrust ---
+[INFO] Deleting /var/lib/jenkins/jobs/iTrust/workspace/target
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- jacoco-maven-plugin:0.7.8:prepare-agent (jacoco-initialize) @ iTrust ---
+[INFO] argLine set to -javaagent:/var/lib/jenkins/.m2/repository/org/jacoco/org.jacoco.agent/0.7.8/org.jacoco.agent-0.7.8-runtime.jar=destfile=/var/lib/jenkins/jobs/iTrust/workspace/target/jacoco.exec
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- maven-resources-plugin:2.3:resources (default-resources) @ iTrust ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 4 resources
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- maven-compiler-plugin:3.3:compile (default-compile) @ iTrust ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 306 source files to /var/lib/jenkins/jobs/iTrust/workspace/target/classes
+[INFO] /var/lib/jenkins/jobs/iTrust/workspace/src/main/edu/ncsu/csc/itrust/webutils/SessionUtils.java: /var/lib/jenkins/jobs/iTrust/workspace/src/main/edu/ncsu/csc/itrust/webutils/SessionUtils.java uses unchecked or unsafe operations.
+[INFO] /var/lib/jenkins/jobs/iTrust/workspace/src/main/edu/ncsu/csc/itrust/webutils/SessionUtils.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- maven-resources-plugin:2.3:testResources (default-testResources) @ iTrust ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 10 resources
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- maven-compiler-plugin:3.3:testCompile (default-testCompile) @ iTrust ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 320 source files to /var/lib/jenkins/jobs/iTrust/workspace/target/test-classes
+[INFO] /var/lib/jenkins/jobs/iTrust/workspace/src/test/java/edu/ncsu/csc/itrust/unit/serverutils/MockHttpSession.java: /var/lib/jenkins/jobs/iTrust/workspace/src/test/java/edu/ncsu/csc/itrust/unit/serverutils/MockHttpSession.java uses or overrides a deprecated API.
+[INFO] /var/lib/jenkins/jobs/iTrust/workspace/src/test/java/edu/ncsu/csc/itrust/unit/serverutils/MockHttpSession.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- exec-maven-plugin:1.4.0:java (BuildDB) @ iTrust ---
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- exec-maven-plugin:1.4.0:java (GenerateTestData) @ iTrust ---
+[INFO] 
+[8mha:////4DoeW+4r2BQ/QnlivgX6sac2eT7De/4R5ZFEMVZPOuOBAAAAYB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P0+vJLE4u1gvPjexLDVPzxdEGvvmZ+X75ZekLlOVfvTjc8FPJgaGiiIGKaiG5Py84vycVD1nCA1SyAABjCCFBQCV27OjYAAAAA==[0m[INFO] --- maven-surefire-plugin:2.19:test (default-test) @ iTrust ---
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running edu.ncsu.csc.itrust.logger.TransactionLoggerTest
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.046 sec <<< FAILURE! - in edu.ncsu.csc.itrust.logger.TransactionLoggerTest
+testLogTransaction(edu.ncsu.csc.itrust.logger.TransactionLoggerTest)  Time elapsed: 0.012 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.logger.TransactionLoggerTest.testLogTransaction(TransactionLoggerTest.java:33)
+
+Running edu.ncsu.csc.itrust.unit.EmailUtilTest
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.EmailUtilTest
+testSendEmail(edu.ncsu.csc.itrust.unit.EmailUtilTest)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Exception thrown from Evil Test Connection Driver]> but was:<[No extended information.]>
+	at edu.ncsu.csc.itrust.unit.EmailUtilTest.testSendEmail(EmailUtilTest.java:17)
+
+Running edu.ncsu.csc.itrust.unit.ErrorListTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.ErrorListTest
+Running edu.ncsu.csc.itrust.unit.CSVParserTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec - in edu.ncsu.csc.itrust.unit.CSVParserTest
+Running edu.ncsu.csc.itrust.unit.HtmlEncoderTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 sec - in edu.ncsu.csc.itrust.unit.HtmlEncoderTest
+Running edu.ncsu.csc.itrust.unit.MessagesTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.008 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.MessagesTest
+testGetString(edu.ncsu.csc.itrust.unit.MessagesTest)  Time elapsed: 0.003 sec  <<< ERROR!
+java.lang.ExceptionInInitializerError
+	at edu.ncsu.csc.itrust.unit.MessagesTest.testGetString(MessagesTest.java:9)
+Caused by: java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.MessagesTest.testGetString(MessagesTest.java:9)
+
+Running edu.ncsu.csc.itrust.unit.bean.EmailBeanTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 sec - in edu.ncsu.csc.itrust.unit.bean.EmailBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.TelemedicineBeanTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.bean.TelemedicineBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.SurveyResultBeanTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.bean.SurveyResultBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.ZipCodeLoaderTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.131 sec - in edu.ncsu.csc.itrust.unit.bean.ZipCodeLoaderTest
+Running edu.ncsu.csc.itrust.unit.bean.BeanLoaderTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.bean.BeanLoaderTest
+Running edu.ncsu.csc.itrust.unit.bean.RecordsReleaseBeanTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 sec - in edu.ncsu.csc.itrust.unit.bean.RecordsReleaseBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.SurveyBeanTest
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.bean.SurveyBeanTest
+testSurveyBean(edu.ncsu.csc.itrust.unit.bean.SurveyBeanTest)  Time elapsed: 0.003 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[01/02/2008 12:34]> but was:<[]>
+	at edu.ncsu.csc.itrust.unit.bean.SurveyBeanTest.testSurveyBean(SurveyBeanTest.java:22)
+
+Running edu.ncsu.csc.itrust.unit.bean.HCPLinkBeanTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.bean.HCPLinkBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.PatientBeanTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 sec - in edu.ncsu.csc.itrust.unit.bean.PatientBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.ZipCodeBeanTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.bean.ZipCodeBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.MedicationBeanTest
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.004 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.bean.MedicationBeanTest
+testPrescriptionEquals(edu.ncsu.csc.itrust.unit.bean.MedicationBeanTest)  Time elapsed: 0.001 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<edu.ncsu.csc.itrust.model.old.beans.MedicationBean@2> but was:<edu.ncsu.csc.itrust.model.old.beans.MedicationBean@2>
+	at edu.ncsu.csc.itrust.unit.bean.MedicationBeanTest.testPrescriptionEquals(MedicationBeanTest.java:24)
+
+Running edu.ncsu.csc.itrust.unit.bean.WardRoomBeanTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec - in edu.ncsu.csc.itrust.unit.bean.WardRoomBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.BillingBeanLoaderTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 sec - in edu.ncsu.csc.itrust.unit.bean.BillingBeanLoaderTest
+Running edu.ncsu.csc.itrust.unit.bean.ApptRequestBeanTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec - in edu.ncsu.csc.itrust.unit.bean.ApptRequestBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.ReportRequestBeanTest
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.005 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.bean.ReportRequestBeanTest
+testReportRequestBean(edu.ncsu.csc.itrust.unit.bean.ReportRequestBeanTest)  Time elapsed: 0.002 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class edu.ncsu.csc.itrust.Messages
+	at edu.ncsu.csc.itrust.unit.bean.ReportRequestBeanTest.testReportRequestBean(ReportRequestBeanTest.java:9)
+
+testBadRequestedDate(edu.ncsu.csc.itrust.unit.bean.ReportRequestBeanTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class edu.ncsu.csc.itrust.model.old.beans.ReportRequestBean
+	at edu.ncsu.csc.itrust.unit.bean.ReportRequestBeanTest.testBadRequestedDate(ReportRequestBeanTest.java:29)
+
+Running edu.ncsu.csc.itrust.unit.bean.WardBeanTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 sec - in edu.ncsu.csc.itrust.unit.bean.WardBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.AllergyBeanTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec - in edu.ncsu.csc.itrust.unit.bean.AllergyBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.WardBeanLoaderTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.bean.WardBeanLoaderTest
+Running edu.ncsu.csc.itrust.unit.bean.VisitFlagBeanTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.bean.VisitFlagBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 14.097 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest
+testGetPatients(edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest)  Time elapsed: 13.691 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest.setUp(GroupReportBeanTest.java:29)
+
+testGetFilters(edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest)  Time elapsed: 0.144 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest.setUp(GroupReportBeanTest.java:29)
+
+testGetFilterStrings(edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest)  Time elapsed: 0.132 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest.setUp(GroupReportBeanTest.java:29)
+
+testGetPatientNames(edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest)  Time elapsed: 0.125 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.bean.GroupReportBeanTest.setUp(GroupReportBeanTest.java:29)
+
+Running edu.ncsu.csc.itrust.unit.bean.PersonnelBeanTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.bean.PersonnelBeanTest
+Running edu.ncsu.csc.itrust.unit.bean.WardRoomBeanLoaderTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.bean.WardRoomBeanLoaderTest
+Running edu.ncsu.csc.itrust.unit.bean.RatingComparatorTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.153 sec - in edu.ncsu.csc.itrust.unit.bean.RatingComparatorTest
+Running edu.ncsu.csc.itrust.unit.bean.DistanceComparatorTest
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.model.old.dao.mysql.ZipCodeDAO.getZipCode(ZipCodeDAO.java:40)
+	at edu.ncsu.csc.itrust.action.ZipCodeAction.calcDistance(ZipCodeAction.java:49)
+	at edu.ncsu.csc.itrust.model.old.beans.DistanceComparator.compare(DistanceComparator.java:16)
+	at edu.ncsu.csc.itrust.unit.bean.DistanceComparatorTest.testComparatorEvil(DistanceComparatorTest.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:252)
+	at junit.framework.TestSuite.run(TestSuite.java:247)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:86)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:344)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.648 sec - in edu.ncsu.csc.itrust.unit.bean.DistanceComparatorTest
+Running edu.ncsu.csc.itrust.unit.bean.HospitalBeanTest
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.bean.HospitalBeanTest
+testHospitalBean(edu.ncsu.csc.itrust.unit.bean.HospitalBeanTest)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<42> but was:<2>
+	at edu.ncsu.csc.itrust.unit.bean.HospitalBeanTest.testHospitalBean(HospitalBeanTest.java:21)
+
+testFullConstructor(edu.ncsu.csc.itrust.unit.bean.HospitalBeanTest)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<42> but was:<2>
+	at edu.ncsu.csc.itrust.unit.bean.HospitalBeanTest.testFullConstructor(HospitalBeanTest.java:37)
+
+Running edu.ncsu.csc.itrust.unit.bean.ReviewsBeanLoaderTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.bean.ReviewsBeanLoaderTest
+Running edu.ncsu.csc.itrust.unit.bean.OverrideReasonBeanTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.bean.OverrideReasonBeanTest
+Running edu.ncsu.csc.itrust.unit.DateUtilTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.DateUtilTest
+Running edu.ncsu.csc.itrust.unit.enums.TransactionTypeTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 sec - in edu.ncsu.csc.itrust.unit.enums.TransactionTypeTest
+Running edu.ncsu.csc.itrust.unit.enums.BloodTypeTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec - in edu.ncsu.csc.itrust.unit.enums.BloodTypeTest
+Running edu.ncsu.csc.itrust.unit.enums.StateTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.enums.StateTest
+Running edu.ncsu.csc.itrust.unit.enums.EthnicityTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.enums.EthnicityTest
+Running edu.ncsu.csc.itrust.unit.serverutils.WardRoomCRUDServletTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 sec - in edu.ncsu.csc.itrust.unit.serverutils.WardRoomCRUDServletTest
+Running edu.ncsu.csc.itrust.unit.serverutils.SessionTimeoutListenerTest
+Tests run: 3, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.27 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.serverutils.SessionTimeoutListenerTest
+testSessionDestroyed(edu.ncsu.csc.itrust.unit.serverutils.SessionTimeoutListenerTest)  Time elapsed: 0.256 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.serverutils.SessionTimeoutListenerTest.testSessionDestroyed(SessionTimeoutListenerTest.java:42)
+
+testDBException(edu.ncsu.csc.itrust.unit.serverutils.SessionTimeoutListenerTest)  Time elapsed: 0.002 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.serverutils.SessionTimeoutListenerTest.testDBException(SessionTimeoutListenerTest.java:49)
+
+Running edu.ncsu.csc.itrust.unit.serverutils.CustomJSPTagsTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.23 sec - in edu.ncsu.csc.itrust.unit.serverutils.CustomJSPTagsTest
+Running edu.ncsu.csc.itrust.unit.serverutils.ProductionConnectionDriverTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.083 sec - in edu.ncsu.csc.itrust.unit.serverutils.ProductionConnectionDriverTest
+Running edu.ncsu.csc.itrust.unit.serverutils.WardCRUDServletTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 sec - in edu.ncsu.csc.itrust.unit.serverutils.WardCRUDServletTest
+Running edu.ncsu.csc.itrust.unit.serverutils.FindExpertServletTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.186 sec - in edu.ncsu.csc.itrust.unit.serverutils.FindExpertServletTest
+Running edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest
+Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.368 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest
+testNonAuditSearch(edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest)  Time elapsed: 0.115 sec  <<< FAILURE!
+java.lang.AssertionError
+	at edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest.testNonAuditSearch(PateintSearchServletTest.java:96)
+
+testEmptyAuditSearch(edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest)  Time elapsed: 0.121 sec  <<< FAILURE!
+java.lang.AssertionError
+	at edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest.testEmptyAuditSearch(PateintSearchServletTest.java:74)
+
+testDoGetAuditHttpServletRequestHttpServletResponse(edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest)  Time elapsed: 0.121 sec  <<< FAILURE!
+java.lang.AssertionError
+	at edu.ncsu.csc.itrust.unit.serverutils.PateintSearchServletTest.testDoGetAuditHttpServletRequestHttpServletResponse(PateintSearchServletTest.java:52)
+
+Running edu.ncsu.csc.itrust.unit.serverutils.GroupReportGeneratorTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.078 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.serverutils.GroupReportGeneratorTest
+testGroupReportGeneratorServletPost(edu.ncsu.csc.itrust.unit.serverutils.GroupReportGeneratorTest)  Time elapsed: 0.059 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.serverutils.GroupReportGeneratorTest.testGroupReportGeneratorServletPost(GroupReportGeneratorTest.java:75)
+
+Running edu.ncsu.csc.itrust.unit.BeanBuilderTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 sec - in edu.ncsu.csc.itrust.unit.BeanBuilderTest
+Running edu.ncsu.csc.itrust.unit.action.AddDrugListActionTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.093 sec - in edu.ncsu.csc.itrust.unit.action.AddDrugListActionTest
+Running edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest
+Tests run: 8, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.267 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest
+testGetAccessesIllegalUser(edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest)  Time elapsed: 0.028 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest.testGetAccessesIllegalUser(ViewMyAccessLogActionTest.java:54)
+
+testNoProblems(edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest)  Time elapsed: 0.032 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest.testNoProblems(ViewMyAccessLogActionTest.java:39)
+
+testDLHCPAccessesHidden(edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest)  Time elapsed: 0.034 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest.testDLHCPAccessesHidden(ViewMyAccessLogActionTest.java:103)
+
+testGetAccessesBadData(edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest)  Time elapsed: 0.032 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest.testGetAccessesBadData(ViewMyAccessLogActionTest.java:65)
+
+testNoProblemsDependentLog(edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest)  Time elapsed: 0.045 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest.testNoProblemsDependentLog(ViewMyAccessLogActionTest.java:46)
+
+testGetAccessesByRole(edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest)  Time elapsed: 0.03 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyAccessLogActionTest.testGetAccessesByRole(ViewMyAccessLogActionTest.java:85)
+
+Running edu.ncsu.csc.itrust.unit.action.AddERespActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.162 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddERespActionTest
+testAddER(edu.ncsu.csc.itrust.unit.action.AddERespActionTest)  Time elapsed: 0.15 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddERespActionTest.testAddER(AddERespActionTest.java:44)
+
+Running edu.ncsu.csc.itrust.unit.action.AddApptRequestActionTest
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.264 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddApptRequestActionTest
+testAddApptRequest(edu.ncsu.csc.itrust.unit.action.AddApptRequestActionTest)  Time elapsed: 0.15 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddApptRequestActionTest.testAddApptRequest(AddApptRequestActionTest.java:54)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest
+Tests run: 16, Failures: 0, Errors: 16, Skipped: 0, Time elapsed: 1.331 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest
+testAddMessage(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.119 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testFilterMessages(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.105 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMySentMessages(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.109 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetPatientName(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.108 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessagesFromTimeAscending(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.119 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessagesFromNameDescending(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.097 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testUpdateRead(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.089 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetCCdMessages(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.083 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessagesFromNameAscending(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.062 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testThrowsExceptions(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.062 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessagesTimeAscending(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.061 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessagesNameDescending(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.067 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessagesNameAscending(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.057 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetPersonnelName(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.06 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetUnreadCount(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.063 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+testGetAllMyMessages(edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest)  Time elapsed: 0.061 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyMessagesActionTest.setUp(ViewMyMessagesActionTest.java:42)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest
+Tests run: 8, Failures: 3, Errors: 5, Skipped: 0, Time elapsed: 0.221 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest
+testInsertReport1(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.03 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Exception thrown from Evil Test Connection Driver]> but was:<[RequesterMID cannot be null]>
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testInsertReport1(ViewMyReportRequestsActionTest.java:77)
+
+testInsertReport2(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.023 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testInsertReport2(ViewMyReportRequestsActionTest.java:83)
+
+testSetViewedToZero(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.031 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: Should have throw exception
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testSetViewedToZero(ViewMyReportRequestsActionTest.java:94)
+
+testGetReportRequests3(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.021 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testGetReportRequests3(ViewMyReportRequestsActionTest.java:34)
+
+testGetEvilReportRequest(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.03 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Exception thrown from Evil Test Connection Driver]> but was:<[ID cannot be null]>
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testGetEvilReportRequest(ViewMyReportRequestsActionTest.java:46)
+
+testGetLongStatus(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.023 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testGetLongStatus(ViewMyReportRequestsActionTest.java:105)
+
+testGetReportRequestForID3(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.039 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testGetReportRequestForID3(ViewMyReportRequestsActionTest.java:52)
+
+testGetReportRequestForID4(edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest)  Time elapsed: 0.021 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ViewMyReportRequestsActionTest.testGetReportRequestForID4(ViewMyReportRequestsActionTest.java:61)
+
+Running edu.ncsu.csc.itrust.unit.action.GroupReportActionTest
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.21 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.GroupReportActionTest
+testGetComprehensiveMedicalInfo(edu.ncsu.csc.itrust.unit.action.GroupReportActionTest)  Time elapsed: 0.074 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GroupReportActionTest.setUp(GroupReportActionTest.java:29)
+
+testGenerateReport(edu.ncsu.csc.itrust.unit.action.GroupReportActionTest)  Time elapsed: 0.07 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GroupReportActionTest.setUp(GroupReportActionTest.java:29)
+
+testGetComprehensiveDemographicInfo(edu.ncsu.csc.itrust.unit.action.GroupReportActionTest)  Time elapsed: 0.064 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GroupReportActionTest.setUp(GroupReportActionTest.java:29)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.237 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest
+testGetName2(edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest)  Time elapsed: 0.063 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest.setUp(ViewMyApptsActionTest.java:26)
+
+testGetMyAppointments(edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest)  Time elapsed: 0.06 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest.setUp(ViewMyApptsActionTest.java:26)
+
+testGetName(edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest)  Time elapsed: 0.112 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyApptsActionTest.setUp(ViewMyApptsActionTest.java:26)
+
+Running edu.ncsu.csc.itrust.unit.action.GetUserNameActionTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.104 sec - in edu.ncsu.csc.itrust.unit.action.GetUserNameActionTest
+Running edu.ncsu.csc.itrust.unit.action.ResetPasswordActionTest
+Tests run: 13, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.474 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ResetPasswordActionTest
+testResetForHCP(edu.ncsu.csc.itrust.unit.action.ResetPasswordActionTest)  Time elapsed: 0.057 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ResetPasswordActionTest.testResetForHCP(ResetPasswordActionTest.java:114)
+
+testResetPassword(edu.ncsu.csc.itrust.unit.action.ResetPasswordActionTest)  Time elapsed: 0.043 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ResetPasswordActionTest.testResetPassword(ResetPasswordActionTest.java:102)
+
+Running edu.ncsu.csc.itrust.unit.action.EditPersonnelActionTest
+Tests run: 6, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.363 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.EditPersonnelActionTest
+testUpdateInformation(edu.ncsu.csc.itrust.unit.action.EditPersonnelActionTest)  Time elapsed: 0.036 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPersonnelActionTest.testUpdateInformation(EditPersonnelActionTest.java:73)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.284 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest
+testRejectApptRequest(edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest)  Time elapsed: 0.116 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest.setUp(ViewApptRequestsActionTest.java:24)
+
+testAcceptApptRequest(edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest)  Time elapsed: 0.097 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest.setUp(ViewApptRequestsActionTest.java:24)
+
+testGetApptRequests(edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest)  Time elapsed: 0.068 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewApptRequestsActionTest.setUp(ViewApptRequestsActionTest.java:24)
+
+Running edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest
+Tests run: 9, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.223 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest
+testAddHospital(edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest)  Time elapsed: 0.026 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.testAddHospital(UpdateHospitalListActionTest.java:80)
+
+testUpdateAddress(edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.addEmpty(UpdateHospitalListActionTest.java:66)
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.testUpdateAddress(UpdateHospitalListActionTest.java:169)
+
+testUpdateICDInformation0(edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest)  Time elapsed: 0.026 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.addEmpty(UpdateHospitalListActionTest.java:66)
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.testUpdateICDInformation0(UpdateHospitalListActionTest.java:124)
+
+testAddAddress(edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest)  Time elapsed: 0.026 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.testAddAddress(UpdateHospitalListActionTest.java:152)
+
+testAddHospital2(edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest)  Time elapsed: 0.03 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.testAddHospital2(UpdateHospitalListActionTest.java:94)
+
+testAddDuplicate(edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest)  Time elapsed: 0.03 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.UpdateHospitalListActionTest.testAddDuplicate(UpdateHospitalListActionTest.java:108)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewReportActionTest
+Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.004 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewReportActionTest
+warning(junit.framework.TestSuite$1)  Time elapsed: 0.001 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: 
+Exception in constructor: testGetPatientl (java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.action.ViewReportAction.<init>(ViewReportAction.java:26)
+	at edu.ncsu.csc.itrust.action.ViewReportAction.<init>(ViewReportAction.java:35)
+	at edu.ncsu.csc.itrust.unit.action.ViewReportActionTest.<init>(ViewReportActionTest.java:17)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at junit.framework.TestSuite.createTest(TestSuite.java:60)
+	at junit.framework.TestSuite.addTestMethod(TestSuite.java:307)
+	at junit.framework.TestSuite.addTestsFromTestCase(TestSuite.java:150)
+	at junit.framework.TestSuite.<init>(TestSuite.java:129)
+	at org.junit.internal.runners.JUnit38ClassRunner.<init>(JUnit38ClassRunner.java:74)
+	at org.junit.internal.builders.JUnit3Builder.runnerForClass(JUnit3Builder.java:11)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:33)
+	at org.junit.internal.requests.FilterRequest.getRunner(FilterRequest.java:36)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:341)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+)
+	at junit.framework.TestSuite$1.runTest(TestSuite.java:97)
+
+warning(junit.framework.TestSuite$1)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: 
+Exception in constructor: testGetDeclaredHCPs (java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.action.ViewReportAction.<init>(ViewReportAction.java:26)
+	at edu.ncsu.csc.itrust.action.ViewReportAction.<init>(ViewReportAction.java:35)
+	at edu.ncsu.csc.itrust.unit.action.ViewReportActionTest.<init>(ViewReportActionTest.java:17)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at junit.framework.TestSuite.createTest(TestSuite.java:60)
+	at junit.framework.TestSuite.addTestMethod(TestSuite.java:307)
+	at junit.framework.TestSuite.addTestsFromTestCase(TestSuite.java:150)
+	at junit.framework.TestSuite.<init>(TestSuite.java:129)
+	at org.junit.internal.runners.JUnit38ClassRunner.<init>(JUnit38ClassRunner.java:74)
+	at org.junit.internal.builders.JUnit3Builder.runnerForClass(JUnit3Builder.java:11)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:33)
+	at org.junit.internal.requests.FilterRequest.getRunner(FilterRequest.java:36)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:341)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+)
+	at junit.framework.TestSuite$1.runTest(TestSuite.java:97)
+
+warning(junit.framework.TestSuite$1)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: 
+Exception in constructor: testGetPersonnel (java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.action.ViewReportAction.<init>(ViewReportAction.java:26)
+	at edu.ncsu.csc.itrust.action.ViewReportAction.<init>(ViewReportAction.java:35)
+	at edu.ncsu.csc.itrust.unit.action.ViewReportActionTest.<init>(ViewReportActionTest.java:17)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at junit.framework.TestSuite.createTest(TestSuite.java:60)
+	at junit.framework.TestSuite.addTestMethod(TestSuite.java:307)
+	at junit.framework.TestSuite.addTestsFromTestCase(TestSuite.java:150)
+	at junit.framework.TestSuite.<init>(TestSuite.java:129)
+	at org.junit.internal.runners.JUnit38ClassRunner.<init>(JUnit38ClassRunner.java:74)
+	at org.junit.internal.builders.JUnit3Builder.runnerForClass(JUnit3Builder.java:11)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:33)
+	at org.junit.internal.requests.FilterRequest.getRunner(FilterRequest.java:36)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:341)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+)
+	at junit.framework.TestSuite$1.runTest(TestSuite.java:97)
+
+Running edu.ncsu.csc.itrust.unit.action.AddLTActionTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.152 sec - in edu.ncsu.csc.itrust.unit.action.AddLTActionTest
+Running edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest
+Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.133 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest
+testGetPatientDataByDate(edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest)  Time elapsed: 0.026 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest.setUp(ViewMyRemoteMonitoringListActionTest.java:26)
+
+testGetPatientDataByType(edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest.setUp(ViewMyRemoteMonitoringListActionTest.java:26)
+
+testGetPatientData(edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest)  Time elapsed: 0.024 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest.setUp(ViewMyRemoteMonitoringListActionTest.java:26)
+
+testGetPatientName(edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest)  Time elapsed: 0.032 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest.setUp(ViewMyRemoteMonitoringListActionTest.java:26)
+
+testIllegalGetPatientDataByDate1(edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest)  Time elapsed: 0.027 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyRemoteMonitoringListActionTest.setUp(ViewMyRemoteMonitoringListActionTest.java:26)
+
+Running edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest
+Tests run: 20, Failures: 1, Errors: 4, Skipped: 0, Time elapsed: 0.546 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest
+testAssignHCPToHospital(edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest)  Time elapsed: 0.023 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.doAssignment(ManageHospitalAssignmentsActionTest.java:45)
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.testAssignHCPToHospital(ManageHospitalAssignmentsActionTest.java:58)
+
+testRemovePersonnelAssignmentToHospital(edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest)  Time elapsed: 0.04 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.doAssignment(ManageHospitalAssignmentsActionTest.java:45)
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.testRemovePersonnelAssignmentToHospital(ManageHospitalAssignmentsActionTest.java:99)
+
+testAssignHCPToHospitalEvil(edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest)  Time elapsed: 0.02 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Exception thrown from Evil Test Connection Driver]> but was:<[No extended information.]>
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.testAssignHCPToHospitalEvil(ManageHospitalAssignmentsActionTest.java:73)
+
+testAssignDuplicate(edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest)  Time elapsed: 0.024 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.doAssignment(ManageHospitalAssignmentsActionTest.java:45)
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.testAssignDuplicate(ManageHospitalAssignmentsActionTest.java:84)
+
+testRemoveAll(edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest)  Time elapsed: 0.045 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.doAssignment(ManageHospitalAssignmentsActionTest.java:45)
+	at edu.ncsu.csc.itrust.unit.action.ManageHospitalAssignmentsActionTest.testRemoveAll(ManageHospitalAssignmentsActionTest.java:120)
+
+Running edu.ncsu.csc.itrust.unit.action.AddRemoteMonitoringDataActionTest
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.558 sec - in edu.ncsu.csc.itrust.unit.action.AddRemoteMonitoringDataActionTest
+Running edu.ncsu.csc.itrust.unit.action.DrugInteractionActionTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.25 sec - in edu.ncsu.csc.itrust.unit.action.DrugInteractionActionTest
+Running edu.ncsu.csc.itrust.unit.action.EditPatientActionTest
+Tests run: 11, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.276 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.EditPatientActionTest
+testEditRepresentatives(edu.ncsu.csc.itrust.unit.action.EditPatientActionTest)  Time elapsed: 0.029 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPatientActionTest.testEditRepresentatives(EditPatientActionTest.java:42)
+
+testGetPatientLogged(edu.ncsu.csc.itrust.unit.action.EditPatientActionTest)  Time elapsed: 0.028 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPatientActionTest.testGetPatientLogged(EditPatientActionTest.java:117)
+
+testSetDependent(edu.ncsu.csc.itrust.unit.action.EditPatientActionTest)  Time elapsed: 0.025 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPatientActionTest.testSetDependent(EditPatientActionTest.java:154)
+
+testInvalidDates(edu.ncsu.csc.itrust.unit.action.EditPatientActionTest)  Time elapsed: 0.024 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPatientActionTest.testInvalidDates(EditPatientActionTest.java:78)
+
+testDeactivateActivate(edu.ncsu.csc.itrust.unit.action.EditPatientActionTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPatientActionTest.testDeactivateActivate(EditPatientActionTest.java:125)
+
+testEditCOD(edu.ncsu.csc.itrust.unit.action.EditPatientActionTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditPatientActionTest.testEditCOD(EditPatientActionTest.java:60)
+
+Running edu.ncsu.csc.itrust.unit.action.EditMonitoringListActionTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 sec - in edu.ncsu.csc.itrust.unit.action.EditMonitoringListActionTest
+Running edu.ncsu.csc.itrust.unit.action.ViewMyBillingActionTest
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.249 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewMyBillingActionTest
+testGetAllMyBills(edu.ncsu.csc.itrust.unit.action.ViewMyBillingActionTest)  Time elapsed: 0.118 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewMyBillingActionTest.testGetAllMyBills(ViewMyBillingActionTest.java:31)
+
+Running edu.ncsu.csc.itrust.unit.action.UpdateNDCodeListActionTest
+Tests run: 7, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.177 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.UpdateNDCodeListActionTest
+testUpdateNDInformation0(edu.ncsu.csc.itrust.unit.action.UpdateNDCodeListActionTest)  Time elapsed: 0.023 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Success: 1 row(s) updated]> but was:<[Error: Code not found.]>
+	at edu.ncsu.csc.itrust.unit.action.UpdateNDCodeListActionTest.testUpdateNDInformation0(UpdateNDCodeListActionTest.java:113)
+
+testUpdateNonExistent(edu.ncsu.csc.itrust.unit.action.UpdateNDCodeListActionTest)  Time elapsed: 0.03 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Error: Code not found.]> but was:<[Success: 0 row(s) updated]>
+	at edu.ncsu.csc.itrust.unit.action.UpdateNDCodeListActionTest.testUpdateNonExistent(UpdateNDCodeListActionTest.java:126)
+
+Running edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest
+Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest
+testInvalidData(edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest.testInvalidData(AddPatientFileActionTest.java:54)
+
+testDuplicateField(edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest.testDuplicateField(AddPatientFileActionTest.java:71)
+
+testRequiredFieldMissing(edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest.testRequiredFieldMissing(AddPatientFileActionTest.java:114)
+
+testValidData(edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest.testValidData(AddPatientFileActionTest.java:38)
+
+testInvalidHeader(edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPatientFileActionTest.testInvalidHeader(AddPatientFileActionTest.java:93)
+
+Running edu.ncsu.csc.itrust.unit.action.ChangePasswordActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.078 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ChangePasswordActionTest
+testChangePassword(edu.ncsu.csc.itrust.unit.action.ChangePasswordActionTest)  Time elapsed: 0.078 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ChangePasswordActionTest.testChangePassword(ChangePasswordActionTest.java:24)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewHelperActionTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.action.ViewHelperActionTest
+Running edu.ncsu.csc.itrust.unit.action.ViewNumberOfPendingAppointmentsActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.069 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewNumberOfPendingAppointmentsActionTest
+testGetNumRequest(edu.ncsu.csc.itrust.unit.action.ViewNumberOfPendingAppointmentsActionTest)  Time elapsed: 0.068 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewNumberOfPendingAppointmentsActionTest.setUp(ViewNumberOfPendingAppointmentsActionTest.java:30)
+
+Running edu.ncsu.csc.itrust.unit.action.FindExpertActionTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.092 sec - in edu.ncsu.csc.itrust.unit.action.FindExpertActionTest
+Running edu.ncsu.csc.itrust.unit.action.ChangeSessionTimeoutActionTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.action.ChangeSessionTimeoutActionTest
+Running edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest
+Tests run: 14, Failures: 0, Errors: 8, Skipped: 0, Time elapsed: 1.061 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest
+testSearchForPatientsWithName2(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.108 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testSearchForPatientsWithName2(SearchUsersActionTest.java:43)
+
+testFuzzySearchForPatient1(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.07 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testFuzzySearchForPatient1(SearchUsersActionTest.java:61)
+
+testFuzzySearchForPatient2(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.095 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testFuzzySearchForPatient2(SearchUsersActionTest.java:70)
+
+testFuzzySearchForPatient3(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.117 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testFuzzySearchForPatient3(SearchUsersActionTest.java:79)
+
+testSearchForPatientsWithName(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.066 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testSearchForPatientsWithName(SearchUsersActionTest.java:34)
+
+testFuzzySearchForPatientDeactivated(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.059 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testFuzzySearchForPatientDeactivated(SearchUsersActionTest.java:85)
+
+testFuzzySearchForPatientDeactivatedOverride(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.075 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testFuzzySearchForPatientDeactivatedOverride(SearchUsersActionTest.java:94)
+
+testDeactivated(edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest)  Time elapsed: 0.066 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SearchUsersActionTest.testDeactivated(SearchUsersActionTest.java:144)
+
+Running edu.ncsu.csc.itrust.unit.action.LoginFailureActionTest
+Denying access due to DBException
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.128 sec - in edu.ncsu.csc.itrust.unit.action.LoginFailureActionTest
+Running edu.ncsu.csc.itrust.unit.action.EventLoggingActionTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 sec - in edu.ncsu.csc.itrust.unit.action.EventLoggingActionTest
+Running edu.ncsu.csc.itrust.unit.action.GroupReportGeneratorActionTest
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.178 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.GroupReportGeneratorActionTest
+testParseFilters(edu.ncsu.csc.itrust.unit.action.GroupReportGeneratorActionTest)  Time elapsed: 0.072 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GroupReportGeneratorActionTest.testParseFilters(GroupReportGeneratorActionTest.java:73)
+
+testGenerateReport(edu.ncsu.csc.itrust.unit.action.GroupReportGeneratorActionTest)  Time elapsed: 0.1 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GroupReportGeneratorActionTest.testGenerateReport(GroupReportGeneratorActionTest.java:42)
+
+Running edu.ncsu.csc.itrust.unit.action.PayBillActionTest
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.164 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.PayBillActionTest
+testPayBillWithCC(edu.ncsu.csc.itrust.unit.action.PayBillActionTest)  Time elapsed: 0.094 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.PayBillActionTest.setUp(PayBillActionTest.java:26)
+
+testPayBillWithIns(edu.ncsu.csc.itrust.unit.action.PayBillActionTest)  Time elapsed: 0.067 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.PayBillActionTest.setUp(PayBillActionTest.java:26)
+
+Running edu.ncsu.csc.itrust.unit.action.ZipCodeActionTest
+Begin testGetExperts
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.059 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ZipCodeActionTest
+testGetExperts(edu.ncsu.csc.itrust.unit.action.ZipCodeActionTest)  Time elapsed: 0.059 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ZipCodeActionTest.testGetExperts(ZipCodeActionTest.java:30)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewPersonnelActionTest
+Tests run: 3, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.067 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewPersonnelActionTest
+testNotANumber(edu.ncsu.csc.itrust.unit.action.ViewPersonnelActionTest)  Time elapsed: 0.017 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class edu.ncsu.csc.itrust.Messages
+	at edu.ncsu.csc.itrust.unit.action.ViewPersonnelActionTest.testNotANumber(ViewPersonnelActionTest.java:44)
+
+testNoPersonnel(edu.ncsu.csc.itrust.unit.action.ViewPersonnelActionTest)  Time elapsed: 0.025 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class edu.ncsu.csc.itrust.Messages
+	at edu.ncsu.csc.itrust.unit.action.ViewPersonnelActionTest.testNoPersonnel(ViewPersonnelActionTest.java:34)
+
+Running edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest
+Tests run: 6, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.121 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest
+testUnDeclareNotDeclared(edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest.testUnDeclareNotDeclared(DeclareHCPActionTest.java:65)
+
+testDeclareAlreadyDeclared(edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest.testDeclareAlreadyDeclared(DeclareHCPActionTest.java:55)
+
+testUnDeclareNormal(edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest)  Time elapsed: 0.018 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest.testUnDeclareNormal(DeclareHCPActionTest.java:44)
+
+testDeclareNormal(edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest.testDeclareNormal(DeclareHCPActionTest.java:36)
+
+testGetDeclared(edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.DeclareHCPActionTest.testGetDeclared(DeclareHCPActionTest.java:29)
+
+Running edu.ncsu.csc.itrust.unit.action.UpdateORCListActionTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec - in edu.ncsu.csc.itrust.unit.action.UpdateORCListActionTest
+Running edu.ncsu.csc.itrust.unit.action.SetSecurityQuestionTest
+Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.085 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.SetSecurityQuestionTest
+testBadConnection(edu.ncsu.csc.itrust.unit.action.SetSecurityQuestionTest)  Time elapsed: 0.019 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Exception thrown from Evil Test Connection Driver]> but was:<[No extended information.]>
+	at edu.ncsu.csc.itrust.unit.action.SetSecurityQuestionTest.testBadConnection(SetSecurityQuestionTest.java:39)
+
+Running edu.ncsu.csc.itrust.unit.action.ViewClaimsActionTest
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.model.old.dao.mysql.BillingDAO.getInsuranceBills(BillingDAO.java:171)
+	at edu.ncsu.csc.itrust.action.ViewClaimsAction.getClaims(ViewClaimsAction.java:39)
+	at edu.ncsu.csc.itrust.unit.action.ViewClaimsActionTest.testEvilAction(ViewClaimsActionTest.java:110)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:252)
+	at junit.framework.TestSuite.run(TestSuite.java:247)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:86)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:344)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO.getName(PatientDAO.java:75)
+	at edu.ncsu.csc.itrust.action.ViewClaimsAction.getSubmitter(ViewClaimsAction.java:54)
+	at edu.ncsu.csc.itrust.unit.action.ViewClaimsActionTest.testEvilAction(ViewClaimsActionTest.java:111)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:252)
+	at junit.framework.TestSuite.run(TestSuite.java:247)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:86)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:344)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.413 sec - in edu.ncsu.csc.itrust.unit.action.ViewClaimsActionTest
+Running edu.ncsu.csc.itrust.unit.action.ReviewsActionTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.308 sec - in edu.ncsu.csc.itrust.unit.action.ReviewsActionTest
+Running edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO.checkIfPatientIsActive(PatientDAO.java:433)
+	at edu.ncsu.csc.itrust.action.EditRepresentativesAction.checkIfPatientIsActive(EditRepresentativesAction.java:121)
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testCheckIfPatientIsActive(EditRepresentativesActionTest.java:86)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:252)
+	at junit.framework.TestSuite.run(TestSuite.java:247)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:86)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:344)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+Tests run: 10, Failures: 1, Errors: 6, Skipped: 0, Time elapsed: 0.266 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest
+testNotAPatient(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.032 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testNotAPatient(EditRepresentativesActionTest.java:80)
+
+testGetRepresentatives(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.021 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testGetRepresentatives(EditRepresentativesActionTest.java:31)
+
+testCannotRepresentSelf(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.029 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testCannotRepresentSelf(EditRepresentativesActionTest.java:73)
+
+testCheckIfPatientIsActive(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.03 sec  <<< FAILURE!
+junit.framework.AssertionFailedError
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testCheckIfPatientIsActive(EditRepresentativesActionTest.java:87)
+
+testRemoveNothing(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.024 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testRemoveNothing(EditRepresentativesActionTest.java:61)
+
+testAddRepresentee(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testAddRepresentee(EditRepresentativesActionTest.java:38)
+
+testRemoveRepresentee(edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditRepresentativesActionTest.testRemoveRepresentee(EditRepresentativesActionTest.java:46)
+
+Running edu.ncsu.csc.itrust.unit.action.PatientBaseActionTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 sec - in edu.ncsu.csc.itrust.unit.action.PatientBaseActionTest
+Running edu.ncsu.csc.itrust.unit.action.PatientRoomAssignmentActionTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.065 sec - in edu.ncsu.csc.itrust.unit.action.PatientRoomAssignmentActionTest
+Running edu.ncsu.csc.itrust.unit.action.ActivityFeedActionTest
+Tests run: 3, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.266 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ActivityFeedActionTest
+testGetTransactions(edu.ncsu.csc.itrust.unit.action.ActivityFeedActionTest)  Time elapsed: 0.066 sec  <<< FAILURE!
+junit.framework.AssertionFailedError
+	at edu.ncsu.csc.itrust.unit.action.ActivityFeedActionTest.testGetTransactions(ActivityFeedActionTest.java:41)
+
+testHiddenActivityFromDLHCP(edu.ncsu.csc.itrust.unit.action.ActivityFeedActionTest)  Time elapsed: 0.126 sec  <<< ERROR!
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.unit.action.ActivityFeedActionTest.testHiddenActivityFromDLHCP(ActivityFeedActionTest.java:79)
+
+Running edu.ncsu.csc.itrust.unit.action.AddUAPActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.023 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddUAPActionTest
+testAddUAP(edu.ncsu.csc.itrust.unit.action.AddUAPActionTest)  Time elapsed: 0.023 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddUAPActionTest.testAddUAP(AddUAPActionTest.java:40)
+
+Running edu.ncsu.csc.itrust.unit.action.AddPatientActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.011 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddPatientActionTest
+testAddPatient(edu.ncsu.csc.itrust.unit.action.AddPatientActionTest)  Time elapsed: 0.011 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPatientActionTest.testAddPatient(AddPatientActionTest.java:45)
+
+Running edu.ncsu.csc.itrust.unit.action.ApptBeanTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.action.ApptBeanTest
+Running edu.ncsu.csc.itrust.unit.action.EditApptActionTest
+Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.127 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.EditApptActionTest
+testEditAppt(edu.ncsu.csc.itrust.unit.action.EditApptActionTest)  Time elapsed: 0.023 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptActionTest.setUp(EditApptActionTest.java:43)
+
+testEditApptConflict(edu.ncsu.csc.itrust.unit.action.EditApptActionTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptActionTest.setUp(EditApptActionTest.java:43)
+
+testGetAppt(edu.ncsu.csc.itrust.unit.action.EditApptActionTest)  Time elapsed: 0.02 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptActionTest.setUp(EditApptActionTest.java:43)
+
+testGetName(edu.ncsu.csc.itrust.unit.action.EditApptActionTest)  Time elapsed: 0.019 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptActionTest.setUp(EditApptActionTest.java:43)
+
+testEvilFactory(edu.ncsu.csc.itrust.unit.action.EditApptActionTest)  Time elapsed: 0.019 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptActionTest.setUp(EditApptActionTest.java:43)
+
+testRemoveAppt(edu.ncsu.csc.itrust.unit.action.EditApptActionTest)  Time elapsed: 0.021 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptActionTest.setUp(EditApptActionTest.java:43)
+
+Running edu.ncsu.csc.itrust.unit.action.AddApptActionTest
+Tests run: 6, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.416 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddApptActionTest
+testAddAppt(edu.ncsu.csc.itrust.unit.action.AddApptActionTest)  Time elapsed: 0.062 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddApptActionTest.testAddAppt(AddApptActionTest.java:45)
+
+testAddConflicts(edu.ncsu.csc.itrust.unit.action.AddApptActionTest)  Time elapsed: 0.079 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddApptActionTest.testAddConflicts(AddApptActionTest.java:88)
+
+testGetConflicts(edu.ncsu.csc.itrust.unit.action.AddApptActionTest)  Time elapsed: 0.078 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddApptActionTest.testGetConflicts(AddApptActionTest.java:115)
+
+Running edu.ncsu.csc.itrust.unit.action.DeclareHCPActionExceptionTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.action.DeclareHCPActionExceptionTest
+Running edu.ncsu.csc.itrust.unit.action.ViewPatientActionTest
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.039 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.ViewPatientActionTest
+testGetViewablePatients(edu.ncsu.csc.itrust.unit.action.ViewPatientActionTest)  Time elapsed: 0.018 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewPatientActionTest.setUp(ViewPatientActionTest.java:27)
+
+testGetPatient(edu.ncsu.csc.itrust.unit.action.ViewPatientActionTest)  Time elapsed: 0.019 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.ViewPatientActionTest.setUp(ViewPatientActionTest.java:27)
+
+Running edu.ncsu.csc.itrust.unit.action.AddHCPActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.008 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddHCPActionTest
+testAddHCP(edu.ncsu.csc.itrust.unit.action.AddHCPActionTest)  Time elapsed: 0.002 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddHCPActionTest.testAddHCP(AddHCPActionTest.java:57)
+
+Running edu.ncsu.csc.itrust.unit.action.SendMessageActionTest
+Tests run: 7, Failures: 3, Errors: 2, Skipped: 0, Time elapsed: 0.491 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.SendMessageActionTest
+testGetMyRepresentees(edu.ncsu.csc.itrust.unit.action.SendMessageActionTest)  Time elapsed: 0.064 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SendMessageActionTest.testGetMyRepresentees(SendMessageActionTest.java:75)
+
+testSendMessage(edu.ncsu.csc.itrust.unit.action.SendMessageActionTest)  Time elapsed: 0.075 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.SendMessageActionTest.testSendMessage(SendMessageActionTest.java:57)
+
+testGetMyDLHCPs(edu.ncsu.csc.itrust.unit.action.SendMessageActionTest)  Time elapsed: 0.07 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.action.SendMessageActionTest.testGetMyDLHCPs(SendMessageActionTest.java:91)
+
+testGetMyDLHCPs2(edu.ncsu.csc.itrust.unit.action.SendMessageActionTest)  Time elapsed: 0.059 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.action.SendMessageActionTest.testGetMyDLHCPs2(SendMessageActionTest.java:96)
+
+testGetDLCHPsFor(edu.ncsu.csc.itrust.unit.action.SendMessageActionTest)  Time elapsed: 0.058 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.action.SendMessageActionTest.testGetDLCHPsFor(SendMessageActionTest.java:102)
+
+Running edu.ncsu.csc.itrust.unit.action.EditApptTypeTest
+Tests run: 7, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 0.422 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.EditApptTypeTest
+testAddApptType2(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.06 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+testGetApptTypes(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.058 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+testEditNonExistentApptType(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.061 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+testAddApptType(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.062 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+testAddApptTypeLengthZero(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.062 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+testEditApptType(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.059 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+testEditApptType2(edu.ncsu.csc.itrust.unit.action.EditApptTypeTest)  Time elapsed: 0.057 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.EditApptTypeTest.setUp(EditApptTypeTest.java:27)
+
+Running edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.177 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest
+testGetSend(edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest)  Time elapsed: 0.058 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest.setUp(GenerateCalendarActionTest.java:37)
+
+testGetApptsTable(edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest)  Time elapsed: 0.057 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest.setUp(GenerateCalendarActionTest.java:37)
+
+testGetConflicts(edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest)  Time elapsed: 0.059 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.GenerateCalendarActionTest.setUp(GenerateCalendarActionTest.java:37)
+
+Running edu.ncsu.csc.itrust.unit.action.UpdateReasonCodeListActionTest
+Tests run: 5, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.097 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.UpdateReasonCodeListActionTest
+testUpdateNDInformation0(edu.ncsu.csc.itrust.unit.action.UpdateReasonCodeListActionTest)  Time elapsed: 0.022 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Success: 1 row(s) updated]> but was:<[Error: Code not found.]>
+	at edu.ncsu.csc.itrust.unit.action.UpdateReasonCodeListActionTest.testUpdateNDInformation0(UpdateReasonCodeListActionTest.java:106)
+
+testUpdateNonExistent(edu.ncsu.csc.itrust.unit.action.UpdateReasonCodeListActionTest)  Time elapsed: 0.018 sec  <<< FAILURE!
+junit.framework.ComparisonFailure: expected:<[Error: Code not found.]> but was:<[Success: 0 row(s) updated]>
+	at edu.ncsu.csc.itrust.unit.action.UpdateReasonCodeListActionTest.testUpdateNonExistent(UpdateReasonCodeListActionTest.java:119)
+
+Running edu.ncsu.csc.itrust.unit.action.VerifyClaimActionTest
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.model.old.dao.mysql.BillingDAO.getBillId(BillingDAO.java:81)
+	at edu.ncsu.csc.itrust.action.VerifyClaimAction.<init>(VerifyClaimAction.java:26)
+	at edu.ncsu.csc.itrust.unit.action.VerifyClaimActionTest.testEvilAction(VerifyClaimActionTest.java:92)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:344)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.1 sec - in edu.ncsu.csc.itrust.unit.action.VerifyClaimActionTest
+Running edu.ncsu.csc.itrust.unit.action.AddPHAActionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.018 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.action.AddPHAActionTest
+testAddPHA(edu.ncsu.csc.itrust.unit.action.AddPHAActionTest)  Time elapsed: 0.018 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.action.AddPHAActionTest.testAddPHA(AddPHAActionTest.java:47)
+
+Running edu.ncsu.csc.itrust.unit.validate.bean.HospitalBeanValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 sec - in edu.ncsu.csc.itrust.unit.validate.bean.HospitalBeanValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.bean.SecurityQuestionValidatorTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec - in edu.ncsu.csc.itrust.unit.validate.bean.SecurityQuestionValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.bean.AllergyBeanValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.bean.AllergyBeanValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.bean.PatientValidatorTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 sec - in edu.ncsu.csc.itrust.unit.validate.bean.PatientValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.bean.AddPersonnelValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 sec - in edu.ncsu.csc.itrust.unit.validate.bean.AddPersonnelValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.bean.MedicationBeanValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.bean.MedicationBeanValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.bean.AddPatientValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 sec - in edu.ncsu.csc.itrust.unit.validate.bean.AddPatientValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.MIDValidatorTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.MIDValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.HospitalIDValidatorTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.HospitalIDValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.NameValidatorTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.NameValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.CodeDescriptionValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.CodeDescriptionValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.DateValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec - in edu.ncsu.csc.itrust.unit.validate.regex.DateValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.ZipcodeValidatorTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.ZipcodeValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.StateValidatorTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.StateValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.AnswerValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 sec - in edu.ncsu.csc.itrust.unit.validate.regex.AnswerValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.QuestionValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.QuestionValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.NDCodeValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.NDCodeValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.PhoneValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.PhoneValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.PasswordValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.PasswordValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.NotesValidatorTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.NotesValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.HospitalNameValidatorTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec - in edu.ncsu.csc.itrust.unit.validate.regex.HospitalNameValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.EmailValidatorTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.EmailValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.InsuranceIDValidatorTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 sec - in edu.ncsu.csc.itrust.unit.validate.regex.InsuranceIDValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.CityValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.CityValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.BloodTypeValidatorTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in edu.ncsu.csc.itrust.unit.validate.regex.BloodTypeValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.CPTCodeValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec - in edu.ncsu.csc.itrust.unit.validate.regex.CPTCodeValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.ICD9CMValidatorTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec - in edu.ncsu.csc.itrust.unit.validate.regex.ICD9CMValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.regex.GenderValidatorTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in edu.ncsu.csc.itrust.unit.validate.regex.GenderValidatorTest
+Running edu.ncsu.csc.itrust.unit.validate.BeanValidatorTest
+Tests run: 10, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.014 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.validate.BeanValidatorTest
+testCheckGenderNull(edu.ncsu.csc.itrust.unit.validate.BeanValidatorTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.validate.BeanValidatorTest.testCheckGenderNull(BeanValidatorTest.java:44)
+
+Running edu.ncsu.csc.itrust.unit.validate.TestMailValidator
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 sec - in edu.ncsu.csc.itrust.unit.validate.TestMailValidator
+Running edu.ncsu.csc.itrust.unit.ParameterUtilTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.001 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.ParameterUtilTest
+testConvertMap(edu.ncsu.csc.itrust.unit.ParameterUtilTest)  Time elapsed: 0.001 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.ParameterUtilTest.testConvertMap(ParameterUtilTest.java:17)
+
+Running edu.ncsu.csc.itrust.unit.controller.icdCode.ICDCodeFormTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.1 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.controller.icdCode.ICDCodeFormTest
+testICDCodeForm(edu.ncsu.csc.itrust.unit.controller.icdCode.ICDCodeFormTest)  Time elapsed: 0.1 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.icdCode.ICDCodeFormTest.testICDCodeForm(ICDCodeFormTest.java:64)
+
+Running edu.ncsu.csc.itrust.unit.controller.icdCode.ICDCodeControllerTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.372 sec - in edu.ncsu.csc.itrust.unit.controller.icdCode.ICDCodeControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.immunization.ImmunizationControllerTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.085 sec - in edu.ncsu.csc.itrust.unit.controller.immunization.ImmunizationControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.immunization.ImmunizationFormTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.091 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.controller.immunization.ImmunizationFormTest
+testForm(edu.ncsu.csc.itrust.unit.controller.immunization.ImmunizationFormTest)  Time elapsed: 0.091 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.immunization.ImmunizationFormTest.testForm(ImmunizationFormTest.java:54)
+
+Running edu.ncsu.csc.itrust.unit.controller.ndcCode.NDCCodeFormTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.067 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.controller.ndcCode.NDCCodeFormTest
+testForm(edu.ncsu.csc.itrust.unit.controller.ndcCode.NDCCodeFormTest)  Time elapsed: 0.062 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.ndcCode.NDCCodeFormTest.testForm(NDCCodeFormTest.java:60)
+
+Running edu.ncsu.csc.itrust.unit.controller.ndcCode.NDCCodeControllerTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.286 sec - in edu.ncsu.csc.itrust.unit.controller.ndcCode.NDCCodeControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.emergencyRecord.EmergencyRecordControllerTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.494 sec - in edu.ncsu.csc.itrust.unit.controller.emergencyRecord.EmergencyRecordControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.hospital.HospitalControllerTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 sec - in edu.ncsu.csc.itrust.unit.controller.hospital.HospitalControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.medicalProcedure.MedicalProcedureControllerTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.089 sec - in edu.ncsu.csc.itrust.unit.controller.medicalProcedure.MedicalProcedureControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.medicalProcedure.MedicalProcedureFormTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.152 sec - in edu.ncsu.csc.itrust.unit.controller.medicalProcedure.MedicalProcedureFormTest
+Running edu.ncsu.csc.itrust.unit.controller.cptcode.CPTCodeControllerTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.294 sec - in edu.ncsu.csc.itrust.unit.controller.cptcode.CPTCodeControllerTest
+Running edu.ncsu.csc.itrust.unit.controller.cptcode.CPTCodeFormTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.045 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.controller.cptcode.CPTCodeFormTest
+testCPTCodeForm(edu.ncsu.csc.itrust.unit.controller.cptcode.CPTCodeFormTest)  Time elapsed: 0.045 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.cptcode.CPTCodeFormTest.testCPTCodeForm(CPTCodeFormTest.java:63)
+
+Running edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest
+edu.ncsu.csc.itrust.exception.DBException: A database exception has occurred. Please see the log in the console for stacktrace
+	at edu.ncsu.csc.itrust.model.labProcedure.LabProcedureMySQL.<init>(LabProcedureMySQL.java:34)
+	at edu.ncsu.csc.itrust.controller.labProcedure.LabProcedureController.<init>(LabProcedureController.java:32)
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLabProcedure(LabProcedureControllerTest.java:499)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:344)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:269)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:184)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:286)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:240)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:121)
+Tests run: 24, Failures: 15, Errors: 3, Skipped: 0, Time elapsed: 1.588 sec <<< FAILURE! - in edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest
+testGetLabProceduresByOfficeVisit(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.079 sec  <<< FAILURE!
+java.lang.AssertionError
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetLabProceduresByOfficeVisit(LabProcedureControllerTest.java:159)
+
+testGetPendingLabProceduresByTechnician(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.058 sec  <<< FAILURE!
+java.lang.AssertionError
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetPendingLabProceduresByTechnician(LabProcedureControllerTest.java:218)
+
+testAdd(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.095 sec  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+labProcedureController.logTransaction(
+    LAB_RESULTS_CREATE,
+    null
+);
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:400)
+
+However, there were other interactions with this mock:
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:392)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:393)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:396)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:396)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:396)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:396)
+
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testAdd(LabProcedureControllerTest.java:400)
+
+getCompletedLabProceduresByTechnician(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.067 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.getCompletedLabProceduresByTechnician(LabProcedureControllerTest.java:304)
+
+testEdit(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.053 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testEdit(LabProcedureControllerTest.java:435)
+
+testGetCompletedLabProceduresByOfficeVisit(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.051 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetCompletedLabProceduresByOfficeVisit(LabProcedureControllerTest.java:179)
+
+testRemoveInvalidID(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.082 sec  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+labProcedureController.printFacesMessage(
+    <any>,
+    <any>,
+    <any>,
+    <any>
+);
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testRemoveInvalidID(LabProcedureControllerTest.java:488)
+
+However, there were other interactions with this mock:
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testRemoveInvalidID(LabProcedureControllerTest.java:487)
+
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testRemoveInvalidID(LabProcedureControllerTest.java:488)
+
+testGetLabProceduresByLabTechnicianMultipleResults(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.062 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<5> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetLabProceduresByLabTechnicianMultipleResults(LabProcedureControllerTest.java:131)
+
+testGetInTransitLabProceduresByTechnician(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.078 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetInTransitLabProceduresByTechnician(LabProcedureControllerTest.java:242)
+
+testSetLabProcedureToReceivedStatus(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.072 sec  <<< FAILURE!
+org.mockito.exceptions.verification.junit.ArgumentsAreDifferent: 
+
+Argument(s) are different! Wanted:
+labProcedureController.printFacesMessage(
+    INFO 0,
+    <any>,
+    <any>,
+    <any>
+);
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testSetLabProcedureToReceivedStatus(LabProcedureControllerTest.java:330)
+Actual invocation has different arguments:
+labProcedureController.printFacesMessage(
+    ERROR 2,
+    "Something went wrong and the action couldn't be completed.",
+    "Something went wrong and the action couldn't be completed.",
+    null
+);
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testSetLabProcedureToReceivedStatus(LabProcedureControllerTest.java:328)
+
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testSetLabProcedureToReceivedStatus(LabProcedureControllerTest.java:330)
+
+testLogViewLabProcedure(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.054 sec  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+labProcedureController.logTransaction(
+    <any>,
+    <any>
+);
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedure(LabProcedureControllerTest.java:543)
+
+However, there were other interactions with this mock:
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedure(LabProcedureControllerTest.java:539)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedure(LabProcedureControllerTest.java:540)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedure(LabProcedureControllerTest.java:542)
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedure(LabProcedureControllerTest.java:542)
+
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedure(LabProcedureControllerTest.java:543)
+
+testGetLabProceduresByLabTechnicianSingleResult(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.083 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetLabProceduresByLabTechnicianSingleResult(LabProcedureControllerTest.java:99)
+
+testGetReceivedLabProceduresByTechnician(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.067 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetReceivedLabProceduresByTechnician(LabProcedureControllerTest.java:266)
+
+testGetNonCompletedLabProceduresByOfficeVisit(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.054 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<2> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetNonCompletedLabProceduresByOfficeVisit(LabProcedureControllerTest.java:196)
+
+testGetTestingLabProceduresByTechnician(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.057 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<1> but was:<0>
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testGetTestingLabProceduresByTechnician(LabProcedureControllerTest.java:285)
+
+testSetLabProcedureToReceivedStatusDBException(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.05 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testSetLabProcedureToReceivedStatusDBException(LabProcedureControllerTest.java:350)
+
+testRemove(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.061 sec  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+labProcedureData.removeLabProcedure(1);
+-> at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testRemove(LabProcedureControllerTest.java:453)
+Actually, there were zero interactions with this mock.
+
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testRemove(LabProcedureControllerTest.java:453)
+
+testLogViewLabProcedureNoOfficeVisitSelected(edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest)  Time elapsed: 0.064 sec  <<< ERROR!
+java.lang.NullPointerException
+	at edu.ncsu.csc.itrust.unit.controller.labProcedure.LabProcedureControllerTest.testLogViewLabProcedureNoOfficeVisitSelected(LabProcedureControllerTest.java:554)
+
+Running edu.ncsu.csc.itrust.unit.controller.officeVisit.OfficeVisitFormTest
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.732 sec - in edu.ncsu.csc.itrust.unit.controller.officeVisit.OfficeVisitFormTest
+Running edu.ncsu.csc.itrust.unit.controller.officeVisit.OfficeVisitControllerTest
+Build was aborted
+Aborted by [8mha:////4Kx/kxh7ATu1Bf1hktkPgMHdCrCl4LTeT8dVP9wK23LNAAAAmR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAz2EgZe/dLi1CL90rzsvPzyPAATbMabwgAAAA==[0munknown
+Finished: ABORTED

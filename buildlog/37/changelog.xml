@@ -1,0 +1,44 @@
+commit 85d1b96e7ac28fdb481e864ceb17311e18cf674d
+tree 73c62c7c691a7ca61cca58dda181a6ea88d9489e
+parent cb6d8dfaf60527755208e2fbb50b4799e65b155c
+author Nitin Ramchandani <nramcha@ncsu.edu> 2017-03-18 22:23:40 +0000
+committer Nitin Ramchandani <nramcha@ncsu.edu> 2017-03-18 22:23:40 +0000
+
+    Fuzzed 2
+
+
+
+:100755 100755 50f1df294478f42ba0d20b85021e039322424196 ab385c3a1cf895e619891e044760ec509cd76c35 M	src/main/edu/ncsu/csc/itrust/Localization.java
+:100755 100755 c75fb999c94d19e9fede396c9083a1a82c21f3a1 c6dccd0f8e3c745d87a8fe0c41c6875454c8073b M	src/main/edu/ncsu/csc/itrust/action/ActivityFeedAction.java
+:100755 100755 a6cc9422b63dc47367c8a18942bb6c237fc21cd1 b72e9add7b40aa65cb8a6ab65c0d8ab3e4976b49 M	src/main/edu/ncsu/csc/itrust/action/ApptAction.java
+:100755 100755 7aaceaba39428ff7520d7394a41d52671a22cb1e 2b29401eb32d87c222a2280adcd1fc4292984970 M	src/main/edu/ncsu/csc/itrust/action/ChangeSessionTimeoutAction.java
+:100755 100755 769368aa5fdbcf524379d51e28c6a025353f8b9d d300937ab19674fd35c83d90126ea70932740179 M	src/main/edu/ncsu/csc/itrust/action/GroupReportGeneratorAction.java
+:100755 100755 8c86ef139fd775ed6d416ff663d7b7eaff573804 7002cf331557c74f64ffae9b2b9df8d245b5d145 M	src/main/edu/ncsu/csc/itrust/action/UpdateReasonCodeListAction.java
+:100755 100755 75ff275268b9a48c27986177bd273f5d48596f51 ab1c24b05c0cc83172addc659d922618d57b5434 M	src/main/edu/ncsu/csc/itrust/action/ViewMyMessagesAction.java
+:100755 100755 f97098cc3abe06ec86eb40ed42ea52008d6b2722 829f875a84251ca39fb7991a6be0b333ecbfc38e M	src/main/edu/ncsu/csc/itrust/action/ViewMyReportRequestsAction.java
+:100755 100755 6107d7502883e50ad8de47027d019f758f6c191e 77bd2233ac1082338ddb3afe5d36ab1d4aafa48c M	src/main/edu/ncsu/csc/itrust/controller/NavigationController.java
+:100755 100755 a5864f355815c4ec5563ef231794496b7ebbc97e 53cd0f17fb95c3ff3d60ebfcbe286f03d0289989 M	src/main/edu/ncsu/csc/itrust/controller/apptType/ApptTypeController.java
+:100755 100755 d652578d0a3dea9bd56169362c089cb12bf9c6e3 0ab0798313510275f0f931eef3cb54e0241c6b24 M	src/main/edu/ncsu/csc/itrust/controller/cptcode/CPTCodeForm.java
+:100755 100755 e88c8f1dd9aeca3e8d48bb8dd16d0ce4471603bb bc15a93f91feae8b34efa8024f8848d35ab32275 M	src/main/edu/ncsu/csc/itrust/controller/immunization/ImmunizationForm.java
+:100755 100755 e600d3ee1a5ca59cde7a9fd8647a567de4b8dd71 c4f57132e9f80c32738f066c54c465e89a63c543 M	src/main/edu/ncsu/csc/itrust/controller/loinccode/LoincCodeForm.java
+:100755 100755 e380ebfb9d4551a43f3899fc01f6c73560e5b7b3 95d5c5f476db6e0b1e55a5f53b19f7774622fe77 M	src/main/edu/ncsu/csc/itrust/controller/prescription/PrescriptionController.java
+:100755 100755 b52281bd71565ccf5d7cbbb7d7c269e93ea383c2 ce9a8893cf3e2181f3da5d943f1006408d753f5d M	src/main/edu/ncsu/csc/itrust/controller/user/patient/PatientController.java
+:100755 100755 838385f21a621e1e9bf44a28938c0c48a943e9ca 8ba79bdce96e4e26f903a8db6810b659fc937330 M	src/main/edu/ncsu/csc/itrust/model/diagnosis/DiagnosisValidator.java
+:100755 100755 9ac2a67f7a2eeecab6b48706df1ac4f2c4e8e4fe 4d284be4cae2b8ce6ce1d9fa1418e59346fb4ecf M	src/main/edu/ncsu/csc/itrust/model/labProcedure/LabProcedureSQLLoader.java
+:100755 100755 2b0e5389c8f81c45f4a60719a12e3fe53ea55e0c e0b6b2573346b7b7d4915dde858b88c701155d2a M	src/main/edu/ncsu/csc/itrust/model/officeVisit/OfficeVisit.java
+:100755 100755 237c691f5a87736c49c5163b11ce7661024e5817 d11e8f06bb62ffc44cc3f076f72dcc473cc79eb1 M	src/main/edu/ncsu/csc/itrust/model/officeVisit/OfficeVisitMySQL.java
+:100755 100755 ea8e6c2f4e19f762553138fec1e92ad04c3d7d7a e4148c153101151e2970af12183cc6900f84be9b M	src/main/edu/ncsu/csc/itrust/model/officeVisit/OfficeVisitSQLLoader.java
+:100755 100755 5a5b08e1703c3a30f08844601c2e999a0dcd0d23 80c50ff062d2f193bf8eae5d0edc887b9357fb79 M	src/main/edu/ncsu/csc/itrust/model/officeVisit/OfficeVisitValidator.java
+:100755 100755 9ed362ffc1b6a8d733e118384d1a88cb437631d1 3bf1db14256ae49eae80c018c23f8fd98c710f44 M	src/main/edu/ncsu/csc/itrust/model/old/beans/OverrideReasonBean.java
+:100755 100755 adc7b6f74767e1625e98acf6f0ff0cc4de76ed15 e485a4b8a40813eb10b76761689f1acfb79560fa M	src/main/edu/ncsu/csc/itrust/model/old/beans/PatientBean.java
+:100755 100755 bd525282d45140fa80e4273d26bf4af86db0b55c d4cd34f7738a107c72074604207811946541af98 M	src/main/edu/ncsu/csc/itrust/model/old/beans/RemoteMonitoringDataBean.java
+:100755 100755 e600416a6d0c2c13ba2b012c9956bc644333c411 8ae0e18a796d4f989775ea5897748f05f57b16e4 M	src/main/edu/ncsu/csc/itrust/model/old/beans/ReportRequestBean.java
+:100755 100755 1d7f24e06ae59a7b1680c5ff49af126225254227 435061afcac917db88238a2f3cf211f6b2e630c5 M	src/main/edu/ncsu/csc/itrust/model/old/beans/loaders/PatientLoader.java
+:100755 100755 dd7912813963945f037c369a81cee06e62abb1f6 dcc3b0ca5935aa39570c3b5433b9fd576044fbc7 M	src/main/edu/ncsu/csc/itrust/model/old/dao/DAOFactory.java
+:100755 100755 1624faeb330a78ab165ae263f1024e4ccda5bc4b eafd2cd41a2dcef19b6c63165f72506ddc3ebba1 M	src/main/edu/ncsu/csc/itrust/model/old/dao/mysql/AccessDAO.java
+:100755 100755 307e9d48981698a20c1c15b920383ac61e2943e9 01a6552aa66d5fffeee937ecf763daa7570d1528 M	src/main/edu/ncsu/csc/itrust/model/old/dao/mysql/AuthDAO.java
+:100755 100755 96e7cff8f5215fdcaaa213e4a23aeefcb3f99bcb 81aa895f28d71cb4e86896a8c10ea9e5eee86e88 M	src/main/edu/ncsu/csc/itrust/model/old/validate/BeanValidator.java
+:100755 100755 978751a857d4288984a79e146d9995c6f499fbe8 1a1540471bc95011779796406d888bcdb9e2ee29 M	src/main/edu/ncsu/csc/itrust/model/user/User.java
+:100755 100755 3530da0bcba972aeb0cef4cec770cacb7a16f93a 1910b086a56644b9e735bbc4182d94cf93cf8ef2 M	src/main/edu/ncsu/csc/itrust/model/user/UserMySQLConverter.java
+:100755 100755 21cc93a63fb1a7ab917c66fa50292e53440e9a7f 4501001c8fae7c73595f4efbcc80bd2e1c8651c1 M	src/main/edu/ncsu/csc/itrust/model/user/patient/PatientMySQLConverter.java
+:100755 100755 ec788b00fddae528acf97104b5a6f9d36e392039 75eee78e564001f66601de654c5dc506d9180313 M	src/main/edu/ncsu/csc/itrust/server/SessionTimeoutListener.java

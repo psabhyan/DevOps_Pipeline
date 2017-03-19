@@ -1,0 +1,11 @@
+commit 06c1a7edb10564ebf1d8d28e075d77566f2f264a
+tree fe026ae768c65c6d03a5b96a073dfc360de2045e
+parent cb6d8dfaf60527755208e2fbb50b4799e65b155c
+author Nitin Ramchandani <nramcha@ncsu.edu> 2017-03-17 09:50:18 +0000
+committer Nitin Ramchandani <nramcha@ncsu.edu> 2017-03-17 09:50:18 +0000
+
+    Fuzzed 3
+
+
+
+:100755 100755 0f06e647bbc20ecd3c51b5c05bb015f166ce1c92 d000f043778b55e75ab44ed547c2d59664e075f2 M	src/main/edu/ncsu/csc/itrust/model/old/beans/DistanceComparator.java

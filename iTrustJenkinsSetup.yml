@@ -112,7 +112,7 @@
       creates: /home/vagrant/jenkins-cli.jar
 
   - name: Create Job from job.xml
-    action: shell java -jar jenkins-cli.jar -s http://localhost:8080/ create-job iTrust < job-config.xml
+    action: shell java -jar jenkins-cli.jar -s http://localhost:8080/ create-job iTrustDemo < job-config.xml
 
   - name: Get updated files from git repository 
     git: 

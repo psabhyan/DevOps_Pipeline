@@ -16,3 +16,4 @@ We first extended the ansible playbook to add support for nginx and ansible, and
 Then we implemented a node.js script to analyze the checkbox.io project for the above mentioned conditions. 
 
 #### Link to screencast: https://youtu.be/gkkTJyGzD_E 
+#### Link to repo Analysis Script: https://github.com/coder-neo/checkbox.io/

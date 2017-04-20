@@ -1,0 +1,19 @@
+---
+
+- name: Configure redis Master
+  hosts: redisMaster
+  roles:
+    - DavidWittman.redis
+
+- name: Configure redis slaves
+  hosts: redisSlave
+  vars:
+    - redis_slaveof: 104.131.45.210 6379
+  roles:
+    - DavidWittman.redis
+
+- name: install redis cli tools
+  hosts: redisMaster, redisSlave
+
+  - name: install redis tools
+    apt: name=redis-tools state=latest update_cache=yes

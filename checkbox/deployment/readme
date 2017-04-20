@@ -1,1 +1,10 @@
 checkbox deployment
+
+
+- Created .yml file to install all dependencies for the checkbox.io
+- it will clone the git repo of checkbox.io and install forever tools to start the server.
+- Git hooks are created in the local code repository and the bare repository.
+- code repository /path/one/ - will have actual code repo where developer push their commits.
+- remote is added to bare repository and post-receive hooks is set in bare repository to deploy code to /path/www/ folder.
+- After deployment of code to /path/www/ folder, post-receive hook will also deploy the code from /www/ to remote running checkbox instances.
+- Thus, every push into /path/one/ code repo, git hooks will deploy the code into production repository.

@@ -1,1 +1,8 @@
 redis feature flag
+
+
+Before running the playbook file, run command,
+
+"ansible-galaxy install DavidWittman.redis"
+
+This command will install role to setup the redis on master and slaves instances.

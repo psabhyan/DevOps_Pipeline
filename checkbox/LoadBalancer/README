@@ -1,0 +1,5 @@
+- Load balancer
+-  Here, we know the IP addresses of all running checkbox.io instances and are stored in file.
+
+- Load Balancer will use the redis tool to maintain the list of available checkbox instances .
+- We used HttpProxy to create a proxy server. This proxy server will pop the instance IP from the list of available servers and then it will redirect the request to this IP. Finally, it will add this IP again at the end of the List of checkbox instances available.

@@ -6,3 +6,9 @@ Before running the playbook file, run command,
 "ansible-galaxy install DavidWittman.redis"
 
 This command will install role to setup the redis on master and slaves instances.
+
+
+- We implemented feature flag server with Redis Master slave replication.
+- One instance will be set as Master and all the checkbox instances will be set as redis slaves.
+   -  All reds slaves will be set slave of the master instances. This mechanism will enables slaves to access the feature flags set from Master redid.
+ - We applied feature flag check condition on create.js file for the creation of survey feature. If the feature is set false, then user can not create the survey on checkbox.io instances. This feature is set on master instance and will be used in code on slave instances.

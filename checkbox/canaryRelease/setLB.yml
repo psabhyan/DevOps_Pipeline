@@ -1,0 +1,48 @@
+---
+- hosts: LoadBalancer
+  tasks:
+    - name: Install Packages
+      apt: pkg={{ item }} state=present
+      become: yes
+      with_items:
+         - nodejs
+         - build-essential
+         - git
+         - python-pip
+         - npm
+
+   - name: "Install forever (to run Node.js app)."
+      npm: name=forever global=yes state=present
+
+    - name: install Redis server
+        apt: name=redis-server state=latest update_cache=yes
+
+    - name: check if Redis is running
+      service: name=redis-server state=started
+
+    - name: enable redis-server to survive reboot
+      service: name=redis-server enabled=yes
+
+    - name: Install "Express" node.js package.
+      npm: name: express global=yes state=present
+
+
+   - name: Clone the repo.
+      git:
+        repo: https://github.com/Ronak6892/canaryTrafficScheduler.git
+        dest: /home/vagrant/Redis
+
+   - name: "Install nodejs dependencies"
+      npm:
+        path: /home/vagrant/Redis/
+
+   - name: "Check list of Node.js apps running."
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+   - name: "Start example Node.js app."
+      command: forever start -o output.log -e error.log  main.js
+      args:
+        chdir: /home/vagrant/Redis/
+      when: "forever_list.stdout.find('/home/vagrant/Redis/main.js') == -1"

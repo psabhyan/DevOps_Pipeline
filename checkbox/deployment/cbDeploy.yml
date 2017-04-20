@@ -1,0 +1,96 @@
+- name: Deploy checkBox.io
+
+  hosts: checkboxDeploy
+  environment:
+      MONGO_USER: "{{ lookup('env','mongo_user') }}"
+      MONGO_PSWD: "{{ lookup('env','mongo_pswd') }}"
+      EMAIL_USER: "{{ lookup('env','email_user') }}"
+      EMAIL_PSWD: "{{ lookup('env','email_pswd') }}"
+
+  tasks:
+
+    - name: Install Repository keys
+      apt_key: state=present keyserver=keyserver.ubuntu.com id=EA312927
+
+    - name: Install MongoDB repository
+      apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu {{ ansible_distribution_release }}/mongodb-org/3.2 multiverse' state=present
+
+    - name: Install MongoDB
+      apt: name=mongodb-org state=present force=yes
+
+    - name: Add ppa for node
+      apt_repository: repo='ppa:chris-lea/node.js'
+
+    - name: update apt-cache if needed
+      apt: update_cache=yes
+
+    - name: Install Packages
+      apt: pkg={{ item }} state=present
+      become: yes
+      with_items:
+         - nginx
+         - nodejs
+         - build-essential
+         - git
+         - python-pip
+
+    - name: Clone the repo.
+      git:
+        repo: https://github.com/Ronak6892/checkbox.io.git
+        dest: /home/vagrant/checkbox.io
+
+# Configure nginx
+    - name: Update nginx.conf
+      copy: remote_src=True src=/home/vagrant/checkbox.io/local-conf/nginx.conf dest=/etc/nginx/nginx.conf
+      sudo: yes
+
+    - name: Update default conf file
+      copy: remote_src=True src=/home/vagrant/checkbox.io/local-conf/default dest=/etc/nginx/sites-available/default
+      sudo: yes
+
+    - name: Restart nginx
+      service : name=nginx state=reloaded
+
+# Install mongo dependecies and configuration
+
+
+    - name: Install the latest pymongo package
+      pip: name=pymongo state=latest use_mirrors=no
+
+    - name: Add MongoDB user
+      mongodb_user:
+        database: admin
+        name: mongoAdmin
+        password: password
+        roles: userAdminAnyDatabase,readWriteAnyDatabase,dbAdminAnyDatabase
+        state: present
+
+    - name: Enable secure authentication for mongodb
+      blockinfile:
+        dest: "/etc/mongod.conf"
+        content:
+           "security:\n  authorization: enabled"
+
+    - name: Restart mongod
+      service: name=mongod state=restarted
+
+
+# Install necessary node modules and start server
+
+    - name: "Install forever (to run Node.js app)."
+      npm: name=forever global=yes state=present
+
+    - name: "Install nodejs dependencies"
+      npm:
+        path: /home/vagrant/checkbox.io/server-side/site/
+
+    - name: "Check list of Node.js apps running."
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+    - name: "Start example Node.js app."
+      command: forever start -o output.log -e error.log  server.js
+      args:
+        chdir: /home/vagrant/checkbox.io/server-side/site/
+      when: "forever_list.stdout.find('/home/vagrant/checkbox.io/server-side/site/server.js') == -1"

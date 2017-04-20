@@ -1,0 +1,70 @@
+---
+  - name: Provision an Tomcat Instance
+    hosts: itrust-server
+    become: yes
+    # Task that will be used to configure jenkins on EC2 Instance
+    tasks:
+
+
+      - name: Run the equivalent of apt-get update as a separate step
+        apt:
+          update_cache: yes
+
+      - name: Install java 8 preresequesits
+        apt: name=python-software-properties
+
+      - name: Add Java 8 repository
+        apt_repository: repo='ppa:webupd8team/java'
+
+      - name: Agree to oracle license
+        debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+      - name: Install Java 8
+        apt: name=oracle-java8-installer force=yes
+
+      - name: Update APT package cache
+        become: yes
+        action: apt update_cache=yes
+
+      - name: install maven
+        become: yes
+        apt: pkg=maven state=present
+
+      - name: Update APT package cache
+        become: yes
+        action: apt update_cache=yes
+
+
+      - name: install git
+        become: yes
+        apt: pkg=git state=latest
+
+      - name: Get updated files from git repository 
+        git: 
+            repo: "https://github.com/psabhyan/iTrust.git"
+            dest: /home/ubuntu/project
+
+      - name: install mysql
+        become: yes
+        apt: pkg=mysql-server state=latest
+
+      - name: add a new string before the match
+        lineinfile: dest=/etc/mysql/my.cnf
+                    regexp='#general_log'
+                    line='lower-case-table-names=1'
+                    state=present
+
+      - name: Restart mysql
+        command: bash -lc "sudo service mysql restart"
+
+      - name: Run iTrust
+        command: bash -lc "cd /home/ubuntu/project && sudo mvn clean package -DskipTests"
+
+      - name: Tomcat
+        command: bash -lc "cd /usr/local && wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.0.M20/bin/apache-tomcat-9.0.0.M20.tar.gz && tar xzf apache-tomcat-9.0.0.M20.tar.gz && mv apache-tomcat-9.0.0.M20 tomcat9"
+
+      - name: Move war file
+        command: bash -lc "mv /home/ubuntu/project/target/iTrust-23.0.0.war /usr/local/tomcat9/webapps/iTrust.war"
+
+      - name: Starting Apache server
+        shell: sudo su; nohup sh /usr/local/tomcat9/bin/startup.sh

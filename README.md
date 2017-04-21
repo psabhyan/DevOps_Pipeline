@@ -9,7 +9,7 @@ In this MILESTONE, we had extend our deployment pipeline to support additional c
     -  As a part of deployment process for iTrust we have created an ansible playbook which spawns EC2 instances which we are using for Jenkins and iTrust deployment.
     - We have used webhooks in order to automate the deployment of iTrust. Whenever we push any changes to iTrust repository, Jenkins build is triggered which generates an updated war after successful build.
     - Another ansible script is used to push this war into production server from Jenkins server.
-  - **CheckBox: [Screencast](https://youtu.be/47UkOjchMjw)**
+  - **CheckBox: [Screencast](https://youtu.be/b2zBULlaMoo)**
     - Created .yml file to install all dependencies for the checkbox.io
     - it will clone the git repo of checkbox.io and install forever tools to start the server.
     - Git hooks are created in the local code repository and the bare repository.

@@ -1,7 +1,0 @@
-#!/bin/sh
-echo "running post-receive mybare..."
-GIT_WORK_TREE=/home/vagrant/www/ git checkout -f
-
-cd /home/vagrant
-ansible-playbook -i inventory cbHook.yml -s
-echo "finished post-receive mybare..."

@@ -1,0 +1,157 @@
+--- 
+  - name: Configure Jenkins server on Droplet
+    hosts: jenkins-server
+    become: yes
+    
+    vars: 
+      packages:
+        - software-properties-common
+        - git-core
+        - git
+        - jenkins
+        - ansible
+        - nodejs
+        - build-essential
+        - python-pip
+
+    tasks:
+
+
+    - name: Configure apt key for jenkins repository
+      action: apt_key url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key state=present 
+
+
+    - name: Add jenkins APT repository
+      action: apt_repository repo='deb http://pkg.jenkins-ci.org/debian binary/' state=present
+
+    - name: Install java 8 preresequesits
+      apt: name=python-software-properties
+
+    - name: Add Java 8 repository
+      apt_repository: repo='ppa:webupd8team/java'
+
+    - name: Add ansible repository
+      apt_repository: repo='ppa:ansible/ansible'
+
+    - name: Install Repository keys
+      apt_key: state=present keyserver=keyserver.ubuntu.com id=EA312927
+
+    - name: Add ppa for node
+      apt_repository: repo='ppa:chris-lea/node.js'
+
+    - name: update apt-cache if needed
+      apt: update_cache=yes
+
+    - name: Agree to oracle license
+      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+    - name: Install Java 8
+      apt: name=oracle-java8-installer force=yes
+    
+    - name: Install {{ item }}
+      apt: pkg={{ item }} state=present
+      become: yes
+      with_items: "{{packages}}"
+
+    - name: Update ansible config file
+      lineinfile: dest=/etc/ansible/ansible.cfg
+                  regexp='^#host_key_checking'
+                  line='host_key_checking=False'
+                  state=present
+
+    - name: Stopping Jenkins
+      shell: sudo su - root -c 'service jenkins stop'
+      args:
+       executable: /bin/bash
+
+
+    - copy:
+       src: /home/vagrant/jenkins-config.xml
+       dest: /var/lib/jenkins/config.xml
+       owner: root
+       group: root
+       mode: 0777
+
+
+    - name: Configure JVM Arguments to disable security
+      sudo: true
+      lineinfile: dest=/etc/default/jenkins
+                  regexp=''
+                  insertafter='EOF'
+                  line='JAVA_ARGS="-Djenkins.install.runSetupWizard=false"'
+
+
+    - name: Restarting Jenkins
+      shell: sudo su - root -c 'service jenkins restart'
+      args:
+       executable: /bin/bash 
+
+
+    - name: Wait for jenkins to restart
+      wait_for: host=localhost port=8080 delay=30
+
+
+    - name: Install plugin
+      jenkins_plugin: name=github state=present
+    
+    - name: Restarting Jenkins
+      shell: sudo su - root -c 'service jenkins restart'
+      args:
+       executable: /bin/bash
+
+
+    - name: Wait for jenkins to restart
+      wait_for: host=localhost port=8080 delay=30
+
+      
+    - copy:
+       src: /home/vagrant/jconfig.xml
+       dest: /root/job-config.xml
+       owner: jenkins
+       group: jenkins
+       mode: 0644
+
+    - copy:
+       src: /home/vagrant/my_id_rsa
+       dest: /root/my_id_rsa
+       owner: jenkins
+       group: jenkins
+       mode: 0400
+
+
+    - copy:
+       src: /home/vagrant/cbDeploy.yml
+       dest: /root/cbDeploy.yml
+       owner: root
+       group: root
+       mode: 0644
+
+     
+    - copy:
+       src: /home/vagrant/checkbox-inventory
+       dest: /root/checkbox-inventory
+       owner: root
+       group: root
+       mode: 0644
+
+
+    - name: Install Jenkins CLI on Host
+      action: shell wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+      args: 
+        creates: /root/jenkins-cli.jar
+
+
+    - name: Create Job from job.xml
+      action: shell java -jar jenkins-cli.jar -s http://localhost:8080/ create-job checkboxDemo < job-config.xml
+
+    - name: change permission of root
+      file:
+        path: /root/
+        owner: root
+        group: root
+        mode: 0775
+        state: directory
+        recurse: yes
+
+    - name: Build the repo
+      action: shell java -jar /root/jenkins-cli.jar -s http://localhost:8080/ build checkboxDemo

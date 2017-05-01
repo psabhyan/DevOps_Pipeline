@@ -103,4 +103,6 @@ How would you like to update package.json?(Select from below options)
 
 - If user has selected option 1 or 2, bot will push the package.json of folder 1 or 2 to the original checkbox.io repo on github. If user opts for option 3, bot will ignore the changes and both folders will be deleted and noting will be pushed to github.
 
-- Screencast link - https://youtu.be/gm8GL_WoCtE
+- Screencast link - https://youtu.be/RVL5Uudcn44
+
+- Updated code for checkbox.io - https://github.com/coder-neo/checkbox.io 
